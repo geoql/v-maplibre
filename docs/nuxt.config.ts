@@ -4,6 +4,10 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'cloudflare-pages',
+    prerender: {
+      routes: ['/'],
+      crawlLinks: true,
+    },
   },
 
   app: {
