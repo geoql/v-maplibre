@@ -1,6 +1,5 @@
 import { describe, it, expect, beforeEach } from 'vitest';
 import { mount } from '@vue/test-utils';
-import { ref } from 'vue';
 import VMarker from '../../src/markers/VMarker.vue';
 import VMap from '../../src/map/VMap.vue';
 import '../setup';

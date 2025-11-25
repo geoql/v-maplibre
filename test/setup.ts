@@ -1,21 +1,32 @@
 import { vi } from 'vitest';
+import type { StyleSpecification, MapOptions } from 'maplibre-gl';
+
+type LngLatLike = [number, number] | { lng: number; lat: number };
+type EventCallback = (...args: unknown[]) => void;
+
+interface MockMapOptions extends Partial<MapOptions> {
+  container: HTMLElement | string;
+  style?: string | StyleSpecification;
+  center?: [number, number];
+  zoom?: number;
+}
 
 // Mock MapLibre GL
 class MockMap {
   private _container: HTMLElement | string;
-  private _style: any;
+  private _style: string | StyleSpecification | undefined;
   private _center: [number, number];
   private _zoom: number;
-  private _listeners: Map<string, Set<Function>> = new Map();
+  private _listeners: Map<string, Set<EventCallback>> = new Map();
 
-  constructor(options: any) {
+  constructor(options: MockMapOptions) {
     this._container = options.container;
     this._style = options.style;
     this._center = options.center || [0, 0];
     this._zoom = options.zoom || 0;
   }
 
-  on(event: string, callback: Function) {
+  on(event: string, callback: EventCallback) {
     if (!this._listeners.has(event)) {
       this._listeners.set(event, new Set());
     }
@@ -23,56 +34,62 @@ class MockMap {
     return this;
   }
 
-  off(event: string, callback: Function) {
+  off(event: string, callback: EventCallback) {
     if (this._listeners.has(event)) {
       this._listeners.get(event)!.delete(callback);
     }
     return this;
   }
 
-  addControl(control: any, position?: string) {
+  addControl(_control: unknown, _position?: string) {
     return this;
   }
 
-  removeControl(control: any) {
+  removeControl(_control: unknown) {
     return this;
   }
 
-  addSource(id: string, source: any) {
+  addSource(_id: string, _source: unknown) {
     return this;
   }
 
-  removeSource(id: string) {
+  removeSource(_id: string) {
     return this;
   }
 
-  addLayer(layer: any, beforeId?: string) {
+  addLayer(_layer: unknown, _beforeId?: string) {
     return this;
   }
 
-  removeLayer(id: string) {
+  removeLayer(_id: string) {
     return this;
   }
 
-  getSource(id: string) {
+  getSource(_id: string) {
     return {
       setData: vi.fn(),
     };
   }
 
-  getLayer(id: string) {
+  getLayer(_id: string) {
     return {};
   }
 
-  hasImage(id: string) {
+  hasImage(_id: string) {
     return false;
   }
 
-  loadImage(url: string, callback: Function) {
-    callback(null, { width: 100, height: 100 });
+  loadImage(
+    url: string,
+    callback: (
+      error: Error | null,
+      image?: HTMLImageElement | ImageBitmap,
+    ) => void,
+  ) {
+    callback(null, { width: 100, height: 100 } as unknown as HTMLImageElement);
   }
 
-  addImage(id: string, image: any, options?: any) {
+  addImage(_id: string, _image: unknown, _options?: unknown) {
     return this;
   }
 
@@ -102,21 +119,31 @@ class MockMap {
     return true;
   }
 
+  setLayoutProperty(_layerId: string, _name: string, _value: unknown) {
+    return this;
+  }
+
   remove() {
     return this;
   }
 }
 
-class MockMarker {
-  private _lngLat: any;
-  private _element: HTMLElement;
-  private _listeners: Map<string, Set<Function>> = new Map();
+interface MockMarkerOptions {
+  element?: HTMLElement;
+  color?: string;
+  draggable?: boolean;
+}
 
-  constructor(options?: any) {
+class MockMarker {
+  private _lngLat: LngLatLike | undefined;
+  private _element: HTMLElement;
+  private _listeners: Map<string, Set<EventCallback>> = new Map();
+
+  constructor(options?: MockMarkerOptions) {
     this._element = options?.element || document.createElement('div');
   }
 
-  setLngLat(lngLat: any) {
+  setLngLat(lngLat: LngLatLike) {
     this._lngLat = lngLat;
     return this;
   }
@@ -125,7 +152,7 @@ class MockMarker {
     return this._lngLat;
   }
 
-  addTo(map: any) {
+  addTo(_map: MockMap) {
     return this;
   }
 
@@ -133,11 +160,11 @@ class MockMarker {
     return this;
   }
 
-  setDraggable(draggable: boolean) {
+  setDraggable(_draggable: boolean) {
     return this;
   }
 
-  on(event: string, callback: Function) {
+  on(event: string, callback: EventCallback) {
     if (!this._listeners.has(event)) {
       this._listeners.set(event, new Set());
     }
@@ -145,7 +172,7 @@ class MockMarker {
     return this;
   }
 
-  off(event: string, callback: Function) {
+  off(event: string, callback: EventCallback) {
     if (this._listeners.has(event)) {
       this._listeners.get(event)!.delete(callback);
     }
@@ -157,29 +184,36 @@ class MockMarker {
   }
 }
 
-class MockPopup {
-  private _lngLat: any;
-  private _options: any;
-  private _listeners: Map<string, Set<Function>> = new Map();
+interface MockPopupOptions {
+  closeButton?: boolean;
+  closeOnClick?: boolean;
+  maxWidth?: string;
+  offset?: number | [number, number];
+}
 
-  constructor(options?: any) {
+class MockPopup {
+  private _lngLat: LngLatLike | undefined;
+  private _options: MockPopupOptions;
+  private _listeners: Map<string, Set<EventCallback>> = new Map();
+
+  constructor(options?: MockPopupOptions) {
     this._options = options || {};
   }
 
-  setLngLat(lngLat: any) {
+  setLngLat(lngLat: LngLatLike) {
     this._lngLat = lngLat;
     return this;
   }
 
-  setHTML(html: string) {
+  setHTML(_html: string) {
     return this;
   }
 
-  setDOMContent(node: HTMLElement) {
+  setDOMContent(_node: HTMLElement) {
     return this;
   }
 
-  addTo(map: any) {
+  addTo(_map: MockMap) {
     return this;
   }
 
@@ -187,7 +221,7 @@ class MockPopup {
     return this;
   }
 
-  on(event: string, callback: Function) {
+  on(event: string, callback: EventCallback) {
     if (!this._listeners.has(event)) {
       this._listeners.set(event, new Set());
     }
@@ -195,7 +229,7 @@ class MockPopup {
     return this;
   }
 
-  off(event: string, callback: Function) {
+  off(event: string, callback: EventCallback) {
     if (this._listeners.has(event)) {
       this._listeners.get(event)!.delete(callback);
     }
@@ -204,7 +238,7 @@ class MockPopup {
 }
 
 class MockNavigationControl {
-  onAdd(map: any) {
+  onAdd(_map: MockMap): HTMLElement {
     return document.createElement('div');
   }
 
@@ -212,7 +246,7 @@ class MockNavigationControl {
 }
 
 class MockScaleControl {
-  onAdd(map: any) {
+  onAdd(_map: MockMap): HTMLElement {
     return document.createElement('div');
   }
 
@@ -220,7 +254,7 @@ class MockScaleControl {
 }
 
 class MockGeolocateControl {
-  onAdd(map: any) {
+  onAdd(_map: MockMap): HTMLElement {
     return document.createElement('div');
   }
 
@@ -228,7 +262,7 @@ class MockGeolocateControl {
 }
 
 class MockFullscreenControl {
-  onAdd(map: any) {
+  onAdd(_map: MockMap): HTMLElement {
     return document.createElement('div');
   }
 
@@ -236,7 +270,7 @@ class MockFullscreenControl {
 }
 
 class MockAttributionControl {
-  onAdd(map: any) {
+  onAdd(_map: MockMap): HTMLElement {
     return document.createElement('div');
   }
 
@@ -274,7 +308,7 @@ vi.mock('pmtiles', () => ({
     add = vi.fn();
   },
   PMTiles: class {
-    constructor(url: string) {}
+    constructor(_url: string) {}
     getHeader = vi.fn().mockResolvedValue({});
   },
 }));
