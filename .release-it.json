@@ -9,8 +9,7 @@
     "commitArgs": ["--no-verify"]
   },
   "npm": {
-    "publish": true,
-    "publishArgs": ["--access", "public"]
+    "publish": false
   },
   "github": {
     "release": true,

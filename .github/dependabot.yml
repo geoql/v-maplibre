@@ -1,0 +1,64 @@
+version: 2
+updates:
+  # Enable version updates for npm
+  - package-ecosystem: 'npm'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+    open-pull-requests-limit: 10
+    commit-message:
+      prefix: 'chore'
+      include: 'scope'
+    labels:
+      - 'dependencies'
+      - 'automated'
+    groups:
+      # Group all non-major updates together
+      minor-and-patch:
+        update-types:
+          - 'minor'
+          - 'patch'
+        patterns:
+          - '*'
+      # Group major Vue ecosystem updates
+      vue-major:
+        update-types:
+          - 'major'
+        patterns:
+          - 'vue*'
+          - '@vue/*'
+          - '@vitejs/*'
+      # Group major testing updates
+      testing-major:
+        update-types:
+          - 'major'
+        patterns:
+          - 'vitest*'
+          - '@vitest/*'
+      # Group major tooling updates
+      tooling-major:
+        update-types:
+          - 'major'
+        patterns:
+          - 'vite'
+          - 'typescript'
+          - 'prettier'
+          - 'oxlint'
+          - 'husky'
+          - 'lint-staged'
+
+  # Enable version updates for GitHub Actions
+  - package-ecosystem: 'github-actions'
+    directory: '/'
+    schedule:
+      interval: 'weekly'
+      day: 'monday'
+      time: '09:00'
+    commit-message:
+      prefix: 'ci'
+    labels:
+      - 'dependencies'
+      - 'github-actions'
+      - 'automated'
