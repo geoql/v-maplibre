@@ -1,0 +1,9 @@
+{
+  "recommendations": [
+    "esbenp.prettier-vscode",
+    "Vue.volar",
+    "Vue.vscode-typescript-vue-plugin",
+    "antfu.iconify",
+    "dbaeumer.vscode-eslint"
+  ]
+}

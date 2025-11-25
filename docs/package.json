@@ -1,0 +1,10 @@
+{
+  "name": "v-maplibre-docs",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nuxi dev",
+    "build": "nuxi generate",
+    "preview": "nuxi preview"
+  }
+}
