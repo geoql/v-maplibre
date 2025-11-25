@@ -1,6 +1,6 @@
 {
   "name": "@geoql/v-maplibre",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "exports": "./dist/index.js",
   "publish": {
     "exclude": ["!dist", "!README.md", "!LICENSE"]
