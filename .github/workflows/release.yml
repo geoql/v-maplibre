@@ -67,12 +67,12 @@ jobs:
       - name: Git config
         run: |
           git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.email "github-actions@users.noreply.github.com"
 
       - name: Release
         run: pnpm release ${{ github.event.inputs.release-type }} --ci
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Publish to npm with provenance
         run: pnpm publish --provenance --access public --no-git-checks

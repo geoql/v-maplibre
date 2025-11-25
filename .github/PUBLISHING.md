@@ -36,7 +36,7 @@ GitHub repository rules require verified commit signatures. You need to create a
 gpg --full-generate-key
 # Choose: RSA and RSA, 4096 bits, no expiration
 # Name: github-actions[bot]
-# Email: github-actions[bot]@users.noreply.github.com
+# Email: github-actions@users.noreply.github.com
 
 # Export the private key (copy the output)
 gpg --armor --export-secret-keys YOUR_KEY_ID

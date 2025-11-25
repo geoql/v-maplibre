@@ -13,7 +13,7 @@ Add these secrets in **GitHub Repository Settings** → **Secrets and variables*
 gpg --full-generate-key
 # Choose: RSA and RSA, 4096 bits, no expiration
 # Name: github-actions[bot]
-# Email: github-actions[bot]@users.noreply.github.com
+# Email: github-actions@users.noreply.github.com
 
 # List keys to get the KEY_ID
 gpg --list-secret-keys --keyid-format=long
