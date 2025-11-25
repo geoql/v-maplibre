@@ -81,5 +81,3 @@ jobs:
 
       - name: Publish to JSR
         run: npx jsr publish --allow-dirty
-        env:
-          JSR_TOKEN: ${{ secrets.JSR_TOKEN }}
