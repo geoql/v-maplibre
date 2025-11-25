@@ -2,6 +2,10 @@ export default defineNuxtConfig({
   extends: '@nuxt-themes/docus',
   compatibilityDate: '2025-11-25',
 
+  nitro: {
+    preset: 'cloudflare-pages',
+  },
+
   app: {
     head: {
       title: 'v-maplibre - Vue 3 MapLibre Components',
