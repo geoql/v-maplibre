@@ -45,7 +45,7 @@
   "devDependencies": {
     "@awmottaz/prettier-plugin-void-html": "^1.6.1",
     "@commitlint/cli": "^20.1.0",
-    "@commitlint/config-conventional": "^19.6.0",
+    "@commitlint/config-conventional": "^20.0.0",
     "@nuxt-themes/docus": "^1.15.1",
     "@release-it/conventional-changelog": "^10.0.2",
     "@types/node": "^22.10.2",
