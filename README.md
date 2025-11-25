@@ -52,6 +52,7 @@ pnpm dlx jsr add @geoql/v-maplibre
 <script setup lang="ts">
   import { VMap, VMarker } from '@geoql/v-maplibre';
   import 'maplibre-gl/dist/maplibre-gl.css';
+  import '@geoql/v-maplibre/dist/v-maplibre.css';
 
   const mapOptions = {
     style: 'https://demotiles.maplibre.org/style.json',
@@ -116,11 +117,24 @@ For Nuxt applications, wrap the map component with `ClientOnly`:
 </template>
 ```
 
-Create a Nuxt plugin to import styles globally:
+Add styles to your `nuxt.config.ts`:
+
+```typescript
+// nuxt.config.ts
+export default defineNuxtConfig({
+  css: [
+    'maplibre-gl/dist/maplibre-gl.css',
+    '@geoql/v-maplibre/dist/v-maplibre.css',
+  ],
+});
+```
+
+Or create a Nuxt plugin to import styles:
 
 ```typescript
 // plugins/maplibre.client.ts
 import 'maplibre-gl/dist/maplibre-gl.css';
+import '@geoql/v-maplibre/dist/v-maplibre.css';
 
 export default defineNuxtPlugin(() => {
   // Plugin loaded
