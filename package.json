@@ -12,7 +12,9 @@
       "import": "./dist/index.js"
     },
     "./style.css": "./dist/v-maplibre.css",
-    "./dist/style.css": "./dist/v-maplibre.css"
+    "./v-maplibre.css": "./dist/v-maplibre.css",
+    "./dist/style.css": "./dist/v-maplibre.css",
+    "./dist/v-maplibre.css": "./dist/v-maplibre.css"
   },
   "files": [
     "dist"
