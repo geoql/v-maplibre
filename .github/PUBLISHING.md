@@ -25,9 +25,54 @@ This package uses **npm Trusted Publishers** for secure, token-less publishing w
 
 This allows the GitHub Actions workflow to publish without needing an NPM_TOKEN! The workflow uses GitHub's OIDC token to authenticate.
 
-### 2. JSR Token (Only Required Secret)
+### 2. GPG Key for Signed Commits (Required)
 
-Since we use npm Trusted Publishers for npm, **you only need to set up one secret: JSR_TOKEN**.
+GitHub repository rules require verified commit signatures. You need to create a GPG key for the release workflow:
+
+**Generate GPG Key:**
+
+```bash
+# Generate a new GPG key
+gpg --full-generate-key
+# Choose: RSA and RSA, 4096 bits, no expiration
+# Name: github-actions[bot]
+# Email: github-actions[bot]@users.noreply.github.com
+
+# Export the private key (copy the output)
+gpg --armor --export-secret-keys YOUR_KEY_ID
+
+# If you set a passphrase, you'll need it for the secret
+```
+
+**Add to GitHub Secrets:**
+
+1. Go to your repository → **Settings** → **Secrets and variables** → **Actions**
+2. Add two secrets:
+   - **`GPG_PRIVATE_KEY`**: Paste the entire GPG private key (including `-----BEGIN PGP PRIVATE KEY BLOCK-----` and `-----END PGP PRIVATE KEY BLOCK-----`)
+   - **`GPG_PASSPHRASE`**: Your GPG key passphrase (if you set one)
+
+### 3. Personal Access Token (PAT) for Branch Protection Bypass
+
+If you have branch protection rules (required status checks), you need a PAT to bypass them:
+
+**Create PAT:**
+
+1. Go to GitHub → **Settings** → **Developer settings** → **Personal access tokens** → **Fine-grained tokens**
+2. Click **Generate new token**
+3. Give it a name (e.g., "v-maplibre Release Bot")
+4. Set repository access to **Only select repositories** → Choose `v-maplibre`
+5. Set permissions:
+   - **Contents**: Read and write
+   - **Metadata**: Read-only (automatically selected)
+6. Generate token and copy it
+
+**Add to GitHub Secrets:**
+
+1. Go to your repository → **Settings** → **Secrets and variables** → **Actions**
+2. Add secret:
+   - **`PAT_TOKEN`**: Paste your personal access token
+
+### 4. JSR Token
 
 1. Go to [jsr.io](https://jsr.io/) and log in with GitHub
 2. Click on your profile → **Settings** → **Access Tokens**
