@@ -13,8 +13,7 @@
   },
   "github": {
     "release": true,
-    "releaseName": "v${version}",
-    "releaseNotes": "git log --pretty=format:\"* %s (%h)\" ${latestTag}...HEAD"
+    "releaseName": "v${version}"
   },
   "hooks": {
     "before:init": ["pnpm lint", "pnpm format:check", "pnpm test"],
