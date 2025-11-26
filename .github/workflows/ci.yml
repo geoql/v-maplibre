@@ -95,7 +95,9 @@ jobs:
           bun-version: latest
 
       - name: Install dependencies
+        working-directory: ./docs
         run: bun install --frozen-lockfile
 
       - name: Build documentation
-        run: bun run docs:build
+        working-directory: ./docs
+        run: bun run build
