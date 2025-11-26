@@ -8,5 +8,8 @@
     "docus": "latest",
     "better-sqlite3": "^12.2.0",
     "nuxt": "^4.1.2"
+  },
+  "devDependencies": {
+    "@nuxtjs/plausible": "^2.0.1"
   }
 }
