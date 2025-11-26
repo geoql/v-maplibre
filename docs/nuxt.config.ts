@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-11-25',
 
   nitro: {
-    preset: 'cloudflare-pages',
+    preset: 'cloudflare_pages',
     prerender: {
       routes: ['/'],
       crawlLinks: true,
