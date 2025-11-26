@@ -8,6 +8,13 @@ export default defineNuxtConfig({
       routes: ['/'],
       crawlLinks: true,
     },
+    cloudflare: {
+      pages: {
+        routes: {
+          exclude: ['/api/*'],
+        },
+      },
+    },
   },
 
   app: {
