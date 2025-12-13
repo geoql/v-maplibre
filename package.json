@@ -30,9 +30,9 @@
     "lint:fix": "oxlint --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "husky",
+    "prepare": "husky || true",
     "release": "release-it",
-    "prepublishOnly": "pnpm run lint && pnpm run format:check && pnpm run test:coverage && pnpm run build"
+    "prepublishOnly": "bun run lint && bun run format:check && bun run test:coverage && bun run build"
   },
   "peerDependencies": {
     "vue": "^3.5.0"
