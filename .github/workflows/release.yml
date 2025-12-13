@@ -63,9 +63,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Publish to npm with provenance
-        run: bun publish --provenance --access public --no-git-checks
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: npm publish --provenance --access public
 
       - name: Publish to JSR
         run: bunx jsr publish --allow-dirty

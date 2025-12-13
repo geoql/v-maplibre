@@ -30,7 +30,7 @@
     "lint:fix": "oxlint --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "prepare": "is-ci || husky",
+    "prepare": "husky || true",
     "release": "release-it",
     "prepublishOnly": "bun run lint && bun run format:check && bun run test:coverage && bun run build"
   },
