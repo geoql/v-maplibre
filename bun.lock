@@ -20,6 +20,7 @@
         "@vue/test-utils": "^2.4.6",
         "happy-dom": "^20.0.11",
         "husky": "^9.1.7",
+        "is-ci": "^4.1.0",
         "lint-staged": "^16.2.7",
         "oxlint": "^1.32.0",
         "prettier": "^3.7.4",
@@ -627,6 +628,8 @@
     "ip-address": ["ip-address@10.1.0", "", {}, "sha512-XXADHxXmvT9+CRxhXg56LJovE+bmWnEWB78LB83VZTprKTmaC5QfruXocxzTZ2Kl0DNwKuBdlIhjL8LeY8Sf8Q=="],
 
     "is-arrayish": ["is-arrayish@0.2.1", "", {}, "sha512-zz06S8t0ozoDXMG+ube26zeCTNXcKIPJZJi8hBrF4idCLms4CG9QtK7qBl1boi5ODzFpjswb5JPmHCbMpjaYzg=="],
+
+    "is-ci": ["is-ci@4.1.0", "", { "dependencies": { "ci-info": "^4.1.0" }, "bin": { "is-ci": "bin.js" } }, "sha512-Ab9bQDQ11lWootZUI5qxgN2ZXwxNI5hTwnsvOc1wyxQ7zQ8OkEDw79mI0+9jI3x432NfwbVRru+3noJfXF6lSQ=="],
 
     "is-docker": ["is-docker@3.0.0", "", { "bin": { "is-docker": "cli.js" } }, "sha512-eljcgEDlEns/7AXFosB5K/2nCM4P7FQPkGc/DWLy5rmFEWvZayGrik1d9/QIY5nJ4f9YsVvBkA6kJpHn9rISdQ=="],
 
