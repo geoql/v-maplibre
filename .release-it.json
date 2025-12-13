@@ -16,9 +16,9 @@
     "releaseName": "v${version}"
   },
   "hooks": {
-    "before:init": ["pnpm lint", "pnpm format:check", "pnpm test run"],
-    "after:bump": ["node scripts/sync-version.js", "pnpm build"],
-    "before:git:release": ["pnpm format && git add -A"],
+    "before:init": ["bun run lint", "bun run format:check", "bun test run"],
+    "after:bump": ["node scripts/sync-version.js", "bun run build"],
+    "before:git:release": ["bun run format && git add -A"],
     "after:release": "echo Successfully released ${name} v${version} to npm and GitHub"
   },
   "plugins": {
