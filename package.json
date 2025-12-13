@@ -21,7 +21,7 @@
   ],
   "scripts": {
     "dev": "vite",
-    "build": "vite build && vue-tsc --declaration --emitDeclarationOnly --outDir dist",
+    "build": "vite build && vue-tsc --project tsconfig.build.json",
     "preview": "vite preview",
     "test": "vitest",
     "test:ui": "vitest --ui",
@@ -38,30 +38,30 @@
     "vue": "^3.5.0"
   },
   "dependencies": {
-    "maplibre-gl": "^5.13.0",
+    "maplibre-gl": "^5.14.0",
     "pmtiles": "^4.3.0"
   },
   "devDependencies": {
-    "@awmottaz/prettier-plugin-void-html": "^1.9.0",
-    "@commitlint/cli": "^20.1.0",
-    "@commitlint/config-conventional": "^20.0.0",
-    "@release-it/conventional-changelog": "^10.0.2",
-    "@types/node": "^24.10.1",
-    "@vitejs/plugin-vue": "^6.0.2",
-    "@vitest/coverage-v8": "^4.0.13",
-    "@vitest/ui": "^4.0.13",
+    "@awmottaz/prettier-plugin-void-html": "^2.0.0",
+    "@commitlint/cli": "^20.2.0",
+    "@commitlint/config-conventional": "^20.2.0",
+    "@release-it/conventional-changelog": "^10.0.3",
+    "@types/node": "^25.0.1",
+    "@vitejs/plugin-vue": "^6.0.3",
+    "@vitest/coverage-v8": "^4.0.15",
+    "@vitest/ui": "^4.0.15",
     "@vue/test-utils": "^2.4.6",
-    "happy-dom": "^20.0.10",
+    "happy-dom": "^20.0.11",
     "husky": "^9.1.7",
     "lint-staged": "^16.2.7",
-    "oxlint": "^1.30.0",
-    "prettier": "^3.6.2",
-    "release-it": "^19.0.6",
+    "oxlint": "^1.32.0",
+    "prettier": "^3.7.4",
+    "release-it": "^19.1.0",
     "typescript": "^5.9.3",
-    "vite": "^7.2.4",
-    "vitest": "^4.0.13",
+    "vite": "^7.2.7",
+    "vitest": "^4.0.15",
     "vue": "^3.5.25",
-    "vue-tsc": "^3.1.5"
+    "vue-tsc": "^3.1.8"
   },
   "publishConfig": {
     "access": "public"
