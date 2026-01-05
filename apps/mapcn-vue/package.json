@@ -13,6 +13,12 @@
     "lint": "oxlint"
   },
   "dependencies": {
+    "@deck.gl/aggregation-layers": "^9.2.5",
+    "@deck.gl/core": "^9.2.5",
+    "@deck.gl/geo-layers": "^9.2.5",
+    "@deck.gl/layers": "^9.2.5",
+    "@deck.gl/mapbox": "^9.2.5",
+    "@deck.gl/mesh-layers": "^9.2.5",
     "@geoql/v-maplibre": "workspace:*",
     "@iconify-json/lucide": "^1.2.82",
     "@iconify-json/simple-icons": "^1.2.65",

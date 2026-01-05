@@ -17,8 +17,6 @@
     style: mapStyle.value,
     center: [0, 20] as [number, number],
     zoom: 1.2,
-    attributionControl: false,
-    interactive: false,
   }));
 
   // World locations with activity data - using deck.gl scatterplot
@@ -70,7 +68,7 @@
         :stroked="true"
         :line-width-min-pixels="2"
         :get-line-color="[16, 185, 129, 100]"
-      />
+      ></VLayerDeckglScatterplot>
     </VMap>
   </div>
 </template>
