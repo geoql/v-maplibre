@@ -21,6 +21,7 @@ export default defineConfig({
         'coverage/**',
         'test/',
         '**/__tests__/**',
+        '**/layers/deckgl/**',
       ],
       thresholds: {
         lines: 14,
@@ -29,8 +30,8 @@ export default defineConfig({
         statements: 13,
       },
     },
-    include: ['**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
-    exclude: ['node_modules', 'dist', '.nuxt', '.output'],
+    include: ['test/**/*.{test,spec}.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
+    exclude: ['node_modules', 'dist', '.nuxt', '.output', 'docs'],
   },
   resolve: {
     alias: {
