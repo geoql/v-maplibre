@@ -59,10 +59,10 @@ git pull
 npm login
 
 # Run release
-pnpm release [patch|minor|major]
+bun run release [patch|minor|major]
 
 # Or for interactive mode
-pnpm release
+bun run release
 ```
 
 ## Commit Convention
@@ -113,15 +113,15 @@ For pre-releases (alpha, beta, rc):
 
 ```bash
 # Create a pre-release
-pnpm release prepatch --preRelease=alpha
+bun run release prepatch --preRelease=alpha
 # Results in: 0.1.0 → 0.1.1-alpha.0
 
 # Continue the pre-release
-pnpm release prerelease --preRelease=alpha
+bun run release prerelease --preRelease=alpha
 # Results in: 0.1.1-alpha.0 → 0.1.1-alpha.1
 
 # Graduate to stable
-pnpm release patch
+bun run release patch
 # Results in: 0.1.1-alpha.1 → 0.1.1
 ```
 
@@ -144,9 +144,9 @@ Ensure you have push permissions to the repository.
 Fix the failing tests before attempting another release:
 
 ```bash
-pnpm test
-pnpm lint
-pnpm format:check
+bun test
+bun run lint
+bun run format:check
 ```
 
 ## CI/CD Workflows

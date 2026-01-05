@@ -52,7 +52,7 @@ Add the passphrase you used when creating the GPG key. If you didn't set one, yo
 1. First, publish v1.0.0 manually (one-time only):
 
    ```bash
-   pnpm build
+   bun run build
    npm login
    npm publish --access public
    ```

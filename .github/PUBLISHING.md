@@ -112,14 +112,14 @@ The workflow will:
 
 1. ✅ Checkout the repository
 2. ✅ Set up Node.js (LTS version)
-3. ✅ Set up pnpm (version from `packageManager` field)
+3. ✅ Set up Bun
 4. ✅ Install dependencies
 5. ✅ Configure git user as `github-actions[bot]`
 6. ✅ Run `release-it` which will:
    - Run pre-release checks (lint, format, tests)
    - Bump version in `package.json`
    - Sync version to `jsr.json` (via `scripts/sync-version.js`)
-   - Run build (`pnpm build`)
+   - Run build (`bun run build`)
    - Generate CHANGELOG.md
    - Create a git commit
    - Create a git tag
@@ -165,7 +165,7 @@ git checkout main
 git pull
 
 # Run release-it interactively
-pnpm release
+bun run release
 
 # Publish to JSR manually (if needed)
 npx jsr publish
@@ -202,10 +202,10 @@ Check that all pre-publish checks pass:
 
 ```bash
 # Run locally to debug
-pnpm run lint
-pnpm run format:check
-pnpm run test:coverage
-pnpm run build
+bun run lint
+bun run format:check
+bun run test:coverage
+bun run build
 ```
 
 ## Release Workflow Details
