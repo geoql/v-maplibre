@@ -87,7 +87,7 @@
       </div>
 
       <div
-        class="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-[size:14px_24px]"
+        class="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[14px_24px]"
       ></div>
     </section>
 
@@ -155,7 +155,7 @@
         </div>
 
         <div
-          class="demo-card animate-scale-in relative aspect-[4/3] overflow-hidden rounded-xl border border-border/50 bg-card shadow delay-500"
+          class="demo-card animate-scale-in relative aspect-4/3 overflow-hidden rounded-xl border border-border/50 bg-card shadow delay-500"
         >
           <div
             class="absolute left-2 top-2 z-10 rounded bg-background/90 px-2 py-1 text-[10px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm"
@@ -183,7 +183,7 @@
         </div>
 
         <div
-          class="demo-card animate-scale-in relative aspect-[4/3] overflow-hidden rounded-xl border border-border/50 bg-card shadow delay-600"
+          class="demo-card animate-scale-in relative aspect-4/3 overflow-hidden rounded-xl border border-border/50 bg-card shadow delay-600"
         >
           <div
             class="absolute left-2 top-2 z-10 rounded bg-background/90 px-2 py-1 text-[10px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm"

@@ -29,7 +29,7 @@ interface UseDeckOverlayReturn {
   overlay: ShallowRef<MapboxOverlay | null>;
   layers: Ref<unknown[]>;
   isInitialized: Ref<boolean>;
-  initOverlay: () => void;
+  initOverlay: () => Promise<void>;
   addLayer: (layer: unknown) => void;
   removeLayer: (layerId: string) => void;
   updateLayer: (layerId: string, layer: unknown) => void;
@@ -50,7 +50,7 @@ export function useDeckOverlay(
       overlay: existingOverlay,
       isInitialized: ref(true),
       layers: ref([]),
-      initOverlay: () => {},
+      initOverlay: () => Promise.resolve(),
       getLayers: () => [],
       ...existingLayersRegistry,
     };
@@ -59,13 +59,18 @@ export function useDeckOverlay(
   const overlay = shallowRef<MapboxOverlay | null>(null);
   const layers = ref<unknown[]>([]);
   const isInitialized = ref(false);
+  let initPromise: Promise<void> | null = null;
 
-  const initOverlay = () => {
+  const initOverlay = (): Promise<void> => {
     const mapInstance = map.value;
-    if (!mapInstance || overlay.value) return;
+    if (!mapInstance) return Promise.resolve();
+    if (overlay.value) return Promise.resolve();
+    if (initPromise) return initPromise;
 
-    try {
-      import('@deck.gl/mapbox').then(({ MapboxOverlay }) => {
+    initPromise = import('@deck.gl/mapbox')
+      .then(({ MapboxOverlay }) => {
+        if (overlay.value) return;
+
         overlay.value = new MapboxOverlay({
           interleaved,
           layers: [],
@@ -73,21 +78,26 @@ export function useDeckOverlay(
 
         mapInstance.addControl(overlay.value);
         isInitialized.value = true;
+      })
+      .catch((error) => {
+        console.error('[deck.gl] Error initializing overlay:', error);
+        initPromise = null;
       });
-    } catch (error) {
-      console.error('[deck.gl] Error initializing overlay:', error);
-    }
+
+    return initPromise;
   };
 
   const getLayerId = (layer: unknown): string => {
     return (layer as { id: string }).id;
   };
 
-  const addLayer = (layer: unknown): void => {
-    if (!overlay.value) {
-      initOverlay();
+  const syncLayers = () => {
+    if (overlay.value) {
+      overlay.value.setProps({ layers: layers.value as never });
     }
+  };
 
+  const addLayer = (layer: unknown): void => {
     const layerId = getLayerId(layer);
     const existingIndex = layers.value.findIndex(
       (l) => getLayerId(l) === layerId,
@@ -103,12 +113,16 @@ export function useDeckOverlay(
       layers.value = [...layers.value, layer];
     }
 
-    overlay.value?.setProps({ layers: layers.value as never });
+    if (overlay.value) {
+      syncLayers();
+    } else {
+      initOverlay().then(syncLayers);
+    }
   };
 
   const removeLayer = (layerId: string): void => {
     layers.value = layers.value.filter((l) => getLayerId(l) !== layerId);
-    overlay.value?.setProps({ layers: layers.value as never });
+    syncLayers();
   };
 
   const updateLayer = (layerId: string, newLayer: unknown): void => {
@@ -119,7 +133,7 @@ export function useDeckOverlay(
         newLayer,
         ...layers.value.slice(index + 1),
       ];
-      overlay.value?.setProps({ layers: layers.value as never });
+      syncLayers();
     } else {
       addLayer(newLayer);
     }
@@ -164,6 +178,7 @@ export function useDeckOverlay(
     overlay.value = null;
     layers.value = [];
     isInitialized.value = false;
+    initPromise = null;
   });
 
   return {
