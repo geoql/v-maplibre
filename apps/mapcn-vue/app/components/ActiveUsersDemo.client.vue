@@ -19,8 +19,14 @@
     zoom: 1.2,
   }));
 
+  interface UserData {
+    coordinates: [number, number];
+    users: number;
+    activity: 'high' | 'medium' | 'low';
+  }
+
   // World locations with activity data - using deck.gl scatterplot
-  const usersData = [
+  const usersData: UserData[] = [
     // High activity (large circles)
     { coordinates: [-74.006, 40.7128], users: 847, activity: 'high' },
     { coordinates: [-0.1276, 51.5074], users: 623, activity: 'high' },
@@ -38,15 +44,16 @@
     { coordinates: [-99.1332, 19.4326], users: 56, activity: 'low' },
   ];
 
-  const getRadius = (d: (typeof usersData)[0]) => {
+  // Accessor functions - use `any` to satisfy deck.gl's generic types
+  const getPosition = (d: any) => d.coordinates;
+
+  const getRadius = (d: any) => {
     if (d.activity === 'high') return d.users * 50;
     if (d.activity === 'medium') return d.users * 40;
     return d.users * 30;
   };
 
-  const getFillColor = (
-    d: (typeof usersData)[0],
-  ): [number, number, number, number] => {
+  const getFillColor = (d: any): [number, number, number, number] => {
     if (d.activity === 'high') return [16, 185, 129, 220];
     if (d.activity === 'medium') return [16, 185, 129, 170];
     return [16, 185, 129, 120];
@@ -59,7 +66,7 @@
       <VLayerDeckglScatterplot
         id="active-users-scatterplot"
         :data="usersData"
-        :get-position="(d: (typeof usersData)[0]) => d.coordinates"
+        :get-position="getPosition"
         :get-radius="getRadius"
         :get-fill-color="getFillColor"
         :radius-min-pixels="6"
@@ -68,7 +75,7 @@
         :stroked="true"
         :line-width-min-pixels="2"
         :get-line-color="[16, 185, 129, 100]"
-      ></VLayerDeckglScatterplot>
+      />
     </VMap>
   </div>
 </template>

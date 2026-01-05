@@ -30,7 +30,6 @@
     style: mapStyle.value,
     center: props.center,
     zoom: props.zoom,
-    attributionControl: false,
   }));
 </script>
 

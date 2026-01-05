@@ -17,12 +17,17 @@
     style: mapStyle.value,
     center: [0, 30] as [number, number],
     zoom: 1.5,
-    attributionControl: false,
     interactive: false,
   }));
 
+  interface DeliveryRoute {
+    source: [number, number];
+    target: [number, number];
+    deliveries: number;
+  }
+
   // Global delivery routes using deck.gl Arc layer
-  const deliveryRoutes = [
+  const deliveryRoutes: DeliveryRoute[] = [
     // US to Europe
     { source: [-74.006, 40.7128], target: [-0.1276, 51.5074], deliveries: 234 },
     {
@@ -69,6 +74,11 @@
     },
   ];
 
+  // Accessor functions - use `any` to satisfy deck.gl's generic types
+  const getSourcePosition = (d: any) => d.source;
+  const getTargetPosition = (d: any) => d.target;
+  const getWidth = (d: any) => Math.sqrt(d.deliveries) * 0.5;
+
   const getSourceColor = (): [number, number, number] => {
     return colorMode.value === 'dark' ? [59, 130, 246] : [37, 99, 235];
   };
@@ -84,18 +94,16 @@
       <VLayerDeckglArc
         id="delivery-arcs"
         :data="deliveryRoutes"
-        :get-source-position="(d: (typeof deliveryRoutes)[0]) => d.source"
-        :get-target-position="(d: (typeof deliveryRoutes)[0]) => d.target"
+        :get-source-position="getSourcePosition"
+        :get-target-position="getTargetPosition"
         :get-source-color="getSourceColor"
         :get-target-color="getTargetColor"
-        :get-width="
-          (d: (typeof deliveryRoutes)[0]) => Math.sqrt(d.deliveries) * 0.5
-        "
+        :get-width="getWidth"
         :width-min-pixels="2"
         :width-max-pixels="8"
         :get-height="0.5"
         :great-circle="true"
-      ></VLayerDeckglArc>
+      />
     </VMap>
   </div>
 </template>
@@ -103,6 +111,6 @@
 <style scoped>
   #delivery-map {
     width: 100%;
-    height: 500px;
+    height: 100%;
   }
 </style>
