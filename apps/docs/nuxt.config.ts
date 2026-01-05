@@ -1,4 +1,4 @@
-// docs/nuxt.config.ts
+// apps/docs/nuxt.config.ts
 export default defineNuxtConfig({
   extends: ['docus'],
   modules: [

@@ -1,0 +1,39 @@
+{
+  "name": "@geoql/mapcn-vue-app",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Beautiful map components for Vue. Documentation and examples for mapcn-vue.",
+  "type": "module",
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "oxlint"
+  },
+  "dependencies": {
+    "@geoql/v-maplibre": "workspace:*",
+    "@iconify-json/lucide": "^1.2.82",
+    "@iconify-json/simple-icons": "^1.2.30",
+    "@vueuse/core": "^13.4.1",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
+    "maplibre-gl": "^5.6.1",
+    "nuxt": "^4.2.2",
+    "tailwind-merge": "^3.3.0"
+  },
+  "devDependencies": {
+    "@nuxt/content": "^3.6.2",
+    "@nuxt/icon": "^1.13.0",
+    "@nuxtjs/color-mode": "^4.0.0",
+    "@nuxtjs/tailwindcss": "^6.14.0",
+    "@tailwindcss/postcss": "^4.0.38",
+    "@tailwindcss/vite": "^4.0.38",
+    "oxlint": "^1.37.0",
+    "shadcn-nuxt": "^2.4.3",
+    "tailwindcss": "^4.0.38",
+    "typescript": "^5.9.3",
+    "vue": "^3.5.26"
+  }
+}

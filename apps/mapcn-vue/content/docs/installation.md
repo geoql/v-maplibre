@@ -1,0 +1,105 @@
+---
+title: Installation
+description: How to install and configure mapcn-vue components in your project.
+---
+
+# Installation
+
+## Prerequisites
+
+Before you begin, make sure you have:
+
+- A Vue 3 or Nuxt 3+ project
+- Tailwind CSS v4 configured
+- shadcn-vue initialized (optional, but recommended)
+
+## Quick Start
+
+The easiest way to add mapcn-vue components is using the shadcn-vue CLI:
+
+```bash
+# Add the base map component
+npx shadcn-vue@latest add https://mapcn-vue.geoql.in/r/map.json
+
+# Add MapLibre layers
+npx shadcn-vue@latest add https://mapcn-vue.geoql.in/r/map-layers.json
+
+# Add deck.gl core layers
+npx shadcn-vue@latest add https://mapcn-vue.geoql.in/r/map-deckgl-core.json
+```
+
+## Manual Installation
+
+If you prefer to install manually:
+
+### 1. Install dependencies
+
+```bash
+# Core dependencies
+bun add @geoql/v-maplibre maplibre-gl @vueuse/core
+
+# For deck.gl layers (optional)
+bun add @deck.gl/core @deck.gl/layers @deck.gl/mapbox
+bun add @deck.gl/aggregation-layers  # Heatmap, Hexagon, Grid
+bun add @deck.gl/geo-layers          # Trips, MVT, Tile
+bun add @deck.gl/mesh-layers         # SimpleMesh, Scenegraph
+```
+
+### 2. Add CSS
+
+Import the MapLibre CSS in your main entry file or Nuxt config:
+
+```typescript
+// nuxt.config.ts
+export default defineNuxtConfig({
+  css: [
+    'maplibre-gl/dist/maplibre-gl.css',
+  ],
+});
+```
+
+### 3. Copy components
+
+Copy the components you need from the [GitHub repository](https://github.com/geoql/v-maplibre/tree/main/packages/mapcn-vue/src/registry/ui) into your project.
+
+## Usage
+
+Once installed, you can use the components in your Vue templates:
+
+```vue
+<script setup lang="ts">
+import { Map, MapMarker, MapControls } from '@/components/ui/map';
+
+const mapOptions = {
+  style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+  center: [-74.006, 40.7128],
+  zoom: 11,
+};
+</script>
+
+<template>
+  <Map :options="mapOptions" class="h-[500px]">
+    <MapControls />
+    <MapMarker :lng-lat="[-74.006, 40.7128]" />
+  </Map>
+</template>
+```
+
+## Nuxt Usage
+
+For Nuxt applications, wrap map components with `ClientOnly`:
+
+```vue
+<template>
+  <ClientOnly>
+    <Map :options="mapOptions">
+      <MapControls />
+    </Map>
+    <template #fallback>
+      <div class="h-[500px] flex items-center justify-center">
+        Loading map...
+      </div>
+    </template>
+  </ClientOnly>
+</template>
+```

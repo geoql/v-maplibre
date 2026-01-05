@@ -1,0 +1,300 @@
+{
+  "$schema": "https://shadcn-vue.com/schema/registry.json",
+  "name": "mapcn-vue",
+  "homepage": "https://mapcn-vue.geoql.in",
+  "items": [
+    {
+      "name": "map",
+      "type": "registry:ui",
+      "title": "Map",
+      "description": "A theme-aware MapLibre map component with built-in controls, markers, and popups.",
+      "dependencies": ["@geoql/v-maplibre", "maplibre-gl", "@vueuse/core"],
+      "files": [
+        {
+          "path": "src/registry/ui/map/Map.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/Map.vue"
+        },
+        {
+          "path": "src/registry/ui/map/MapMarker.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/MapMarker.vue"
+        },
+        {
+          "path": "src/registry/ui/map/MapPopup.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/MapPopup.vue"
+        },
+        {
+          "path": "src/registry/ui/map/MapControls.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/MapControls.vue"
+        },
+        {
+          "path": "src/registry/ui/map/index.ts",
+          "type": "registry:ui",
+          "target": "components/ui/map/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "map-layers",
+      "type": "registry:ui",
+      "title": "Map Layers",
+      "description": "MapLibre native layer components: GeoJSON, Vector, Raster, Cluster, PMTiles.",
+      "dependencies": ["@geoql/v-maplibre", "maplibre-gl"],
+      "registryDependencies": ["map"],
+      "files": [
+        {
+          "path": "src/registry/ui/map-layers/MapLayerGeojson.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/layers/MapLayerGeojson.vue"
+        },
+        {
+          "path": "src/registry/ui/map-layers/MapLayerVector.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/layers/MapLayerVector.vue"
+        },
+        {
+          "path": "src/registry/ui/map-layers/MapLayerRaster.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/layers/MapLayerRaster.vue"
+        },
+        {
+          "path": "src/registry/ui/map-layers/MapLayerCluster.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/layers/MapLayerCluster.vue"
+        },
+        {
+          "path": "src/registry/ui/map-layers/MapLayerPmtiles.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/layers/MapLayerPmtiles.vue"
+        },
+        {
+          "path": "src/registry/ui/map-layers/MapLayerImage.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/layers/MapLayerImage.vue"
+        },
+        {
+          "path": "src/registry/ui/map-layers/MapLayerVideo.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/layers/MapLayerVideo.vue"
+        },
+        {
+          "path": "src/registry/ui/map-layers/MapLayerCanvas.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/layers/MapLayerCanvas.vue"
+        },
+        {
+          "path": "src/registry/ui/map-layers/index.ts",
+          "type": "registry:ui",
+          "target": "components/ui/map/layers/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "map-deckgl-core",
+      "type": "registry:ui",
+      "title": "deck.gl Core Layers",
+      "description": "High-performance visualization layers: Scatterplot, Arc, Line, Path, Polygon, GeoJSON, Icon, Text, Column, Bitmap.",
+      "dependencies": [
+        "@geoql/v-maplibre",
+        "maplibre-gl",
+        "@deck.gl/core",
+        "@deck.gl/layers",
+        "@deck.gl/mapbox"
+      ],
+      "registryDependencies": ["map"],
+      "files": [
+        {
+          "path": "src/registry/ui/map-deckgl-core/MapLayerScatterplot.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerScatterplot.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-core/MapLayerArc.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerArc.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-core/MapLayerLine.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerLine.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-core/MapLayerPath.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerPath.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-core/MapLayerPolygon.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerPolygon.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-core/MapLayerGeojson.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerGeojson.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-core/MapLayerIcon.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerIcon.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-core/MapLayerText.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerText.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-core/MapLayerColumn.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerColumn.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-core/MapLayerBitmap.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerBitmap.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-core/index.ts",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "map-deckgl-aggregation",
+      "type": "registry:ui",
+      "title": "deck.gl Aggregation Layers",
+      "description": "Data aggregation layers: Heatmap, Hexagon, Grid, Contour, ScreenGrid.",
+      "dependencies": [
+        "@geoql/v-maplibre",
+        "maplibre-gl",
+        "@deck.gl/core",
+        "@deck.gl/aggregation-layers",
+        "@deck.gl/mapbox"
+      ],
+      "registryDependencies": ["map"],
+      "files": [
+        {
+          "path": "src/registry/ui/map-deckgl-aggregation/MapLayerHeatmap.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerHeatmap.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-aggregation/MapLayerHexagon.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerHexagon.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-aggregation/MapLayerGrid.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerGrid.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-aggregation/MapLayerContour.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerContour.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-aggregation/MapLayerScreenGrid.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerScreenGrid.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-aggregation/index.ts",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/aggregation/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "map-deckgl-geo",
+      "type": "registry:ui",
+      "title": "deck.gl Geo Layers",
+      "description": "Geospatial layers: Trips, MVT, Tile, Tile3D, Terrain, H3, GreatCircle, and more.",
+      "dependencies": [
+        "@geoql/v-maplibre",
+        "maplibre-gl",
+        "@deck.gl/core",
+        "@deck.gl/geo-layers",
+        "@deck.gl/mapbox"
+      ],
+      "registryDependencies": ["map"],
+      "files": [
+        {
+          "path": "src/registry/ui/map-deckgl-geo/MapLayerTrips.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerTrips.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-geo/MapLayerMVT.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerMVT.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-geo/MapLayerTile.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerTile.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-geo/MapLayerTile3D.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerTile3D.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-geo/MapLayerTerrain.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerTerrain.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-geo/MapLayerH3Hexagon.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerH3Hexagon.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-geo/MapLayerGreatCircle.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerGreatCircle.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-geo/index.ts",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/geo/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "map-deckgl-mesh",
+      "type": "registry:ui",
+      "title": "deck.gl Mesh Layers",
+      "description": "3D mesh layers: SimpleMesh, Scenegraph (glTF/GLB models).",
+      "dependencies": [
+        "@geoql/v-maplibre",
+        "maplibre-gl",
+        "@deck.gl/core",
+        "@deck.gl/mesh-layers",
+        "@deck.gl/mapbox"
+      ],
+      "registryDependencies": ["map"],
+      "files": [
+        {
+          "path": "src/registry/ui/map-deckgl-mesh/MapLayerSimpleMesh.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerSimpleMesh.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-mesh/MapLayerScenegraph.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerScenegraph.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-mesh/index.ts",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/mesh/index.ts"
+        }
+      ]
+    }
+  ]
+}

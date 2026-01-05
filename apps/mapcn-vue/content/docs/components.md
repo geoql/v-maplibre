@@ -1,0 +1,112 @@
+---
+title: Components
+description: All available mapcn-vue components.
+---
+
+# Components
+
+mapcn-vue provides a comprehensive set of map components organized into categories.
+
+## Core Components
+
+### map
+
+The base map component with theme-aware styling.
+
+```bash
+npx shadcn-vue@latest add https://mapcn-vue.geoql.in/r/map.json
+```
+
+**Includes:**
+- `Map` - Main map container
+- `MapMarker` - Interactive markers
+- `MapPopup` - Popups and tooltips
+- `MapControls` - Navigation, scale controls
+
+## MapLibre Layers
+
+### map-layers
+
+Native MapLibre layer components.
+
+```bash
+npx shadcn-vue@latest add https://mapcn-vue.geoql.in/r/map-layers.json
+```
+
+**Includes:**
+- `MapLayerGeojson` - GeoJSON data
+- `MapLayerVector` - Vector tiles
+- `MapLayerRaster` - Raster tiles
+- `MapLayerCluster` - Clustered points
+- `MapLayerPmtiles` - PMTiles
+- `MapLayerImage` - Static images
+- `MapLayerVideo` - Video overlays
+- `MapLayerCanvas` - Canvas rendering
+
+## deck.gl Layers
+
+High-performance WebGL visualization layers.
+
+### map-deckgl-core
+
+Core visualization layers.
+
+```bash
+npx shadcn-vue@latest add https://mapcn-vue.geoql.in/r/map-deckgl-core.json
+```
+
+**Includes:**
+- `MapLayerScatterplot` - Points/circles
+- `MapLayerArc` - Origin-destination arcs
+- `MapLayerLine` - Flat lines
+- `MapLayerPath` - Polylines/routes
+- `MapLayerPolygon` - Filled polygons
+- `MapLayerGeojson` - GeoJSON features
+- `MapLayerIcon` - Custom icons
+- `MapLayerText` - Text labels
+- `MapLayerColumn` - 3D columns
+- `MapLayerBitmap` - Georeferenced images
+
+### map-deckgl-aggregation
+
+Data aggregation layers.
+
+```bash
+npx shadcn-vue@latest add https://mapcn-vue.geoql.in/r/map-deckgl-aggregation.json
+```
+
+**Includes:**
+- `MapLayerHeatmap` - Density heatmap
+- `MapLayerHexagon` - Hexagonal binning
+- `MapLayerGrid` - Square grid
+- `MapLayerContour` - Contour lines
+- `MapLayerScreenGrid` - Screen-space grid
+
+### map-deckgl-geo
+
+Geospatial layers.
+
+```bash
+npx shadcn-vue@latest add https://mapcn-vue.geoql.in/r/map-deckgl-geo.json
+```
+
+**Includes:**
+- `MapLayerTrips` - Animated paths
+- `MapLayerMVT` - Mapbox Vector Tiles
+- `MapLayerTile` - Generic tiles
+- `MapLayerTile3D` - 3D Tiles (Cesium)
+- `MapLayerTerrain` - Terrain mesh
+- `MapLayerH3Hexagon` - H3 hexagons
+- `MapLayerGreatCircle` - Great circle arcs
+
+### map-deckgl-mesh
+
+3D mesh layers.
+
+```bash
+npx shadcn-vue@latest add https://mapcn-vue.geoql.in/r/map-deckgl-mesh.json
+```
+
+**Includes:**
+- `MapLayerSimpleMesh` - 3D meshes
+- `MapLayerScenegraph` - glTF/GLB models

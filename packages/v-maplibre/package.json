@@ -1,0 +1,131 @@
+{
+  "name": "@geoql/v-maplibre",
+  "version": "1.1.3",
+  "description": "Vue 3 components for MapLibre GL - reactive map components with full TypeScript support",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./style.css": "./dist/v-maplibre.css",
+    "./v-maplibre.css": "./dist/v-maplibre.css",
+    "./dist/style.css": "./dist/v-maplibre.css",
+    "./dist/v-maplibre.css": "./dist/v-maplibre.css"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build && vue-tsc --project tsconfig.build.json",
+    "preview": "vite preview",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest --coverage",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "release": "release-it",
+    "prepublishOnly": "bun run lint && bun run format:check && bun run test:coverage && bun run build"
+  },
+  "peerDependencies": {
+    "vue": "^3.5.0",
+    "@deck.gl/core": "^9.2.5",
+    "@deck.gl/layers": "^9.2.5",
+    "@deck.gl/mapbox": "^9.2.5",
+    "@deck.gl/aggregation-layers": "^9.2.5",
+    "@deck.gl/geo-layers": "^9.2.5",
+    "@deck.gl/mesh-layers": "^9.2.5"
+  },
+  "peerDependenciesMeta": {
+    "@deck.gl/core": {
+      "optional": true
+    },
+    "@deck.gl/layers": {
+      "optional": true
+    },
+    "@deck.gl/mapbox": {
+      "optional": true
+    },
+    "@deck.gl/aggregation-layers": {
+      "optional": true
+    },
+    "@deck.gl/geo-layers": {
+      "optional": true
+    },
+    "@deck.gl/mesh-layers": {
+      "optional": true
+    }
+  },
+  "dependencies": {
+    "maplibre-gl": "^5.15.0",
+    "pmtiles": "^4.3.2"
+  },
+  "devDependencies": {
+    "@deck.gl/core": "^9.2.5",
+    "@deck.gl/layers": "^9.2.5",
+    "@deck.gl/mapbox": "^9.2.5",
+    "@deck.gl/aggregation-layers": "^9.2.5",
+    "@deck.gl/geo-layers": "^9.2.5",
+    "@deck.gl/mesh-layers": "^9.2.5",
+    "@awmottaz/prettier-plugin-void-html": "^2.0.0",
+    "@release-it/conventional-changelog": "^10.0.4",
+    "@types/node": "^25.0.3",
+    "@vitejs/plugin-vue": "^6.0.3",
+    "@vitest/coverage-v8": "^4.0.16",
+    "@vitest/ui": "^4.0.16",
+    "@vue/test-utils": "^2.4.6",
+    "happy-dom": "^20.0.11",
+    "oxlint": "^1.37.0",
+    "prettier": "^3.7.4",
+    "release-it": "^19.2.2",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.0",
+    "vitest": "^4.0.16",
+    "vue": "^3.5.26",
+    "vue-tsc": "^3.2.1"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "vue",
+    "vue3",
+    "maplibre",
+    "maplibre-gl",
+    "deck.gl",
+    "deckgl",
+    "webgl",
+    "map",
+    "mapping",
+    "gis",
+    "geospatial",
+    "visualization",
+    "components",
+    "nuxt"
+  ],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/geoql/v-maplibre.git",
+    "directory": "packages/v-maplibre"
+  },
+  "bugs": {
+    "url": "https://github.com/geoql/v-maplibre/issues"
+  },
+  "homepage": "https://github.com/geoql/v-maplibre#readme",
+  "private": false,
+  "sideEffects": [
+    "*.css"
+  ],
+  "author": {
+    "name": "Vinayak Kulkarni",
+    "email": "inbox.vinayak@gmail.com",
+    "url": "https://vinayakkulkarni.dev"
+  }
+}

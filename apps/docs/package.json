@@ -1,8 +1,10 @@
 {
-  "name": "v-maplibre",
+  "name": "@geoql/v-maplibre-docs",
+  "private": true,
   "scripts": {
     "dev": "nuxt dev --extends docus",
-    "build": "nuxt build --extends docus"
+    "build": "nuxt build --extends docus",
+    "preview": "nuxt preview"
   },
   "dependencies": {
     "docus": "latest",

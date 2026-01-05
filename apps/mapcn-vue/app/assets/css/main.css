@@ -1,0 +1,106 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-background: oklch(0.98 0.005 270);
+  --color-foreground: oklch(0.15 0.01 270);
+  --color-card: oklch(0.99 0.005 270);
+  --color-card-foreground: oklch(0.15 0.01 270);
+  --color-popover: oklch(0.99 0.005 270);
+  --color-popover-foreground: oklch(0.15 0.01 270);
+  --color-primary: oklch(0.55 0.19 250);
+  --color-primary-foreground: oklch(0.99 0.005 270);
+  --color-secondary: oklch(0.94 0.01 270);
+  --color-secondary-foreground: oklch(0.15 0.01 270);
+  --color-muted: oklch(0.94 0.01 270);
+  --color-muted-foreground: oklch(0.45 0.01 270);
+  --color-accent: oklch(0.94 0.01 270);
+  --color-accent-foreground: oklch(0.15 0.01 270);
+  --color-destructive: oklch(0.55 0.2 25);
+  --color-destructive-foreground: oklch(0.99 0.005 270);
+  --color-border: oklch(0.88 0.01 270);
+  --color-input: oklch(0.88 0.01 270);
+  --color-ring: oklch(0.55 0.19 250);
+  --radius: 0.5rem;
+}
+
+.dark {
+  --color-background: oklch(0.12 0.01 270);
+  --color-foreground: oklch(0.95 0.005 270);
+  --color-card: oklch(0.15 0.01 270);
+  --color-card-foreground: oklch(0.95 0.005 270);
+  --color-popover: oklch(0.15 0.01 270);
+  --color-popover-foreground: oklch(0.95 0.005 270);
+  --color-primary: oklch(0.65 0.19 250);
+  --color-primary-foreground: oklch(0.12 0.01 270);
+  --color-secondary: oklch(0.22 0.01 270);
+  --color-secondary-foreground: oklch(0.95 0.005 270);
+  --color-muted: oklch(0.22 0.01 270);
+  --color-muted-foreground: oklch(0.6 0.01 270);
+  --color-accent: oklch(0.22 0.01 270);
+  --color-accent-foreground: oklch(0.95 0.005 270);
+  --color-destructive: oklch(0.55 0.2 25);
+  --color-destructive-foreground: oklch(0.95 0.005 270);
+  --color-border: oklch(0.28 0.01 270);
+  --color-input: oklch(0.28 0.01 270);
+  --color-ring: oklch(0.65 0.19 250);
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings:
+      'rlig' 1,
+      'calt' 1;
+  }
+}
+
+/* Map container styling */
+.map-container {
+  @apply w-full h-full min-h-[400px] rounded-lg border border-border overflow-hidden;
+}
+
+/* Code block styling */
+pre {
+  @apply rounded-lg border border-border bg-card p-4 overflow-x-auto;
+}
+
+code {
+  @apply font-mono text-sm;
+}
+
+/* Prose styling for markdown content */
+.prose {
+  @apply max-w-none;
+}
+
+.prose h1 {
+  @apply text-3xl font-bold tracking-tight mb-4;
+}
+
+.prose h2 {
+  @apply text-2xl font-semibold tracking-tight mt-10 mb-4;
+}
+
+.prose h3 {
+  @apply text-xl font-semibold tracking-tight mt-8 mb-3;
+}
+
+.prose p {
+  @apply leading-7 mb-4;
+}
+
+.prose ul {
+  @apply my-4 ml-6 list-disc;
+}
+
+.prose li {
+  @apply mt-2;
+}
+
+.prose a {
+  @apply text-primary underline underline-offset-4 hover:text-primary/80;
+}

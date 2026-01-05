@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "typescript/no-explicit-any": "warn",
+    "typescript/no-unused-vars": "error"
+  },
+  "env": {
+    "browser": true,
+    "node": true,
+    "es2021": true
+  },
+  "globals": {
+    "defineProps": "readonly",
+    "defineEmits": "readonly",
+    "withDefaults": "readonly"
+  },
+  "ignorePatterns": ["node_modules", "dist", ".nuxt", ".output", "coverage"]
+}

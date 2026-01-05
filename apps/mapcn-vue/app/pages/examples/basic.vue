@@ -1,0 +1,59 @@
+<script setup lang="ts">
+  useSeoMeta({
+    title: 'Basic Map - mapcn-vue Examples',
+    description: 'A simple map with navigation controls.',
+  });
+
+  const SCRIPT_END = '</' + 'script>';
+  const SCRIPT_START = '<' + 'script setup lang="ts">';
+
+  const codeExample = `${SCRIPT_START}
+import { VMap, VControlNavigation, VControlScale } from '@geoql/v-maplibre';
+
+const mapOptions = {
+  style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+  center: [-74.006, 40.7128],
+  zoom: 11,
+};
+${SCRIPT_END}
+
+<template>
+  <VMap :options="mapOptions" class="h-[500px] w-full rounded-lg">
+    <VControlNavigation position="top-right" />
+    <VControlScale position="bottom-left" />
+  </VMap>
+</template>`;
+</script>
+
+<template>
+  <div class="container max-w-screen-2xl py-10">
+    <div class="mx-auto max-w-[1200px]">
+      <div class="mb-8">
+        <NuxtLink
+          to="/examples"
+          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+        >
+          <Icon name="lucide:arrow-left" class="mr-2 h-4 w-4"></Icon>
+          Back to Examples
+        </NuxtLink>
+        <h1 class="mt-4 text-3xl font-bold tracking-tight">Basic Map</h1>
+        <p class="mt-2 text-lg text-muted-foreground">
+          A simple map with navigation and scale controls.
+        </p>
+      </div>
+
+      <div class="grid gap-8 lg:grid-cols-2">
+        <div class="h-[500px]">
+          <MapDemo :center="[-74.006, 40.7128]" :zoom="11" show-scale></MapDemo>
+        </div>
+
+        <div>
+          <h3 class="mb-4 text-lg font-semibold">Code</h3>
+          <pre
+            class="overflow-x-auto rounded-lg border border-border bg-card p-4 text-sm"
+          ><code>{{ codeExample }}</code></pre>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
