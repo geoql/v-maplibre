@@ -7,8 +7,7 @@
 </script>
 
 <template>
-  <div class="min-h-dvh bg-background font-sans antialiased">
-    <!-- Header -->
+  <div class="flex min-h-dvh flex-col bg-background font-sans antialiased">
     <header
       class="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60"
     >
@@ -65,8 +64,7 @@
       </div>
     </header>
 
-    <!-- Main Content -->
-    <main>
+    <main class="flex-1">
       <slot></slot>
     </main>
 
