@@ -92,11 +92,9 @@
     </section>
 
     <section class="px-6 pb-20">
-      <div
-        class="mx-auto grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
-      >
+      <div class="mx-auto grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2">
         <div
-          class="demo-card animate-scale-in relative aspect-square overflow-hidden rounded-xl border border-border/50 bg-card shadow delay-400 sm:col-span-2 sm:aspect-video lg:aspect-auto"
+          class="demo-card animate-scale-in relative aspect-video overflow-hidden rounded-xl border border-border/50 bg-card shadow delay-400 sm:col-span-2"
         >
           <ClientOnly>
             <ActiveUsersDemo></ActiveUsersDemo>
@@ -157,12 +155,12 @@
         </div>
 
         <div
-          class="demo-card animate-scale-in relative aspect-square overflow-hidden rounded-xl border border-border/50 bg-card shadow delay-500"
+          class="demo-card animate-scale-in relative aspect-[4/3] overflow-hidden rounded-xl border border-border/50 bg-card shadow delay-500"
         >
           <div
             class="absolute left-2 top-2 z-10 rounded bg-background/90 px-2 py-1 text-[10px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm"
           >
-            Delivery
+            Global Delivery
           </div>
           <ClientOnly>
             <DeliveryDemo></DeliveryDemo>
@@ -185,71 +183,15 @@
         </div>
 
         <div
-          class="demo-card animate-scale-in relative aspect-square overflow-hidden rounded-xl border border-border/50 bg-card shadow delay-600"
+          class="demo-card animate-scale-in relative aspect-[4/3] overflow-hidden rounded-xl border border-border/50 bg-card shadow delay-600"
         >
           <div
             class="absolute left-2 top-2 z-10 rounded bg-background/90 px-2 py-1 text-[10px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm"
           >
-            Trending
+            Heatmap
           </div>
           <ClientOnly>
             <TrendingDemo></TrendingDemo>
-            <template #fallback>
-              <div class="flex h-full w-full items-center justify-center">
-                <div class="flex gap-1">
-                  <span
-                    class="h-1.5 w-1.5 animate-pulse rounded-full bg-muted-foreground/60"
-                  ></span>
-                  <span
-                    class="h-1.5 w-1.5 animate-pulse rounded-full bg-muted-foreground/60 [animation-delay:150ms]"
-                  ></span>
-                  <span
-                    class="h-1.5 w-1.5 animate-pulse rounded-full bg-muted-foreground/60 [animation-delay:300ms]"
-                  ></span>
-                </div>
-              </div>
-            </template>
-          </ClientOnly>
-        </div>
-
-        <div
-          class="demo-card animate-scale-in relative aspect-square overflow-hidden rounded-xl border border-border/50 bg-card shadow delay-700"
-        >
-          <div
-            class="absolute left-2 top-2 z-10 rounded bg-background/90 px-2 py-1 text-[10px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm"
-          >
-            EV Charging
-          </div>
-          <ClientOnly>
-            <ChargingDemo></ChargingDemo>
-            <template #fallback>
-              <div class="flex h-full w-full items-center justify-center">
-                <div class="flex gap-1">
-                  <span
-                    class="h-1.5 w-1.5 animate-pulse rounded-full bg-muted-foreground/60"
-                  ></span>
-                  <span
-                    class="h-1.5 w-1.5 animate-pulse rounded-full bg-muted-foreground/60 [animation-delay:150ms]"
-                  ></span>
-                  <span
-                    class="h-1.5 w-1.5 animate-pulse rounded-full bg-muted-foreground/60 [animation-delay:300ms]"
-                  ></span>
-                </div>
-              </div>
-            </template>
-          </ClientOnly>
-        </div>
-
-        <div
-          class="demo-card animate-scale-in relative aspect-square overflow-hidden rounded-xl border border-border/50 bg-card shadow delay-800"
-        >
-          <div
-            class="absolute left-2 top-2 z-10 rounded bg-background/90 px-2 py-1 text-[10px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm"
-          >
-            Locate Me
-          </div>
-          <ClientOnly>
-            <LocateMeDemo></LocateMeDemo>
             <template #fallback>
               <div class="flex h-full w-full items-center justify-center">
                 <div class="flex gap-1">
@@ -445,13 +387,7 @@
 
   @media (min-width: 640px) {
     .demo-card {
-      min-height: 280px;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .demo-card:first-child {
-      min-height: 360px;
+      min-height: 240px;
     }
   }
 </style>

@@ -95,7 +95,7 @@
         :width-max-pixels="8"
         :get-height="0.5"
         :great-circle="true"
-      />
+      ></VLayerDeckglArc>
     </VMap>
   </div>
 </template>
@@ -103,6 +103,6 @@
 <style scoped>
   #delivery-map {
     width: 100%;
-    height: 100%;
+    height: 500px;
   }
 </style>
