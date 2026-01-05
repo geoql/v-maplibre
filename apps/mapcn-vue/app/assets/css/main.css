@@ -1,4 +1,12 @@
 @import 'tailwindcss';
+@import 'tw-animate-css';
+
+@plugin 'tailwindcss-animate';
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
 
 @theme {
   --color-background: oklch(0.98 0.005 270);
@@ -60,7 +68,7 @@
 
 /* Map container styling */
 .map-container {
-  @apply w-full h-full min-h-[400px] rounded-lg border border-border overflow-hidden;
+  @apply w-full h-full min-h-100 rounded-lg border border-border overflow-hidden;
 }
 
 /* Code block styling */

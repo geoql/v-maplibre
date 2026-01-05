@@ -17,6 +17,7 @@
   );
 
   const mapOptions = computed(() => ({
+    container: 'hero-map',
     style: mapStyle.value,
     center: [0, 20] as [number, number],
     zoom: 1.5,

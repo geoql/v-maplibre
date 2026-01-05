@@ -11,7 +11,7 @@
     <section class="relative overflow-hidden py-20 md:py-32">
       <div class="container relative z-10 max-w-screen-2xl">
         <div
-          class="mx-auto flex max-w-[980px] flex-col items-center gap-4 text-center"
+          class="mx-auto flex max-w-245 flex-col items-center gap-4 text-center"
         >
           <a
             href="https://github.com/geoql/v-maplibre"
@@ -26,7 +26,7 @@
           <h1
             class="text-4xl font-bold leading-tight tracking-tighter md:text-6xl lg:leading-[1.1]"
           >
-            Beautiful maps,<br class="hidden sm:inline">
+            Beautiful maps,<br class="hidden sm:inline" />
             made simple.
           </h1>
 

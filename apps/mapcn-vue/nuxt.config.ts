@@ -41,7 +41,11 @@ export default defineNuxtConfig({
     },
   },
 
-  css: ['maplibre-gl/dist/maplibre-gl.css', '~/assets/css/main.css'],
+  css: [
+    'maplibre-gl/dist/maplibre-gl.css',
+    '@geoql/v-maplibre/dist/v-maplibre.css',
+    '~/assets/css/main.css',
+  ],
 
   app: {
     head: {

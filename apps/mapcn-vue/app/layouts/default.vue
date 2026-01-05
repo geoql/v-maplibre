@@ -7,10 +7,10 @@
 </script>
 
 <template>
-  <div class="min-h-screen bg-background font-sans antialiased">
+  <div class="min-h-dvh bg-background font-sans antialiased">
     <!-- Header -->
     <header
-      class="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+      class="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60"
     >
       <div class="container flex h-14 max-w-screen-2xl items-center">
         <div class="mr-4 flex">

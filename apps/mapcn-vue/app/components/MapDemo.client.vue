@@ -13,6 +13,7 @@
     showScale: false,
   });
 
+  const mapId = useId();
   const colorMode = useColorMode();
 
   const lightStyle =
@@ -25,6 +26,7 @@
   );
 
   const mapOptions = computed(() => ({
+    container: `map-demo-${mapId}`,
     style: mapStyle.value,
     center: props.center,
     zoom: props.zoom,
