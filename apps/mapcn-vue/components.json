@@ -14,5 +14,10 @@
     "utils": "@/lib/utils",
     "ui": "@/components/ui",
     "lib": "@/lib"
+  },
+  "registries": {
+    "mapcn": {
+      "url": "https://mapcn-vue.geoql.in/r"
+    }
   }
 }
