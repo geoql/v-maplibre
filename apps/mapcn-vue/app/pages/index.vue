@@ -188,10 +188,10 @@
           <div
             class="absolute left-2 top-2 z-10 rounded bg-background/90 px-2 py-1 text-[10px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm"
           >
-            Heatmap
+            Trips
           </div>
           <ClientOnly>
-            <TrendingDemo></TrendingDemo>
+            <TripsDemo></TripsDemo>
             <template #fallback>
               <div class="flex h-full w-full items-center justify-center">
                 <div class="flex gap-1">

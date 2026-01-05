@@ -78,7 +78,7 @@ const mapOptions = {
 </script>
 
 <template>
-  <Map :options="mapOptions" class="h-[500px]">
+  <Map :options="mapOptions" class="h-125">
     <MapControls />
     <MapMarker :lng-lat="[-74.006, 40.7128]" />
   </Map>
@@ -96,7 +96,7 @@ For Nuxt applications, wrap map components with `ClientOnly`:
       <MapControls />
     </Map>
     <template #fallback>
-      <div class="h-[500px] flex items-center justify-center">
+      <div class="h-125 flex items-center justify-center">
         Loading map...
       </div>
     </template>

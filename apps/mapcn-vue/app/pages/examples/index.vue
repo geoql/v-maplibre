@@ -58,7 +58,7 @@
 
 <template>
   <div class="container max-w-screen-2xl py-10">
-    <div class="mx-auto max-w-[1200px]">
+    <div class="mx-auto max-w-300">
       <div class="mb-10">
         <h1 class="text-3xl font-bold tracking-tight">Examples</h1>
         <p class="mt-2 text-lg text-muted-foreground">

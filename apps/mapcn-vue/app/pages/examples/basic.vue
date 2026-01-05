@@ -18,7 +18,7 @@ const mapOptions = {
 ${SCRIPT_END}
 
 <template>
-  <VMap :options="mapOptions" class="h-[500px] w-full rounded-lg">
+  <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
     <VControlNavigation position="top-right" />
     <VControlScale position="bottom-left" />
   </VMap>
@@ -27,7 +27,7 @@ ${SCRIPT_END}
 
 <template>
   <div class="container max-w-screen-2xl py-10">
-    <div class="mx-auto max-w-[1200px]">
+    <div class="mx-auto max-w-300">
       <div class="mb-8">
         <NuxtLink
           to="/examples"
@@ -43,15 +43,16 @@ ${SCRIPT_END}
       </div>
 
       <div class="grid gap-8 lg:grid-cols-2">
-        <div class="h-[500px]">
+        <div class="h-125">
           <MapDemo :center="[-74.006, 40.7128]" :zoom="11" show-scale></MapDemo>
         </div>
 
         <div>
-          <h3 class="mb-4 text-lg font-semibold">Code</h3>
-          <pre
-            class="overflow-x-auto rounded-lg border border-border bg-card p-4 text-sm"
-          ><code>{{ codeExample }}</code></pre>
+          <CodeBlock
+            :code="codeExample"
+            lang="vue"
+            filename="BasicMap.vue"
+          ></CodeBlock>
         </div>
       </div>
     </div>
