@@ -17,11 +17,5 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "references": [
-    { "path": "./packages/v-maplibre" },
-    { "path": "./packages/mapcn-vue" },
-    { "path": "./apps/docs" },
-    { "path": "./apps/mapcn-vue" }
-  ],
   "exclude": ["node_modules", "**/dist", "**/.nuxt", "**/.output"]
 }

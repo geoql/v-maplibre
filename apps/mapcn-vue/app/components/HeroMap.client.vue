@@ -62,6 +62,7 @@
   const circleLayer = {
     id: 'hero-points',
     type: 'circle' as const,
+    source: 'hero-points',
     paint: {
       'circle-radius': 8,
       'circle-color': colorMode.value === 'dark' ? '#818cf8' : '#6366f1',
@@ -77,7 +78,8 @@
       <VControlNavigation position="top-right"></VControlNavigation>
       <VLayerMaplibreGeojson
         source-id="hero-points"
-        :geojson="pointsGeojson"
+        layer-id="hero-points"
+        :source="{ type: 'geojson', data: pointsGeojson }"
         :layer="circleLayer"
       ></VLayerMaplibreGeojson>
     </VMap>
