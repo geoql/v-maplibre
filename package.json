@@ -64,8 +64,8 @@
     }
   },
   "dependencies": {
-    "maplibre-gl": "^5.14.0",
-    "pmtiles": "^4.3.0"
+    "maplibre-gl": "^5.15.0",
+    "pmtiles": "^4.3.2"
   },
   "devDependencies": {
     "@deck.gl/core": "^9.2.5",
@@ -75,26 +75,26 @@
     "@deck.gl/geo-layers": "^9.2.5",
     "@deck.gl/mesh-layers": "^9.2.5",
     "@awmottaz/prettier-plugin-void-html": "^2.0.0",
-    "@commitlint/cli": "^20.2.0",
-    "@commitlint/config-conventional": "^20.2.0",
-    "@release-it/conventional-changelog": "^10.0.3",
-    "@types/node": "^25.0.1",
+    "@commitlint/cli": "^20.3.0",
+    "@commitlint/config-conventional": "^20.3.0",
+    "@release-it/conventional-changelog": "^10.0.4",
+    "@types/node": "^25.0.3",
     "@vitejs/plugin-vue": "^6.0.3",
-    "@vitest/coverage-v8": "^4.0.15",
-    "@vitest/ui": "^4.0.15",
+    "@vitest/coverage-v8": "^4.0.16",
+    "@vitest/ui": "^4.0.16",
     "@vue/test-utils": "^2.4.6",
     "happy-dom": "^20.0.11",
     "husky": "^9.1.7",
     "is-ci": "^4.1.0",
     "lint-staged": "^16.2.7",
-    "oxlint": "^1.32.0",
+    "oxlint": "^1.37.0",
     "prettier": "^3.7.4",
-    "release-it": "^19.1.0",
+    "release-it": "^19.2.2",
     "typescript": "^5.9.3",
-    "vite": "^7.2.7",
-    "vitest": "^4.0.15",
-    "vue": "^3.5.25",
-    "vue-tsc": "^3.1.8"
+    "vite": "^7.3.0",
+    "vitest": "^4.0.16",
+    "vue": "^3.5.26",
+    "vue-tsc": "^3.2.1"
   },
   "publishConfig": {
     "access": "public"
@@ -132,6 +132,5 @@
     "name": "Vinayak Kulkarni",
     "email": "inbox.vinayak@gmail.com",
     "url": "https://vinayakkulkarni.dev"
-  },
-  "packageManager": "pnpm@10.23.0+sha512.21c4e5698002ade97e4efe8b8b4a89a8de3c85a37919f957e7a0f30f38fbc5bbdd05980ffe29179b2fb6e6e691242e098d945d1601772cad0fef5fb6411e2a4b"
+  }
 }
