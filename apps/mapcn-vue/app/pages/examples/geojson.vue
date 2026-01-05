@@ -75,24 +75,14 @@ const mapOptions = {
   zoom: 11,
 };
 
-const geojsonData = {
-  type: 'FeatureCollection',
-  features: [
-    {
-      type: 'Feature',
-      properties: { name: 'Central Park' },
-      geometry: {
-        type: 'Polygon',
-        coordinates: [[
-          [-73.9819, 40.7681],
-          [-73.9580, 40.8006],
-          [-73.9498, 40.7969],
-          [-73.9737, 40.7644],
-          [-73.9819, 40.7681],
-        ]],
-      },
-    },
-  ],
+const geojsonData = { type: 'FeatureCollection', features: [...] };
+
+const source = { type: 'geojson', data: geojsonData };
+const fillLayer = {
+  id: 'geojson-fill',
+  type: 'fill',
+  source: 'geojson-source',
+  paint: { 'fill-color': '#10b981', 'fill-opacity': 0.5 },
 };
 ${SCRIPT_END}
 
@@ -100,13 +90,10 @@ ${SCRIPT_END}
   <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
     <VControlNavigation position="top-right" />
     <VLayerMaplibreGeojson
-      id="geojson-layer"
-      :data="geojsonData"
-      type="fill"
-      :paint="{
-        'fill-color': '#10b981',
-        'fill-opacity': 0.5,
-      }"
+      source-id="geojson-source"
+      layer-id="geojson-fill"
+      :source="source"
+      :layer="fillLayer"
     />
   </VMap>
 </template>`;
@@ -135,21 +122,31 @@ ${SCRIPT_END}
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
               <VLayerMaplibreGeojson
-                id="geojson-fill"
-                :data="geojsonData"
-                type="fill"
-                :paint="{
-                  'fill-color': '#10b981',
-                  'fill-opacity': 0.5,
+                source-id="geojson-source"
+                layer-id="geojson-fill"
+                :source="{ type: 'geojson', data: geojsonData }"
+                :layer="{
+                  id: 'geojson-fill',
+                  type: 'fill',
+                  source: 'geojson-source',
+                  paint: {
+                    'fill-color': '#10b981',
+                    'fill-opacity': 0.5,
+                  },
                 }"
               ></VLayerMaplibreGeojson>
               <VLayerMaplibreGeojson
-                id="geojson-line"
-                :data="geojsonData"
-                type="line"
-                :paint="{
-                  'line-color': '#10b981',
-                  'line-width': 3,
+                source-id="geojson-line-source"
+                layer-id="geojson-line"
+                :source="{ type: 'geojson', data: geojsonData }"
+                :layer="{
+                  id: 'geojson-line',
+                  type: 'line',
+                  source: 'geojson-line-source',
+                  paint: {
+                    'line-color': '#10b981',
+                    'line-width': 3,
+                  },
                 }"
               ></VLayerMaplibreGeojson>
             </VMap>

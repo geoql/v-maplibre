@@ -307,7 +307,7 @@
               <span class="ml-2 text-xs text-muted-foreground">Terminal</span>
             </div>
             <pre
-              class="overflow-x-auto p-4 text-sm"
+              class="overflow-x-auto border-0! bg-transparent p-4 text-sm"
             ><code class="text-foreground">npx shadcn-vue@latest add https://mapcn-vue.geoql.in/r/map</code></pre>
           </div>
         </div>

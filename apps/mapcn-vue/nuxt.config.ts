@@ -3,7 +3,20 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
-  modules: ['@nuxtjs/color-mode', '@nuxt/icon', '@nuxt/content', 'shadcn-nuxt'],
+  modules: [
+    '@nuxtjs/color-mode',
+    '@nuxt/icon',
+    '@nuxt/content',
+    'shadcn-nuxt',
+    [
+      '@nuxtjs/plausible',
+      {
+        domain: 'mapcn-vue.geoql.in',
+        apiHost: 'https://analytics.geoql.in',
+        autoOutboundTracking: true,
+      },
+    ],
+  ],
 
   vite: {
     plugins: [tailwindcss()],
