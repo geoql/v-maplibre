@@ -30,7 +30,7 @@
             made simple.
           </h1>
 
-          <p class="max-w-[750px] text-lg text-muted-foreground sm:text-xl">
+          <p class="max-w-187.5 text-lg text-muted-foreground sm:text-xl">
             Copy-paste map components for Vue. Built on
             <a
               href="https://github.com/geoql/v-maplibre"
@@ -67,7 +67,7 @@
     </section>
 
     <section class="container max-w-screen-2xl py-12">
-      <div class="mx-auto max-w-[1200px]">
+      <div class="mx-auto max-w-300">
         <ClientOnly>
           <HeroMap></HeroMap>
           <template #fallback>
@@ -80,7 +80,7 @@
     </section>
 
     <section class="container max-w-screen-2xl py-12 md:py-24">
-      <div class="mx-auto max-w-[980px] text-center">
+      <div class="mx-auto max-w-245 text-center">
         <h2
           class="text-3xl font-bold leading-tight tracking-tighter md:text-4xl"
         >
@@ -93,7 +93,7 @@
       </div>
 
       <div
-        class="mx-auto mt-12 grid max-w-[1200px] gap-6 md:grid-cols-2 lg:grid-cols-3"
+        class="mx-auto mt-12 grid max-w-300 gap-6 md:grid-cols-2 lg:grid-cols-3"
       >
         <div class="rounded-lg border border-border bg-card p-6">
           <Icon name="lucide:map-pin" class="h-10 w-10 text-primary"></Icon>
@@ -152,7 +152,7 @@
 
     <section class="border-t border-border bg-muted/50 py-12 md:py-24">
       <div class="container max-w-screen-2xl">
-        <div class="mx-auto max-w-[980px] text-center">
+        <div class="mx-auto max-w-245 text-center">
           <h2
             class="text-3xl font-bold leading-tight tracking-tighter md:text-4xl"
           >
@@ -163,7 +163,7 @@
           </p>
         </div>
 
-        <div class="mx-auto mt-8 max-w-[600px]">
+        <div class="mx-auto mt-8 max-w-150">
           <div class="rounded-lg border border-border bg-card">
             <div
               class="flex items-center gap-2 border-b border-border px-4 py-2"

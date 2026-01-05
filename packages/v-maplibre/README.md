@@ -6,6 +6,8 @@
 [![JSR](https://jsr.io/badges/@geoql/v-maplibre)](https://jsr.io/@geoql/v-maplibre)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+> **Using shadcn-vue?** Check out [mapcn-vue](https://mapcn-vue.geoql.in) for copy-paste map components styled with Tailwind CSS.
+
 ## Features
 
 - 🗺️ **Full MapLibre GL Support** - Complete wrapper around MapLibre GL JS
@@ -213,18 +215,22 @@ import type { Color, PickingInfo } from '@deck.gl/core';
 
 ## Development
 
+This package is part of the [v-maplibre monorepo](https://github.com/geoql/v-maplibre).
+
 ```bash
-# Install dependencies
+# Clone and install (from monorepo root)
+git clone https://github.com/geoql/v-maplibre.git
+cd v-maplibre
 bun install
 
-# Build the library
-bun run build
+# Build this package
+bun run --cwd packages/v-maplibre build
 
 # Run tests
 bun run test
 
-# Lint
-bun run lint
+# Watch mode
+bun run dev:lib
 ```
 
 ## License

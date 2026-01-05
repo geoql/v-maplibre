@@ -21,7 +21,6 @@
     style: mapStyle.value,
     center: [0, 20] as [number, number],
     zoom: 1.5,
-    attributionControl: false,
   }));
 
   const pointsGeojson = {
@@ -73,7 +72,7 @@
 </script>
 
 <template>
-  <div class="map-container h-[500px]">
+  <div class="map-container h-125">
     <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
       <VControlNavigation position="top-right"></VControlNavigation>
       <VLayerMaplibreGeojson
@@ -84,3 +83,9 @@
     </VMap>
   </div>
 </template>
+
+<style>
+  #hero-map {
+    height: 500px;
+  }
+</style>
