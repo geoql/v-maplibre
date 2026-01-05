@@ -17,7 +17,6 @@
     style: mapStyle.value,
     center: [0, 30] as [number, number],
     zoom: 1.5,
-    interactive: false,
   }));
 
   interface DeliveryRoute {
@@ -26,16 +25,13 @@
     deliveries: number;
   }
 
-  // Global delivery routes using deck.gl Arc layer
   const deliveryRoutes: DeliveryRoute[] = [
-    // US to Europe
     { source: [-74.006, 40.7128], target: [-0.1276, 51.5074], deliveries: 234 },
     {
       source: [-122.4194, 37.7749],
       target: [2.3522, 48.8566],
       deliveries: 156,
     },
-    // US to Asia
     {
       source: [-118.2437, 34.0522],
       target: [139.6917, 35.6895],
@@ -46,10 +42,8 @@
       target: [121.4737, 31.2304],
       deliveries: 145,
     },
-    // Europe to Asia
     { source: [-0.1276, 51.5074], target: [77.209, 28.6139], deliveries: 112 },
     { source: [2.3522, 48.8566], target: [103.8198, 1.3521], deliveries: 98 },
-    // Asia internal
     {
       source: [139.6917, 35.6895],
       target: [121.4737, 31.2304],
@@ -60,13 +54,11 @@
       target: [103.8198, 1.3521],
       deliveries: 178,
     },
-    // To Australia
     {
       source: [103.8198, 1.3521],
       target: [151.2093, -33.8688],
       deliveries: 87,
     },
-    // To South America
     {
       source: [-74.006, 40.7128],
       target: [-43.1729, -22.9068],
@@ -74,7 +66,6 @@
     },
   ];
 
-  // Accessor functions - use `any` to satisfy deck.gl's generic types
   const getSourcePosition = (d: any) => d.source;
   const getTargetPosition = (d: any) => d.target;
   const getWidth = (d: any) => Math.sqrt(d.deliveries) * 0.5;
@@ -103,7 +94,7 @@
         :width-max-pixels="8"
         :get-height="0.5"
         :great-circle="true"
-      />
+      ></VLayerDeckglArc>
     </VMap>
   </div>
 </template>

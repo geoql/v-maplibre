@@ -12,14 +12,12 @@
     colorMode.value === 'dark' ? darkStyle : lightStyle,
   );
 
-  // San Francisco area - trending data points
   const mapOptions = computed(() => ({
     container: 'trending-map',
     style: mapStyle.value,
     center: [-122.4194, 37.7749] as [number, number],
     zoom: 11,
     pitch: 45,
-    interactive: false,
   }));
 
   interface TrendingPoint {
@@ -27,15 +25,18 @@
     value: number;
   }
 
-  // Generate clustered points for hexagon visualization
   const generatePoints = (): TrendingPoint[] => {
     const points: TrendingPoint[] = [];
-    const hotspots = [
-      { center: [-122.4194, 37.7749], count: 200, spread: 0.02 }, // Downtown
-      { center: [-122.4089, 37.7855], count: 150, spread: 0.015 }, // Chinatown
-      { center: [-122.4324, 37.7654], count: 120, spread: 0.018 }, // Castro
-      { center: [-122.3894, 37.7694], count: 100, spread: 0.012 }, // SoMa
-      { center: [-122.4474, 37.7599], count: 80, spread: 0.015 }, // Sunset
+    const hotspots: {
+      center: [number, number];
+      count: number;
+      spread: number;
+    }[] = [
+      { center: [-122.4194, 37.7749], count: 200, spread: 0.02 },
+      { center: [-122.4089, 37.7855], count: 150, spread: 0.015 },
+      { center: [-122.4324, 37.7654], count: 120, spread: 0.018 },
+      { center: [-122.3894, 37.7694], count: 100, spread: 0.012 },
+      { center: [-122.4474, 37.7599], count: 80, spread: 0.015 },
     ];
 
     for (const hotspot of hotspots) {
@@ -54,18 +55,17 @@
 
   const trendingData = generatePoints();
 
-  // Accessor functions - use `any` to satisfy deck.gl's generic types
   const getPosition = (d: any) => d.coordinates;
   const getElevationWeight = (d: any) => d.value;
   const getColorWeight = (d: any) => d.value;
 
-  const colorRange: [number, number, number][] = [
-    [255, 255, 178],
-    [254, 217, 118],
-    [254, 178, 76],
-    [253, 141, 60],
-    [240, 59, 32],
-    [189, 0, 38],
+  const colorRange: [number, number, number, number][] = [
+    [255, 255, 178, 255],
+    [254, 217, 118, 255],
+    [254, 178, 76, 255],
+    [253, 141, 60, 255],
+    [240, 59, 32, 255],
+    [189, 0, 38, 255],
   ];
 </script>
 
