@@ -35,13 +35,45 @@
     "prepublishOnly": "bun run lint && bun run format:check && bun run test:coverage && bun run build"
   },
   "peerDependencies": {
-    "vue": "^3.5.0"
+    "vue": "^3.5.0",
+    "@deck.gl/core": "^9.2.5",
+    "@deck.gl/layers": "^9.2.5",
+    "@deck.gl/mapbox": "^9.2.5",
+    "@deck.gl/aggregation-layers": "^9.2.5",
+    "@deck.gl/geo-layers": "^9.2.5",
+    "@deck.gl/mesh-layers": "^9.2.5"
+  },
+  "peerDependenciesMeta": {
+    "@deck.gl/core": {
+      "optional": true
+    },
+    "@deck.gl/layers": {
+      "optional": true
+    },
+    "@deck.gl/mapbox": {
+      "optional": true
+    },
+    "@deck.gl/aggregation-layers": {
+      "optional": true
+    },
+    "@deck.gl/geo-layers": {
+      "optional": true
+    },
+    "@deck.gl/mesh-layers": {
+      "optional": true
+    }
   },
   "dependencies": {
     "maplibre-gl": "^5.14.0",
     "pmtiles": "^4.3.0"
   },
   "devDependencies": {
+    "@deck.gl/core": "^9.2.5",
+    "@deck.gl/layers": "^9.2.5",
+    "@deck.gl/mapbox": "^9.2.5",
+    "@deck.gl/aggregation-layers": "^9.2.5",
+    "@deck.gl/geo-layers": "^9.2.5",
+    "@deck.gl/mesh-layers": "^9.2.5",
     "@awmottaz/prettier-plugin-void-html": "^2.0.0",
     "@commitlint/cli": "^20.2.0",
     "@commitlint/config-conventional": "^20.2.0",
@@ -72,10 +104,14 @@
     "vue3",
     "maplibre",
     "maplibre-gl",
+    "deck.gl",
+    "deckgl",
+    "webgl",
     "map",
     "mapping",
     "gis",
     "geospatial",
+    "visualization",
     "components",
     "nuxt"
   ],

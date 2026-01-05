@@ -1,4 +1,3 @@
-// Controls
 import {
   VControlAttribution,
   VControlFullscreen,
@@ -6,7 +5,7 @@ import {
   VControlNavigation,
   VControlScale,
 } from './controls';
-// Layers – Mapbox
+
 import {
   VLayerMaplibreCanvas,
   VLayerMaplibreGeojson,
@@ -18,20 +17,14 @@ import {
   VLayerMaplibrePmtile,
 } from './layers';
 
-// Map
 import VMap from './map/VMap.vue';
-// Marker
 import VMarker from './markers/VMarker.vue';
-// Popup
 import VPopup from './popups/VPopup.vue';
 
 export {
   VMap,
-  // Marker
   VMarker,
-  // Popup
   VPopup,
-  // Layers
   VLayerMaplibreCanvas,
   VLayerMaplibreGeojson,
   VLayerMaplibreCluster,
@@ -39,14 +32,14 @@ export {
   VLayerMaplibreRaster,
   VLayerMaplibreVector,
   VLayerMaplibreVideo,
-  // PMTiles
   VLayerMaplibrePmtile,
-  // Controls
   VControlAttribution,
   VControlFullscreen,
   VControlGeolocate,
   VControlNavigation,
   VControlScale,
 };
+
+export * from './layers/deckgl';
 
 export default VMap;
