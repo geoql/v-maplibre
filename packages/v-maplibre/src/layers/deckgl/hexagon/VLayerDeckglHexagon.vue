@@ -14,6 +14,7 @@
     getPosition: Accessor<D, Position>;
     getColorWeight?: Accessor<D, number>;
     getElevationWeight?: Accessor<D, number>;
+    gpuAggregation?: boolean;
     radius?: number;
     elevationScale?: number;
     elevationRange?: [number, number];
@@ -27,8 +28,8 @@
     elevationLowerPercentile?: number;
     colorScaleType?: 'quantize' | 'linear' | 'quantile' | 'ordinal';
     material?: boolean | object;
-    colorAggregation?: 'SUM' | 'MEAN' | 'MIN' | 'MAX';
-    elevationAggregation?: 'SUM' | 'MEAN' | 'MIN' | 'MAX';
+    colorAggregation?: 'SUM' | 'MEAN' | 'MIN' | 'MAX' | 'COUNT';
+    elevationAggregation?: 'SUM' | 'MEAN' | 'MIN' | 'MAX' | 'COUNT';
     opacity?: number;
     visible?: boolean;
     pickable?: boolean;
@@ -38,6 +39,7 @@
   }
 
   const props = withDefaults(defineProps<Props>(), {
+    gpuAggregation: false,
     radius: 1000,
     elevationScale: 1,
     coverage: 1,
@@ -70,6 +72,7 @@
       getPosition: props.getPosition,
       getColorWeight: props.getColorWeight,
       getElevationWeight: props.getElevationWeight,
+      gpuAggregation: props.gpuAggregation,
       radius: props.radius,
       elevationScale: props.elevationScale,
       elevationRange: props.elevationRange,

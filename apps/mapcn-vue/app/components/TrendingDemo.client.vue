@@ -59,13 +59,13 @@
   const getElevationWeight = (d: any) => d.value;
   const getColorWeight = (d: any) => d.value;
 
-  const colorRange: [number, number, number, number][] = [
-    [255, 255, 178, 255],
-    [254, 217, 118, 255],
-    [254, 178, 76, 255],
-    [253, 141, 60, 255],
-    [240, 59, 32, 255],
-    [189, 0, 38, 255],
+  const colorRange: [number, number, number][] = [
+    [255, 255, 178],
+    [254, 217, 118],
+    [254, 178, 76],
+    [253, 141, 60],
+    [240, 59, 32],
+    [189, 0, 38],
   ];
 </script>
 
