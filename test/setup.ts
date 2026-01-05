@@ -312,3 +312,117 @@ vi.mock('pmtiles', () => ({
     getHeader = vi.fn().mockResolvedValue({});
   },
 }));
+
+// Mock deck.gl Layer base class
+class MockLayer {
+  id: string;
+  props: Record<string, unknown>;
+
+  constructor(props: Record<string, unknown>) {
+    this.id = props.id as string;
+    this.props = props;
+  }
+}
+
+// Mock MapboxOverlay
+class MockMapboxOverlay {
+  private _layers: MockLayer[] = [];
+  private _map: unknown = null;
+
+  constructor(_props?: Record<string, unknown>) {}
+
+  setProps(props: { layers?: MockLayer[] }) {
+    if (props.layers) {
+      this._layers = props.layers;
+    }
+  }
+
+  onAdd(map: unknown) {
+    this._map = map;
+    return document.createElement('div');
+  }
+
+  onRemove() {
+    this._map = null;
+  }
+
+  getCanvas() {
+    return document.createElement('canvas');
+  }
+}
+
+// Create layer mock factory
+const createLayerMock = (name: string) => {
+  return class extends MockLayer {
+    static layerName = name;
+  };
+};
+
+// Mock @deck.gl/core
+vi.mock('@deck.gl/core', () => ({
+  Layer: MockLayer,
+  CompositeLayer: MockLayer,
+  COORDINATE_SYSTEM: {
+    LNGLAT: 1,
+    METER_OFFSETS: 2,
+    LNGLAT_OFFSETS: 3,
+    CARTESIAN: 0,
+  },
+  picking: {},
+}));
+
+// Mock @deck.gl/layers
+vi.mock('@deck.gl/layers', () => ({
+  ScatterplotLayer: createLayerMock('ScatterplotLayer'),
+  ArcLayer: createLayerMock('ArcLayer'),
+  LineLayer: createLayerMock('LineLayer'),
+  PathLayer: createLayerMock('PathLayer'),
+  PolygonLayer: createLayerMock('PolygonLayer'),
+  SolidPolygonLayer: createLayerMock('SolidPolygonLayer'),
+  GeoJsonLayer: createLayerMock('GeoJsonLayer'),
+  IconLayer: createLayerMock('IconLayer'),
+  TextLayer: createLayerMock('TextLayer'),
+  ColumnLayer: createLayerMock('ColumnLayer'),
+  BitmapLayer: createLayerMock('BitmapLayer'),
+  GridCellLayer: createLayerMock('GridCellLayer'),
+  PointCloudLayer: createLayerMock('PointCloudLayer'),
+}));
+
+// Mock @deck.gl/aggregation-layers
+vi.mock('@deck.gl/aggregation-layers', () => ({
+  HeatmapLayer: createLayerMock('HeatmapLayer'),
+  HexagonLayer: createLayerMock('HexagonLayer'),
+  GridLayer: createLayerMock('GridLayer'),
+  ContourLayer: createLayerMock('ContourLayer'),
+  ScreenGridLayer: createLayerMock('ScreenGridLayer'),
+}));
+
+// Mock @deck.gl/geo-layers
+vi.mock('@deck.gl/geo-layers', () => ({
+  TripsLayer: createLayerMock('TripsLayer'),
+  H3HexagonLayer: createLayerMock('H3HexagonLayer'),
+  H3ClusterLayer: createLayerMock('H3ClusterLayer'),
+  MVTLayer: createLayerMock('MVTLayer'),
+  TileLayer: createLayerMock('TileLayer'),
+  Tile3DLayer: createLayerMock('Tile3DLayer'),
+  TerrainLayer: createLayerMock('TerrainLayer'),
+  GreatCircleLayer: createLayerMock('GreatCircleLayer'),
+  S2Layer: createLayerMock('S2Layer'),
+  GeohashLayer: createLayerMock('GeohashLayer'),
+  QuadkeyLayer: createLayerMock('QuadkeyLayer'),
+  _WMSLayer: createLayerMock('WMSLayer'),
+}));
+
+// Mock @deck.gl/mesh-layers
+vi.mock('@deck.gl/mesh-layers', () => ({
+  SimpleMeshLayer: createLayerMock('SimpleMeshLayer'),
+  ScenegraphLayer: createLayerMock('ScenegraphLayer'),
+}));
+
+// Mock @deck.gl/mapbox
+vi.mock('@deck.gl/mapbox', () => ({
+  MapboxOverlay: MockMapboxOverlay,
+}));
+
+// Export mocks for use in tests
+export { MockMapboxOverlay, MockLayer };

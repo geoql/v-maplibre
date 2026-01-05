@@ -21,7 +21,6 @@ export default defineConfig({
         'coverage/**',
         'test/',
         '**/__tests__/**',
-        '**/layers/deckgl/**',
       ],
       thresholds: {
         lines: 14,
