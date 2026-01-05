@@ -14,36 +14,36 @@
 - 🎨 **Reactive Components** - Reactive and composable map components
 - 🚀 **Nuxt 4 Ready** - Seamlessly works with Nuxt 4 and SSR
 - 🎯 **PMTiles Built-in** - Native support for PMTiles protocol
+- 🌐 **deck.gl Integration** - High-performance WebGL visualization layers
 
 ## Installation
 
-### From npm
-
 ```bash
-# pnpm
-pnpm add @geoql/v-maplibre maplibre-gl
+# bun
+bun add @geoql/v-maplibre maplibre-gl
 
 # npm
 npm install @geoql/v-maplibre maplibre-gl
 
 # yarn
 yarn add @geoql/v-maplibre maplibre-gl
-```
-
-### From JSR
-
-```bash
-# deno
-deno add @geoql/v-maplibre
-
-# npm (using JSR)
-npx jsr add @geoql/v-maplibre
-
-# yarn
-yarn dlx jsr add @geoql/v-maplibre
 
 # pnpm
-pnpm dlx jsr add @geoql/v-maplibre
+pnpm add @geoql/v-maplibre maplibre-gl
+```
+
+### deck.gl Layers (Optional)
+
+For deck.gl visualization layers, install the required packages:
+
+```bash
+# Core deck.gl packages
+bun add @deck.gl/core @deck.gl/layers @deck.gl/mapbox
+
+# Additional layer packages (as needed)
+bun add @deck.gl/aggregation-layers  # Heatmap, Hexagon, Grid
+bun add @deck.gl/geo-layers          # Trips, MVT, Tile, H3
+bun add @deck.gl/mesh-layers         # SimpleMesh, Scenegraph
 ```
 
 ## Quick Start
@@ -76,7 +76,7 @@ pnpm dlx jsr add @geoql/v-maplibre
 - **`VMarker`** - Interactive markers
 - **`VPopup`** - Popups and tooltips
 
-### Layer Components
+### MapLibre Layer Components
 
 - **`VLayerMaplibreGeojson`** - GeoJSON layers
 - **`VLayerMaplibreVector`** - Vector tile layers
@@ -87,6 +87,46 @@ pnpm dlx jsr add @geoql/v-maplibre
 - **`VLayerMaplibreCluster`** - Clustered point layers
 - **`VLayerMaplibrePmtile`** - PMTiles layers
 
+### deck.gl Layer Components
+
+High-performance WebGL visualization layers powered by deck.gl:
+
+**Core Layers**
+
+- `VLayerDeckglScatterplot` - Circles/points
+- `VLayerDeckglArc` - Origin-destination arcs
+- `VLayerDeckglLine` - Flat lines
+- `VLayerDeckglPath` - Polylines/routes
+- `VLayerDeckglPolygon` - Filled polygons
+- `VLayerDeckglGeojson` - GeoJSON features
+- `VLayerDeckglIcon` - Custom markers
+- `VLayerDeckglText` - Text labels
+- `VLayerDeckglColumn` - 3D columns
+- `VLayerDeckglBitmap` - Georeferenced images
+
+**Aggregation Layers**
+
+- `VLayerDeckglHeatmap` - Density heatmap
+- `VLayerDeckglHexagon` - Hexagonal binning
+- `VLayerDeckglGrid` - Square grid aggregation
+- `VLayerDeckglContour` - Contour/isolines
+- `VLayerDeckglScreenGrid` - Screen-space grid
+
+**Geo Layers**
+
+- `VLayerDeckglTrips` - Animated paths
+- `VLayerDeckglMVT` - Mapbox Vector Tiles
+- `VLayerDeckglTile` - Generic tiles
+- `VLayerDeckglTile3D` - 3D Tiles (Cesium)
+- `VLayerDeckglTerrain` - Terrain mesh
+- `VLayerDeckglH3Hexagon` - H3 hexagons
+- `VLayerDeckglGreatCircle` - Great circle arcs
+
+**Mesh Layers**
+
+- `VLayerDeckglSimpleMesh` - 3D meshes
+- `VLayerDeckglScenegraph` - glTF/GLB models
+
 ### Control Components
 
 - **`VControlNavigation`** - Navigation controls (zoom, rotate)
@@ -94,6 +134,40 @@ pnpm dlx jsr add @geoql/v-maplibre
 - **`VControlGeolocate`** - Geolocation control
 - **`VControlFullscreen`** - Fullscreen toggle
 - **`VControlAttribution`** - Attribution control
+
+## deck.gl Example
+
+```vue
+<script setup lang="ts">
+  import { VMap, VLayerDeckglScatterplot } from '@geoql/v-maplibre';
+
+  const mapOptions = {
+    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+    center: [-122.4, 37.8],
+    zoom: 11,
+  };
+
+  const data = [
+    { coordinates: [-122.4, 37.8], size: 100 },
+    { coordinates: [-122.5, 37.7], size: 200 },
+  ];
+</script>
+
+<template>
+  <VMap :options="mapOptions" style="height: 500px">
+    <VLayerDeckglScatterplot
+      id="points"
+      :data="data"
+      :get-position="(d) => d.coordinates"
+      :get-radius="(d) => d.size"
+      :get-fill-color="[255, 140, 0]"
+      :radius-min-pixels="5"
+      :pickable="true"
+      @click="(info) => console.log('Clicked:', info.object)"
+    ></VLayerDeckglScatterplot>
+  </VMap>
+</template>
+```
 
 ## Usage with Nuxt
 
@@ -120,7 +194,6 @@ For Nuxt applications, wrap the map component with `ClientOnly`:
 Add styles to your `nuxt.config.ts`:
 
 ```typescript
-// nuxt.config.ts
 export default defineNuxtConfig({
   css: [
     'maplibre-gl/dist/maplibre-gl.css',
@@ -129,123 +202,29 @@ export default defineNuxtConfig({
 });
 ```
 
-Or create a Nuxt plugin to import styles:
-
-```typescript
-// plugins/maplibre.client.ts
-import 'maplibre-gl/dist/maplibre-gl.css';
-import '@geoql/v-maplibre/dist/v-maplibre.css';
-
-export default defineNuxtPlugin(() => {
-  // Plugin loaded
-});
-```
-
-## Examples
-
-### GeoJSON Layer
-
-```vue
-<script setup lang="ts">
-  import { VMap, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
-  import type { GeoJSONSourceSpecification } from 'maplibre-gl';
-
-  const geojsonSource: GeoJSONSourceSpecification = {
-    type: 'geojson',
-    data: {
-      type: 'FeatureCollection',
-      features: [
-        {
-          type: 'Feature',
-          geometry: {
-            type: 'Point',
-            coordinates: [-74.5, 40],
-          },
-          properties: { name: 'Example Point' },
-        },
-      ],
-    },
-  };
-
-  const layerOptions = {
-    id: 'points',
-    type: 'circle' as const,
-    paint: {
-      'circle-radius': 8,
-      'circle-color': '#007cbf',
-    },
-  };
-</script>
-
-<template>
-  <VMap :options="mapOptions" style="height: 500px">
-    <VLayerMaplibreGeojson
-      :source="geojsonSource"
-      :layer="layerOptions"
-    ></VLayerMaplibreGeojson>
-  </VMap>
-</template>
-```
-
-### PMTiles Support
-
-```vue
-<script setup lang="ts">
-  import { VMap, VLayerMaplibrePmtile } from '@geoql/v-maplibre';
-
-  const pmtilesUrl = 'https://example.com/tiles.pmtiles';
-
-  const layerOptions = {
-    id: 'pmtiles-layer',
-    type: 'fill' as const,
-    paint: {
-      'fill-color': '#088',
-      'fill-opacity': 0.5,
-    },
-  };
-</script>
-
-<template>
-  <VMap :options="mapOptions" support-pmtiles style="height: 500px">
-    <VLayerMaplibrePmtile
-      :url="pmtilesUrl"
-      :layer="layerOptions"
-    ></VLayerMaplibrePmtile>
-  </VMap>
-</template>
-```
-
-## Documentation
-
-Visit our [documentation site](#) for:
-
-- Complete API reference
-- Detailed component guides
-- Interactive examples
-- Migration guides
-
 ## TypeScript Support
 
-All components are fully typed. Import types from `maplibre-gl`:
+All components are fully typed. Import types as needed:
 
 ```typescript
-import type { MapOptions, LngLatLike, GeoJSONSource } from 'maplibre-gl';
+import type { MapOptions, LngLatLike } from 'maplibre-gl';
+import type { Color, PickingInfo } from '@deck.gl/core';
 ```
 
 ## Development
 
 ```bash
 # Install dependencies
-pnpm install
+bun install
 
 # Build the library
-pnpm build
+bun run build
 
-# Run documentation
-pnpm docs:dev
+# Run tests
+bun run test
 
-# Build documentation
-pnpm docs:build
+# Lint
+bun run lint
 ```
 
 ## License
@@ -257,6 +236,7 @@ MIT License - see [LICENSE](LICENSE) for details
 Built with:
 
 - [MapLibre GL JS](https://maplibre.org/)
+- [deck.gl](https://deck.gl/)
 - [Vue 3](https://vuejs.org/)
 - [Vite](https://vitejs.dev/)
 - [PMTiles](https://github.com/protomaps/PMTiles)
