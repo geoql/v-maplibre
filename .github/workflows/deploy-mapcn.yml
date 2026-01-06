@@ -37,4 +37,5 @@ jobs:
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          command: pages deploy ./apps/mapcn-vue/.output/public --project-name=mapcn-vue
+          workingDirectory: ./apps/mapcn-vue
+          command: pages deploy dist --project-name=mapcn-vue

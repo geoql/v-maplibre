@@ -44,4 +44,4 @@ jobs:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           workingDirectory: ./apps/docs
-          command: pages deploy .output/public --project-name=v-maplibre-docs
+          command: pages deploy dist --project-name=v-maplibre-docs
