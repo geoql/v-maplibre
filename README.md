@@ -58,19 +58,22 @@ This copies theme-aware map components directly into your project.
 
 ## Development
 
-This monorepo uses [Bun](https://bun.sh) workspaces.
+This monorepo uses [Bun](https://bun.sh) workspaces for everything, except `apps/docs` which uses pnpm (due to [docus#1204](https://github.com/nuxt-content/docus/issues/1204)).
 
 ```bash
 # Install dependencies
 bun install
+bun run setup:docs   # Required: installs docs deps with pnpm
 
 # Development
 bun run dev:lib      # Watch mode for library
-bun run dev:docs     # Docus documentation
+bun run dev:docs     # Docus documentation (uses pnpm)
 bun run dev:mapcn    # mapcn-vue site
 
 # Build
 bun run build        # Build all packages
+bun run build:docs   # Build docs (uses pnpm)
+bun run build:mapcn  # Build mapcn-vue
 
 # Test
 bun run test         # Run tests
@@ -79,6 +82,9 @@ bun run test:coverage
 # Lint & Format
 bun run lint
 bun run format
+
+# Release (from packages/v-maplibre)
+bun run release
 ```
 
 ## Monorepo Structure
@@ -89,8 +95,8 @@ v-maplibre/
 │   ├── v-maplibre/        # Main library (npm: @geoql/v-maplibre)
 │   └── mapcn-vue/         # shadcn-vue registry components
 ├── apps/
-│   ├── docs/              # Docus documentation
-│   └── mapcn-vue/         # Nuxt 4 showcase site
+│   ├── docs/              # Docus documentation (uses pnpm)
+│   └── mapcn-vue/         # Nuxt 4 showcase site (uses bun)
 ├── package.json           # Bun workspaces root
 └── bun.lock
 ```

@@ -89,15 +89,53 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - name: Install dependencies
+        working-directory: ./apps/docs
+        run: pnpm install --frozen-lockfile
+
+      - name: Build documentation
+        working-directory: ./apps/docs
+        run: pnpm run build
+
+  mapcn:
+    name: Build mapcn-vue
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
-      - name: Install dependencies
-        working-directory: ./docs
+      - name: Install root dependencies (for workspace link)
         run: bun install --frozen-lockfile
 
-      - name: Build documentation
-        working-directory: ./docs
-        run: bun run build
+      - name: Install mapcn-vue dependencies
+        working-directory: ./apps/mapcn-vue
+        run: pnpm install --frozen-lockfile
+
+      - name: Build mapcn-vue
+        working-directory: ./apps/mapcn-vue
+        run: pnpm run build

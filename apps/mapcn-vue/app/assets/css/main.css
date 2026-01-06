@@ -73,7 +73,7 @@
 
 /* Code block styling */
 pre {
-  @apply rounded-lg border border-border bg-card p-4 overflow-x-auto;
+  @apply rounded-lg border border-border bg-card p-4 overflow-x-auto mb-6;
 }
 
 code {
@@ -111,6 +111,32 @@ code {
 
 .prose a {
   @apply text-primary underline underline-offset-4 hover:text-primary/80;
+}
+
+.prose h1 a,
+.prose h2 a,
+.prose h3 a,
+.prose h4 a {
+  @apply text-inherit no-underline hover:text-inherit;
+}
+
+.prose h2,
+.prose h3,
+.prose h4 {
+  @apply relative;
+}
+
+.prose h2 a::before,
+.prose h3 a::before,
+.prose h4 a::before {
+  content: '#';
+  @apply absolute -left-5 text-muted-foreground opacity-0 transition-opacity;
+}
+
+.prose h2:hover a::before,
+.prose h3:hover a::before,
+.prose h4:hover a::before {
+  @apply opacity-100;
 }
 
 /* Demo card map container - no min-height constraints */

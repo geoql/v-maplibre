@@ -296,7 +296,7 @@
           </p>
         </div>
 
-        <div class="mx-auto mt-8 max-w-2xl">
+        <div class="mx-auto mt-8 w-full max-w-2xl">
           <div class="overflow-hidden rounded-xl border border-border bg-card">
             <div
               class="flex items-center gap-2 border-b border-border px-4 py-2"
@@ -306,9 +306,12 @@
               <div class="h-3 w-3 rounded-full bg-green-500"></div>
               <span class="ml-2 text-xs text-muted-foreground">Terminal</span>
             </div>
-            <pre
-              class="overflow-x-auto border-0! bg-transparent p-4 text-sm"
-            ><code class="text-foreground">npx shadcn-vue@latest add https://mapcn-vue.geoql.in/r/map</code></pre>
+            <div class="overflow-x-auto p-4">
+              <code class="whitespace-nowrap text-sm text-foreground"
+                >npx shadcn-vue@latest add
+                https://mapcn-vue.geoql.in/r/map</code
+              >
+            </div>
           </div>
         </div>
       </div>

@@ -9,7 +9,10 @@
   ],
   "scripts": {
     "build": "bun run --filter '*' build",
-    "dev:docs": "bun run --cwd apps/docs dev",
+    "build:docs": "pnpm --dir apps/docs run build",
+    "build:mapcn": "bun run --cwd apps/mapcn-vue build",
+    "setup:docs": "pnpm --dir apps/docs install && pnpm --dir apps/docs rebuild better-sqlite3",
+    "dev:docs": "pnpm --dir apps/docs run dev",
     "dev:mapcn": "bun run --cwd apps/mapcn-vue dev",
     "dev:lib": "bun run --cwd packages/v-maplibre dev",
     "lint": "bun run --filter '*' lint",
@@ -17,6 +20,7 @@
     "format:check": "prettier --check .",
     "test": "bun run --cwd packages/v-maplibre test",
     "test:coverage": "bun run --cwd packages/v-maplibre test:coverage",
+    "release": "bun run --cwd packages/v-maplibre release",
     "prepare": "husky || true",
     "clean": "rm -rf node_modules packages/*/node_modules apps/*/node_modules packages/*/dist apps/*/.nuxt apps/*/.output"
   },
