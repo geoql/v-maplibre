@@ -40,6 +40,14 @@ jobs:
         env:
           NITRO_PRESET: cloudflare-pages
 
+      - name: Create Pages project if needed
+        working-directory: apps/docs
+        run: |
+          pnpm exec wrangler pages project create v-maplibre-docs --production-branch=main 2>/dev/null || true
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+
       - name: Deploy to Cloudflare Pages
         working-directory: apps/docs
         run: pnpm exec wrangler pages deploy dist --project-name=v-maplibre-docs
