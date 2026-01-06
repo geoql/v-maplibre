@@ -39,7 +39,7 @@ jobs:
 
       - name: Deploy to Cloudflare Pages
         working-directory: apps/mapcn-vue
-        run: bun x wrangler pages deploy dist --project-name=mapcn-vue --config wrangler.json
+        run: bun x wrangler pages deploy dist --project-name=mapcn-vue
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}

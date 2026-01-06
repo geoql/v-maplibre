@@ -21,8 +21,15 @@ export default defineNuxtConfig({
     cloudflare: {
       nodeCompat: true,
     },
-    unenv: {
-      polyfill: ['node:process'],
+    rollupConfig: {
+      output: {
+        generatedCode: {
+          constBindings: true,
+        },
+      },
+    },
+    replace: {
+      'process.stdout': 'undefined',
     },
   },
   content: {
