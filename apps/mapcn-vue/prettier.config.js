@@ -1,6 +1,4 @@
-import type { Config } from 'prettier';
-
-const config: Config = {
+const config = {
   $schema: 'http://json.schemastore.org/prettierrc',
   semi: true,
   arrowParens: 'always',
