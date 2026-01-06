@@ -34,6 +34,10 @@ jobs:
         working-directory: ./apps/docs
         run: pnpm install --frozen-lockfile
 
+      - name: Rebuild better-sqlite3
+        working-directory: ./apps/docs
+        run: pnpm rebuild better-sqlite3
+
       - name: Build docs
         working-directory: ./apps/docs
         run: pnpm run build
