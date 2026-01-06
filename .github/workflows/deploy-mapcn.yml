@@ -34,11 +34,12 @@ jobs:
 
       - name: Build mapcn-vue
         run: bun run build:mapcn
+        env:
+          NITRO_PRESET: cloudflare-pages
 
       - name: Deploy to Cloudflare Pages
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          workingDirectory: ./apps/mapcn-vue
-          command: pages deploy dist --project-name=mapcn-vue
+        working-directory: apps/mapcn-vue
+        run: pnpm exec wrangler pages deploy dist --project-name=mapcn-vue
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
