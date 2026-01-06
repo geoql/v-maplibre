@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "v-maplibre-docs",
+  "compatibility_date": "2025-06-02",
+  "compatibility_flags": ["nodejs_compat_v2"],
+  "pages_build_output_dir": ".output/public",
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "v-maplibre-docs-db",
+      "database_id": "f10b0499-b7cc-46f4-81f4-7e8fe1194ba1"
+    }
+  ]
+}

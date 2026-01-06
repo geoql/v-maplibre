@@ -79,7 +79,7 @@ jobs:
         uses: actions/upload-artifact@v6
         with:
           name: dist
-          path: dist/
+          path: packages/v-maplibre/dist/
           retention-days: 7
 
   docs:
@@ -114,28 +114,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '22'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
-      - name: Install root dependencies (for workspace link)
+      - name: Install dependencies
         run: bun install --frozen-lockfile
 
-      - name: Install mapcn-vue dependencies
-        working-directory: ./apps/mapcn-vue
-        run: pnpm install --frozen-lockfile
-
       - name: Build mapcn-vue
-        working-directory: ./apps/mapcn-vue
-        run: pnpm run build
+        run: bun run build:mapcn

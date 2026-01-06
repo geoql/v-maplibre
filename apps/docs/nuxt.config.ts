@@ -1,4 +1,3 @@
-// apps/docs/nuxt.config.ts
 export default defineNuxtConfig({
   extends: ['docus'],
   modules: [
@@ -17,15 +16,13 @@ export default defineNuxtConfig({
     url: 'https://v-maplibre.geoql.io',
   },
   compatibilityDate: '2025-07-18',
-
-  // Workaround for bun + docus rollup-plugin-inject issue
-  // https://github.com/nuxt-content/docus/issues/1204
   nitro: {
-    rollupConfig: {
-      // @ts-expect-error - rollup plugin options
-      plugins: {
-        inject: false,
-      },
+    preset: 'cloudflare-pages',
+  },
+  content: {
+    database: {
+      type: 'd1',
+      binding: 'DB',
     },
   },
 });
