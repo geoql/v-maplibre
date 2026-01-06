@@ -101,11 +101,7 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./apps/docs
-        run: pnpm install --frozen-lockfile --ignore-scripts
-
-      - name: Build native modules
-        working-directory: ./apps/docs
-        run: pnpm rebuild
+        run: pnpm install
 
       - name: Build documentation
         working-directory: ./apps/docs
