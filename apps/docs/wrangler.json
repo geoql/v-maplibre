@@ -3,7 +3,7 @@
   "name": "v-maplibre-docs",
   "compatibility_date": "2025-06-02",
   "compatibility_flags": ["nodejs_compat_v2"],
-  "pages_build_output_dir": ".output/public",
+  "pages_build_output_dir": "dist",
   "d1_databases": [
     {
       "binding": "DB",

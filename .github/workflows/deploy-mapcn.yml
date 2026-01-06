@@ -29,6 +29,9 @@ jobs:
       - name: Install dependencies
         run: bun install --frozen-lockfile
 
+      - name: Build library
+        run: bun run --cwd packages/v-maplibre build
+
       - name: Build mapcn-vue
         run: bun run build:mapcn
 
