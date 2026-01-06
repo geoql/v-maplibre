@@ -32,11 +32,11 @@ jobs:
 
       - name: Install dependencies
         working-directory: ./apps/docs
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --ignore-scripts
 
-      - name: Rebuild better-sqlite3
+      - name: Build native modules
         working-directory: ./apps/docs
-        run: pnpm rebuild better-sqlite3
+        run: pnpm rebuild
 
       - name: Build docs
         working-directory: ./apps/docs
