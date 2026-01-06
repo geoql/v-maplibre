@@ -21,6 +21,9 @@ export default defineNuxtConfig({
     cloudflare: {
       nodeCompat: true,
     },
+    unenv: {
+      polyfill: ['node:process'],
+    },
   },
   content: {
     database: {
