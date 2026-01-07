@@ -169,6 +169,30 @@ Manual trigger only - handles the complete release process.
 
 Runs on PRs - ensures all commits follow conventional commits.
 
+## Deployment Workflows
+
+### Docs (`apps/docs`)
+
+- **Trigger**: Push to `main` with changes in `apps/docs/**` or `packages/v-maplibre/**`
+- **Destination**: https://v-maplibre-docs.pages.dev
+- **Workflow**: `.github/workflows/deploy-docs.yml`
+- **Platform**: Cloudflare Pages
+
+### mapcn-vue (`apps/mapcn-vue`)
+
+- **Trigger**: Push to `main` with changes in `apps/mapcn-vue/**` or `packages/**`
+- **Destination**: https://mapcn-vue.geoql.in
+- **Workflow**: `.github/workflows/deploy-mapcn.yml`
+- **Platform**: Cloudflare Pages
+
+### Manual Deployment
+
+Both workflows support `workflow_dispatch` for manual triggers:
+
+1. Go to **Actions** → **Deploy Docs** or **Deploy mapcn-vue**
+2. Click **Run workflow**
+3. Select branch and click **Run workflow**
+
 ## Version Lifecycle
 
 ```
