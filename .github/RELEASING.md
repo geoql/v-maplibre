@@ -174,7 +174,7 @@ Runs on PRs - ensures all commits follow conventional commits.
 ### Docs (`apps/docs`)
 
 - **Trigger**: Push to `main` with changes in `apps/docs/**` or `packages/v-maplibre/**`
-- **Destination**: https://v-maplibre-docs.pages.dev
+- **Destination**: https://v-maplibre.geoql.in
 - **Workflow**: `.github/workflows/deploy-docs.yml`
 - **Platform**: Cloudflare Pages
 
