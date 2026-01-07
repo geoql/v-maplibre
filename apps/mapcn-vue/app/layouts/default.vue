@@ -108,7 +108,7 @@
                 <Icon name="lucide:menu" class="w-5 h-5"></Icon>
               </button>
             </SheetTrigger>
-            <SheetContent side="right" class="w-[280px] p-0">
+            <SheetContent side="right" class="w-70 p-0">
               <SheetHeader class="px-6 py-4 border-b border-border">
                 <SheetTitle class="flex items-center gap-2 text-left">
                   <Icon name="lucide:map" class="w-5 h-5"></Icon>
@@ -134,7 +134,7 @@
                       route.path === item.to ||
                       route.path.startsWith(item.to + '/')
                     "
-                    class="absolute left-0 top-1/2 h-6 w-[3px] -translate-y-1/2 rounded-r-full bg-primary"
+                    class="absolute left-0 top-1/2 h-6 w-0.75 -translate-y-1/2 rounded-r-full bg-primary"
                   ></span>
                   <Icon :name="item.icon" class="w-4 h-4 shrink-0"></Icon>
                   <span>{{ item.label }}</span>
@@ -187,7 +187,7 @@
         </p>
         <div class="flex items-center gap-3">
           <a
-            href="https://twitter.com/_vinayak"
+            href="https://x.com/_vinayak_k"
             target="_blank"
             rel="noopener noreferrer"
             class="transition-colors text-muted-foreground hover:text-foreground"
