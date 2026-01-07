@@ -63,7 +63,11 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN || secrets.GITHUB_TOKEN }}
 
       - name: Publish to npm with provenance
+        working-directory: packages/v-maplibre
         run: npm publish --provenance --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Publish to JSR
+        working-directory: packages/v-maplibre
         run: bunx jsr publish --allow-dirty
