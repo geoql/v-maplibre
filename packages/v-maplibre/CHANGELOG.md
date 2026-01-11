@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/geoql/v-maplibre/compare/v1.2.2...v1.2.3) (2026-01-11)
+
+
+### Bug Fixes
+
+* use hardcoded version for maplibre-gl dependency ([ec81514](https://github.com/geoql/v-maplibre/commit/ec815146f68f972ccde3e5699e066642f2eacf4a))
+
 ## [1.2.2](https://github.com/geoql/v-maplibre/compare/v1.2.1...v1.2.2) (2026-01-11)
 
 
