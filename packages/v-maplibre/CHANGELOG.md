@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.2](https://github.com/geoql/v-maplibre/compare/v1.2.1...v1.2.2) (2026-01-11)
+
+
+### Miscellaneous
+
+* consolidate to bun, add catalogs for shared deps ([83238e8](https://github.com/geoql/v-maplibre/commit/83238e83c22df82830d8521c565000e553ec2940))
+* migrate from release-it to release-please ([3cd7c4c](https://github.com/geoql/v-maplibre/commit/3cd7c4c6e9fb679e2b6dafc99208ed523ed6badb))
+
 ## [1.2.1](https://github.com/geoql/v-maplibre/compare/v1.2.0...v1.2.1) (2026-01-07)
 
 ### Bug Fixes
