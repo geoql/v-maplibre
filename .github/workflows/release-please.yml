@@ -4,6 +4,11 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to publish (e.g., v1.2.2)'
+        required: true
 
 permissions:
   contents: write
@@ -13,9 +18,9 @@ jobs:
   release-please:
     runs-on: ubuntu-latest
     outputs:
-      release_created: ${{ steps.release.outputs.release_created }}
-      tag_name: ${{ steps.release.outputs.tag_name }}
-      version: ${{ steps.release.outputs.version }}
+      release_created: ${{ steps.release.outputs['packages/v-maplibre--release_created'] }}
+      tag_name: ${{ steps.release.outputs['packages/v-maplibre--tag_name'] }}
+      version: ${{ steps.release.outputs['packages/v-maplibre--version'] }}
     steps:
       - name: Release Please
         id: release
@@ -27,7 +32,7 @@ jobs:
 
   publish:
     needs: release-please
-    if: ${{ needs.release-please.outputs.release_created }}
+    if: ${{ needs.release-please.outputs.release_created == 'true' || github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -36,7 +41,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          ref: ${{ needs.release-please.outputs.tag_name }}
+          ref: ${{ needs.release-please.outputs.tag_name || github.event.inputs.tag }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
