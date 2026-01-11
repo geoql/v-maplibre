@@ -30,7 +30,6 @@
     "lint:fix": "oxlint --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "release": "release-it",
     "prepublishOnly": "bun run lint && bun run format:check && bun run test:coverage && bun run build"
   },
   "peerDependencies": {
@@ -74,7 +73,6 @@
     "@deck.gl/geo-layers": "catalog:deckgl",
     "@deck.gl/mesh-layers": "catalog:deckgl",
     "@awmottaz/prettier-plugin-void-html": "catalog:",
-    "@release-it/conventional-changelog": "^10.0.4",
     "@types/node": "^25.0.6",
     "@vitejs/plugin-vue": "^6.0.3",
     "@vitest/coverage-v8": "^4.0.16",
@@ -83,7 +81,6 @@
     "happy-dom": "^20.1.0",
     "oxlint": "catalog:",
     "prettier": "catalog:",
-    "release-it": "^19.2.3",
     "typescript": "catalog:",
     "vite": "^7.3.1",
     "vitest": "^4.0.16",

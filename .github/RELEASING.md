@@ -1,69 +1,74 @@
 # Release Guide
 
-This project uses automated releases with semantic versioning via `release-it`.
+This project uses [Release Please](https://github.com/googleapis/release-please) for automated releases based on [Conventional Commits](https://www.conventionalcommits.org/).
+
+## How It Works
+
+1. **Commits to `main`** with conventional commit messages (`feat:`, `fix:`, etc.) trigger Release Please
+2. **Release Please creates/updates a Release PR** with version bumps and changelog
+3. **Merging the Release PR** creates a GitHub Release and triggers publishing to npm and JSR
 
 ## Prerequisites
 
 Before releasing, ensure you have:
 
-1. **NPM_TOKEN** secret configured in GitHub (for automated npm publishing)
-2. **JSR_TOKEN** secret configured in GitHub (for automated JSR publishing)
-3. Push access to the `main` branch
-4. All CI checks passing
+1. **RELEASE_PAT** secret configured in GitHub (Personal Access Token for Release Please)
+2. **npm Trusted Publisher** configured (for token-less npm publishing)
+3. **JSR linked repo** configured (for token-less JSR publishing)
+4. Push access to the `main` branch
+5. All CI checks passing
 
-### Setting up JSR Token
+### Setting up RELEASE_PAT
+
+1. Go to GitHub Settings → Developer settings → Personal access tokens → Fine-grained tokens
+2. Create a new token with:
+   - Repository access: This repository only
+   - Permissions: Contents (read/write), Pull requests (read/write)
+3. Add the token as `RELEASE_PAT` in GitHub repository secrets
+
+### Setting up NPM Trusted Publisher
+
+This package uses **npm Trusted Publishers** for secure, token-less publishing with provenance attestation.
+
+1. Go to [npmjs.com](https://www.npmjs.com/) and log in
+2. Navigate to your package → **Settings** → **Publishing access**
+3. Scroll to **Trusted publishers** → Click **Add trusted publisher**
+4. Fill in:
+   - **Provider**: GitHub Actions
+   - **Repository owner**: `geoql`
+   - **Repository name**: `v-maplibre`
+   - **Workflow**: `release-please.yml`
+   - **Environment**: Leave empty
+5. Click **Add**
+
+### Setting up JSR Linked Repository
+
+JSR uses GitHub OIDC for token-less publishing when the repo is linked.
 
 1. Go to [jsr.io](https://jsr.io) and sign in
-2. Create a new token at https://jsr.io/account/tokens
-3. Add the token as `JSR_TOKEN` in GitHub repository secrets
+2. Navigate to your package → **Settings** → **Linked GitHub repository**
+3. Link the `geoql/v-maplibre` repository
 
 ## Release Process
 
-### Manual Release (Recommended)
+### Automatic (Recommended)
 
-Use GitHub Actions workflow dispatch:
+1. Make commits to `main` following [Conventional Commits](#commit-convention)
+2. Release Please automatically creates/updates a Release PR
+3. Review the Release PR (check version bump, changelog)
+4. Merge the Release PR
+5. Publishing to npm and JSR happens automatically
 
-1. Go to **Actions** → **Release** workflow
-2. Click **Run workflow**
-3. Select the release type:
-   - `patch` - Bug fixes (0.1.0 → 0.1.1)
-   - `minor` - New features (0.1.0 → 0.2.0)
-   - `major` - Breaking changes (0.1.0 → 1.0.0)
-   - `prepatch` - Pre-release patch (0.1.0 → 0.1.1-0)
-   - `preminor` - Pre-release minor (0.1.0 → 0.2.0-0)
-   - `premajor` - Pre-release major (0.1.0 → 1.0.0-0)
-4. Click **Run workflow**
+### What Happens on Merge
 
-The workflow will:
+When you merge a Release Please PR:
 
-- ✅ Run linting
-- ✅ Run tests with coverage
-- ✅ Build the package
-- ✅ Bump version in package.json
-- ✅ Sync version to jsr.json
-- ✅ Generate CHANGELOG.md
-- ✅ Create git tag
-- ✅ Push to GitHub
-- ✅ Create GitHub release
-- ✅ Publish to npm
-- ✅ Publish to JSR
-
-### Local Release (Advanced)
-
-```bash
-# Make sure you're on main and up to date
-git checkout main
-git pull
-
-# Ensure you're logged in to npm
-npm login
-
-# Run release
-bun run release [patch|minor|major]
-
-# Or for interactive mode
-bun run release
-```
+- Version is bumped in `package.json` and `jsr.json`
+- `CHANGELOG.md` is updated
+- Git tag is created (e.g., `v1.3.0`)
+- GitHub Release is created
+- Package is published to npm with provenance
+- Package is published to JSR
 
 ## Commit Convention
 
@@ -71,16 +76,18 @@ This project follows [Conventional Commits](https://www.conventionalcommits.org/
 
 ### Commit Types
 
-- `feat:` - New feature (triggers minor release)
-- `fix:` - Bug fix (triggers patch release)
-- `docs:` - Documentation changes
-- `style:` - Code style changes (formatting, etc.)
-- `refactor:` - Code refactoring
-- `perf:` - Performance improvements
-- `test:` - Adding or updating tests
-- `chore:` - Maintenance tasks
-- `ci:` - CI/CD changes
-- `build:` - Build system changes
+| Type        | Description              | Version Bump          |
+| ----------- | ------------------------ | --------------------- |
+| `feat:`     | New feature              | Minor (0.1.0 → 0.2.0) |
+| `fix:`      | Bug fix                  | Patch (0.1.0 → 0.1.1) |
+| `docs:`     | Documentation changes    | -                     |
+| `style:`    | Code style changes       | -                     |
+| `refactor:` | Code refactoring         | -                     |
+| `perf:`     | Performance improvements | Patch                 |
+| `test:`     | Adding or updating tests | -                     |
+| `chore:`    | Maintenance tasks        | -                     |
+| `ci:`       | CI/CD changes            | -                     |
+| `build:`    | Build system changes     | -                     |
 
 ### Breaking Changes
 
@@ -107,27 +114,22 @@ git commit -m "feat!: redesign component API
 BREAKING CHANGE: props have been renamed"
 ```
 
-## Pre-release Workflow
+## Configuration Files
 
-For pre-releases (alpha, beta, rc):
-
-```bash
-# Create a pre-release
-bun run release prepatch --preRelease=alpha
-# Results in: 0.1.0 → 0.1.1-alpha.0
-
-# Continue the pre-release
-bun run release prerelease --preRelease=alpha
-# Results in: 0.1.1-alpha.0 → 0.1.1-alpha.1
-
-# Graduate to stable
-bun run release patch
-# Results in: 0.1.1-alpha.1 → 0.1.1
-```
+- **`release-please-config.json`** - Release Please configuration
+- **`.release-please-manifest.json`** - Current version tracking
 
 ## Troubleshooting
 
-### Release fails during npm publish
+### Release PR not created
+
+Check that:
+
+1. Commits follow conventional commit format
+2. `RELEASE_PAT` secret is configured
+3. Workflow has proper permissions
+
+### npm publish fails
 
 Check that:
 
@@ -135,21 +137,18 @@ Check that:
 2. Token has publish permissions
 3. Package name is available on npm
 
-### Git push fails
+### Version not bumped correctly
 
-Ensure you have push permissions to the repository.
-
-### Tests fail during release
-
-Fix the failing tests before attempting another release:
-
-```bash
-bun test
-bun run lint
-bun run format:check
-```
+Review your commit messages - only `feat:` and `fix:` (and `perf:`) commits trigger version bumps.
 
 ## CI/CD Workflows
+
+### Release Please Workflow (`.github/workflows/release-please.yml`)
+
+Runs on every push to `main`:
+
+- Creates/updates Release PR based on commits
+- On Release PR merge: publishes to npm and JSR
 
 ### CI Workflow (`.github/workflows/ci.yml`)
 
@@ -160,10 +159,6 @@ Runs on every push and PR:
 - Tests with coverage
 - Build verification
 - Documentation build
-
-### Release Workflow (`.github/workflows/release.yml`)
-
-Manual trigger only - handles the complete release process.
 
 ### Commit Lint Workflow (`.github/workflows/commitlint.yml`)
 
@@ -184,14 +179,6 @@ Runs on PRs - ensures all commits follow conventional commits.
 - **Destination**: https://mapcn-vue.geoql.in
 - **Workflow**: `.github/workflows/deploy-mapcn.yml`
 - **Platform**: Cloudflare Pages
-
-### Manual Deployment
-
-Both workflows support `workflow_dispatch` for manual triggers:
-
-1. Go to **Actions** → **Deploy Docs** or **Deploy mapcn-vue**
-2. Click **Run workflow**
-3. Select branch and click **Run workflow**
 
 ## Version Lifecycle
 
