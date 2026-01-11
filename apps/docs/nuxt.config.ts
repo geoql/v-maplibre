@@ -18,6 +18,13 @@ export default defineNuxtConfig({
     url: 'https://v-maplibre.geoql.io',
   },
 
+  content: {
+    database: {
+      type: 'd1',
+      bindingName: 'DB',
+    },
+  },
+
   compatibilityDate: '2025-07-18',
 
   nitro: {
@@ -34,13 +41,6 @@ export default defineNuxtConfig({
     },
     replace: {
       'process.stdout': 'undefined',
-    },
-  },
-
-  content: {
-    database: {
-      type: 'd1',
-      bindingName: 'DB',
     },
   },
 });
