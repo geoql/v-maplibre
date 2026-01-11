@@ -6,4 +6,5 @@ coverage
 *.log
 pnpm-lock.yaml
 .git
+.claude/
 docs/

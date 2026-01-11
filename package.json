@@ -36,7 +36,7 @@
     "dev:docs": "cd apps/docs && bun run dev",
     "dev:mapcn": "bun run --cwd apps/mapcn-vue dev",
     "dev:lib": "bun run --cwd packages/v-maplibre dev",
-    "lint": "bun run --filter '*' lint",
+    "lint": "bun run --filter '!@geoql/v-maplibre-docs' lint",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "bun run --cwd packages/v-maplibre test",
