@@ -66,4 +66,4 @@ jobs:
 
       - name: Publish to JSR
         working-directory: packages/v-maplibre
-        run: bunx jsr publish --allow-dirty
+        run: bunx jsr publish --allow-dirty --allow-slow-types
