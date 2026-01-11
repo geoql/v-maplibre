@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.4](https://github.com/geoql/v-maplibre/compare/v1.2.3...v1.2.4) (2026-01-11)
+
+
+### Bug Fixes
+
+* configure jsr.json with npm imports for Deno compatibility ([5d3a73a](https://github.com/geoql/v-maplibre/commit/5d3a73a3cde4f211848fe989069729ff4c5f2320))
+
 ## [1.2.3](https://github.com/geoql/v-maplibre/compare/v1.2.2...v1.2.3) (2026-01-11)
 
 
