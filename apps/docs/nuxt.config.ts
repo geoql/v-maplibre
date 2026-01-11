@@ -15,7 +15,11 @@ export default defineNuxtConfig({
   site: {
     name: 'v-maplibre',
     description: 'Vue 3 components for MapLibre GL',
-    url: 'https://v-maplibre.geoql.io',
+    url: 'https://v-maplibre.geoql.in',
+  },
+
+  llms: {
+    domain: 'v-maplibre.geoql.in',
   },
 
   content: {
