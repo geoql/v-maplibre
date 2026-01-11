@@ -62,7 +62,7 @@
     }
   },
   "dependencies": {
-    "maplibre-gl": "catalog:",
+    "maplibre-gl": "^5.15.0",
     "pmtiles": "^4.3.2"
   },
   "devDependencies": {
