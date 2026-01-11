@@ -16,7 +16,6 @@
         "eslint": "^9.39.2",
         "eslint-plugin-oxlint": "^1.38.0",
         "oxlint": "^1.38.0",
-        "prettier": "^3.7.4",
         "wrangler": "^4.58.0",
       },
     },
