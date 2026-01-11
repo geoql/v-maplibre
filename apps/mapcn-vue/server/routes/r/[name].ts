@@ -341,7 +341,8 @@ function readFileContent(relativePath: string): string {
 }
 
 export default defineEventHandler((event) => {
-  const name = getRouterParam(event, 'name');
+  const rawName = getRouterParam(event, 'name');
+  const name = rawName?.replace(/\.json$/, '');
 
   if (!name || !registry[name]) {
     throw createError({

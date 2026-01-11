@@ -86,7 +86,7 @@
     },
     "packages/v-maplibre": {
       "name": "@geoql/v-maplibre",
-      "version": "1.2.2",
+      "version": "1.2.4",
       "dependencies": {
         "maplibre-gl": "^5.15.0",
         "pmtiles": "^4.3.2",

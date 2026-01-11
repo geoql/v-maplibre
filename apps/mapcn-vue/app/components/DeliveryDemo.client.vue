@@ -66,9 +66,16 @@
     },
   ];
 
-  const getSourcePosition = (d: any) => d.source;
-  const getTargetPosition = (d: any) => d.target;
-  const getWidth = (d: any) => Math.sqrt(d.deliveries) * 0.5;
+  interface DeliveryData {
+    source: [number, number];
+    target: [number, number];
+    deliveries: number;
+  }
+
+  const getSourcePosition = (d: unknown) => (d as DeliveryData).source;
+  const getTargetPosition = (d: unknown) => (d as DeliveryData).target;
+  const getWidth = (d: unknown) =>
+    Math.sqrt((d as DeliveryData).deliveries) * 0.5;
 
   const getSourceColor = (): [number, number, number] => {
     return colorMode.value === 'dark' ? [59, 130, 246] : [37, 99, 235];

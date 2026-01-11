@@ -37,14 +37,16 @@
 </script>
 
 <template>
-  <div class="flex flex-col font-sans antialiased min-h-dvh bg-background">
+  <div
+    class="flex flex-col font-sans antialiased min-h-dvh bg-background overflow-x-clip"
+  >
     <header
       class="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60"
     >
       <div class="container flex items-center h-14 max-w-screen-2xl">
         <div class="flex mr-4">
           <NuxtLink to="/" class="flex items-center mr-6 space-x-2">
-            <Icon name="lucide:map" class="w-6 h-6"></Icon>
+            <Icon name="lucide:map" class="size-6"></Icon>
             <span class="font-bold">mapcn-vue</span>
           </NuxtLink>
         </div>
@@ -84,7 +86,7 @@
             rel="noopener noreferrer"
             class="inline-flex items-center justify-center text-sm font-medium rounded-md h-9 w-9 hover:bg-accent hover:text-accent-foreground"
           >
-            <Icon name="simple-icons:github" class="w-5 h-5"></Icon>
+            <Icon name="simple-icons:github" class="size-5"></Icon>
             <span class="sr-only">GitHub</span>
           </a>
           <button
@@ -93,7 +95,7 @@
           >
             <Icon
               :name="colorMode.value === 'dark' ? 'lucide:sun' : 'lucide:moon'"
-              class="w-5 h-5"
+              class="size-5"
             ></Icon>
             <span class="sr-only">Toggle theme</span>
           </button>
@@ -105,13 +107,13 @@
                 class="inline-flex items-center justify-center text-sm font-medium rounded-md h-9 w-9 hover:bg-accent hover:text-accent-foreground md:hidden"
                 aria-label="Open navigation menu"
               >
-                <Icon name="lucide:menu" class="w-5 h-5"></Icon>
+                <Icon name="lucide:menu" class="size-5"></Icon>
               </button>
             </SheetTrigger>
             <SheetContent side="right" class="w-70 p-0">
               <SheetHeader class="px-6 py-4 border-b border-border">
                 <SheetTitle class="flex items-center gap-2 text-left">
-                  <Icon name="lucide:map" class="w-5 h-5"></Icon>
+                  <Icon name="lucide:map" class="size-5"></Icon>
                   <span>mapcn-vue</span>
                 </SheetTitle>
               </SheetHeader>
@@ -136,7 +138,7 @@
                     "
                     class="absolute left-0 top-1/2 h-6 w-0.75 -translate-y-1/2 rounded-r-full bg-primary"
                   ></span>
-                  <Icon :name="item.icon" class="w-4 h-4 shrink-0"></Icon>
+                  <Icon :name="item.icon" class="size-4 shrink-0"></Icon>
                   <span>{{ item.label }}</span>
                 </NuxtLink>
               </nav>
@@ -148,7 +150,7 @@
                     rel="noopener noreferrer"
                     class="inline-flex items-center justify-center text-sm font-medium rounded-md h-9 w-9 hover:bg-accent hover:text-accent-foreground"
                   >
-                    <Icon name="simple-icons:github" class="w-5 h-5"></Icon>
+                    <Icon name="simple-icons:github" class="size-5"></Icon>
                     <span class="sr-only">GitHub</span>
                   </a>
                   <button
@@ -161,7 +163,7 @@
                           ? 'lucide:sun'
                           : 'lucide:moon'
                       "
-                      class="w-5 h-5"
+                      class="size-5"
                     ></Icon>
                     <span class="sr-only">Toggle theme</span>
                   </button>
@@ -192,7 +194,7 @@
             rel="noopener noreferrer"
             class="transition-colors text-muted-foreground hover:text-foreground"
           >
-            <Icon name="simple-icons:x" class="w-5 h-5"></Icon>
+            <Icon name="simple-icons:x" class="size-5"></Icon>
           </a>
           <a
             href="https://github.com/geoql/v-maplibre"
@@ -200,7 +202,7 @@
             rel="noopener noreferrer"
             class="transition-colors text-muted-foreground hover:text-foreground"
           >
-            <Icon name="simple-icons:github" class="w-5 h-5"></Icon>
+            <Icon name="simple-icons:github" class="size-5"></Icon>
           </a>
           <button
             class="transition-colors text-muted-foreground hover:text-foreground"
@@ -208,7 +210,7 @@
           >
             <Icon
               :name="colorMode.value === 'dark' ? 'lucide:sun' : 'lucide:moon'"
-              class="w-5 h-5"
+              class="size-5"
             ></Icon>
           </button>
         </div>

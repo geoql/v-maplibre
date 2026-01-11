@@ -1,13 +1,13 @@
 <script setup lang="ts">
   import {
     VMap,
-    VLayerDeckglScatterplot,
+    VLayerDeckglPath,
     VControlNavigation,
   } from '@geoql/v-maplibre';
 
   useSeoMeta({
-    title: 'Scatterplot (deck.gl) - mapcn-vue Examples',
-    description: 'High-performance scatterplot visualization.',
+    title: 'Path Layer (deck.gl) - mapcn-vue Examples',
+    description: 'Render continuous paths with multiple vertices.',
   });
 
   const colorMode = useColorMode();
@@ -23,45 +23,64 @@
   );
 
   const mapOptions = computed(() => ({
-    container: `scatterplot-example-${mapId}`,
+    container: `path-example-${mapId}`,
     style: mapStyle.value,
     center: [-122.4, 37.8] as [number, number],
     zoom: 11,
   }));
 
-  // Generate sample data
-  const generateData = () => {
-    const data = [];
-    for (let i = 0; i < 1000; i++) {
-      data.push({
-        coordinates: [
-          -122.4 + (Math.random() - 0.5) * 0.2,
-          37.8 + (Math.random() - 0.5) * 0.15,
-        ],
-        size: Math.random() * 100 + 20,
-        color: Math.random() > 0.5 ? [255, 140, 0] : [0, 200, 150],
-      });
-    }
-    return data;
-  };
+  // Generate path data (routes)
+  const pathData = [
+    {
+      path: [
+        [-122.45, 37.78],
+        [-122.43, 37.79],
+        [-122.41, 37.78],
+        [-122.39, 37.8],
+        [-122.37, 37.79],
+      ],
+      name: 'Route A',
+      color: [255, 140, 0],
+    },
+    {
+      path: [
+        [-122.48, 37.75],
+        [-122.45, 37.77],
+        [-122.42, 37.76],
+        [-122.4, 37.78],
+        [-122.38, 37.77],
+        [-122.35, 37.79],
+      ],
+      name: 'Route B',
+      color: [0, 200, 150],
+    },
+    {
+      path: [
+        [-122.44, 37.82],
+        [-122.42, 37.81],
+        [-122.4, 37.83],
+        [-122.38, 37.82],
+        [-122.36, 37.84],
+      ],
+      name: 'Route C',
+      color: [138, 43, 226],
+    },
+  ];
 
-  interface ScatterPoint {
-    coordinates: [number, number];
-    size: number;
+  interface PathData {
+    path: [number, number][];
+    name: string;
     color: [number, number, number];
   }
 
-  const scatterData = generateData();
-
-  const getPosition = (d: unknown) => (d as ScatterPoint).coordinates;
-  const getRadius = (d: unknown) => (d as ScatterPoint).size;
-  const getFillColor = (d: unknown) => (d as ScatterPoint).color;
+  const getPath = (d: unknown) => (d as PathData).path;
+  const getColor = (d: unknown) => (d as PathData).color;
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VLayerDeckglScatterplot, VControlNavigation } from '@geoql/v-maplibre';
+import { VMap, VLayerDeckglPath, VControlNavigation } from '@geoql/v-maplibre';
 
 const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
@@ -69,26 +88,28 @@ const mapOptions = {
   zoom: 11,
 };
 
-const data = [
-  { coordinates: [-122.4, 37.8], size: 100, color: [255, 140, 0] },
-  { coordinates: [-122.5, 37.7], size: 200, color: [0, 200, 150] },
-  // ... more points
+const pathData = [
+  {
+    path: [[-122.45, 37.78], [-122.43, 37.79], [-122.41, 37.78], [-122.39, 37.8]],
+    name: 'Route A',
+    color: [255, 140, 0],
+  },
+  // ... more paths
 ];
 ${SCRIPT_END}
 
 <template>
   <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
     <VControlNavigation position="top-right" />
-    <VLayerDeckglScatterplot
-      id="scatterplot"
-      :data="data"
-      :get-position="(d) => d.coordinates"
-      :get-radius="(d) => d.size"
-      :get-fill-color="(d) => d.color"
-      :radius-min-pixels="3"
-      :radius-max-pixels="30"
-      :opacity="0.8"
+    <VLayerDeckglPath
+      id="path-layer"
+      :data="pathData"
+      :get-path="(d) => d.path"
+      :get-color="(d) => d.color"
+      :get-width="4"
+      :width-min-pixels="2"
       :pickable="true"
+      :rounded="true"
     />
   </VMap>
 </template>`;
@@ -106,10 +127,11 @@ ${SCRIPT_END}
           Back to Examples
         </NuxtLink>
         <h1 class="mt-4 text-3xl font-bold tracking-tight">
-          Scatterplot (deck.gl)
+          Path Layer (deck.gl)
         </h1>
         <p class="mt-2 text-lg text-muted-foreground">
-          High-performance WebGL scatterplot rendering thousands of points.
+          Render continuous paths with multiple vertices for routes and
+          trajectories.
         </p>
       </div>
 
@@ -120,16 +142,16 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
-              <VLayerDeckglScatterplot
-                id="scatterplot"
-                :data="scatterData"
-                :get-position="getPosition"
-                :get-radius="getRadius"
-                :get-fill-color="getFillColor"
-                :radius-min-pixels="3"
-                :radius-max-pixels="30"
-                :opacity="0.8"
-              ></VLayerDeckglScatterplot>
+              <VLayerDeckglPath
+                id="path-layer"
+                :data="pathData"
+                :get-path="getPath"
+                :get-color="getColor"
+                :get-width="4"
+                :width-min-pixels="2"
+                :pickable="true"
+                :rounded="true"
+              ></VLayerDeckglPath>
             </VMap>
           </ClientOnly>
         </div>
@@ -138,7 +160,7 @@ ${SCRIPT_END}
           <CodeBlock
             :code="codeExample"
             lang="vue"
-            filename="Scatterplot.vue"
+            filename="PathLayer.vue"
           ></CodeBlock>
         </div>
       </div>

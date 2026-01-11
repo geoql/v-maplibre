@@ -1,13 +1,13 @@
 <script setup lang="ts">
   import {
     VMap,
-    VLayerDeckglHeatmap,
+    VLayerDeckglGrid,
     VControlNavigation,
   } from '@geoql/v-maplibre';
 
   useSeoMeta({
-    title: 'Heatmap (deck.gl) - mapcn-vue Examples',
-    description: 'Density heatmap visualization.',
+    title: 'Grid Layer (deck.gl) - mapcn-vue Examples',
+    description: '3D grid aggregation visualization.',
   });
 
   const colorMode = useColorMode();
@@ -23,84 +23,87 @@
   );
 
   const mapOptions = computed(() => ({
-    container: `heatmap-example-${mapId}`,
+    container: `grid-example-${mapId}`,
     style: mapStyle.value,
-    center: [-122.4, 37.8] as [number, number],
+    center: [-122.4, 37.78] as [number, number],
     zoom: 11,
+    pitch: 45,
+    bearing: -17,
   }));
 
-  // Generate sample heatmap data
+  // Generate random point data for aggregation
   const generateData = () => {
     const data = [];
-    // Create clusters of points
     const centers: [number, number][] = [
       [-122.42, 37.78],
       [-122.38, 37.79],
       [-122.45, 37.77],
       [-122.4, 37.8],
+      [-122.36, 37.76],
     ];
 
     for (const center of centers) {
-      for (let i = 0; i < 200; i++) {
+      const count = Math.floor(Math.random() * 300) + 100;
+      for (let i = 0; i < count; i++) {
         data.push({
-          coordinates: [
-            center[0] + (Math.random() - 0.5) * 0.03,
-            center[1] + (Math.random() - 0.5) * 0.02,
+          position: [
+            center[0] + (Math.random() - 0.5) * 0.04,
+            center[1] + (Math.random() - 0.5) * 0.03,
           ],
-          weight: Math.random() * 10 + 1,
         });
       }
     }
     return data;
   };
 
-  interface HeatmapPoint {
-    coordinates: [number, number];
-    weight: number;
+  interface GridPoint {
+    position: [number, number];
   }
 
-  const heatmapData = generateData();
+  const gridData = generateData();
 
-  const getPosition = (d: unknown) => (d as HeatmapPoint).coordinates;
-  const getWeight = (d: unknown) => (d as HeatmapPoint).weight;
+  const getPosition = (d: unknown) => (d as GridPoint).position;
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VLayerDeckglHeatmap, VControlNavigation } from '@geoql/v-maplibre';
+import { VMap, VLayerDeckglGrid, VControlNavigation } from '@geoql/v-maplibre';
 
 const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-  center: [-122.4, 37.8],
+  center: [-122.4, 37.78],
   zoom: 11,
+  pitch: 45,
+  bearing: -17,
 };
 
-const heatmapData = [
-  { coordinates: [-122.4, 37.8], weight: 5 },
-  { coordinates: [-122.38, 37.79], weight: 10 },
-  // ... more points
+const gridData = [
+  { position: [-122.42, 37.78] },
+  { position: [-122.38, 37.79] },
+  // ... many more points for aggregation
 ];
 ${SCRIPT_END}
 
 <template>
   <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
     <VControlNavigation position="top-right" />
-    <VLayerDeckglHeatmap
-      id="heatmap"
-      :data="heatmapData"
-      :get-position="(d) => d.coordinates"
-      :get-weight="(d) => d.weight"
-      :radius-pixels="30"
-      :intensity="1"
-      :threshold="0.03"
+    <VLayerDeckglGrid
+      id="grid-layer"
+      :data="gridData"
+      :get-position="(d) => d.position"
+      :cell-size="200"
+      :elevation-scale="50"
+      :elevation-range="[0, 1000]"
+      :extruded="true"
+      :pickable="true"
       :color-range="[
-        [255, 255, 178],
-        [254, 217, 118],
-        [254, 178, 76],
-        [253, 141, 60],
-        [240, 59, 32],
-        [189, 0, 38],
+        [255, 255, 204],
+        [199, 233, 180],
+        [127, 205, 187],
+        [65, 182, 196],
+        [44, 127, 184],
+        [37, 52, 148],
       ]"
     />
   </VMap>
@@ -119,10 +122,10 @@ ${SCRIPT_END}
           Back to Examples
         </NuxtLink>
         <h1 class="mt-4 text-3xl font-bold tracking-tight">
-          Heatmap (deck.gl)
+          Grid Layer (deck.gl)
         </h1>
         <p class="mt-2 text-lg text-muted-foreground">
-          Density heatmap visualization showing point concentrations.
+          3D square grid aggregation for point data visualization.
         </p>
       </div>
 
@@ -133,23 +136,24 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
-              <VLayerDeckglHeatmap
-                id="heatmap"
-                :data="heatmapData"
+              <VLayerDeckglGrid
+                id="grid-layer"
+                :data="gridData"
                 :get-position="getPosition"
-                :get-weight="getWeight"
-                :radius-pixels="30"
-                :intensity="1"
-                :threshold="0.03"
+                :cell-size="200"
+                :elevation-scale="50"
+                :elevation-range="[0, 1000]"
+                :extruded="true"
+                :pickable="true"
                 :color-range="[
-                  [255, 255, 178],
-                  [254, 217, 118],
-                  [254, 178, 76],
-                  [253, 141, 60],
-                  [240, 59, 32],
-                  [189, 0, 38],
+                  [255, 255, 204],
+                  [199, 233, 180],
+                  [127, 205, 187],
+                  [65, 182, 196],
+                  [44, 127, 184],
+                  [37, 52, 148],
                 ]"
-              ></VLayerDeckglHeatmap>
+              ></VLayerDeckglGrid>
             </VMap>
           </ClientOnly>
         </div>
@@ -158,7 +162,7 @@ ${SCRIPT_END}
           <CodeBlock
             :code="codeExample"
             lang="vue"
-            filename="Heatmap.vue"
+            filename="GridLayer.vue"
           ></CodeBlock>
         </div>
       </div>

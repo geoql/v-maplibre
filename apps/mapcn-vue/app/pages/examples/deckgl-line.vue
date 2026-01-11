@@ -1,13 +1,13 @@
 <script setup lang="ts">
   import {
     VMap,
-    VLayerDeckglScatterplot,
+    VLayerDeckglLine,
     VControlNavigation,
   } from '@geoql/v-maplibre';
 
   useSeoMeta({
-    title: 'Scatterplot (deck.gl) - mapcn-vue Examples',
-    description: 'High-performance scatterplot visualization.',
+    title: 'Line Layer (deck.gl) - mapcn-vue Examples',
+    description: 'Render line segments between points.',
   });
 
   const colorMode = useColorMode();
@@ -23,45 +23,56 @@
   );
 
   const mapOptions = computed(() => ({
-    container: `scatterplot-example-${mapId}`,
+    container: `line-example-${mapId}`,
     style: mapStyle.value,
     center: [-122.4, 37.8] as [number, number],
     zoom: 11,
   }));
 
-  // Generate sample data
-  const generateData = () => {
-    const data = [];
-    for (let i = 0; i < 1000; i++) {
-      data.push({
-        coordinates: [
-          -122.4 + (Math.random() - 0.5) * 0.2,
-          37.8 + (Math.random() - 0.5) * 0.15,
-        ],
-        size: Math.random() * 100 + 20,
-        color: Math.random() > 0.5 ? [255, 140, 0] : [0, 200, 150],
-      });
-    }
-    return data;
-  };
+  // Generate line segments data
+  const lineData = [
+    {
+      sourcePosition: [-122.45, 37.78],
+      targetPosition: [-122.35, 37.82],
+      color: [255, 140, 0],
+    },
+    {
+      sourcePosition: [-122.42, 37.75],
+      targetPosition: [-122.38, 37.85],
+      color: [0, 200, 150],
+    },
+    {
+      sourcePosition: [-122.48, 37.8],
+      targetPosition: [-122.32, 37.76],
+      color: [138, 43, 226],
+    },
+    {
+      sourcePosition: [-122.44, 37.82],
+      targetPosition: [-122.36, 37.74],
+      color: [255, 99, 71],
+    },
+    {
+      sourcePosition: [-122.4, 37.78],
+      targetPosition: [-122.4, 37.84],
+      color: [30, 144, 255],
+    },
+  ];
 
-  interface ScatterPoint {
-    coordinates: [number, number];
-    size: number;
+  interface LineData {
+    sourcePosition: [number, number];
+    targetPosition: [number, number];
     color: [number, number, number];
   }
 
-  const scatterData = generateData();
-
-  const getPosition = (d: unknown) => (d as ScatterPoint).coordinates;
-  const getRadius = (d: unknown) => (d as ScatterPoint).size;
-  const getFillColor = (d: unknown) => (d as ScatterPoint).color;
+  const getSourcePosition = (d: unknown) => (d as LineData).sourcePosition;
+  const getTargetPosition = (d: unknown) => (d as LineData).targetPosition;
+  const getColor = (d: unknown) => (d as LineData).color;
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VLayerDeckglScatterplot, VControlNavigation } from '@geoql/v-maplibre';
+import { VMap, VLayerDeckglLine, VControlNavigation } from '@geoql/v-maplibre';
 
 const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
@@ -69,25 +80,22 @@ const mapOptions = {
   zoom: 11,
 };
 
-const data = [
-  { coordinates: [-122.4, 37.8], size: 100, color: [255, 140, 0] },
-  { coordinates: [-122.5, 37.7], size: 200, color: [0, 200, 150] },
-  // ... more points
+const lineData = [
+  { sourcePosition: [-122.45, 37.78], targetPosition: [-122.35, 37.82], color: [255, 140, 0] },
+  { sourcePosition: [-122.42, 37.75], targetPosition: [-122.38, 37.85], color: [0, 200, 150] },
 ];
 ${SCRIPT_END}
 
 <template>
   <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
     <VControlNavigation position="top-right" />
-    <VLayerDeckglScatterplot
-      id="scatterplot"
-      :data="data"
-      :get-position="(d) => d.coordinates"
-      :get-radius="(d) => d.size"
-      :get-fill-color="(d) => d.color"
-      :radius-min-pixels="3"
-      :radius-max-pixels="30"
-      :opacity="0.8"
+    <VLayerDeckglLine
+      id="line-layer"
+      :data="lineData"
+      :get-source-position="(d) => d.sourcePosition"
+      :get-target-position="(d) => d.targetPosition"
+      :get-color="(d) => d.color"
+      :get-width="3"
       :pickable="true"
     />
   </VMap>
@@ -106,10 +114,10 @@ ${SCRIPT_END}
           Back to Examples
         </NuxtLink>
         <h1 class="mt-4 text-3xl font-bold tracking-tight">
-          Scatterplot (deck.gl)
+          Line Layer (deck.gl)
         </h1>
         <p class="mt-2 text-lg text-muted-foreground">
-          High-performance WebGL scatterplot rendering thousands of points.
+          Render line segments between source and target positions.
         </p>
       </div>
 
@@ -120,16 +128,15 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
-              <VLayerDeckglScatterplot
-                id="scatterplot"
-                :data="scatterData"
-                :get-position="getPosition"
-                :get-radius="getRadius"
-                :get-fill-color="getFillColor"
-                :radius-min-pixels="3"
-                :radius-max-pixels="30"
-                :opacity="0.8"
-              ></VLayerDeckglScatterplot>
+              <VLayerDeckglLine
+                id="line-layer"
+                :data="lineData"
+                :get-source-position="getSourcePosition"
+                :get-target-position="getTargetPosition"
+                :get-color="getColor"
+                :get-width="3"
+                :pickable="true"
+              ></VLayerDeckglLine>
             </VMap>
           </ClientOnly>
         </div>
@@ -138,7 +145,7 @@ ${SCRIPT_END}
           <CodeBlock
             :code="codeExample"
             lang="vue"
-            filename="Scatterplot.vue"
+            filename="LineLayer.vue"
           ></CodeBlock>
         </div>
       </div>

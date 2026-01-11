@@ -66,6 +66,10 @@
   }
 }
 
+canvas {
+  outline: none !important;
+}
+
 /* Map container styling */
 .map-container {
   @apply w-full h-full min-h-100 rounded-lg border border-border overflow-hidden;
@@ -222,4 +226,87 @@ code {
 }
 .delay-800 {
   animation-delay: 800ms;
+}
+
+/* Aurora animation keyframes */
+@keyframes aurora-1 {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  33% {
+    transform: translate(5%, 5%) rotate(5deg) scale(1.05);
+  }
+  66% {
+    transform: translate(-3%, 8%) rotate(-3deg) scale(0.98);
+  }
+}
+
+@keyframes aurora-2 {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  33% {
+    transform: translate(-8%, 3%) rotate(-5deg) scale(1.02);
+  }
+  66% {
+    transform: translate(5%, -5%) rotate(8deg) scale(1.08);
+  }
+}
+
+@keyframes aurora-3 {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+  }
+  33% {
+    transform: translate(10%, -5%) rotate(8deg) scale(0.95);
+  }
+  66% {
+    transform: translate(-5%, 10%) rotate(-5deg) scale(1.05);
+  }
+}
+
+.animate-aurora-1 {
+  animation: aurora-1 20s ease-in-out infinite;
+}
+
+.animate-aurora-2 {
+  animation: aurora-2 25s ease-in-out infinite;
+}
+
+.animate-aurora-3 {
+  animation: aurora-3 30s ease-in-out infinite;
+}
+
+/* Card hover lift effect */
+.example-card {
+  transform: translateY(0) translateZ(0);
+  will-change: transform, box-shadow;
+}
+
+.example-card:hover {
+  transform: translateY(-4px) translateZ(0);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .animate-aurora-1,
+  .animate-aurora-2,
+  .animate-aurora-3 {
+    animation: none;
+  }
+
+  .animate-fade-in,
+  .animate-fade-up,
+  .animate-scale-in {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  .example-card:hover {
+    transform: none;
+  }
 }

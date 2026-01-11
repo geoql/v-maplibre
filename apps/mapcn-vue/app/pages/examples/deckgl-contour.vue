@@ -1,13 +1,13 @@
 <script setup lang="ts">
   import {
     VMap,
-    VLayerDeckglHeatmap,
+    VLayerDeckglContour,
     VControlNavigation,
   } from '@geoql/v-maplibre';
 
   useSeoMeta({
-    title: 'Heatmap (deck.gl) - mapcn-vue Examples',
-    description: 'Density heatmap visualization.',
+    title: 'Contour Layer (deck.gl) - mapcn-vue Examples',
+    description: 'Contour lines for density visualization.',
   });
 
   const colorMode = useColorMode();
@@ -23,16 +23,15 @@
   );
 
   const mapOptions = computed(() => ({
-    container: `heatmap-example-${mapId}`,
+    container: `contour-example-${mapId}`,
     style: mapStyle.value,
-    center: [-122.4, 37.8] as [number, number],
+    center: [-122.4, 37.78] as [number, number],
     zoom: 11,
   }));
 
-  // Generate sample heatmap data
+  // Generate random point data for contour
   const generateData = () => {
     const data = [];
-    // Create clusters of points
     const centers: [number, number][] = [
       [-122.42, 37.78],
       [-122.38, 37.79],
@@ -41,67 +40,91 @@
     ];
 
     for (const center of centers) {
-      for (let i = 0; i < 200; i++) {
+      const count = Math.floor(Math.random() * 400) + 200;
+      for (let i = 0; i < count; i++) {
         data.push({
-          coordinates: [
+          position: [
             center[0] + (Math.random() - 0.5) * 0.03,
             center[1] + (Math.random() - 0.5) * 0.02,
           ],
-          weight: Math.random() * 10 + 1,
         });
       }
     }
     return data;
   };
 
-  interface HeatmapPoint {
-    coordinates: [number, number];
-    weight: number;
+  interface ContourPoint {
+    position: [number, number];
   }
 
-  const heatmapData = generateData();
+  const contourData = generateData();
 
-  const getPosition = (d: unknown) => (d as HeatmapPoint).coordinates;
-  const getWeight = (d: unknown) => (d as HeatmapPoint).weight;
+  const getPosition = (d: unknown) => (d as ContourPoint).position;
+
+  const contours = [
+    {
+      threshold: 1,
+      color: [255, 255, 178, 100] as [number, number, number, number],
+      strokeWidth: 1,
+    },
+    {
+      threshold: 5,
+      color: [254, 204, 92, 150] as [number, number, number, number],
+      strokeWidth: 2,
+    },
+    {
+      threshold: 10,
+      color: [253, 141, 60, 180] as [number, number, number, number],
+      strokeWidth: 2,
+    },
+    {
+      threshold: 20,
+      color: [240, 59, 32, 200] as [number, number, number, number],
+      strokeWidth: 3,
+    },
+    {
+      threshold: 50,
+      color: [189, 0, 38, 220] as [number, number, number, number],
+      strokeWidth: 4,
+    },
+  ];
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VLayerDeckglHeatmap, VControlNavigation } from '@geoql/v-maplibre';
+import { VMap, VLayerDeckglContour, VControlNavigation } from '@geoql/v-maplibre';
 
 const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-  center: [-122.4, 37.8],
+  center: [-122.4, 37.78],
   zoom: 11,
 };
 
-const heatmapData = [
-  { coordinates: [-122.4, 37.8], weight: 5 },
-  { coordinates: [-122.38, 37.79], weight: 10 },
-  // ... more points
+const contourData = [
+  { position: [-122.42, 37.78] },
+  { position: [-122.38, 37.79] },
+  // ... many more points
+];
+
+const contours = [
+  { threshold: 1, color: [255, 255, 178, 100], strokeWidth: 1 },
+  { threshold: 5, color: [254, 204, 92, 150], strokeWidth: 2 },
+  { threshold: 10, color: [253, 141, 60, 180], strokeWidth: 2 },
+  { threshold: 20, color: [240, 59, 32, 200], strokeWidth: 3 },
 ];
 ${SCRIPT_END}
 
 <template>
   <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
     <VControlNavigation position="top-right" />
-    <VLayerDeckglHeatmap
-      id="heatmap"
-      :data="heatmapData"
-      :get-position="(d) => d.coordinates"
-      :get-weight="(d) => d.weight"
-      :radius-pixels="30"
-      :intensity="1"
-      :threshold="0.03"
-      :color-range="[
-        [255, 255, 178],
-        [254, 217, 118],
-        [254, 178, 76],
-        [253, 141, 60],
-        [240, 59, 32],
-        [189, 0, 38],
-      ]"
+    <VLayerDeckglContour
+      id="contour-layer"
+      :data="contourData"
+      :get-position="(d) => d.position"
+      :contours="contours"
+      :cell-size="50"
+      :pickable="true"
     />
   </VMap>
 </template>`;
@@ -119,10 +142,10 @@ ${SCRIPT_END}
           Back to Examples
         </NuxtLink>
         <h1 class="mt-4 text-3xl font-bold tracking-tight">
-          Heatmap (deck.gl)
+          Contour Layer (deck.gl)
         </h1>
         <p class="mt-2 text-lg text-muted-foreground">
-          Density heatmap visualization showing point concentrations.
+          Contour lines showing density thresholds for point data.
         </p>
       </div>
 
@@ -133,23 +156,14 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
-              <VLayerDeckglHeatmap
-                id="heatmap"
-                :data="heatmapData"
+              <VLayerDeckglContour
+                id="contour-layer"
+                :data="contourData"
                 :get-position="getPosition"
-                :get-weight="getWeight"
-                :radius-pixels="30"
-                :intensity="1"
-                :threshold="0.03"
-                :color-range="[
-                  [255, 255, 178],
-                  [254, 217, 118],
-                  [254, 178, 76],
-                  [253, 141, 60],
-                  [240, 59, 32],
-                  [189, 0, 38],
-                ]"
-              ></VLayerDeckglHeatmap>
+                :contours="contours"
+                :cell-size="50"
+                :pickable="true"
+              ></VLayerDeckglContour>
             </VMap>
           </ClientOnly>
         </div>
@@ -158,7 +172,7 @@ ${SCRIPT_END}
           <CodeBlock
             :code="codeExample"
             lang="vue"
-            filename="Heatmap.vue"
+            filename="ContourLayer.vue"
           ></CodeBlock>
         </div>
       </div>

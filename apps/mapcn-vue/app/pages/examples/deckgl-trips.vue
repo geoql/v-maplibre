@@ -77,10 +77,16 @@
     }
   });
 
-  const getPath = (d: any) => d.path;
-  const getTimestamps = (d: any) => d.timestamps;
-  const getColor = (d: any): [number, number, number] =>
-    d.vendor === 0 ? [253, 128, 93] : [23, 184, 190];
+  interface TripData {
+    path: [number, number][];
+    timestamps: number[];
+    vendor: number;
+  }
+
+  const getPath = (d: unknown) => (d as TripData).path;
+  const getTimestamps = (d: unknown) => (d as TripData).timestamps;
+  const getColor = (d: unknown): [number, number, number] =>
+    (d as TripData).vendor === 0 ? [253, 128, 93] : [23, 184, 190];
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
@@ -122,8 +128,8 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl py-10">
-    <div class="mx-auto max-w-300">
+  <div class="container max-w-screen-2xl py-10 overflow-x-hidden">
+    <div class="mx-auto w-full max-w-300">
       <div class="mb-8">
         <NuxtLink
           to="/examples"
@@ -142,7 +148,9 @@ ${SCRIPT_END}
       </div>
 
       <div class="grid gap-8 lg:grid-cols-2">
-        <div class="h-125 overflow-hidden rounded-lg border border-border">
+        <div
+          class="h-125 min-w-0 overflow-hidden rounded-lg border border-border"
+        >
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
@@ -163,7 +171,7 @@ ${SCRIPT_END}
           </ClientOnly>
         </div>
 
-        <div>
+        <div class="min-w-0">
           <CodeBlock
             :code="codeExample"
             lang="vue"

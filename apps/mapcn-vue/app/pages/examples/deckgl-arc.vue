@@ -50,8 +50,14 @@
     { source: [151.2, -33.9], target: [-43.2, -22.9], name: 'Sydney to Rio' },
   ];
 
-  const getSourcePosition = (d: any) => d.source;
-  const getTargetPosition = (d: any) => d.target;
+  interface ArcData {
+    source: [number, number];
+    target: [number, number];
+    name: string;
+  }
+
+  const getSourcePosition = (d: unknown) => (d as ArcData).source;
+  const getTargetPosition = (d: unknown) => (d as ArcData).target;
   const getSourceColor = (): [number, number, number, number] => [
     0, 180, 216, 200,
   ];
@@ -96,8 +102,8 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl py-10">
-    <div class="mx-auto max-w-300">
+  <div class="container max-w-screen-2xl py-10 overflow-x-hidden">
+    <div class="mx-auto w-full max-w-300">
       <div class="mb-8">
         <NuxtLink
           to="/examples"
@@ -115,7 +121,9 @@ ${SCRIPT_END}
       </div>
 
       <div class="grid gap-8 lg:grid-cols-2">
-        <div class="h-125 overflow-hidden rounded-lg border border-border">
+        <div
+          class="h-125 min-w-0 overflow-hidden rounded-lg border border-border"
+        >
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
@@ -133,7 +141,7 @@ ${SCRIPT_END}
           </ClientOnly>
         </div>
 
-        <div>
+        <div class="min-w-0">
           <CodeBlock
             :code="codeExample"
             lang="vue"

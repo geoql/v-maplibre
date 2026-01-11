@@ -1,13 +1,13 @@
 <script setup lang="ts">
   import {
     VMap,
-    VLayerDeckglHeatmap,
+    VLayerDeckglHexagon,
     VControlNavigation,
   } from '@geoql/v-maplibre';
 
   useSeoMeta({
-    title: 'Heatmap (deck.gl) - mapcn-vue Examples',
-    description: 'Density heatmap visualization.',
+    title: 'Hexagon Layer (deck.gl) - mapcn-vue Examples',
+    description: '3D hexagonal binning aggregation visualization.',
   });
 
   const colorMode = useColorMode();
@@ -23,77 +23,80 @@
   );
 
   const mapOptions = computed(() => ({
-    container: `heatmap-example-${mapId}`,
+    container: `hexagon-example-${mapId}`,
     style: mapStyle.value,
-    center: [-122.4, 37.8] as [number, number],
+    center: [-122.4, 37.78] as [number, number],
     zoom: 11,
+    pitch: 45,
+    bearing: -17,
   }));
 
-  // Generate sample heatmap data
+  // Generate random point data for aggregation
   const generateData = () => {
     const data = [];
-    // Create clusters of points
     const centers: [number, number][] = [
       [-122.42, 37.78],
       [-122.38, 37.79],
       [-122.45, 37.77],
       [-122.4, 37.8],
+      [-122.36, 37.76],
     ];
 
     for (const center of centers) {
-      for (let i = 0; i < 200; i++) {
+      const count = Math.floor(Math.random() * 300) + 100;
+      for (let i = 0; i < count; i++) {
         data.push({
-          coordinates: [
-            center[0] + (Math.random() - 0.5) * 0.03,
-            center[1] + (Math.random() - 0.5) * 0.02,
+          position: [
+            center[0] + (Math.random() - 0.5) * 0.04,
+            center[1] + (Math.random() - 0.5) * 0.03,
           ],
-          weight: Math.random() * 10 + 1,
         });
       }
     }
     return data;
   };
 
-  interface HeatmapPoint {
-    coordinates: [number, number];
-    weight: number;
+  interface HexagonPoint {
+    position: [number, number];
   }
 
-  const heatmapData = generateData();
+  const hexagonData = generateData();
 
-  const getPosition = (d: unknown) => (d as HeatmapPoint).coordinates;
-  const getWeight = (d: unknown) => (d as HeatmapPoint).weight;
+  const getPosition = (d: unknown) => (d as HexagonPoint).position;
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VLayerDeckglHeatmap, VControlNavigation } from '@geoql/v-maplibre';
+import { VMap, VLayerDeckglHexagon, VControlNavigation } from '@geoql/v-maplibre';
 
 const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-  center: [-122.4, 37.8],
+  center: [-122.4, 37.78],
   zoom: 11,
+  pitch: 45,
+  bearing: -17,
 };
 
-const heatmapData = [
-  { coordinates: [-122.4, 37.8], weight: 5 },
-  { coordinates: [-122.38, 37.79], weight: 10 },
-  // ... more points
+const hexagonData = [
+  { position: [-122.42, 37.78] },
+  { position: [-122.38, 37.79] },
+  // ... many more points for aggregation
 ];
 ${SCRIPT_END}
 
 <template>
   <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
     <VControlNavigation position="top-right" />
-    <VLayerDeckglHeatmap
-      id="heatmap"
-      :data="heatmapData"
-      :get-position="(d) => d.coordinates"
-      :get-weight="(d) => d.weight"
-      :radius-pixels="30"
-      :intensity="1"
-      :threshold="0.03"
+    <VLayerDeckglHexagon
+      id="hexagon-layer"
+      :data="hexagonData"
+      :get-position="(d) => d.position"
+      :radius="200"
+      :elevation-scale="50"
+      :elevation-range="[0, 1000]"
+      :extruded="true"
+      :pickable="true"
       :color-range="[
         [255, 255, 178],
         [254, 217, 118],
@@ -119,10 +122,10 @@ ${SCRIPT_END}
           Back to Examples
         </NuxtLink>
         <h1 class="mt-4 text-3xl font-bold tracking-tight">
-          Heatmap (deck.gl)
+          Hexagon Layer (deck.gl)
         </h1>
         <p class="mt-2 text-lg text-muted-foreground">
-          Density heatmap visualization showing point concentrations.
+          3D hexagonal binning for point aggregation with elevation.
         </p>
       </div>
 
@@ -133,14 +136,15 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
-              <VLayerDeckglHeatmap
-                id="heatmap"
-                :data="heatmapData"
+              <VLayerDeckglHexagon
+                id="hexagon-layer"
+                :data="hexagonData"
                 :get-position="getPosition"
-                :get-weight="getWeight"
-                :radius-pixels="30"
-                :intensity="1"
-                :threshold="0.03"
+                :radius="200"
+                :elevation-scale="50"
+                :elevation-range="[0, 1000]"
+                :extruded="true"
+                :pickable="true"
                 :color-range="[
                   [255, 255, 178],
                   [254, 217, 118],
@@ -149,7 +153,7 @@ ${SCRIPT_END}
                   [240, 59, 32],
                   [189, 0, 38],
                 ]"
-              ></VLayerDeckglHeatmap>
+              ></VLayerDeckglHexagon>
             </VMap>
           </ClientOnly>
         </div>
@@ -158,7 +162,7 @@ ${SCRIPT_END}
           <CodeBlock
             :code="codeExample"
             lang="vue"
-            filename="Heatmap.vue"
+            filename="HexagonLayer.vue"
           ></CodeBlock>
         </div>
       </div>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
   import {
     VMap,
-    VLayerDeckglHeatmap,
+    VLayerDeckglScreenGrid,
     VControlNavigation,
   } from '@geoql/v-maplibre';
 
   useSeoMeta({
-    title: 'Heatmap (deck.gl) - mapcn-vue Examples',
-    description: 'Density heatmap visualization.',
+    title: 'Screen Grid Layer (deck.gl) - mapcn-vue Examples',
+    description: 'Screen-space grid aggregation visualization.',
   });
 
   const colorMode = useColorMode();
@@ -23,85 +23,85 @@
   );
 
   const mapOptions = computed(() => ({
-    container: `heatmap-example-${mapId}`,
+    container: `screengrid-example-${mapId}`,
     style: mapStyle.value,
-    center: [-122.4, 37.8] as [number, number],
+    center: [-122.4, 37.78] as [number, number],
     zoom: 11,
   }));
 
-  // Generate sample heatmap data
+  // Generate random point data
   const generateData = () => {
     const data = [];
-    // Create clusters of points
     const centers: [number, number][] = [
       [-122.42, 37.78],
       [-122.38, 37.79],
       [-122.45, 37.77],
       [-122.4, 37.8],
+      [-122.36, 37.76],
     ];
 
     for (const center of centers) {
-      for (let i = 0; i < 200; i++) {
+      const count = Math.floor(Math.random() * 500) + 200;
+      for (let i = 0; i < count; i++) {
         data.push({
-          coordinates: [
-            center[0] + (Math.random() - 0.5) * 0.03,
-            center[1] + (Math.random() - 0.5) * 0.02,
+          position: [
+            center[0] + (Math.random() - 0.5) * 0.05,
+            center[1] + (Math.random() - 0.5) * 0.04,
           ],
-          weight: Math.random() * 10 + 1,
+          weight: Math.random() * 10,
         });
       }
     }
     return data;
   };
 
-  interface HeatmapPoint {
-    coordinates: [number, number];
+  interface ScreenGridPoint {
+    position: [number, number];
     weight: number;
   }
 
-  const heatmapData = generateData();
+  const screenGridData = generateData();
 
-  const getPosition = (d: unknown) => (d as HeatmapPoint).coordinates;
-  const getWeight = (d: unknown) => (d as HeatmapPoint).weight;
+  const getPosition = (d: unknown) => (d as ScreenGridPoint).position;
+  const getWeight = (d: unknown) => (d as ScreenGridPoint).weight;
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VLayerDeckglHeatmap, VControlNavigation } from '@geoql/v-maplibre';
+import { VMap, VLayerDeckglScreenGrid, VControlNavigation } from '@geoql/v-maplibre';
 
 const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-  center: [-122.4, 37.8],
+  center: [-122.4, 37.78],
   zoom: 11,
 };
 
-const heatmapData = [
-  { coordinates: [-122.4, 37.8], weight: 5 },
-  { coordinates: [-122.38, 37.79], weight: 10 },
-  // ... more points
+const screenGridData = [
+  { position: [-122.42, 37.78], weight: 5 },
+  { position: [-122.38, 37.79], weight: 10 },
+  // ... many more points
 ];
 ${SCRIPT_END}
 
 <template>
   <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
     <VControlNavigation position="top-right" />
-    <VLayerDeckglHeatmap
-      id="heatmap"
-      :data="heatmapData"
-      :get-position="(d) => d.coordinates"
+    <VLayerDeckglScreenGrid
+      id="screengrid-layer"
+      :data="screenGridData"
+      :get-position="(d) => d.position"
       :get-weight="(d) => d.weight"
-      :radius-pixels="30"
-      :intensity="1"
-      :threshold="0.03"
+      :cell-size-pixels="20"
       :color-range="[
-        [255, 255, 178],
-        [254, 217, 118],
-        [254, 178, 76],
-        [253, 141, 60],
-        [240, 59, 32],
-        [189, 0, 38],
+        [255, 255, 178, 25],
+        [254, 217, 118, 85],
+        [254, 178, 76, 127],
+        [253, 141, 60, 170],
+        [240, 59, 32, 212],
+        [189, 0, 38, 255],
       ]"
+      :pickable="true"
     />
   </VMap>
 </template>`;
@@ -119,10 +119,11 @@ ${SCRIPT_END}
           Back to Examples
         </NuxtLink>
         <h1 class="mt-4 text-3xl font-bold tracking-tight">
-          Heatmap (deck.gl)
+          Screen Grid Layer (deck.gl)
         </h1>
         <p class="mt-2 text-lg text-muted-foreground">
-          Density heatmap visualization showing point concentrations.
+          Screen-space grid aggregation for high-performance density
+          visualization.
         </p>
       </div>
 
@@ -133,23 +134,22 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
-              <VLayerDeckglHeatmap
-                id="heatmap"
-                :data="heatmapData"
+              <VLayerDeckglScreenGrid
+                id="screengrid-layer"
+                :data="screenGridData"
                 :get-position="getPosition"
                 :get-weight="getWeight"
-                :radius-pixels="30"
-                :intensity="1"
-                :threshold="0.03"
+                :cell-size-pixels="20"
                 :color-range="[
-                  [255, 255, 178],
-                  [254, 217, 118],
-                  [254, 178, 76],
-                  [253, 141, 60],
-                  [240, 59, 32],
-                  [189, 0, 38],
+                  [255, 255, 178, 25],
+                  [254, 217, 118, 85],
+                  [254, 178, 76, 127],
+                  [253, 141, 60, 170],
+                  [240, 59, 32, 212],
+                  [189, 0, 38, 255],
                 ]"
-              ></VLayerDeckglHeatmap>
+                :pickable="true"
+              ></VLayerDeckglScreenGrid>
             </VMap>
           </ClientOnly>
         </div>
@@ -158,7 +158,7 @@ ${SCRIPT_END}
           <CodeBlock
             :code="codeExample"
             lang="vue"
-            filename="Heatmap.vue"
+            filename="ScreenGridLayer.vue"
           ></CodeBlock>
         </div>
       </div>

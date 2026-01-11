@@ -1,13 +1,13 @@
 <script setup lang="ts">
   import {
     VMap,
-    VLayerDeckglScatterplot,
+    VLayerDeckglTerrain,
     VControlNavigation,
   } from '@geoql/v-maplibre';
 
   useSeoMeta({
-    title: 'Scatterplot (deck.gl) - mapcn-vue Examples',
-    description: 'High-performance scatterplot visualization.',
+    title: 'Terrain Layer (deck.gl) - mapcn-vue Examples',
+    description: '3D terrain visualization with elevation data.',
   });
 
   const colorMode = useColorMode();
@@ -23,71 +23,53 @@
   );
 
   const mapOptions = computed(() => ({
-    container: `scatterplot-example-${mapId}`,
+    container: `terrain-example-${mapId}`,
     style: mapStyle.value,
-    center: [-122.4, 37.8] as [number, number],
+    center: [-122.4, 37.75] as [number, number],
     zoom: 11,
+    pitch: 60,
+    bearing: -17,
   }));
 
-  // Generate sample data
-  const generateData = () => {
-    const data = [];
-    for (let i = 0; i < 1000; i++) {
-      data.push({
-        coordinates: [
-          -122.4 + (Math.random() - 0.5) * 0.2,
-          37.8 + (Math.random() - 0.5) * 0.15,
-        ],
-        size: Math.random() * 100 + 20,
-        color: Math.random() > 0.5 ? [255, 140, 0] : [0, 200, 150],
-      });
-    }
-    return data;
-  };
-
-  interface ScatterPoint {
-    coordinates: [number, number];
-    size: number;
-    color: [number, number, number];
-  }
-
-  const scatterData = generateData();
-
-  const getPosition = (d: unknown) => (d as ScatterPoint).coordinates;
-  const getRadius = (d: unknown) => (d as ScatterPoint).size;
-  const getFillColor = (d: unknown) => (d as ScatterPoint).color;
+  // Terrain tile URL (using Mapzen/AWS terrain tiles)
+  const TERRAIN_IMAGE =
+    'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png';
+  const SURFACE_IMAGE = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VLayerDeckglScatterplot, VControlNavigation } from '@geoql/v-maplibre';
+import { VMap, VLayerDeckglTerrain, VControlNavigation } from '@geoql/v-maplibre';
 
 const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-  center: [-122.4, 37.8],
+  center: [-122.4, 37.75],
   zoom: 11,
+  pitch: 60,
+  bearing: -17,
 };
 
-const data = [
-  { coordinates: [-122.4, 37.8], size: 100, color: [255, 140, 0] },
-  { coordinates: [-122.5, 37.7], size: 200, color: [0, 200, 150] },
-  // ... more points
-];
+// Terrain elevation tiles (Mapzen Terrarium format)
+const TERRAIN_IMAGE = 'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png';
+// Surface texture tiles
+const SURFACE_IMAGE = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 ${SCRIPT_END}
 
 <template>
   <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
     <VControlNavigation position="top-right" />
-    <VLayerDeckglScatterplot
-      id="scatterplot"
-      :data="data"
-      :get-position="(d) => d.coordinates"
-      :get-radius="(d) => d.size"
-      :get-fill-color="(d) => d.color"
-      :radius-min-pixels="3"
-      :radius-max-pixels="30"
-      :opacity="0.8"
+    <VLayerDeckglTerrain
+      id="terrain-layer"
+      :elevation-data="TERRAIN_IMAGE"
+      :texture="SURFACE_IMAGE"
+      :elevation-decoder="{
+        rScaler: 256,
+        gScaler: 1,
+        bScaler: 1/256,
+        offset: -32768,
+      }"
+      :bounds="[-122.5, 37.6, -122.2, 37.9]"
       :pickable="true"
     />
   </VMap>
@@ -106,10 +88,10 @@ ${SCRIPT_END}
           Back to Examples
         </NuxtLink>
         <h1 class="mt-4 text-3xl font-bold tracking-tight">
-          Scatterplot (deck.gl)
+          Terrain Layer (deck.gl)
         </h1>
         <p class="mt-2 text-lg text-muted-foreground">
-          High-performance WebGL scatterplot rendering thousands of points.
+          3D terrain visualization using elevation data and surface textures.
         </p>
       </div>
 
@@ -120,16 +102,19 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
-              <VLayerDeckglScatterplot
-                id="scatterplot"
-                :data="scatterData"
-                :get-position="getPosition"
-                :get-radius="getRadius"
-                :get-fill-color="getFillColor"
-                :radius-min-pixels="3"
-                :radius-max-pixels="30"
-                :opacity="0.8"
-              ></VLayerDeckglScatterplot>
+              <VLayerDeckglTerrain
+                id="terrain-layer"
+                :elevation-data="TERRAIN_IMAGE"
+                :texture="SURFACE_IMAGE"
+                :elevation-decoder="{
+                  rScaler: 256,
+                  gScaler: 1,
+                  bScaler: 1 / 256,
+                  offset: -32768,
+                }"
+                :bounds="[-122.5, 37.6, -122.2, 37.9]"
+                :pickable="true"
+              ></VLayerDeckglTerrain>
             </VMap>
           </ClientOnly>
         </div>
@@ -138,7 +123,7 @@ ${SCRIPT_END}
           <CodeBlock
             :code="codeExample"
             lang="vue"
-            filename="Scatterplot.vue"
+            filename="TerrainLayer.vue"
           ></CodeBlock>
         </div>
       </div>

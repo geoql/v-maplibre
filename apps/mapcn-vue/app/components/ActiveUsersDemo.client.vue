@@ -47,8 +47,13 @@
     { coordinates: [-3.7038, 40.4168], weight: 118 },
   ];
 
-  const getPosition = (d: any) => d.coordinates;
-  const getWeight = (d: any) => d.weight;
+  interface UserPoint {
+    coordinates: [number, number];
+    weight: number;
+  }
+
+  const getPosition = (d: unknown) => (d as UserPoint).coordinates;
+  const getWeight = (d: unknown) => (d as UserPoint).weight;
 
   const colorRange: [number, number, number][] = [
     [1, 25, 1],

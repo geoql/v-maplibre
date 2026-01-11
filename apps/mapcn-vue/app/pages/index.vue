@@ -23,25 +23,57 @@
 </script>
 
 <template>
-  <div class="flex min-h-screen flex-col">
-    <section class="relative overflow-hidden px-6 py-20 md:py-28">
+  <div class="relative min-h-dvh">
+    <!-- Animated aurora gradient background -->
+    <div class="fixed inset-0 -z-10">
+      <div class="absolute inset-0 bg-background"></div>
+      <!-- Aurora gradient blobs -->
+      <div
+        class="absolute -left-[40%] -top-[30%] h-[80%] w-[80%] animate-aurora-1 rounded-full bg-linear-to-br from-primary/20 via-cyan-500/10 to-transparent blur-3xl"
+      ></div>
+      <div
+        class="absolute -right-[30%] top-[20%] h-[60%] w-[60%] animate-aurora-2 rounded-full bg-linear-to-bl from-violet-500/15 via-primary/10 to-transparent blur-3xl"
+      ></div>
+      <div
+        class="absolute -bottom-[20%] left-[20%] h-[50%] w-[50%] animate-aurora-3 rounded-full bg-linear-to-tr from-emerald-500/10 via-cyan-500/5 to-transparent blur-3xl"
+      ></div>
+      <!-- Grid overlay -->
+      <div
+        class="absolute inset-0 bg-[linear-gradient(to_right,rgb(128_128_128/0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgb(128_128_128/0.03)_1px,transparent_1px)] bg-size-[60px_60px]"
+      ></div>
+      <!-- Noise texture overlay -->
+      <div
+        class="absolute inset-0 opacity-[0.015] mix-blend-overlay"
+        style="
+          background-image: url('data:image/svg+xml,%3Csvg viewBox=&quot;0 0 256 256&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot;%3E%3Cfilter id=&quot;noise&quot;%3E%3CfeTurbulence type=&quot;fractalNoise&quot; baseFrequency=&quot;0.65&quot; numOctaves=&quot;3&quot; stitchTiles=&quot;stitch&quot;/%3E%3C/filter%3E%3Crect width=&quot;100%25&quot; height=&quot;100%25&quot; filter=&quot;url(%23noise)&quot;/%3E%3C/svg%3E');
+        "
+      ></div>
+    </div>
+
+    <!-- Hero Section - Compact -->
+    <section class="relative px-6 py-6 md:py-8">
       <div class="relative z-10 mx-auto max-w-5xl">
-        <div class="space-y-8">
-          <div class="space-y-4 text-center">
+        <div class="space-y-4">
+          <!-- Glowing accent line -->
+          <div
+            class="animate-fade-in mx-auto h-px w-24 bg-linear-to-r from-transparent via-primary to-transparent"
+          ></div>
+
+          <div class="space-y-3 text-center">
             <h1
-              class="animate-fade-up text-4xl font-semibold tracking-tight text-primary sm:text-5xl md:text-6xl"
+              class="animate-fade-up bg-linear-to-b from-foreground via-foreground to-foreground/50 bg-clip-text text-3xl font-semibold tracking-tight text-transparent sm:text-4xl md:text-5xl"
             >
               <span class="italic">Beautiful maps,</span>
               <br class="hidden sm:inline" />
               <span class="italic">made simple.</span>
             </h1>
             <p
-              class="animate-fade-up mx-auto max-w-xl text-lg leading-relaxed text-foreground/80 delay-100"
+              class="animate-fade-up mx-auto max-w-xl text-sm leading-relaxed text-muted-foreground delay-100 md:text-base"
             >
               Beautiful, ready to use, and customizable map components built on
               <a
                 href="https://github.com/geoql/v-maplibre"
-                class="font-medium underline underline-offset-4 hover:text-foreground"
+                class="font-medium text-foreground underline underline-offset-4 hover:text-primary"
                 >MapLibre</a
               >. Styled with Tailwind. Zero config. One command setup.
             </p>
@@ -49,7 +81,7 @@
 
           <div class="animate-fade-up text-center delay-200">
             <div
-              class="inline-flex max-w-full items-center gap-3 overflow-x-auto rounded-full border border-border/40 bg-secondary/60 px-4 py-2.5 font-mono text-sm backdrop-blur-sm"
+              class="inline-flex max-w-full items-center gap-3 overflow-x-auto rounded-full border border-border/40 bg-card/50 px-4 py-2 font-mono text-xs backdrop-blur-md sm:text-sm"
             >
               <span class="shrink-0 text-muted-foreground/60">$</span>
               <code class="truncate text-foreground/90">{{ cliCommand }}</code>
@@ -71,33 +103,31 @@
           >
             <NuxtLink
               to="/docs/introduction"
-              class="inline-flex h-9 items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow transition-all hover:bg-primary/90"
+              class="inline-flex h-9 items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/30"
             >
               Get Started
               <Icon name="lucide:arrow-right" class="h-4 w-4"></Icon>
             </NuxtLink>
             <NuxtLink
               to="/examples"
-              class="inline-flex h-9 items-center justify-center gap-2 rounded-md px-4 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
+              class="inline-flex h-9 items-center justify-center gap-2 rounded-md border border-border/50 bg-background/50 px-4 py-2 text-sm font-medium text-muted-foreground backdrop-blur-sm transition-colors hover:bg-accent hover:text-accent-foreground"
             >
               View Examples
             </NuxtLink>
           </div>
         </div>
       </div>
-
-      <div
-        class="absolute inset-0 -z-10 bg-[linear-gradient(to_right,#8080800a_1px,transparent_1px),linear-gradient(to_bottom,#8080800a_1px,transparent_1px)] bg-size-[14px_24px]"
-      ></div>
     </section>
 
-    <section class="px-6 pb-20">
-      <div class="mx-auto grid max-w-5xl grid-cols-1 gap-4 sm:grid-cols-2">
+    <!-- Demo Section - Minimal padding -->
+    <section class="px-6 pb-6">
+      <div class="mx-auto grid max-w-5xl grid-cols-1 gap-3 sm:grid-cols-2">
+        <!-- Main demo - prominent viral hook -->
         <div
-          class="demo-card animate-scale-in relative aspect-video overflow-hidden rounded-xl border border-border/50 bg-card shadow delay-400 sm:col-span-2"
+          class="demo-card animate-scale-in relative aspect-16/10 overflow-hidden rounded-xl border border-border/50 bg-card/50 shadow-xl shadow-black/5 backdrop-blur-md delay-400 sm:col-span-2"
         >
           <ClientOnly>
-            <ActiveUsersDemo></ActiveUsersDemo>
+            <ActiveUsersDemo />
             <template #fallback>
               <div class="flex h-full w-full items-center justify-center">
                 <div class="flex gap-1">
@@ -114,9 +144,8 @@
               </div>
             </template>
           </ClientOnly>
-
           <div
-            class="absolute left-3 top-3 z-10 rounded-lg border border-border/50 bg-background/95 p-3 shadow-lg backdrop-blur-md"
+            class="absolute left-3 top-3 z-10 rounded-lg border border-border/50 bg-background/90 p-3 shadow-lg backdrop-blur-md"
           >
             <div
               class="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground"
@@ -133,29 +162,15 @@
               <span class="text-xs text-muted-foreground">vs last hour</span>
             </div>
           </div>
-
+          <!-- Subtle glow effect on main demo -->
           <div
-            class="absolute bottom-3 left-3 z-10 rounded-lg border border-border/50 bg-background/95 px-3 py-2 shadow-lg backdrop-blur-md"
-          >
-            <div class="flex items-center gap-4 text-[10px]">
-              <div class="flex items-center gap-1.5">
-                <div class="h-3 w-3 rounded-full bg-emerald-500"></div>
-                <span class="text-muted-foreground">High</span>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <div class="h-2 w-2 rounded-full bg-emerald-500/70"></div>
-                <span class="text-muted-foreground">Medium</span>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <div class="h-1.5 w-1.5 rounded-full bg-emerald-500/50"></div>
-                <span class="text-muted-foreground">Low</span>
-              </div>
-            </div>
-          </div>
+            class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-white/10"
+          ></div>
         </div>
 
+        <!-- Secondary demos - smaller -->
         <div
-          class="demo-card animate-scale-in relative aspect-4/3 overflow-hidden rounded-xl border border-border/50 bg-card shadow delay-500"
+          class="demo-card animate-scale-in relative aspect-4/3 overflow-hidden rounded-xl border border-border/50 bg-card/50 shadow-lg backdrop-blur-md delay-500"
         >
           <div
             class="absolute left-2 top-2 z-10 rounded bg-background/90 px-2 py-1 text-[10px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm"
@@ -163,7 +178,7 @@
             Global Delivery
           </div>
           <ClientOnly>
-            <DeliveryDemo></DeliveryDemo>
+            <DeliveryDemo />
             <template #fallback>
               <div class="flex h-full w-full items-center justify-center">
                 <div class="flex gap-1">
@@ -183,7 +198,7 @@
         </div>
 
         <div
-          class="demo-card animate-scale-in relative aspect-4/3 overflow-hidden rounded-xl border border-border/50 bg-card shadow delay-600"
+          class="demo-card animate-scale-in relative aspect-4/3 overflow-hidden rounded-xl border border-border/50 bg-card/50 shadow-lg backdrop-blur-md delay-600"
         >
           <div
             class="absolute left-2 top-2 z-10 rounded bg-background/90 px-2 py-1 text-[10px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm"
@@ -191,7 +206,7 @@
             Trips
           </div>
           <ClientOnly>
-            <TripsDemo></TripsDemo>
+            <TripsDemo />
             <template #fallback>
               <div class="flex h-full w-full items-center justify-center">
                 <div class="flex gap-1">
@@ -212,69 +227,109 @@
       </div>
     </section>
 
-    <section class="border-t border-border/40 bg-muted/30 px-6 py-16 md:py-24">
+    <!-- Features Section - Compact with glassmorphism -->
+    <section class="border-t border-border/40 px-6 py-12 md:py-16">
       <div class="mx-auto max-w-5xl">
         <div class="text-center">
+          <div
+            class="animate-fade-in mx-auto mb-4 h-px w-16 bg-linear-to-r from-transparent via-primary/50 to-transparent"
+          ></div>
           <h2
-            class="text-3xl font-bold leading-tight tracking-tighter md:text-4xl"
+            class="bg-linear-to-b from-foreground via-foreground to-foreground/60 bg-clip-text text-2xl font-bold tracking-tight text-transparent md:text-3xl"
           >
             Everything you need for maps
           </h2>
-          <p class="mt-4 text-lg text-muted-foreground">
+          <p class="mt-3 text-sm text-muted-foreground md:text-base">
             From basic markers to deck.gl visualizations. All components you
             need to build stunning map applications.
           </p>
         </div>
 
-        <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <div class="rounded-xl border border-border/50 bg-card p-6">
-            <Icon name="lucide:map-pin" class="h-10 w-10 text-primary"></Icon>
-            <h3 class="mt-4 text-lg font-semibold">Core Components</h3>
-            <p class="mt-2 text-sm text-muted-foreground">
+        <div class="mt-10 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div
+            class="example-card rounded-xl border border-border/50 bg-card/50 p-5 backdrop-blur-md transition-all hover:border-primary/30 hover:bg-card/80"
+          >
+            <div
+              class="flex h-10 w-10 items-center justify-center rounded-lg border border-border/50 bg-muted/50"
+            >
+              <Icon name="lucide:map-pin" class="h-5 w-5 text-primary"></Icon>
+            </div>
+            <h3 class="mt-3 text-base font-semibold">Core Components</h3>
+            <p class="mt-1.5 text-sm leading-relaxed text-muted-foreground">
               Map, Markers, Popups, and Navigation Controls. Everything to get
               started.
             </p>
           </div>
 
-          <div class="rounded-xl border border-border/50 bg-card p-6">
-            <Icon name="lucide:layers" class="h-10 w-10 text-primary"></Icon>
-            <h3 class="mt-4 text-lg font-semibold">MapLibre Layers</h3>
-            <p class="mt-2 text-sm text-muted-foreground">
+          <div
+            class="example-card rounded-xl border border-border/50 bg-card/50 p-5 backdrop-blur-md transition-all hover:border-primary/30 hover:bg-card/80"
+          >
+            <div
+              class="flex h-10 w-10 items-center justify-center rounded-lg border border-border/50 bg-muted/50"
+            >
+              <Icon name="lucide:layers" class="h-5 w-5 text-primary"></Icon>
+            </div>
+            <h3 class="mt-3 text-base font-semibold">MapLibre Layers</h3>
+            <p class="mt-1.5 text-sm leading-relaxed text-muted-foreground">
               GeoJSON, Vector, Raster, Cluster, PMTiles, Image, Video, and
               Canvas layers.
             </p>
           </div>
 
-          <div class="rounded-xl border border-border/50 bg-card p-6">
-            <Icon name="lucide:sparkles" class="h-10 w-10 text-primary"></Icon>
-            <h3 class="mt-4 text-lg font-semibold">deck.gl Layers</h3>
-            <p class="mt-2 text-sm text-muted-foreground">
+          <div
+            class="example-card rounded-xl border border-border/50 bg-card/50 p-5 backdrop-blur-md transition-all hover:border-primary/30 hover:bg-card/80"
+          >
+            <div
+              class="flex h-10 w-10 items-center justify-center rounded-lg border border-border/50 bg-muted/50"
+            >
+              <Icon name="lucide:sparkles" class="h-5 w-5 text-primary"></Icon>
+            </div>
+            <h3 class="mt-3 text-base font-semibold">deck.gl Layers</h3>
+            <p class="mt-1.5 text-sm leading-relaxed text-muted-foreground">
               High-performance WebGL layers: Scatterplot, Arc, Heatmap, Hexagon,
               Trips, and more.
             </p>
           </div>
 
-          <div class="rounded-xl border border-border/50 bg-card p-6">
-            <Icon name="lucide:palette" class="h-10 w-10 text-primary"></Icon>
-            <h3 class="mt-4 text-lg font-semibold">Theme Aware</h3>
-            <p class="mt-2 text-sm text-muted-foreground">
+          <div
+            class="example-card rounded-xl border border-border/50 bg-card/50 p-5 backdrop-blur-md transition-all hover:border-primary/30 hover:bg-card/80"
+          >
+            <div
+              class="flex h-10 w-10 items-center justify-center rounded-lg border border-border/50 bg-muted/50"
+            >
+              <Icon name="lucide:palette" class="h-5 w-5 text-primary"></Icon>
+            </div>
+            <h3 class="mt-3 text-base font-semibold">Theme Aware</h3>
+            <p class="mt-1.5 text-sm leading-relaxed text-muted-foreground">
               Dark mode support out of the box with automatic basemap switching.
             </p>
           </div>
 
-          <div class="rounded-xl border border-border/50 bg-card p-6">
-            <Icon name="lucide:copy" class="h-10 w-10 text-primary"></Icon>
-            <h3 class="mt-4 text-lg font-semibold">Copy & Paste</h3>
-            <p class="mt-2 text-sm text-muted-foreground">
+          <div
+            class="example-card rounded-xl border border-border/50 bg-card/50 p-5 backdrop-blur-md transition-all hover:border-primary/30 hover:bg-card/80"
+          >
+            <div
+              class="flex h-10 w-10 items-center justify-center rounded-lg border border-border/50 bg-muted/50"
+            >
+              <Icon name="lucide:copy" class="h-5 w-5 text-primary"></Icon>
+            </div>
+            <h3 class="mt-3 text-base font-semibold">Copy & Paste</h3>
+            <p class="mt-1.5 text-sm leading-relaxed text-muted-foreground">
               Add components to your project with a single CLI command. No
               complex setup.
             </p>
           </div>
 
-          <div class="rounded-xl border border-border/50 bg-card p-6">
-            <Icon name="lucide:code-2" class="h-10 w-10 text-primary"></Icon>
-            <h3 class="mt-4 text-lg font-semibold">TypeScript First</h3>
-            <p class="mt-2 text-sm text-muted-foreground">
+          <div
+            class="example-card rounded-xl border border-border/50 bg-card/50 p-5 backdrop-blur-md transition-all hover:border-primary/30 hover:bg-card/80"
+          >
+            <div
+              class="flex h-10 w-10 items-center justify-center rounded-lg border border-border/50 bg-muted/50"
+            >
+              <Icon name="lucide:code-2" class="h-5 w-5 text-primary"></Icon>
+            </div>
+            <h3 class="mt-3 text-base font-semibold">TypeScript First</h3>
+            <p class="mt-1.5 text-sm leading-relaxed text-muted-foreground">
               Full TypeScript support with excellent IDE autocompletion and type
               safety.
             </p>
@@ -283,27 +338,30 @@
       </div>
     </section>
 
-    <section class="px-6 py-16 md:py-24">
+    <!-- Get Started Section - Compact -->
+    <section class="px-6 py-12 md:py-16">
       <div class="mx-auto max-w-5xl">
         <div class="text-center">
           <h2
-            class="text-3xl font-bold leading-tight tracking-tighter md:text-4xl"
+            class="bg-linear-to-b from-foreground via-foreground to-foreground/60 bg-clip-text text-2xl font-bold tracking-tight text-transparent md:text-3xl"
           >
             Get started in seconds
           </h2>
-          <p class="mt-4 text-lg text-muted-foreground">
+          <p class="mt-3 text-sm text-muted-foreground md:text-base">
             Add map components to your project with the shadcn-vue CLI.
           </p>
         </div>
 
-        <div class="mx-auto mt-8 w-full max-w-2xl">
-          <div class="overflow-hidden rounded-xl border border-border bg-card">
+        <div class="mx-auto mt-6 w-full max-w-2xl">
+          <div
+            class="overflow-hidden rounded-xl border border-border/50 bg-card/50 backdrop-blur-md"
+          >
             <div
-              class="flex items-center gap-2 border-b border-border px-4 py-2"
+              class="flex items-center gap-2 border-b border-border/50 px-4 py-2"
             >
-              <div class="h-3 w-3 rounded-full bg-red-500"></div>
-              <div class="h-3 w-3 rounded-full bg-yellow-500"></div>
-              <div class="h-3 w-3 rounded-full bg-green-500"></div>
+              <div class="h-3 w-3 rounded-full bg-red-500/80"></div>
+              <div class="h-3 w-3 rounded-full bg-yellow-500/80"></div>
+              <div class="h-3 w-3 rounded-full bg-green-500/80"></div>
               <span class="ml-2 text-xs text-muted-foreground">Terminal</span>
             </div>
             <div class="overflow-x-auto p-4">
@@ -320,77 +378,13 @@
 </template>
 
 <style scoped>
-  .animate-fade-up {
-    animation: fade-up 0.6s ease-out forwards;
-    opacity: 0;
-  }
-
-  .animate-scale-in {
-    animation: scale-in 0.5s ease-out forwards;
-    opacity: 0;
-  }
-
-  .delay-100 {
-    animation-delay: 100ms;
-  }
-
-  .delay-200 {
-    animation-delay: 200ms;
-  }
-
-  .delay-300 {
-    animation-delay: 300ms;
-  }
-
-  .delay-400 {
-    animation-delay: 400ms;
-  }
-
-  .delay-500 {
-    animation-delay: 500ms;
-  }
-
-  .delay-600 {
-    animation-delay: 600ms;
-  }
-
-  .delay-700 {
-    animation-delay: 700ms;
-  }
-
-  .delay-800 {
-    animation-delay: 800ms;
-  }
-
-  @keyframes fade-up {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes scale-in {
-    from {
-      opacity: 0;
-      transform: scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
   .demo-card {
-    min-height: 200px;
+    min-height: 180px;
   }
 
   @media (min-width: 640px) {
     .demo-card {
-      min-height: 240px;
+      min-height: 220px;
     }
   }
 </style>

@@ -55,7 +55,7 @@
 </script>
 
 <template>
-  <div class="overflow-hidden rounded-lg border border-border">
+  <div class="overflow-hidden rounded-lg border border-border max-w-full">
     <!-- Header -->
     <div
       class="flex items-center justify-between border-b border-border bg-muted/50 px-4 py-2"

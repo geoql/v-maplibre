@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { VMap, VLayerDeckglTrips } from '@geoql/v-maplibre';
+  import type { Map } from 'maplibre-gl';
 
   const colorMode = useColorMode();
 
@@ -12,14 +13,29 @@
     colorMode.value === 'dark' ? darkStyle : lightStyle,
   );
 
-  const mapOptions = computed(() => ({
+  // Map reference for programmatic style changes
+  const mapRef = shallowRef<Map | null>(null);
+
+  const mapOptions = {
     container: 'trips-map',
-    style: mapStyle.value,
+    style: lightStyle,
     center: [-74.0, 40.72] as [number, number],
     zoom: 12,
     pitch: 45,
     bearing: 0,
-  }));
+  };
+
+  // Handle map loaded
+  const onMapLoaded = (map: Map) => {
+    mapRef.value = map;
+  };
+
+  // Watch for style changes and update map
+  watch(mapStyle, (newStyle) => {
+    if (mapRef.value) {
+      mapRef.value.setStyle(newStyle);
+    }
+  });
 
   interface Trip {
     path: [number, number][];
@@ -69,15 +85,21 @@
     }
   });
 
-  const getPath = (d: any) => d.path;
-  const getTimestamps = (d: any) => d.timestamps;
-  const getColor = (d: any): [number, number, number] =>
-    d.vendor === 0 ? [253, 128, 93] : [23, 184, 190];
+  interface TripData {
+    path: [number, number][];
+    timestamps: number[];
+    vendor: number;
+  }
+
+  const getPath = (d: unknown) => (d as TripData).path;
+  const getTimestamps = (d: unknown) => (d as TripData).timestamps;
+  const getColor = (d: unknown): [number, number, number] =>
+    (d as TripData).vendor === 0 ? [253, 128, 93] : [23, 184, 190];
 </script>
 
 <template>
   <div class="h-full w-full">
-    <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
+    <VMap :options="mapOptions" class="h-full w-full" @loaded="onMapLoaded">
       <VLayerDeckglTrips
         id="trips-layer"
         :data="tripsData"
