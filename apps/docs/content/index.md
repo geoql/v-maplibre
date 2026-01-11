@@ -12,26 +12,34 @@ Vue 3 Components for MapLibre GL
 Build beautiful, reactive map applications with Vue 3 and MapLibre GL. Fully typed, composable, and compatible with Nuxt 4.
 
 #links
-  :::u-button
-  ---
-  color: neutral
-  size: xl
-  to: /guide/getting-started
-  trailing-icon: i-lucide-arrow-right
-  ---
-  Get started
-  :::
+:::u-button
 
-  :::u-button
-  ---
-  color: neutral
-  icon: simple-icons-github
-  size: xl
-  to: https://github.com/geoql/v-maplibre
-  variant: outline
-  ---
-  View on GitHub
-  :::
+---
+
+color: neutral
+size: xl
+to: /guide/getting-started
+trailing-icon: i-lucide-arrow-right
+
+---
+
+Get started
+:::
+
+:::u-button
+
+---
+
+color: neutral
+icon: simple-icons-github
+size: xl
+to: https://github.com/geoql/v-maplibre
+variant: outline
+
+---
+
+View on GitHub
+:::
 ::
 
 ::u-page-section
@@ -39,71 +47,95 @@ Build beautiful, reactive map applications with Vue 3 and MapLibre GL. Fully typ
 What's included
 
 #features
-  :::u-page-feature
-  ---
-  icon: i-lucide-map
-  ---
-  #title
-  Map Component
+:::u-page-feature
 
-  #description
-  Core VMap component with full MapLibre GL options support
-  :::
+---
 
-  :::u-page-feature
-  ---
-  icon: i-lucide-map-pin
-  ---
-  #title
-  Markers & Popups
+icon: i-lucide-map
 
-  #description
-  Reactive markers and popups with Vue templates
-  :::
+---
 
-  :::u-page-feature
-  ---
-  icon: i-lucide-layers
-  ---
-  #title
-  Layer Components
+#title
+Map Component
 
-  #description
-  GeoJSON, Vector, Raster, Video, Canvas, and PMTiles layers
-  :::
+#description
+Core VMap component with full MapLibre GL options support
+:::
 
-  :::u-page-feature
-  ---
-  icon: i-lucide-gamepad-2
-  ---
-  #title
-  Controls
+:::u-page-feature
 
-  #description
-  Navigation, Scale, Geolocate, Fullscreen, and Attribution controls
-  :::
+---
 
-  :::u-page-feature
-  ---
-  icon: i-simple-icons-typescript
-  ---
-  #title
-  TypeScript
+icon: i-lucide-map-pin
 
-  #description
-  Fully typed with excellent IDE support
-  :::
+---
 
-  :::u-page-feature
-  ---
-  icon: i-simple-icons-nuxt
-  target: _blank
-  to: https://nuxt.com
-  ---
-  #title
-  Nuxt Ready
+#title
+Markers & Popups
 
-  #description
-  Works seamlessly with Nuxt 4 and SSR
-  :::
+#description
+Reactive markers and popups with Vue templates
+:::
+
+:::u-page-feature
+
+---
+
+icon: i-lucide-layers
+
+---
+
+#title
+Layer Components
+
+#description
+GeoJSON, Vector, Raster, Video, Canvas, and PMTiles layers
+:::
+
+:::u-page-feature
+
+---
+
+icon: i-lucide-gamepad-2
+
+---
+
+#title
+Controls
+
+#description
+Navigation, Scale, Geolocate, Fullscreen, and Attribution controls
+:::
+
+:::u-page-feature
+
+---
+
+icon: i-simple-icons-typescript
+
+---
+
+#title
+TypeScript
+
+#description
+Fully typed with excellent IDE support
+:::
+
+:::u-page-feature
+
+---
+
+icon: i-simple-icons-nuxt
+target: \_blank
+to: https://nuxt.com
+
+---
+
+#title
+Nuxt Ready
+
+#description
+Works seamlessly with Nuxt 4 and SSR
+:::
 ::
