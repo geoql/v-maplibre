@@ -39,7 +39,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "maplibre-gl": "catalog:",
-    "maplibre-gl-interpolate-heatmap": "^0.0.1",
+    "maplibre-gl-interpolate-heatmap": "0.1.0",
     "nuxt": "^4.2.2",
     "reka-ui": "^2.7.0",
     "shiki": "^3.21.0",
