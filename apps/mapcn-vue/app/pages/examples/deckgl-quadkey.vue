@@ -22,11 +22,12 @@
     colorMode.value === 'dark' ? darkStyle : lightStyle,
   );
 
+  // Center on Sacramento where the quadkey data is located
   const mapOptions = computed(() => ({
     container: `quadkey-example-${mapId}`,
     style: mapStyle.value,
-    center: [-122.4, 37.78] as [number, number],
-    zoom: 10,
+    center: [-121.5, 38.56] as [number, number],
+    zoom: 11,
     pitch: 45,
     bearing: 0,
   }));
@@ -37,7 +38,7 @@
     category: string;
   }
 
-  // Sample quadkey data for San Francisco area
+  // Sample quadkey data for Sacramento area
   // Quadkey at zoom level 12
   const quadkeyData: QuadkeyData[] = [
     { quadkey: '023010211030', value: 2500, category: 'High' },
@@ -76,8 +77,8 @@ import { VMap, VLayerDeckglQuadkey, VControlNavigation } from '@geoql/v-maplibre
 
 const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-  center: [-122.4, 37.78],
-  zoom: 10,
+  center: [-121.5, 38.56], // Sacramento area where quadkey data is located
+  zoom: 11,
   pitch: 45,
 };
 

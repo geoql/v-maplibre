@@ -281,13 +281,6 @@
       icon: 'lucide:box',
       examples: [
         {
-          title: 'Tile 3D Layer',
-          description: 'Cesium 3D Tiles for photogrammetry and CAD.',
-          href: '/examples/deckgl-tile3d',
-          icon: 'lucide:boxes',
-          badge: '3D',
-        },
-        {
           title: 'Scenegraph',
           description: 'glTF/GLB 3D model rendering.',
           href: '/examples/deckgl-scenegraph',

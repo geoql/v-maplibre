@@ -16,6 +16,7 @@
     opacity?: number;
     visible?: boolean;
     pointSize?: number;
+    getPointColor?: Color | ((d: unknown) => Color);
     beforeId?: string;
   }
 
@@ -63,6 +64,9 @@
       }),
       ...(props.highlightColor !== undefined && {
         highlightColor: props.highlightColor,
+      }),
+      ...(props.getPointColor !== undefined && {
+        getPointColor: props.getPointColor,
       }),
     };
     return new Tile3DLayer(
