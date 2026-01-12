@@ -28,6 +28,7 @@
     zoom: 1.5,
     touchPitch: false,
     pitchWithRotate: false,
+    renderWorldCopies: false,
   }));
 
   const isLoading = ref(true);
