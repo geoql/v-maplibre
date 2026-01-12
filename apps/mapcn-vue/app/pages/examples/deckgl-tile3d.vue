@@ -25,8 +25,8 @@
   const mapOptions = computed(() => ({
     container: `tile3d-example-${mapId}`,
     style: mapStyle.value,
-    center: [-75.61, 40.04] as [number, number],
-    zoom: 14,
+    center: [144.9717, -37.8048] as [number, number], // Melbourne, Australia
+    zoom: 17,
     pitch: 45,
     bearing: 0,
   }));
@@ -43,8 +43,8 @@ import { VMap, VLayerDeckglTile3D, VControlNavigation } from '@geoql/v-maplibre'
 
 const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-  center: [-75.61, 40.04],
-  zoom: 14,
+  center: [144.9717, -37.8048], // Melbourne, Australia
+  zoom: 17,
   pitch: 45,
   bearing: 0,
 };
