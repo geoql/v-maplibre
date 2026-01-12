@@ -5,6 +5,10 @@
     VControlNavigation,
   } from '@geoql/v-maplibre';
   import { GLTFLoader } from '@loaders.gl/gltf';
+  import { registerLoaders } from '@loaders.gl/core';
+
+  // Register GLTFLoader globally so deck.gl can find it
+  registerLoaders([GLTFLoader]);
 
   useSeoMeta({
     title: 'Scenegraph Layer (deck.gl) - mapcn-vue Examples',
@@ -36,9 +40,6 @@
   const MODEL_URL =
     'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/scenegraph-layer/airplane.glb';
 
-  // Loaders for GLB/glTF files
-  const loaders = [GLTFLoader];
-
   interface AirplaneData {
     position: [number, number, number];
     orientation: [number, number, number];
@@ -62,6 +63,10 @@
   const codeExample = `${SCRIPT_START}
 import { VMap, VLayerDeckglScenegraph, VControlNavigation } from '@geoql/v-maplibre';
 import { GLTFLoader } from '@loaders.gl/gltf';
+import { registerLoaders } from '@loaders.gl/core';
+
+// Register GLTFLoader globally so deck.gl can find it
+registerLoaders([GLTFLoader]);
 
 const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
@@ -72,9 +77,6 @@ const mapOptions = {
 
 // 3D airplane model
 const MODEL_URL = 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/scenegraph-layer/airplane.glb';
-
-// GLTFLoader is required for loading .glb/.gltf files
-const loaders = [GLTFLoader];
 
 interface AirplaneData {
   position: [number, number, number];
@@ -99,7 +101,6 @@ ${SCRIPT_END}
       id="scenegraph-layer"
       :data="airplanes"
       :scenegraph="MODEL_URL"
-      :loaders="loaders"
       :get-position="getPosition"
       :get-orientation="getOrientation"
       :size-scale="500"
@@ -139,7 +140,6 @@ ${SCRIPT_END}
                 id="scenegraph-layer"
                 :data="airplanes"
                 :scenegraph="MODEL_URL"
-                :loaders="loaders"
                 :get-position="getPosition"
                 :get-orientation="getOrientation"
                 :size-scale="500"

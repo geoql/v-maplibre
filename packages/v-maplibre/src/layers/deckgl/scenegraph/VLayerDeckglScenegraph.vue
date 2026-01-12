@@ -51,7 +51,9 @@
   const { addLayer, removeLayer, updateLayer } = useDeckOverlay(map);
 
   const createLayer = () => {
-    return new ScenegraphLayer({
+    // Build layer props object, excluding undefined optional props to avoid deck.gl bugs
+    // where it tries to call undefined as a function (e.g., getTransformMatrix)
+    const layerProps = {
       id: props.id,
       data: props.data,
       scenegraph: props.scenegraph,
@@ -60,22 +62,31 @@
       getOrientation: props.getOrientation ?? [0, 0, 0],
       getScale: props.getScale ?? [1, 1, 1],
       getTranslation: props.getTranslation ?? [0, 0, 0],
-      getTransformMatrix: props.getTransformMatrix,
       sizeScale: props.sizeScale,
       sizeMinPixels: props.sizeMinPixels,
       sizeMaxPixels: props.sizeMaxPixels,
-      animator: props.animator,
-      loaders: props.loaders,
-      loadOptions: props.loadOptions,
       opacity: props.opacity,
       visible: props.visible,
       pickable: props.pickable,
       autoHighlight: props.autoHighlight,
-      highlightColor: props.highlightColor,
-      beforeId: props.beforeId,
       onClick: (info: PickingInfo) => emit('click', info),
       onHover: (info: PickingInfo) => emit('hover', info),
-    } as ScenegraphLayerProps);
+      // Only include optional props if defined
+      ...(props.getTransformMatrix !== undefined && {
+        getTransformMatrix: props.getTransformMatrix,
+      }),
+      ...(props.animator !== undefined && { animator: props.animator }),
+      ...(props.loaders !== undefined && { loaders: props.loaders }),
+      ...(props.loadOptions !== undefined && {
+        loadOptions: props.loadOptions,
+      }),
+      ...(props.highlightColor !== undefined && {
+        highlightColor: props.highlightColor,
+      }),
+      ...(props.beforeId !== undefined && { beforeId: props.beforeId }),
+    };
+
+    return new ScenegraphLayer(layerProps as ScenegraphLayerProps);
   };
 
   const initializeLayer = () => {
