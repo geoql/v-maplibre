@@ -4,6 +4,7 @@
     VLayerDeckglScenegraph,
     VControlNavigation,
   } from '@geoql/v-maplibre';
+  import { GLTFLoader } from '@loaders.gl/gltf';
 
   useSeoMeta({
     title: 'Scenegraph Layer (deck.gl) - mapcn-vue Examples',
@@ -35,6 +36,9 @@
   const MODEL_URL =
     'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/scenegraph-layer/airplane.glb';
 
+  // Loaders for GLB/glTF files
+  const loaders = [GLTFLoader];
+
   interface AirplaneData {
     position: [number, number, number];
     orientation: [number, number, number];
@@ -57,6 +61,7 @@
 
   const codeExample = `${SCRIPT_START}
 import { VMap, VLayerDeckglScenegraph, VControlNavigation } from '@geoql/v-maplibre';
+import { GLTFLoader } from '@loaders.gl/gltf';
 
 const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
@@ -67,6 +72,9 @@ const mapOptions = {
 
 // 3D airplane model
 const MODEL_URL = 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/scenegraph-layer/airplane.glb';
+
+// GLTFLoader is required for loading .glb/.gltf files
+const loaders = [GLTFLoader];
 
 interface AirplaneData {
   position: [number, number, number];
@@ -91,6 +99,7 @@ ${SCRIPT_END}
       id="scenegraph-layer"
       :data="airplanes"
       :scenegraph="MODEL_URL"
+      :loaders="loaders"
       :get-position="getPosition"
       :get-orientation="getOrientation"
       :size-scale="500"
@@ -130,6 +139,7 @@ ${SCRIPT_END}
                 id="scenegraph-layer"
                 :data="airplanes"
                 :scenegraph="MODEL_URL"
+                :loaders="loaders"
                 :get-position="getPosition"
                 :get-orientation="getOrientation"
                 :size-scale="500"
@@ -156,8 +166,10 @@ ${SCRIPT_END}
             target="_blank"
             class="text-primary hover:underline"
             >deck.gl-data</a
-          >. Supports glTF 2.0 and GLB formats with animations, textures, and
-          PBR materials.
+          >. Requires
+          <code class="rounded bg-muted px-1">@loaders.gl/gltf</code> package
+          for loading GLB/glTF files. Supports glTF 2.0 and GLB formats with
+          animations, textures, and PBR materials.
         </p>
       </div>
     </div>

@@ -29,6 +29,7 @@
         "@geoql/v-maplibre": "workspace:*",
         "@iconify-json/lucide": "^1.2.84",
         "@iconify-json/simple-icons": "^1.2.66",
+        "@loaders.gl/gltf": "^4.3.4",
         "@nuxtjs/plausible": "^2.0.1",
         "@tanstack/vue-table": "^8.21.3",
         "@unovis/ts": "^1.6.2",
