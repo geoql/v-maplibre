@@ -30,32 +30,28 @@
   const mapOptions = computed(() => ({
     container: `scenegraph-example-${mapId}`,
     style: mapStyle.value,
-    center: [-122.4, 37.8] as [number, number],
+    center: [-122.4, 37.74] as [number, number],
     zoom: 11,
     pitch: 45,
     bearing: 0,
   }));
 
-  // 3D airplane model
+  // Animated box model from Khronos glTF samples
   const MODEL_URL =
-    'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/scenegraph-layer/airplane.glb';
+    'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BoxAnimated/glTF-Binary/BoxAnimated.glb';
 
-  interface AirplaneData {
-    position: [number, number, number];
-    orientation: [number, number, number];
+  // BART stations data
+  const DATA_URL =
+    'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/bart-stations.json';
+
+  interface StationData {
+    name: string;
+    coordinates: [number, number];
   }
 
-  // Sample airplane positions over San Francisco Bay
-  const airplanes: AirplaneData[] = [
-    { position: [-122.4, 37.8, 1000], orientation: [0, 0, 90] },
-    { position: [-122.35, 37.75, 1500], orientation: [0, 0, 180] },
-    { position: [-122.45, 37.85, 800], orientation: [0, 0, 45] },
-    { position: [-122.5, 37.78, 1200], orientation: [0, 0, 270] },
-    { position: [-122.38, 37.82, 900], orientation: [0, 0, 135] },
-  ];
-
-  const getPosition = (d: unknown) => (d as AirplaneData).position;
-  const getOrientation = (d: unknown) => (d as AirplaneData).orientation;
+  const getPosition = (d: unknown) => (d as StationData).coordinates;
+  const getOrientation = () =>
+    [0, Math.random() * 180, 90] as [number, number, number];
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
@@ -65,45 +61,38 @@ import { VMap, VLayerDeckglScenegraph, VControlNavigation } from '@geoql/v-mapli
 import { GLTFLoader } from '@loaders.gl/gltf';
 import { registerLoaders } from '@loaders.gl/core';
 
-// Register GLTFLoader globally so deck.gl can find it
+// Register GLTFLoader globally
 registerLoaders([GLTFLoader]);
 
 const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-  center: [-122.4, 37.8],
+  center: [-122.4, 37.74],
   zoom: 11,
   pitch: 45,
 };
 
-// 3D airplane model
-const MODEL_URL = 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/examples/scenegraph-layer/airplane.glb';
+// Animated box model from Khronos glTF samples
+const MODEL_URL = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BoxAnimated/glTF-Binary/BoxAnimated.glb';
 
-interface AirplaneData {
-  position: [number, number, number];
-  orientation: [number, number, number];
-}
+// BART stations data
+const DATA_URL = 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/bart-stations.json';
 
-// Airplane positions with altitude and heading
-const airplanes: AirplaneData[] = [
-  { position: [-122.4, 37.8, 1000], orientation: [0, 0, 90] },
-  { position: [-122.35, 37.75, 1500], orientation: [0, 0, 180] },
-  { position: [-122.45, 37.85, 800], orientation: [0, 0, 45] },
-];
-
-const getPosition = (d: unknown) => (d as AirplaneData).position;
-const getOrientation = (d: unknown) => (d as AirplaneData).orientation;
+const getPosition = (d) => d.coordinates;
+const getOrientation = () => [0, Math.random() * 180, 90];
 ${SCRIPT_END}
 
 <template>
   <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
     <VControlNavigation position="top-right" />
     <VLayerDeckglScenegraph
-      id="scenegraph-layer"
-      :data="airplanes"
+      id="bart-stations"
+      :data="DATA_URL"
       :scenegraph="MODEL_URL"
       :get-position="getPosition"
       :get-orientation="getOrientation"
       :size-scale="500"
+      :_animations="{ '*': { speed: 5 } }"
+      :_lighting="'pbr'"
       :pickable="true"
     />
   </VMap>
@@ -125,7 +114,7 @@ ${SCRIPT_END}
           Scenegraph Layer (deck.gl)
         </h1>
         <p class="mt-2 text-lg text-muted-foreground">
-          Render glTF/GLB 3D models with full orientation and scale control.
+          Render animated glTF/GLB 3D models at data points with PBR lighting.
         </p>
       </div>
 
@@ -137,12 +126,14 @@ ${SCRIPT_END}
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
               <VLayerDeckglScenegraph
-                id="scenegraph-layer"
-                :data="airplanes"
+                id="bart-stations"
+                :data="DATA_URL"
                 :scenegraph="MODEL_URL"
                 :get-position="getPosition"
                 :get-orientation="getOrientation"
                 :size-scale="500"
+                :_animations="{ '*': { speed: 5 } }"
+                :_lighting="'pbr'"
                 :pickable="true"
               ></VLayerDeckglScenegraph>
             </VMap>
@@ -160,16 +151,20 @@ ${SCRIPT_END}
 
       <div class="mt-6 rounded-lg border border-border bg-muted/50 p-4">
         <p class="text-sm text-muted-foreground">
-          <strong>Data source:</strong> Airplane model from
+          <strong>Data source:</strong> BART station locations from
           <a
             href="https://github.com/visgl/deck.gl-data"
             target="_blank"
             class="text-primary hover:underline"
             >deck.gl-data</a
-          >. Requires
-          <code class="rounded bg-muted px-1">@loaders.gl/gltf</code> package
-          for loading GLB/glTF files. Supports glTF 2.0 and GLB formats with
-          animations, textures, and PBR materials.
+          >
+          with animated BoxAnimated model from
+          <a
+            href="https://github.com/KhronosGroup/glTF-Sample-Models"
+            target="_blank"
+            class="text-primary hover:underline"
+            >Khronos glTF samples</a
+          >. Supports glTF 2.0 animations and PBR materials.
         </p>
       </div>
     </div>

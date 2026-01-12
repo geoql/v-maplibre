@@ -30,6 +30,12 @@
     autoHighlight?: boolean;
     highlightColor?: Color;
     beforeId?: string;
+    // Animation and lighting options
+    _animations?: Record<
+      string,
+      { playing?: boolean; speed?: number; startTime?: number }
+    >;
+    _lighting?: 'flat' | 'pbr';
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -84,6 +90,10 @@
         highlightColor: props.highlightColor,
       }),
       ...(props.beforeId !== undefined && { beforeId: props.beforeId }),
+      ...(props._animations !== undefined && {
+        _animations: props._animations,
+      }),
+      ...(props._lighting !== undefined && { _lighting: props._lighting }),
     };
 
     return new ScenegraphLayer(layerProps as ScenegraphLayerProps);
