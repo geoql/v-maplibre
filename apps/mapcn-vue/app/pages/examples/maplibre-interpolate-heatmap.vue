@@ -6,7 +6,7 @@
   useSeoMeta({
     title: 'Interpolate Heatmap - mapcn-vue Examples',
     description:
-      'IDW interpolated heatmap showing weighted average values, not density.',
+      'IDW interpolated heatmap showing real-time temperature data from OpenWeatherMap.',
   });
 
   const colorMode = useColorMode();
@@ -24,72 +24,80 @@
   const mapOptions = computed(() => ({
     container: `interpolate-heatmap-example-${mapId}`,
     style: mapStyle.value,
-    center: [0, 30] as [number, number],
+    center: [0, 20] as [number, number],
     zoom: 1.5,
+    touchPitch: false,
+    pitchWithRotate: false,
   }));
 
-  // Sample temperature data points around the world
-  const temperatureData = [
-    // Europe
-    { lat: 48.85, lon: 2.35, val: 18 }, // Paris
-    { lat: 51.51, lon: -0.13, val: 15 }, // London
-    { lat: 52.52, lon: 13.41, val: 14 }, // Berlin
-    { lat: 41.9, lon: 12.5, val: 24 }, // Rome
-    { lat: 40.42, lon: -3.7, val: 26 }, // Madrid
-    { lat: 59.33, lon: 18.07, val: 10 }, // Stockholm
-    { lat: 55.68, lon: 12.57, val: 12 }, // Copenhagen
-    { lat: 60.17, lon: 24.94, val: 8 }, // Helsinki
-    // North America
-    { lat: 40.71, lon: -74.01, val: 22 }, // New York
-    { lat: 34.05, lon: -118.24, val: 28 }, // Los Angeles
-    { lat: 41.88, lon: -87.63, val: 20 }, // Chicago
-    { lat: 29.76, lon: -95.37, val: 32 }, // Houston
-    { lat: 33.45, lon: -112.07, val: 35 }, // Phoenix
-    { lat: 47.61, lon: -122.33, val: 16 }, // Seattle
-    { lat: 45.5, lon: -73.57, val: 14 }, // Montreal
-    { lat: 49.28, lon: -123.12, val: 14 }, // Vancouver
-    // Asia
-    { lat: 35.68, lon: 139.69, val: 22 }, // Tokyo
-    { lat: 31.23, lon: 121.47, val: 24 }, // Shanghai
-    { lat: 39.9, lon: 116.41, val: 20 }, // Beijing
-    { lat: 22.32, lon: 114.17, val: 30 }, // Hong Kong
-    { lat: 1.35, lon: 103.82, val: 32 }, // Singapore
-    { lat: 13.76, lon: 100.5, val: 34 }, // Bangkok
-    { lat: 28.61, lon: 77.23, val: 36 }, // Delhi
-    { lat: 19.08, lon: 72.88, val: 32 }, // Mumbai
-    // South America
-    { lat: -23.55, lon: -46.63, val: 26 }, // Sao Paulo
-    { lat: -34.6, lon: -58.38, val: 22 }, // Buenos Aires
-    { lat: -33.45, lon: -70.67, val: 18 }, // Santiago
-    { lat: 4.71, lon: -74.07, val: 16 }, // Bogota
-    { lat: -12.05, lon: -77.04, val: 20 }, // Lima
-    // Africa
-    { lat: 30.04, lon: 31.24, val: 30 }, // Cairo
-    { lat: -33.93, lon: 18.42, val: 20 }, // Cape Town
-    { lat: -1.29, lon: 36.82, val: 24 }, // Nairobi
-    { lat: 33.59, lon: -7.62, val: 24 }, // Casablanca
-    { lat: 6.52, lon: 3.38, val: 30 }, // Lagos
-    // Oceania
-    { lat: -33.87, lon: 151.21, val: 22 }, // Sydney
-    { lat: -37.81, lon: 144.96, val: 18 }, // Melbourne
-    { lat: -36.85, lon: 174.76, val: 16 }, // Auckland
-  ];
+  const isLoading = ref(true);
+  const error = ref<string | null>(null);
 
-  let heatmapLayer: MaplibreInterpolateHeatmapLayer | null = null;
+  interface WeatherPoint {
+    lat: number;
+    lon: number;
+    val: number;
+  }
 
-  const onMapLoaded = (map: Map) => {
-    heatmapLayer = new MaplibreInterpolateHeatmapLayer({
-      id: 'interpolate-temperature',
-      data: temperatureData,
-      opacity: 0.6,
-      minValue: 5,
-      maxValue: 40,
-      p: 3,
-      framebufferFactor: 0.3,
-    });
+  // Generate grid of points across the world
+  const generatePoints = (): WeatherPoint[] => {
+    const startingLatitude = -80;
+    const startingLongitude = -180;
+    const endingLatitude = 80;
+    const endingLongitude = 180;
+    const n = 10; // 10x10 grid = 100 points
+    const points: WeatherPoint[] = [];
 
-    // Cast required due to MapLibre v5 render signature changes
-    map.addLayer(heatmapLayer as unknown as CustomLayerInterface);
+    for (let i = 0; i < n; i += 1) {
+      for (let j = 0; j < n; j += 1) {
+        points.push({
+          lat: startingLatitude + (i * (endingLatitude - startingLatitude)) / n,
+          lon:
+            startingLongitude + (j * (endingLongitude - startingLongitude)) / n,
+          val: 0,
+        });
+      }
+    }
+    return points;
+  };
+
+  const onMapLoaded = async (map: Map) => {
+    try {
+      const points = generatePoints();
+
+      // Fetch real temperature data from OpenWeatherMap
+      const baseUrl =
+        'https://api.openweathermap.org/data/2.5/weather?units=metric';
+      const apiKey = '385df3d81f3a89c1c99c115735540c6d';
+
+      const urls = points.map(
+        ({ lat, lon }) => `${baseUrl}&lat=${lat}&lon=${lon}&appid=${apiKey}`,
+      );
+
+      const weathers = await Promise.all(
+        urls.map(async (url) => {
+          const response = await fetch(url);
+          return response.json();
+        }),
+      );
+
+      points.forEach((point, index) => {
+        const weather = weathers.at(index);
+        point.val = weather?.main?.temp ?? 0;
+      });
+
+      const layer = new MaplibreInterpolateHeatmapLayer({
+        id: 'interpolate-temperature',
+        data: points,
+      });
+
+      // Cast required due to MapLibre v5 render signature changes
+      map.addLayer(layer as unknown as CustomLayerInterface);
+      isLoading.value = false;
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : 'Failed to load data';
+      isLoading.value = false;
+    }
   };
 
   const SCRIPT_END = '</' + 'script>';
@@ -101,35 +109,55 @@ import { MaplibreInterpolateHeatmapLayer } from 'maplibre-gl-interpolate-heatmap
 import type { Map } from 'maplibre-gl';
 
 const mapOptions = {
-  style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-  center: [0, 30],
+  style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+  center: [0, 20],
   zoom: 1.5,
 };
 
-// Temperature data: { lat, lon, val }
-const temperatureData = [
-  { lat: 48.85, lon: 2.35, val: 18 },   // Paris
-  { lat: 51.51, lon: -0.13, val: 15 },  // London
-  { lat: 35.68, lon: 139.69, val: 22 }, // Tokyo
-  { lat: 40.71, lon: -74.01, val: 22 }, // New York
-  // ... more cities
-];
+// Generate grid of points
+const generatePoints = () => {
+  const points = [];
+  const n = 10; // 10x10 grid
+  for (let i = 0; i < n; i++) {
+    for (let j = 0; j < n; j++) {
+      points.push({
+        lat: -80 + (i * 160) / n,
+        lon: -180 + (j * 360) / n,
+        val: 0,
+      });
+    }
+  }
+  return points;
+};
 
-const onMapLoaded = (map: Map) => {
+const onMapLoaded = async (map: Map) => {
+  const points = generatePoints();
+
+  // Fetch temperature from OpenWeatherMap
+  const baseUrl = 'https://api.openweathermap.org/data/2.5/weather?units=metric';
+  const apiKey = 'YOUR_API_KEY';
+
+  const weathers = await Promise.all(
+    points.map(({ lat, lon }) =>
+      fetch(\`\${baseUrl}&lat=\${lat}&lon=\${lon}&appid=\${apiKey}\`).then(r => r.json())
+    )
+  );
+
+  points.forEach((point, i) => {
+    point.val = weathers[i]?.main?.temp ?? 0;
+  });
+
   const layer = new MaplibreInterpolateHeatmapLayer({
     id: 'temperature',
-    data: temperatureData,
-    opacity: 0.6,
-    minValue: 5,   // Blue color
-    maxValue: 40,  // Red color
-    p: 3,          // IDW power parameter
+    data: points,
   });
+
   map.addLayer(layer);
 };
 ${SCRIPT_END}
 
 <template>
-  <VMap :options="mapOptions" class="h-125 w-full rounded-lg" @loaded="onMapLoaded">
+  <VMap :options="mapOptions" class="h-125 w-full" @loaded="onMapLoaded">
     <VControlNavigation position="top-right" />
   </VMap>
 </template>`;
@@ -150,16 +178,42 @@ ${SCRIPT_END}
           Interpolate Heatmap
         </h1>
         <p class="mt-2 text-lg text-muted-foreground">
-          IDW (Inverse Distance Weighting) interpolated heatmap showing weighted
-          average values across the map — unlike density heatmaps that show
-          point concentration.
+          Real-time global temperature visualization using IDW (Inverse Distance
+          Weighting) interpolation with live data from OpenWeatherMap.
         </p>
       </div>
 
       <div class="grid gap-8 lg:grid-cols-2">
         <div
-          class="h-125 min-w-0 overflow-hidden rounded-lg border border-border"
+          class="relative h-125 min-w-0 overflow-hidden rounded-lg border border-border"
         >
+          <!-- Loading overlay -->
+          <div
+            v-if="isLoading"
+            class="absolute inset-0 z-10 flex items-center justify-center bg-background/80 backdrop-blur-sm"
+          >
+            <div class="flex flex-col items-center gap-3">
+              <Icon
+                name="lucide:loader-2"
+                class="h-8 w-8 animate-spin text-primary"
+              ></Icon>
+              <span class="text-sm text-muted-foreground"
+                >Loading weather data...</span
+              >
+            </div>
+          </div>
+
+          <!-- Error state -->
+          <div
+            v-if="error"
+            class="absolute inset-0 z-10 flex items-center justify-center bg-background/80"
+          >
+            <div class="flex flex-col items-center gap-2 text-destructive">
+              <Icon name="lucide:alert-circle" class="h-8 w-8"></Icon>
+              <span class="text-sm">{{ error }}</span>
+            </div>
+          </div>
+
           <ClientOnly>
             <VMap
               :key="mapStyle"
@@ -184,6 +238,20 @@ ${SCRIPT_END}
       <div class="mt-6 space-y-4">
         <div class="rounded-lg border border-border bg-muted/50 p-4">
           <p class="text-sm text-muted-foreground">
+            <strong>Live Data:</strong> This example fetches real-time
+            temperature data from
+            <a
+              href="https://openweathermap.org/api"
+              target="_blank"
+              class="text-primary hover:underline"
+              >OpenWeatherMap API</a
+            >
+            for a 10x10 grid of points across the globe (100 API calls). The IDW
+            algorithm then interpolates temperatures between these points.
+          </p>
+        </div>
+        <div class="rounded-lg border border-border bg-muted/50 p-4">
+          <p class="text-sm text-muted-foreground">
             <strong>Density vs Interpolated:</strong> MapLibre's built-in
             heatmap shows point <em>density</em> (how many points are nearby).
             This interpolated heatmap calculates the
@@ -202,8 +270,7 @@ ${SCRIPT_END}
               >maplibre-gl-interpolate-heatmap</a
             >
             — A GeoQL library for rendering IDW interpolated heatmaps with WebGL
-            shaders. Blue represents low values ({{ 5 }}°), red represents high
-            values ({{ 40 }}°).
+            shaders. Blue = cold, Green = mild, Red = hot.
           </p>
         </div>
       </div>
