@@ -29,6 +29,8 @@
         "@geoql/v-maplibre": "workspace:*",
         "@iconify-json/lucide": "^1.2.84",
         "@iconify-json/simple-icons": "^1.2.66",
+        "@loaders.gl/3d-tiles": "^4.3.4",
+        "@loaders.gl/core": "^4.3.4",
         "@loaders.gl/gltf": "^4.3.4",
         "@luma.gl/core": "^9.2.5",
         "@luma.gl/gltf": "^9.2.5",

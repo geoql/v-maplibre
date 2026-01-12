@@ -40,17 +40,14 @@
   const { addLayer, removeLayer, updateLayer } = useDeckOverlay(map);
 
   const createLayer = () => {
-    return new Tile3DLayer({
+    const layerProps = {
       id: props.id,
       data: props.data,
-      loader: props.loader,
-      loadOptions: props.loadOptions,
       pointSize: props.pointSize,
       opacity: props.opacity,
       visible: props.visible,
       pickable: props.pickable,
       autoHighlight: props.autoHighlight,
-      highlightColor: props.highlightColor,
       beforeId: props.beforeId,
       onClick: (info: PickingInfo) => emit('click', info),
       onHover: (info: PickingInfo) => emit('hover', info),
@@ -59,7 +56,18 @@
       onTileUnload: (tile: unknown) => emit('tileUnload', tile),
       onTileError: (error: Error, url: string, tile: unknown) =>
         emit('tileError', error, url, tile),
-    } as unknown as ConstructorParameters<typeof Tile3DLayer>[0]);
+      // Only include optional props when defined to avoid deck.gl bugs
+      ...(props.loader !== undefined && { loader: props.loader }),
+      ...(props.loadOptions !== undefined && {
+        loadOptions: props.loadOptions,
+      }),
+      ...(props.highlightColor !== undefined && {
+        highlightColor: props.highlightColor,
+      }),
+    };
+    return new Tile3DLayer(
+      layerProps as unknown as ConstructorParameters<typeof Tile3DLayer>[0],
+    );
   };
 
   const initializeLayer = () => {

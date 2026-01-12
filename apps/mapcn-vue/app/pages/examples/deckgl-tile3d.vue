@@ -4,6 +4,11 @@
     VLayerDeckglTile3D,
     VControlNavigation,
   } from '@geoql/v-maplibre';
+  import { registerLoaders } from '@loaders.gl/core';
+  import { Tiles3DLoader } from '@loaders.gl/3d-tiles';
+
+  // Register the 3D Tiles loader globally
+  registerLoaders([Tiles3DLoader]);
 
   useSeoMeta({
     title: 'Tile 3D Layer (deck.gl) - mapcn-vue Examples',
