@@ -73,6 +73,14 @@
           icon: 'lucide:video',
           badge: 'Media',
         },
+        {
+          title: 'Interpolate Heatmap',
+          description:
+            'IDW interpolated heatmap showing weighted averages, not density.',
+          href: '/examples/maplibre-interpolate-heatmap',
+          icon: 'lucide:thermometer',
+          badge: 'IDW',
+        },
       ],
     },
     {
