@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import type { Ref } from 'vue';
-  import { ref, watch, onMounted, onBeforeUnmount } from 'vue';
+  import { ref, watch, onMounted, onBeforeUnmount, nextTick } from 'vue';
   import type {
     LngLatLike,
     MarkerOptions,
@@ -154,23 +154,33 @@
     { immediate: true },
   );
 
-  // Lifecycle hooks
-  onMounted(() => {
-    if (loaded.value) {
-      try {
-        const markerOptions: MarkerOptions = {
-          ...props.options,
-          element: slotRef.value || undefined,
-        };
-        marker.value = new Marker(markerOptions);
-        setMarkerCoordinates(marker.value);
-        addToMap(marker.value);
-        setCursorPointer(marker.value);
-        listenMarkerEvents(marker.value);
-      } catch (error) {
-        console.error('Error initializing marker:', error);
-      }
+  const initMarker = () => {
+    if (!loaded.value || marker.value) return;
+
+    try {
+      const markerOptions: MarkerOptions = {
+        ...props.options,
+        element: slotRef.value || undefined,
+      };
+      marker.value = new Marker(markerOptions);
+      setMarkerCoordinates(marker.value);
+      addToMap(marker.value);
+      setCursorPointer(marker.value);
+      listenMarkerEvents(marker.value);
+    } catch (error) {
+      console.error('Error initializing marker:', error);
     }
+  };
+
+  watch(slotRef, (el) => {
+    if (el && !marker.value) {
+      initMarker();
+    }
+  });
+
+  onMounted(async () => {
+    await nextTick();
+    initMarker();
   });
 
   onBeforeUnmount(() => {

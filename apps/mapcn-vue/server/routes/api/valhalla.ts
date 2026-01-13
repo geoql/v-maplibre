@@ -2,6 +2,7 @@ export default defineCachedEventHandler(
   async (event) => {
     const query = getQuery(event);
     const json = query.json as string;
+    const endpoint = (query.endpoint as string) || 'route';
 
     if (!json) {
       throw createError({
@@ -10,7 +11,15 @@ export default defineCachedEventHandler(
       });
     }
 
-    const url = `https://valhalla1.openstreetmap.de/route?json=${encodeURIComponent(json)}`;
+    const validEndpoints = ['route', 'optimized_route', 'isochrone', 'matrix'];
+    if (!validEndpoints.includes(endpoint)) {
+      throw createError({
+        statusCode: 400,
+        message: `Invalid endpoint. Supported: ${validEndpoints.join(', ')}`,
+      });
+    }
+
+    const url = `https://valhalla1.openstreetmap.de/${endpoint}?json=${encodeURIComponent(json)}`;
 
     const response = await fetch(url, {
       headers: {
@@ -34,7 +43,7 @@ export default defineCachedEventHandler(
     maxAge: 60 * 60,
     getKey: (event) => {
       const query = getQuery(event);
-      return `valhalla:${query.json}`;
+      return `valhalla:${query.endpoint || 'route'}:${query.json}`;
     },
   },
 );
