@@ -431,7 +431,7 @@ ${SCRIPT_END}
               <VMarker
                 v-for="(wp, index) in waypoints"
                 :key="wp.name"
-                :lng-lat="wp.coordinates"
+                :coordinates="wp.coordinates"
               >
                 <div
                   class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-primary text-sm font-bold text-white shadow-lg"

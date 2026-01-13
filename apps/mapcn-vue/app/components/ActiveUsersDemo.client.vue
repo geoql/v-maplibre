@@ -155,16 +155,23 @@
       <VPopup
         v-if="hoveredCity"
         :coordinates="hoveredCity.coordinates"
-        :options="{ closeButton: false, closeOnClick: false, offset: 15 }"
+        :options="{
+          closeButton: false,
+          closeOnClick: false,
+          offset: 15,
+          className: 'active-users-popup',
+        }"
       >
-        <div class="text-center">
-          <div class="font-semibold text-zinc-900">
+        <div class="px-1 py-0.5 text-center">
+          <div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
             {{ hoveredCity.city }}
           </div>
-          <div class="text-xl font-bold text-emerald-500">
+          <div class="text-lg font-bold text-emerald-500">
             {{ hoveredCity.weight.toLocaleString() }}
           </div>
-          <div class="text-xs text-zinc-500">active users</div>
+          <div class="text-[11px] text-zinc-500 dark:text-zinc-400">
+            active users
+          </div>
         </div>
       </VPopup>
     </VMap>
@@ -175,5 +182,34 @@
   #active-users-map {
     width: 100%;
     height: 100%;
+  }
+</style>
+
+<style>
+  .active-users-popup {
+    z-index: 100 !important;
+  }
+
+  .active-users-popup .maplibregl-popup-content {
+    padding: 8px 12px;
+    border-radius: 8px;
+    box-shadow:
+      0 4px 6px -1px rgb(0 0 0 / 0.1),
+      0 2px 4px -2px rgb(0 0 0 / 0.1);
+    border: 1px solid hsl(var(--border) / 0.5);
+    background: hsl(var(--background));
+  }
+
+  .active-users-popup .maplibregl-popup-tip {
+    border-top-color: hsl(var(--background));
+  }
+
+  .dark .active-users-popup .maplibregl-popup-content {
+    background: hsl(var(--background));
+    border-color: hsl(var(--border) / 0.5);
+  }
+
+  .dark .active-users-popup .maplibregl-popup-tip {
+    border-top-color: hsl(var(--background));
   }
 </style>
