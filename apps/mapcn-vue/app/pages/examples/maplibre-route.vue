@@ -8,9 +8,8 @@
   } from '@geoql/v-maplibre';
 
   useSeoMeta({
-    title: 'Route Planning - mapcn-vue Examples',
-    description:
-      'Route planning with Valhalla routing engine and optimized routes.',
+    title: 'Delivery Tracking - mapcn-vue Examples',
+    description: 'Real-time delivery tracking with route visualization.',
   });
 
   const colorMode = useColorMode();
@@ -28,62 +27,18 @@
   const mapOptions = computed(() => ({
     container: `route-example-${mapId}`,
     style: mapStyle.value,
-    center: [-73.98, 40.75] as [number, number],
-    zoom: 12,
+    center: [-0.105, 51.515] as [number, number],
+    zoom: 12.5,
   }));
 
-  // NYC landmarks as waypoints
-  interface Waypoint {
-    name: string;
-    coordinates: [number, number];
-    icon: string;
-  }
+  // Simple delivery scenario: Store → Home
+  const store = { coordinates: [-0.14, 51.5154] as [number, number] };
+  const home = { coordinates: [-0.05, 51.5134] as [number, number] };
 
-  const waypoints = ref<Waypoint[]>([
-    {
-      name: 'Times Square',
-      coordinates: [-73.9855, 40.758],
-      icon: 'lucide:star',
-    },
-    {
-      name: 'Empire State Building',
-      coordinates: [-73.9857, 40.7484],
-      icon: 'lucide:building-2',
-    },
-    {
-      name: 'Grand Central Terminal',
-      coordinates: [-73.9772, 40.7527],
-      icon: 'lucide:train-front',
-    },
-    {
-      name: 'Bryant Park',
-      coordinates: [-73.9832, 40.7536],
-      icon: 'lucide:trees',
-    },
-  ]);
-
-  interface RouteOption {
-    coordinates: [number, number][];
-    distance: number;
-    duration: number;
-    mode: string;
-  }
-
-  const routes = ref<RouteOption[]>([]);
-  const selectedRouteIndex = ref(0);
+  const routeCoordinates = ref<[number, number][]>([]);
+  const routeInfo = ref<{ distance: number; duration: number } | null>(null);
   const isLoading = ref(false);
-  const error = ref<string | null>(null);
 
-  // Costing modes for Valhalla
-  const costingModes = [
-    { id: 'auto', label: 'Driving', icon: 'lucide:car' },
-    { id: 'bicycle', label: 'Cycling', icon: 'lucide:bike' },
-    { id: 'pedestrian', label: 'Walking', icon: 'lucide:footprints' },
-  ];
-
-  const selectedMode = ref('auto');
-
-  // Decode Valhalla's encoded polyline (uses precision 6)
   const decodePolyline = (
     encoded: string,
     precision: number = 6,
@@ -126,148 +81,97 @@
     return coordinates;
   };
 
-  const fetchRoutes = async () => {
+  const fetchRoute = async () => {
     isLoading.value = true;
-    error.value = null;
-    routes.value = [];
 
     try {
-      const locations = waypoints.value.map((wp) => ({
-        lat: wp.coordinates[1],
-        lon: wp.coordinates[0],
-        type: 'break' as const,
-      }));
-
-      const routePromises = costingModes.map(async (mode) => {
-        const params = {
-          locations,
-          costing: mode.id,
-          directions_options: {
-            units: 'kilometers',
+      const params = {
+        locations: [
+          {
+            lat: store.coordinates[1],
+            lon: store.coordinates[0],
+            type: 'break',
           },
-        };
+          { lat: home.coordinates[1], lon: home.coordinates[0], type: 'break' },
+        ],
+        costing: 'auto',
+        directions_options: { units: 'kilometers' },
+      };
 
-        // Use server proxy to avoid CORS issues
-        const url = `/api/valhalla?json=${encodeURIComponent(JSON.stringify(params))}`;
+      const url = `/api/valhalla?json=${encodeURIComponent(JSON.stringify(params))}`;
+      const response = await fetch(url);
 
-        const response = await fetch(url);
+      if (!response.ok) throw new Error('Failed to fetch route');
 
-        if (!response.ok) {
-          throw new Error(`Failed to fetch ${mode.label} route`);
-        }
-
-        const data = await response.json();
-
-        // Decode the shape from Valhalla response
-        const coordinates = decodePolyline(data.trip.legs[0].shape);
-
-        return {
-          coordinates,
-          distance: data.trip.summary.length, // in km
-          duration: data.trip.summary.time, // in seconds
-          mode: mode.id,
-        };
-      });
-
-      const results = await Promise.allSettled(routePromises);
-      routes.value = results
-        .filter(
-          (r): r is PromiseFulfilledResult<RouteOption> =>
-            r.status === 'fulfilled',
-        )
-        .map((r) => r.value);
-
-      // Select the route matching the current mode
-      const modeIndex = routes.value.findIndex(
-        (r) => r.mode === selectedMode.value,
-      );
-      if (modeIndex >= 0) {
-        selectedRouteIndex.value = modeIndex;
-      }
+      const data = await response.json();
+      routeCoordinates.value = decodePolyline(data.trip.legs[0].shape);
+      routeInfo.value = {
+        distance: data.trip.summary.length,
+        duration: data.trip.summary.time,
+      };
     } catch (err) {
-      error.value =
-        err instanceof Error ? err.message : 'Failed to fetch routes';
       console.error('Route fetch error:', err);
     } finally {
       isLoading.value = false;
     }
   };
 
-  const selectRoute = (index: number) => {
-    selectedRouteIndex.value = index;
-    selectedMode.value = routes.value[index]?.mode || 'auto';
+  const formatDuration = (seconds: number) => {
+    const mins = Math.round(seconds / 60);
+    return `${mins} min`;
   };
 
   const formatDistance = (km: number) => {
-    return km < 1 ? `${Math.round(km * 1000)}m` : `${km.toFixed(1)}km`;
+    return `${km.toFixed(1)} km`;
   };
 
-  const formatDuration = (seconds: number) => {
-    const mins = Math.round(seconds / 60);
-    if (mins < 60) return `${mins} min`;
-    const hours = Math.floor(mins / 60);
-    const remainingMins = mins % 60;
-    return `${hours}h ${remainingMins}m`;
-  };
-
-  const getRouteColor = (mode: string, isSelected: boolean) => {
-    if (!isSelected) return '#94a3b8';
-    switch (mode) {
-      case 'auto':
-        return '#3b82f6';
-      case 'bicycle':
-        return '#22c55e';
-      case 'pedestrian':
-        return '#f59e0b';
-      default:
-        return '#6366f1';
-    }
-  };
+  // Calculate midpoint for truck icon
+  const truckPosition = computed(() => {
+    if (routeCoordinates.value.length < 2) return null;
+    const midIndex = Math.floor(routeCoordinates.value.length / 2);
+    return routeCoordinates.value[midIndex];
+  });
 
   onMounted(() => {
-    fetchRoutes();
+    fetchRoute();
   });
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VMarker, VLayerMaplibreRoute, VControlNavigation } from '@geoql/v-maplibre';
+import { VMap, VMarker, VLayerMaplibreRoute } from '@geoql/v-maplibre';
 
-const mapOptions = {
-  style: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
-  center: [-73.98, 40.75],
-  zoom: 12,
-};
+const store = { coordinates: [-0.14, 51.5154] };
+const home = { coordinates: [-0.05, 51.5134] };
 
-const waypoints = [
-  { name: 'Times Square', coordinates: [-73.9855, 40.758] },
-  { name: 'Empire State Building', coordinates: [-73.9857, 40.7484] },
-  { name: 'Grand Central Terminal', coordinates: [-73.9772, 40.7527] },
-];
-
-// Fetch optimized route from Valhalla (via server proxy to avoid CORS)
+// Fetch route from Valhalla API
 const params = {
-  locations: waypoints.map(wp => ({ lat: wp.coordinates[1], lon: wp.coordinates[0], type: 'break' })),
+  locations: [
+    { lat: store.coordinates[1], lon: store.coordinates[0], type: 'break' },
+    { lat: home.coordinates[1], lon: home.coordinates[0], type: 'break' },
+  ],
   costing: 'auto',
 };
+
 const response = await fetch(\`/api/valhalla?json=\${encodeURIComponent(JSON.stringify(params))}\`);
 const data = await response.json();
 const routeCoordinates = decodePolyline(data.trip.legs[0].shape);
 ${SCRIPT_END}
 
 <template>
-  <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
-    <VControlNavigation position="top-right" />
+  <VMap :options="mapOptions" class="h-[500px] w-full rounded-lg">
     <VLayerMaplibreRoute
-      id="route"
+      id="delivery-route"
       :coordinates="routeCoordinates"
       color="#3b82f6"
-      :width="5"
-      :opacity="0.9"
+      :width="4"
     />
-    <VMarker v-for="wp in waypoints" :key="wp.name" :lng-lat="wp.coordinates">
-      <div class="marker">{{ wp.name }}</div>
+    <VMarker :coordinates="store.coordinates">
+      <div class="marker">Store</div>
+    </VMarker>
+    <VMarker :coordinates="home.coordinates">
+      <div class="marker">Home</div>
     </VMarker>
   </VMap>
 </template>`;
@@ -284,113 +188,110 @@ ${SCRIPT_END}
           <Icon name="lucide:arrow-left" class="mr-2 h-4 w-4"></Icon>
           Back to Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">Route Planning</h1>
+        <h1 class="mt-4 text-3xl font-bold tracking-tight">
+          Delivery Tracking
+        </h1>
         <p class="mt-2 text-lg text-muted-foreground">
-          Multi-modal route planning using the Valhalla routing engine. Compare
-          driving, cycling, and walking routes between NYC landmarks.
+          Real-time delivery route visualization using VLayerMaplibreRoute.
         </p>
       </div>
 
       <div class="grid gap-8 lg:grid-cols-2">
-        <div class="min-w-0">
-          <!-- Route selector buttons -->
-          <div class="mb-4 flex flex-wrap gap-2">
-            <button
-              v-for="(route, index) in routes"
-              :key="route.mode"
-              class="inline-flex items-center gap-2 rounded-lg border px-4 py-2 text-sm font-medium transition-all"
-              :class="
-                selectedRouteIndex === index
-                  ? 'border-primary bg-primary/10 text-primary'
-                  : 'border-border bg-card text-muted-foreground hover:bg-muted'
-              "
-              @click="selectRoute(index)"
-            >
-              <Icon
-                :name="
-                  costingModes.find((m) => m.id === route.mode)?.icon ||
-                  'lucide:route'
-                "
-                class="h-4 w-4"
-              ></Icon>
-              <span>{{
-                costingModes.find((m) => m.id === route.mode)?.label
-              }}</span>
-              <span
-                v-if="route.duration"
-                class="rounded-full bg-muted px-2 py-0.5 text-xs"
+        <div class="min-w-0 space-y-4">
+          <!-- Delivery status card -->
+          <div class="rounded-lg border border-border bg-card p-4">
+            <div class="flex items-center gap-3 mb-4">
+              <div
+                class="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500/10"
               >
-                {{ formatDuration(route.duration) }}
-              </span>
-            </button>
-          </div>
+                <Icon name="lucide:truck" class="h-5 w-5 text-blue-500"></Icon>
+              </div>
+              <div>
+                <div class="font-semibold">Order #12847</div>
+                <div class="text-sm text-muted-foreground">
+                  <span class="inline-flex items-center gap-1">
+                    <span
+                      class="h-2 w-2 rounded-full bg-green-500 animate-pulse"
+                    ></span>
+                    On the way
+                  </span>
+                </div>
+              </div>
+            </div>
 
-          <!-- Route info card -->
-          <div
-            v-if="routes[selectedRouteIndex]"
-            class="mb-4 rounded-lg border border-border bg-card/50 p-4"
-          >
-            <div class="flex items-center gap-4">
-              <div class="flex-1">
+            <div
+              v-if="routeInfo"
+              class="flex items-center justify-between border-t border-border pt-4"
+            >
+              <div>
                 <div class="text-2xl font-bold">
-                  {{ formatDuration(routes[selectedRouteIndex].duration) }}
+                  {{ formatDuration(routeInfo.duration) }}
                 </div>
                 <div class="text-sm text-muted-foreground">
-                  {{ formatDistance(routes[selectedRouteIndex].distance) }}
+                  Estimated arrival
                 </div>
               </div>
               <div class="text-right">
-                <div class="text-sm font-medium text-muted-foreground">
-                  via
-                  {{
-                    costingModes.find(
-                      (m) => m.id === routes[selectedRouteIndex].mode,
-                    )?.label
-                  }}
+                <div class="text-lg font-semibold">
+                  {{ formatDistance(routeInfo.distance) }}
                 </div>
-                <div class="text-xs text-muted-foreground">
-                  {{ waypoints.length }} stops
-                </div>
+                <div class="text-sm text-muted-foreground">Distance</div>
               </div>
+            </div>
+
+            <div
+              v-if="isLoading"
+              class="flex items-center gap-2 text-muted-foreground"
+            >
+              <Icon name="lucide:loader-2" class="h-4 w-4 animate-spin"></Icon>
+              <span>Calculating route...</span>
             </div>
           </div>
 
-          <!-- Waypoints list -->
-          <div class="mb-4 space-y-2">
+          <!-- Locations -->
+          <div class="space-y-3">
             <div
-              v-for="(wp, index) in waypoints"
-              :key="wp.name"
-              class="flex items-center gap-3 rounded-lg border border-border bg-card/50 p-3"
+              class="flex items-center gap-3 rounded-lg border border-border bg-card p-3"
             >
               <div
-                class="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-sm font-bold text-primary"
+                class="flex h-8 w-8 items-center justify-center rounded-full bg-emerald-500/10"
               >
-                {{ index + 1 }}
+                <Icon
+                  name="lucide:store"
+                  class="h-4 w-4 text-emerald-500"
+                ></Icon>
               </div>
               <div class="flex-1">
-                <div class="font-medium">{{ wp.name }}</div>
+                <div class="font-medium">Store</div>
+                <div class="text-xs text-muted-foreground">Pickup location</div>
+              </div>
+              <Icon
+                name="lucide:check-circle-2"
+                class="h-5 w-5 text-emerald-500"
+              ></Icon>
+            </div>
+
+            <div class="ml-4 h-6 border-l-2 border-dashed border-border"></div>
+
+            <div
+              class="flex items-center gap-3 rounded-lg border border-border bg-card p-3"
+            >
+              <div
+                class="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500/10"
+              >
+                <Icon name="lucide:home" class="h-4 w-4 text-blue-500"></Icon>
+              </div>
+              <div class="flex-1">
+                <div class="font-medium">Home</div>
                 <div class="text-xs text-muted-foreground">
-                  {{ wp.coordinates[1].toFixed(4) }},
-                  {{ wp.coordinates[0].toFixed(4) }}
+                  Delivery address
                 </div>
               </div>
               <Icon
-                :name="wp.icon"
+                name="lucide:clock"
                 class="h-5 w-5 text-muted-foreground"
               ></Icon>
             </div>
-          </div>
-
-          <!-- Loading/Error states -->
-          <div
-            v-if="isLoading"
-            class="flex items-center gap-2 text-muted-foreground"
-          >
-            <Icon name="lucide:loader-2" class="h-4 w-4 animate-spin"></Icon>
-            <span>Fetching routes...</span>
-          </div>
-          <div v-if="error" class="text-sm text-red-500">
-            {{ error }}
           </div>
         </div>
 
@@ -401,42 +302,56 @@ ${SCRIPT_END}
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
 
-              <!-- Render all routes (unselected ones first, selected on top) -->
-              <template v-for="(route, index) in routes" :key="route.mode">
-                <VLayerMaplibreRoute
-                  v-if="index !== selectedRouteIndex"
-                  :id="`route-${route.mode}`"
-                  :coordinates="route.coordinates"
-                  :color="getRouteColor(route.mode, false)"
-                  :width="3"
-                  :opacity="0.4"
-                  :interactive="true"
-                  @click="selectRoute(index)"
-                />
-              </template>
-
-              <!-- Selected route on top -->
+              <!-- Route line -->
               <VLayerMaplibreRoute
-                v-if="routes[selectedRouteIndex]"
-                :id="`route-${routes[selectedRouteIndex].mode}-selected`"
-                :coordinates="routes[selectedRouteIndex].coordinates"
-                :color="getRouteColor(routes[selectedRouteIndex].mode, true)"
-                :width="5"
+                v-if="routeCoordinates.length > 0"
+                id="delivery-route"
+                :coordinates="routeCoordinates"
+                color="#3b82f6"
+                :width="4"
                 :opacity="0.9"
                 line-cap="round"
                 line-join="round"
               />
 
-              <!-- Waypoint markers -->
-              <VMarker
-                v-for="(wp, index) in waypoints"
-                :key="wp.name"
-                :coordinates="wp.coordinates"
-              >
+              <!-- Store marker -->
+              <VMarker :coordinates="store.coordinates">
+                <div class="relative">
+                  <div
+                    class="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-medium text-foreground"
+                  >
+                    Store
+                  </div>
+                  <div
+                    class="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-emerald-500 shadow-lg"
+                  >
+                    <div class="h-2 w-2 rounded-full bg-white"></div>
+                  </div>
+                </div>
+              </VMarker>
+
+              <!-- Truck marker (midpoint) -->
+              <VMarker v-if="truckPosition" :coordinates="truckPosition">
                 <div
-                  class="flex h-8 w-8 items-center justify-center rounded-full border-2 border-white bg-primary text-sm font-bold text-white shadow-lg"
+                  class="flex h-10 w-10 items-center justify-center rounded-full border-2 border-white bg-blue-500 shadow-lg"
                 >
-                  {{ index + 1 }}
+                  <Icon name="lucide:truck" class="h-5 w-5 text-white"></Icon>
+                </div>
+              </VMarker>
+
+              <!-- Home marker -->
+              <VMarker :coordinates="home.coordinates">
+                <div class="relative">
+                  <div
+                    class="absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap text-xs font-medium text-foreground"
+                  >
+                    Home
+                  </div>
+                  <div
+                    class="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-blue-500 shadow-lg"
+                  >
+                    <div class="h-2 w-2 rounded-full bg-white"></div>
+                  </div>
                 </div>
               </VMarker>
             </VMap>
@@ -448,7 +363,7 @@ ${SCRIPT_END}
         <CodeBlock
           :code="codeExample"
           lang="vue"
-          filename="RoutePlanning.vue"
+          filename="DeliveryTracking.vue"
         ></CodeBlock>
       </div>
     </div>

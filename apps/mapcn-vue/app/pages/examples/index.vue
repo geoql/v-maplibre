@@ -82,11 +82,11 @@
           badge: 'IDW',
         },
         {
-          title: 'Route Planning',
+          title: 'Delivery Tracking',
           description:
-            'Multi-modal routing with Valhalla. Compare driving, cycling, and walking routes.',
+            'Real-time delivery route visualization with labeled markers.',
           href: '/examples/maplibre-route',
-          icon: 'lucide:route',
+          icon: 'lucide:truck',
           badge: 'New',
         },
       ],
