@@ -117,7 +117,14 @@
           rendering. A 1.3GB dataset streamed efficiently via COG tiling.
         </p>
         <p class="mt-2 text-sm text-muted-foreground">
-          Data:
+          Powered by
+          <a
+            href="https://github.com/developmentseed/deck.gl-raster"
+            target="_blank"
+            class="text-primary hover:underline"
+            >@developmentseed/deck.gl-raster</a
+          >
+          - fully client-side, no server required. Data:
           <a
             href="https://www.mrlc.gov/data/nlcd-2024-land-cover-conus"
             target="_blank"
@@ -125,13 +132,7 @@
           >
             NLCD 2024 Land Cover (CONUS)
           </a>
-          from USGS. See also:
-          <NuxtLink
-            to="/examples/deckgl-cog"
-            class="text-primary hover:underline"
-          >
-            Sentinel-2 RGB COG example
-          </NuxtLink>
+          from USGS.
         </p>
       </div>
 
