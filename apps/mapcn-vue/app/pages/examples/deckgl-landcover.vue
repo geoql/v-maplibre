@@ -177,11 +177,11 @@
         </div>
 
         <div class="min-w-0">
-          <CodeBlock
+          <LazyCodeBlock
             :code="codeExample"
             lang="vue"
             filename="LandCoverCOG.vue"
-          ></CodeBlock>
+          ></LazyCodeBlock>
 
           <div class="mt-6 rounded-lg border border-border bg-card p-4">
             <h3 class="mb-3 font-semibold">Features</h3>
