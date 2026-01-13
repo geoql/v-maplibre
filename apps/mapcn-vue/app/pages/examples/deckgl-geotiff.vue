@@ -1,15 +1,11 @@
 <script setup lang="ts">
-  import {
-    VMap,
-    VLayerDeckglGeoTIFF,
-    VControlNavigation,
-  } from '@geoql/v-maplibre';
+  import { VMap, VLayerDeckglCOG, VControlNavigation } from '@geoql/v-maplibre';
   import type { Map } from 'maplibre-gl';
 
   useSeoMeta({
-    title: 'GeoTIFF Layer (Non-tiled) - mapcn-vue Examples',
+    title: 'Land Cover COG - mapcn-vue Examples',
     description:
-      'Render small, non-tiled GeoTIFF files directly in the browser with GPU acceleration.',
+      'Render NLCD Land Cover data with automatic colormap visualization.',
   });
 
   const colorMode = useColorMode();
@@ -29,17 +25,16 @@
     colorMode.value === 'dark' ? darkStyle : lightStyle,
   );
 
-  // Small non-tiled GeoTIFF example
-  // GeoTIFFLayer is designed for small images that fit entirely in memory
-  // For this demo, we use a small sample GeoTIFF (~500KB)
-  const GEOTIFF_URL =
-    'https://s3.amazonaws.com/elevation-tiles-prod/geotiff/12/1241/1513.tif';
+  // NLCD Land Cover COG - 1.3GB file streamed efficiently via COG tiling
+  // Shows land use classification across the continental US
+  const COG_URL =
+    'https://s3.us-east-1.amazonaws.com/ds-deck.gl-raster-public/cog/Annual_NLCD_LndCov_2024_CU_C1V1.tif';
 
   const mapOptions = computed(() => ({
-    container: `geotiff-example-${mapId}`,
+    container: `landcover-example-${mapId}`,
     style: mapStyle.value,
-    center: [0, 20] as [number, number],
-    zoom: 1,
+    center: [-98.5, 39.8] as [number, number],
+    zoom: 4,
   }));
 
   const handleGeotiffLoad = (
@@ -54,7 +49,7 @@
     },
   ) => {
     console.log(
-      '[GeoTIFF Example] GeoTIFF loaded, bounds:',
+      '[Land Cover Example] COG loaded, bounds:',
       options.geographicBounds,
     );
   };
@@ -63,24 +58,24 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-  import { VMap, VLayerDeckglGeoTIFF, VControlNavigation } from '@geoql/v-maplibre';
+  import { VMap, VLayerDeckglCOG, VControlNavigation } from '@geoql/v-maplibre';
 
   const mapOptions = {
     style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-    center: [0, 20],
-    zoom: 1,
+    center: [-98.5, 39.8], // Continental US
+    zoom: 4,
   };
 
-  // Small non-tiled GeoTIFF (loads entire image into memory)
-  const GEOTIFF_URL = 'https://example.com/small-image.tif';
+  // NLCD Land Cover COG with automatic colormap
+  const COG_URL = 'https://s3.us-east-1.amazonaws.com/.../NLCD_LndCov.tif';
   ${SCRIPT_END}
 
   <template>
     <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
       <VControlNavigation position="top-right" />
-      <VLayerDeckglGeoTIFF
-        id="geotiff-layer"
-        :geotiff="GEOTIFF_URL"
+      <VLayerDeckglCOG
+        id="landcover-layer"
+        :geotiff="COG_URL"
       />
     </VMap>
   </template>`;
@@ -97,22 +92,27 @@
           <Icon name="lucide:arrow-left" class="mr-2 h-4 w-4"></Icon>
           Back to Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">
-          GeoTIFF Layer (Non-tiled)
-        </h1>
+        <h1 class="mt-4 text-3xl font-bold tracking-tight">Land Cover COG</h1>
         <p class="mt-2 text-lg text-muted-foreground">
-          Render small, non-tiled GeoTIFF files directly in the browser with GPU
-          acceleration.
+          Visualize NLCD Land Cover classification data with automatic colormap
+          rendering. A 1.3GB dataset streamed efficiently via COG tiling.
         </p>
         <p class="mt-2 text-sm text-muted-foreground">
-          For large Cloud-Optimized GeoTIFFs (COGs), use
+          Data:
+          <a
+            href="https://www.mrlc.gov/data/nlcd-2024-land-cover-conus"
+            target="_blank"
+            class="text-primary hover:underline"
+          >
+            NLCD 2024 Land Cover (CONUS)
+          </a>
+          from USGS. See also:
           <NuxtLink
             to="/examples/deckgl-cog"
             class="text-primary hover:underline"
           >
-            VLayerDeckglCOG
+            Sentinel-2 RGB COG example
           </NuxtLink>
-          instead.
         </p>
       </div>
 
@@ -128,11 +128,11 @@
               @loaded="onMapLoaded"
             >
               <VControlNavigation position="top-right"></VControlNavigation>
-              <VLayerDeckglGeoTIFF
-                id="geotiff-layer"
-                :geotiff="GEOTIFF_URL"
+              <VLayerDeckglCOG
+                id="landcover-layer"
+                :geotiff="COG_URL"
                 @geotiff-load="handleGeotiffLoad"
-              ></VLayerDeckglGeoTIFF>
+              ></VLayerDeckglCOG>
             </VMap>
           </ClientOnly>
         </div>
@@ -141,56 +141,61 @@
           <CodeBlock
             :code="codeExample"
             lang="vue"
-            filename="GeoTIFFLayer.vue"
+            filename="LandCoverCOG.vue"
           ></CodeBlock>
 
           <div class="mt-6 space-y-4">
             <div class="rounded-lg border border-border bg-card p-4">
-              <h3 class="mb-2 font-semibold">When to Use</h3>
+              <h3 class="mb-2 font-semibold">Land Cover Classes</h3>
+              <ul class="space-y-1 text-sm text-muted-foreground">
+                <li class="flex items-center gap-2">
+                  <span class="h-3 w-3 rounded-sm bg-green-700"></span>
+                  Forest (Deciduous, Evergreen, Mixed)
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="h-3 w-3 rounded-sm bg-yellow-600"></span>
+                  Shrub/Scrub, Grassland
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="h-3 w-3 rounded-sm bg-amber-800"></span>
+                  Cultivated Crops, Pasture
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="h-3 w-3 rounded-sm bg-red-600"></span>
+                  Developed (Low to High Intensity)
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="h-3 w-3 rounded-sm bg-blue-500"></span>
+                  Open Water, Wetlands
+                </li>
+              </ul>
+            </div>
+
+            <div class="rounded-lg border border-border bg-card p-4">
+              <h3 class="mb-2 font-semibold">Features</h3>
               <ul class="space-y-1 text-sm text-muted-foreground">
                 <li class="flex items-center gap-2">
                   <Icon
                     name="lucide:check"
                     class="h-4 w-4 text-emerald-500"
                   ></Icon>
-                  Small images that fit in memory
+                  Automatic colormap from embedded palette
                 </li>
                 <li class="flex items-center gap-2">
                   <Icon
                     name="lucide:check"
                     class="h-4 w-4 text-emerald-500"
                   ></Icon>
-                  Strip-based (non-tiled) GeoTIFFs
+                  Efficient streaming of 1.3GB dataset
                 </li>
                 <li class="flex items-center gap-2">
                   <Icon
                     name="lucide:check"
                     class="h-4 w-4 text-emerald-500"
                   ></Icon>
-                  Images without overviews
-                </li>
-                <li class="flex items-center gap-2">
-                  <Icon name="lucide:x" class="h-4 w-4 text-red-500"></Icon>
-                  Large COGs (use VLayerDeckglCOG instead)
+                  Zoom-based overview selection
                 </li>
               </ul>
-            </div>
-
-            <div
-              class="rounded-lg border border-amber-500/20 bg-amber-500/10 p-4"
-            >
-              <h3 class="mb-2 font-semibold text-amber-600 dark:text-amber-400">
-                <Icon
-                  name="lucide:alert-triangle"
-                  class="mr-1 inline h-4 w-4"
-                ></Icon>
-                Performance Note
-              </h3>
-              <p class="text-sm text-muted-foreground">
-                GeoTIFFLayer loads the entire image into memory at full
-                resolution. For large rasters, use COGLayer which streams tiles
-                on demand.
-              </p>
             </div>
           </div>
         </div>

@@ -258,10 +258,10 @@
           badge: 'Raster',
         },
         {
-          title: 'GeoTIFF Layer',
-          description: 'Render small non-tiled GeoTIFFs directly in browser.',
+          title: 'Land Cover COG',
+          description: 'NLCD land use classification with automatic colormap.',
           href: '/examples/deckgl-geotiff',
-          icon: 'lucide:file-image',
+          icon: 'lucide:trees',
           badge: 'Raster',
         },
       ],
