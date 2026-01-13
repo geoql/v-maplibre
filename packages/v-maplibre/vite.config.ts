@@ -8,7 +8,23 @@ export default defineConfig({
   build: {
     // Enable Rolldown (experimental)
     rollupOptions: {
-      external: ['vue', 'maplibre-gl', 'pmtiles'],
+      external: [
+        'vue',
+        'maplibre-gl',
+        'pmtiles',
+        // deck.gl packages (optional peer deps)
+        '@deck.gl/core',
+        '@deck.gl/layers',
+        '@deck.gl/mapbox',
+        '@deck.gl/aggregation-layers',
+        '@deck.gl/geo-layers',
+        '@deck.gl/mesh-layers',
+        // Raster packages (optional peer deps)
+        '@developmentseed/deck.gl-geotiff',
+        'geotiff-geokeys-to-proj4',
+        // LiDAR package (optional peer dep)
+        'maplibre-gl-lidar',
+      ],
       output: {
         exports: 'named',
         globals: {

@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { VMap, VLayerDeckglCOG, VControlNavigation } from '@geoql/v-maplibre';
+  import type { Map } from 'maplibre-gl';
 
   useSeoMeta({
     title: 'COG Layer (deck.gl-raster) - mapcn-vue Examples',
@@ -9,6 +10,11 @@
 
   const colorMode = useColorMode();
   const mapId = useId();
+  const mapInstance = shallowRef<Map | null>(null);
+
+  const onMapLoaded = (map: Map) => {
+    mapInstance.value = map;
+  };
 
   const lightStyle =
     'https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json';
@@ -19,44 +25,66 @@
     colorMode.value === 'dark' ? darkStyle : lightStyle,
   );
 
-  // Sentinel-2 RGB imagery COG (uses standard EPSG:32618 UTM projection)
-  // From Element84's public STAC catalog
   const COG_URL =
     'https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/Q/WD/2020/7/S2A_36QWD_20200701_0_L2A/TCI.tif';
 
-  // Center on the imagery location (Egypt/Nile area)
   const mapOptions = computed(() => ({
     container: `cog-example-${mapId}`,
     style: mapStyle.value,
-    center: [31.5, 30.0] as [number, number],
-    zoom: 8,
+    center: [0, 0] as [number, number],
+    zoom: 2,
   }));
+
+  const handleGeotiffLoad = (
+    _tiff: unknown,
+    options: {
+      geographicBounds: {
+        west: number;
+        south: number;
+        east: number;
+        north: number;
+      };
+    },
+  ) => {
+    console.log(
+      '[COG Example] GeoTIFF loaded, bounds:',
+      options.geographicBounds,
+    );
+    const { west, south, east, north } = options.geographicBounds;
+    mapInstance.value?.fitBounds(
+      [
+        [west, south],
+        [east, north],
+      ],
+      { padding: 40, duration: 1000 },
+    );
+  };
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VLayerDeckglCOG, VControlNavigation } from '@geoql/v-maplibre';
+  import { VMap, VLayerDeckglCOG, VControlNavigation } from '@geoql/v-maplibre';
 
-const mapOptions = {
-  style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-  center: [31.5, 30.0], // Egypt/Nile area
-  zoom: 8,
-};
+  const mapOptions = {
+    style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+    center: [31.5, 30.0], // Egypt/Nile area
+    zoom: 8,
+  };
 
-// Sentinel-2 RGB imagery COG
-const COG_URL = 'https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/Q/WD/2020/7/S2A_36QWD_20200701_0_L2A/TCI.tif';
-${SCRIPT_END}
+  // Sentinel-2 RGB imagery COG
+  const COG_URL = 'https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/Q/WD/2020/7/S2A_36QWD_20200701_0_L2A/TCI.tif';
+  ${SCRIPT_END}
 
-<template>
-  <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
-    <VControlNavigation position="top-right" />
-    <VLayerDeckglCOG
-      id="cog-layer"
-      :geotiff="COG_URL"
-    />
-  </VMap>
-</template>`;
+  <template>
+    <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
+      <VControlNavigation position="top-right" />
+      <VLayerDeckglCOG
+        id="cog-layer"
+        :geotiff="COG_URL"
+      />
+    </VMap>
+  </template>`;
 </script>
 
 <template>
@@ -100,11 +128,17 @@ ${SCRIPT_END}
           class="h-125 min-w-0 overflow-hidden rounded-lg border border-border"
         >
           <ClientOnly>
-            <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
+            <VMap
+              :key="mapStyle"
+              :options="mapOptions"
+              class="h-full w-full"
+              @loaded="onMapLoaded"
+            >
               <VControlNavigation position="top-right"></VControlNavigation>
               <VLayerDeckglCOG
                 id="cog-layer"
                 :geotiff="COG_URL"
+                @geotiff-load="handleGeotiffLoad"
               ></VLayerDeckglCOG>
             </VMap>
           </ClientOnly>

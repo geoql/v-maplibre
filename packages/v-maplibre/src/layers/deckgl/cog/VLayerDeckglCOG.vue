@@ -1,5 +1,12 @@
 <script setup lang="ts">
-  import { onMounted, onBeforeUnmount, watch, shallowRef } from 'vue';
+  import {
+    onMounted,
+    onBeforeUnmount,
+    watch,
+    shallowRef,
+    toRaw,
+    markRaw,
+  } from 'vue';
   import type { Color, PickingInfo } from '@deck.gl/core';
   import { injectStrict, MapKey } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
@@ -10,18 +17,6 @@
      * GeoTIFF source - URL string, ArrayBuffer, Blob, or geotiff.js instance
      */
     geotiff: string | ArrayBuffer | Blob | object;
-    /**
-     * Custom parser for GeoTIFF geo keys (default: uses epsg.io)
-     */
-    geoKeysParser?: (geoKeys: object) => Promise<string>;
-    /**
-     * Custom tile data loader (overrides default COG tile loading)
-     */
-    getTileData?: (params: object) => Promise<unknown>;
-    /**
-     * Custom render pipeline (overrides inferred pipeline from metadata)
-     */
-    renderTile?: (params: object) => unknown;
     /**
      * Tile size in pixels
      */
@@ -70,6 +65,14 @@
      * Insert layer before this layer id
      */
     beforeId?: string;
+    /**
+     * Show debug overlay on tiles
+     */
+    debug?: boolean;
+    /**
+     * Opacity of debug overlay (0-1)
+     */
+    debugOpacity?: number;
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -81,82 +84,132 @@
     visible: true,
     pickable: false,
     autoHighlight: false,
+    debug: false,
+    debugOpacity: 0.25,
   });
 
   const emit = defineEmits<{
     click: [info: PickingInfo];
     hover: [info: PickingInfo];
-    viewportLoad: [tiles: unknown[]];
-    tileLoad: [tile: unknown];
-    tileUnload: [tile: unknown];
-    tileError: [error: Error, tile: unknown];
+    geotiffLoad: [
+      tiff: unknown,
+      options: {
+        geographicBounds: {
+          west: number;
+          south: number;
+          east: number;
+          north: number;
+        };
+      },
+    ];
   }>();
 
   const map = injectStrict(MapKey);
   const { addLayer, removeLayer, updateLayer } = useDeckOverlay(map);
 
-  // Store the COGLayer class once imported
+  // Store module references
   const COGLayerClass = shallowRef<
     typeof import('@developmentseed/deck.gl-geotiff').COGLayer | null
   >(null);
+  const projModule = shallowRef<
+    typeof import('@developmentseed/deck.gl-geotiff').proj | null
+  >(null);
+  const toProj4Fn = shallowRef<
+    typeof import('geotiff-geokeys-to-proj4').toProj4 | null
+  >(null);
+
+  // Create geoKeysParser using geotiff-geokeys-to-proj4 (like official example)
+  const createGeoKeysParser = () => {
+    if (!projModule.value || !toProj4Fn.value) return undefined;
+
+    const proj = projModule.value;
+    const toProj4 = toProj4Fn.value;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return async (geoKeys: any) => {
+      const projDefinition = toProj4(geoKeys);
+      return {
+        def: projDefinition.proj4,
+        parsed: proj.parseCrs(projDefinition.proj4),
+        coordinatesUnits: projDefinition.coordinatesUnits as 'degree' | 'metre',
+      };
+    };
+  };
 
   const createLayer = () => {
     if (!COGLayerClass.value) return null;
 
-    // Only include defined props to avoid overriding library defaults
-    const layerProps: Record<string, unknown> = {
-      id: props.id,
-      geotiff: props.geotiff,
-      opacity: props.opacity,
-      visible: props.visible,
-      pickable: props.pickable,
-      autoHighlight: props.autoHighlight,
-      onClick: (info: PickingInfo) => emit('click', info),
-      onHover: (info: PickingInfo) => emit('hover', info),
-      onViewportLoad: (tiles: unknown[]) => emit('viewportLoad', tiles),
-      onTileLoad: (tile: unknown) => emit('tileLoad', tile),
-      onTileUnload: (tile: unknown) => emit('tileUnload', tile),
-      onTileError: (error: Error, tile: unknown) =>
-        emit('tileError', error, tile),
+    const geoKeysParser = createGeoKeysParser();
+
+    // Use toRaw() to unwrap Vue reactive proxies - required for web worker serialization
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const layerProps: Record<string, any> = {
+      id: toRaw(props.id),
+      geotiff: toRaw(props.geotiff),
+      opacity: toRaw(props.opacity),
+      visible: toRaw(props.visible),
+      pickable: toRaw(props.pickable),
+      autoHighlight: toRaw(props.autoHighlight),
+      debug: toRaw(props.debug),
+      debugOpacity: toRaw(props.debugOpacity),
     };
 
-    // Only add optional props if they are defined
-    if (props.geoKeysParser !== undefined)
-      layerProps.geoKeysParser = props.geoKeysParser;
-    if (props.getTileData !== undefined)
-      layerProps.getTileData = props.getTileData;
-    if (props.renderTile !== undefined)
-      layerProps.renderTile = props.renderTile;
-    if (props.tileSize !== undefined) layerProps.tileSize = props.tileSize;
-    if (props.maxZoom !== undefined) layerProps.maxZoom = props.maxZoom;
-    if (props.minZoom !== undefined) layerProps.minZoom = props.minZoom;
-    if (props.maxCacheSize !== undefined)
-      layerProps.maxCacheSize = props.maxCacheSize;
-    if (props.refinementStrategy !== undefined)
-      layerProps.refinementStrategy = props.refinementStrategy;
-    if (props.maxRequests !== undefined)
-      layerProps.maxRequests = props.maxRequests;
-    if (props.highlightColor !== undefined)
-      layerProps.highlightColor = props.highlightColor;
-    if (props.beforeId !== undefined) layerProps.beforeId = props.beforeId;
+    if (geoKeysParser) {
+      layerProps.geoKeysParser = geoKeysParser;
+    }
 
-    return new COGLayerClass.value(
-      layerProps as ConstructorParameters<
-        typeof import('@developmentseed/deck.gl-geotiff').COGLayer
-      >[0],
-    );
+    layerProps.onGeoTIFFLoad = (
+      tiff: unknown,
+      options: {
+        geographicBounds: {
+          west: number;
+          south: number;
+          east: number;
+          north: number;
+        };
+      },
+    ) => {
+      emit('geotiffLoad', tiff, options);
+    };
+
+    if (props.tileSize !== 256) layerProps.tileSize = toRaw(props.tileSize);
+    if (props.maxZoom !== undefined) layerProps.maxZoom = toRaw(props.maxZoom);
+    if (props.minZoom !== 0) layerProps.minZoom = toRaw(props.minZoom);
+    if (props.maxCacheSize !== undefined)
+      layerProps.maxCacheSize = toRaw(props.maxCacheSize);
+    if (props.refinementStrategy !== 'best-available')
+      layerProps.refinementStrategy = toRaw(props.refinementStrategy);
+    if (props.maxRequests !== 6)
+      layerProps.maxRequests = toRaw(props.maxRequests);
+    if (props.highlightColor !== undefined)
+      layerProps.highlightColor = toRaw(props.highlightColor);
+    if (props.beforeId !== undefined)
+      layerProps.beforeId = toRaw(props.beforeId);
+
+    const layer = new COGLayerClass.value(layerProps);
+    return markRaw(layer);
   };
 
   const initializeLayer = async () => {
     try {
-      const module = await import('@developmentseed/deck.gl-geotiff');
-      COGLayerClass.value = module.COGLayer;
+      const [geotiffModule, proj4Module] = await Promise.all([
+        import('@developmentseed/deck.gl-geotiff'),
+        import('geotiff-geokeys-to-proj4'),
+      ]);
+
+      COGLayerClass.value = markRaw(geotiffModule.COGLayer);
+      projModule.value = markRaw(geotiffModule.proj);
+      toProj4Fn.value = markRaw(proj4Module.toProj4);
+
       const layer = createLayer();
       if (layer) {
         addLayer(layer);
       }
     } catch (error) {
       console.error('[deck.gl-raster] Error loading COGLayer:', error);
+      console.error(
+        'Make sure @developmentseed/deck.gl-geotiff and geotiff-geokeys-to-proj4 are installed',
+      );
     }
   };
 
@@ -176,6 +229,8 @@
       props.minZoom,
       props.opacity,
       props.visible,
+      props.debug,
+      props.debugOpacity,
     ],
     () => {
       const layer = createLayer();
