@@ -27,27 +27,18 @@
     city: string;
   }
 
+  // Major cities with good global distribution
   const usersData: UserData[] = [
     { coordinates: [-74.006, 40.7128], weight: 847, city: 'New York' },
     { coordinates: [-0.1276, 51.5074], weight: 623, city: 'London' },
     { coordinates: [139.6917, 35.6895], weight: 512, city: 'Tokyo' },
-    { coordinates: [2.3522, 48.8566], weight: 234, city: 'Paris' },
     { coordinates: [-122.4194, 37.7749], weight: 198, city: 'San Francisco' },
-    { coordinates: [77.209, 28.6139], weight: 187, city: 'New Delhi' },
-    { coordinates: [121.4737, 31.2304], weight: 156, city: 'Shanghai' },
     { coordinates: [151.2093, -33.8688], weight: 89, city: 'Sydney' },
-    { coordinates: [-43.1729, -22.9068], weight: 67, city: 'Rio de Janeiro' },
-    { coordinates: [18.4241, -33.9249], weight: 45, city: 'Cape Town' },
-    { coordinates: [103.8198, 1.3521], weight: 78, city: 'Singapore' },
-    { coordinates: [-99.1332, 19.4326], weight: 56, city: 'Mexico City' },
-    { coordinates: [116.4074, 39.9042], weight: 320, city: 'Beijing' },
-    { coordinates: [37.6173, 55.7558], weight: 145, city: 'Moscow' },
-    { coordinates: [126.978, 37.5665], weight: 210, city: 'Seoul' },
     { coordinates: [-46.6333, -23.5505], weight: 178, city: 'Sao Paulo' },
     { coordinates: [72.8777, 19.076], weight: 290, city: 'Mumbai' },
-    { coordinates: [28.9784, 41.0082], weight: 165, city: 'Istanbul' },
-    { coordinates: [100.5018, 13.7563], weight: 142, city: 'Bangkok' },
-    { coordinates: [-3.7038, 40.4168], weight: 118, city: 'Madrid' },
+    { coordinates: [126.978, 37.5665], weight: 210, city: 'Seoul' },
+    { coordinates: [18.4241, -33.9249], weight: 45, city: 'Cape Town' },
+    { coordinates: [103.8198, 1.3521], weight: 78, city: 'Singapore' },
   ];
 
   // Animation state for pulsing effect
@@ -90,11 +81,11 @@
   // Accessors
   const getPosition = (d: unknown) => (d as UserData).coordinates;
 
-  // Scale radius based on weight (user count): 8px min, 25px max
+  // Scale radius based on weight (user count): 4px min, 12px max
   const getRadius = (d: unknown) => {
     const weight = (d as UserData).weight;
-    const minRadius = 8;
-    const maxRadius = 25;
+    const minRadius = 4;
+    const maxRadius = 12;
     const minWeight = 45;
     const maxWeight = 847;
     const normalized = (weight - minWeight) / (maxWeight - minWeight);
@@ -125,8 +116,8 @@
         :get-fill-color="getPulseColor"
         :radius-scale="pulseScale"
         radius-units="pixels"
-        :radius-min-pixels="8"
-        :radius-max-pixels="50"
+        :radius-min-pixels="4"
+        :radius-max-pixels="24"
         :opacity="0.4"
         :pickable="false"
         :stroked="false"
@@ -141,13 +132,13 @@
         :get-fill-color="getFillColor"
         :radius-scale="1"
         radius-units="pixels"
-        :radius-min-pixels="8"
-        :radius-max-pixels="25"
+        :radius-min-pixels="4"
+        :radius-max-pixels="12"
         :opacity="0.9"
         :pickable="true"
         :stroked="true"
         :get-line-color="[16, 185, 129, 255]"
-        :line-width-min-pixels="2"
+        :line-width-min-pixels="1"
         :filled="true"
         :antialiasing="true"
         @hover="handleHover"
