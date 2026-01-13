@@ -147,13 +147,10 @@
           },
         };
 
-        const url = `https://valhalla1.openstreetmap.de/optimized_route?json=${encodeURIComponent(JSON.stringify(params))}`;
+        // Use server proxy to avoid CORS issues
+        const url = `/api/valhalla?json=${encodeURIComponent(JSON.stringify(params))}`;
 
-        const response = await fetch(url, {
-          headers: {
-            Accept: '*/*',
-          },
-        });
+        const response = await fetch(url);
 
         if (!response.ok) {
           throw new Error(`Failed to fetch ${mode.label} route`);
@@ -249,12 +246,12 @@ const waypoints = [
   { name: 'Grand Central Terminal', coordinates: [-73.9772, 40.7527] },
 ];
 
-// Fetch optimized route from Valhalla
+// Fetch optimized route from Valhalla (via server proxy to avoid CORS)
 const params = {
   locations: waypoints.map(wp => ({ lat: wp.coordinates[1], lon: wp.coordinates[0], type: 'break' })),
   costing: 'auto',
 };
-const response = await fetch(\`https://valhalla1.openstreetmap.de/optimized_route?json=\${encodeURIComponent(JSON.stringify(params))}\`);
+const response = await fetch(\`/api/valhalla?json=\${encodeURIComponent(JSON.stringify(params))}\`);
 const data = await response.json();
 const routeCoordinates = decodePolyline(data.trip.legs[0].shape);
 ${SCRIPT_END}
