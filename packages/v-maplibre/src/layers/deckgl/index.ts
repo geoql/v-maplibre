@@ -35,7 +35,6 @@ export { VLayerDeckglSimpleMesh } from './simple-mesh';
 export { VLayerDeckglScenegraph } from './scenegraph';
 
 export { VLayerDeckglCOG } from './cog';
-export { VLayerDeckglGeoTIFF } from './geotiff';
 
 export { VLayerDeckgl } from './generic';
 

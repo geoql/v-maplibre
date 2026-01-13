@@ -135,7 +135,6 @@ High-performance WebGL visualization layers powered by deck.gl:
 **Raster Layers** (requires `@developmentseed/deck.gl-geotiff`)
 
 - `VLayerDeckglCOG` - Cloud-Optimized GeoTIFF visualization
-- `VLayerDeckglGeoTIFF` - Non-tiled GeoTIFF rendering
 
 ### Control Components
 
