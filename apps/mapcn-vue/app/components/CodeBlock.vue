@@ -62,7 +62,7 @@
       </button>
     </div>
     <ClientOnly>
-      <CodeBlockContent :code="code" :lang="lang"></CodeBlockContent>
+      <LazyCodeBlockContent :code="code" :lang="lang"></LazyCodeBlockContent>
       <template #fallback>
         <div class="max-h-110 overflow-auto bg-muted/30 p-4">
           <div class="space-y-2">
