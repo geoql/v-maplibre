@@ -81,6 +81,14 @@
           icon: 'lucide:thermometer',
           badge: 'IDW',
         },
+        {
+          title: 'Route Planning',
+          description:
+            'Multi-modal routing with Valhalla. Compare driving, cycling, and walking routes.',
+          href: '/examples/maplibre-route',
+          icon: 'lucide:route',
+          badge: 'New',
+        },
       ],
     },
     {
