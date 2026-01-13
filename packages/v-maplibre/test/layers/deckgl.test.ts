@@ -25,11 +25,11 @@ describe('Deck.gl Layer Exports', () => {
     expect(typeof deckglExports.DeckLayersKey).toBe('symbol');
   });
 
-  it('exports all 33 layer components', () => {
+  it('exports all 35 layer components', () => {
     const layerComponents = Object.keys(deckglExports).filter((key) =>
       key.startsWith('VLayerDeckgl'),
     );
-    expect(layerComponents.length).toBe(33);
+    expect(layerComponents.length).toBe(35);
   });
 });
 
