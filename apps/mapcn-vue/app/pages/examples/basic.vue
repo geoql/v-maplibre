@@ -44,7 +44,11 @@ ${SCRIPT_END}
 
       <div class="grid gap-8 lg:grid-cols-2">
         <div class="h-125 min-w-0">
-          <MapDemo :center="[-74.006, 40.7128]" :zoom="11" show-scale></MapDemo>
+          <LazyMapDemo
+            :center="[-74.006, 40.7128]"
+            :zoom="11"
+            show-scale
+          ></LazyMapDemo>
         </div>
 
         <div class="min-w-0">

@@ -127,7 +127,7 @@
           class="demo-card animate-scale-in relative aspect-16/10 overflow-hidden rounded-xl border border-border/50 bg-card/50 shadow-xl shadow-black/5 backdrop-blur-md delay-400 sm:col-span-2"
         >
           <ClientOnly>
-            <ActiveUsersDemo />
+            <LazyActiveUsersDemo />
             <template #fallback>
               <div class="flex h-full w-full items-center justify-center">
                 <div class="flex gap-1">
@@ -178,7 +178,7 @@
             Global Delivery
           </div>
           <ClientOnly>
-            <DeliveryDemo />
+            <LazyDeliveryDemo />
             <template #fallback>
               <div class="flex h-full w-full items-center justify-center">
                 <div class="flex gap-1">
@@ -206,7 +206,7 @@
             Trips
           </div>
           <ClientOnly>
-            <TripsDemo />
+            <LazyTripsDemo />
             <template #fallback>
               <div class="flex h-full w-full items-center justify-center">
                 <div class="flex gap-1">
