@@ -145,62 +145,62 @@
         </div>
 
         <div class="min-w-0">
-          <CodeBlock
+          <LazyCodeBlock
             :code="codeExample"
             lang="vue"
             filename="COGLayer.vue"
-          ></CodeBlock>
-
-          <div class="mt-6 rounded-lg border border-border bg-card p-4">
-            <h3 class="mb-3 font-semibold">Features</h3>
-            <ul
-              class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm text-muted-foreground"
-            >
-              <li class="flex items-center gap-2">
-                <Icon
-                  name="lucide:check"
-                  class="h-4 w-4 shrink-0 text-emerald-500"
-                ></Icon>
-                Fully client-side
-              </li>
-              <li class="flex items-center gap-2">
-                <Icon
-                  name="lucide:check"
-                  class="h-4 w-4 shrink-0 text-emerald-500"
-                ></Icon>
-                GPU-accelerated
-              </li>
-              <li class="flex items-center gap-2">
-                <Icon
-                  name="lucide:check"
-                  class="h-4 w-4 shrink-0 text-emerald-500"
-                ></Icon>
-                Auto reprojection
-              </li>
-              <li class="flex items-center gap-2">
-                <Icon
-                  name="lucide:check"
-                  class="h-4 w-4 shrink-0 text-emerald-500"
-                ></Icon>
-                Tile streaming
-              </li>
-              <li class="flex items-center gap-2">
-                <Icon
-                  name="lucide:check"
-                  class="h-4 w-4 shrink-0 text-emerald-500"
-                ></Icon>
-                Auto overview selection
-              </li>
-              <li class="flex items-center gap-2">
-                <Icon
-                  name="lucide:check"
-                  class="h-4 w-4 shrink-0 text-emerald-500"
-                ></Icon>
-                No server required
-              </li>
-            </ul>
-          </div>
+          ></LazyCodeBlock>
         </div>
+      </div>
+
+      <div class="mt-8 rounded-lg border border-border bg-card p-4">
+        <h3 class="mb-3 font-semibold">Features</h3>
+        <ul
+          class="grid grid-cols-2 gap-x-8 gap-y-1.5 text-sm text-muted-foreground md:grid-cols-3 lg:grid-cols-6"
+        >
+          <li class="flex items-center gap-2">
+            <Icon
+              name="lucide:check"
+              class="h-4 w-4 shrink-0 text-emerald-500"
+            ></Icon>
+            Fully client-side
+          </li>
+          <li class="flex items-center gap-2">
+            <Icon
+              name="lucide:check"
+              class="h-4 w-4 shrink-0 text-emerald-500"
+            ></Icon>
+            GPU-accelerated
+          </li>
+          <li class="flex items-center gap-2">
+            <Icon
+              name="lucide:check"
+              class="h-4 w-4 shrink-0 text-emerald-500"
+            ></Icon>
+            Auto reprojection
+          </li>
+          <li class="flex items-center gap-2">
+            <Icon
+              name="lucide:check"
+              class="h-4 w-4 shrink-0 text-emerald-500"
+            ></Icon>
+            Tile streaming
+          </li>
+          <li class="flex items-center gap-2">
+            <Icon
+              name="lucide:check"
+              class="h-4 w-4 shrink-0 text-emerald-500"
+            ></Icon>
+            Auto overviews
+          </li>
+          <li class="flex items-center gap-2">
+            <Icon
+              name="lucide:check"
+              class="h-4 w-4 shrink-0 text-emerald-500"
+            ></Icon>
+            No server required
+          </li>
+        </ul>
       </div>
     </div>
   </div>
