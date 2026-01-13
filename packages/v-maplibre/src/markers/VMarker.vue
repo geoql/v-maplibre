@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import type { Ref } from 'vue';
-  import { ref, watch, onMounted, onBeforeUnmount, nextTick } from 'vue';
+  import { ref, watch, onMounted, onBeforeUnmount, useSlots } from 'vue';
   import type {
     LngLatLike,
     MarkerOptions,
@@ -11,6 +11,8 @@
   import VPopup from '../popups/VPopup.vue';
   import { markerDOMEvents, markerMapEvents } from '../constants/events';
   import { injectStrict, MapKey } from '../utils';
+
+  const slots = useSlots();
 
   const props = withDefaults(
     defineProps<{
@@ -154,13 +156,13 @@
     { immediate: true },
   );
 
-  const initMarker = () => {
+  const initMarker = (element?: HTMLElement) => {
     if (!loaded.value || marker.value) return;
 
     try {
       const markerOptions: MarkerOptions = {
         ...props.options,
-        element: slotRef.value || undefined,
+        element: element || undefined,
       };
       marker.value = new Marker(markerOptions);
       setMarkerCoordinates(marker.value);
@@ -174,13 +176,15 @@
 
   watch(slotRef, (el) => {
     if (el && !marker.value) {
-      initMarker();
+      initMarker(el);
     }
   });
 
-  onMounted(async () => {
-    await nextTick();
-    initMarker();
+  onMounted(() => {
+    const hasCustomElement = !!slots.markers;
+    if (!hasCustomElement) {
+      initMarker();
+    }
   });
 
   onBeforeUnmount(() => {

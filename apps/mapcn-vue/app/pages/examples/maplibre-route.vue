@@ -1210,9 +1210,8 @@ ${SCRIPT_END}
                       :ref="setRef"
                       class="relative cursor-grab active:cursor-grabbing"
                     >
-                      <!-- Stop number badge -->
                       <div
-                        class="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full bg-white dark:bg-zinc-900 text-xs font-bold shadow-md border border-border z-10"
+                        class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white shadow-sm z-10"
                       >
                         {{ index + 1 }}
                       </div>
