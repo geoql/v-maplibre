@@ -6,6 +6,7 @@ export { default as MapLayerPmtiles } from './MapLayerPmtiles.vue';
 export { default as MapLayerImage } from './MapLayerImage.vue';
 export { default as MapLayerVideo } from './MapLayerVideo.vue';
 export { default as MapLayerCanvas } from './MapLayerCanvas.vue';
+export { default as MapLayerRoute } from './MapLayerRoute.vue';
 
 export type { MapLayerGeojsonProps } from './MapLayerGeojson.vue';
 export type { MapLayerVectorProps } from './MapLayerVector.vue';
@@ -15,3 +16,4 @@ export type { MapLayerPmtilesProps } from './MapLayerPmtiles.vue';
 export type { MapLayerImageProps } from './MapLayerImage.vue';
 export type { MapLayerVideoProps } from './MapLayerVideo.vue';
 export type { MapLayerCanvasProps } from './MapLayerCanvas.vue';
+export type { MapLayerRouteProps } from './MapLayerRoute.vue';

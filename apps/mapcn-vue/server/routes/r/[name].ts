@@ -68,7 +68,7 @@ const registry: Record<string, RegistryItem> = {
     type: 'registry:ui',
     title: 'Map Layers',
     description:
-      'MapLibre native layer components: GeoJSON, Vector, Raster, Cluster, PMTiles.',
+      'MapLibre native layer components: GeoJSON, Vector, Raster, Cluster, PMTiles, Route.',
     dependencies: ['@geoql/v-maplibre', 'maplibre-gl'],
     registryDependencies: [`${REGISTRY_BASE_URL}/r/map.json`],
     files: [
@@ -111,6 +111,11 @@ const registry: Record<string, RegistryItem> = {
         path: 'map-layers/MapLayerCanvas.vue',
         type: 'registry:ui',
         target: 'components/ui/map/layers/MapLayerCanvas.vue',
+      },
+      {
+        path: 'map-layers/MapLayerRoute.vue',
+        type: 'registry:ui',
+        target: 'components/ui/map/layers/MapLayerRoute.vue',
       },
       {
         path: 'map-layers/index.ts',
