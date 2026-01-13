@@ -503,7 +503,9 @@ ${SCRIPT_END}
                 <VLayerMaplibreRoute
                   v-if="routeOptions[selectedRouteIndex]"
                   id="planning-route-selected"
-                  :coordinates="routeOptions[selectedRouteIndex].coordinates"
+                  :coordinates="
+                    routeOptions[selectedRouteIndex]?.coordinates ?? []
+                  "
                   color="#6366f1"
                   :width="5"
                   :opacity="1"
@@ -515,7 +517,7 @@ ${SCRIPT_END}
                 <VMarker :coordinates="rotterdam.coordinates">
                   <template #markers="{ setRef }">
                     <div
-                      :ref="setRef"
+                      :ref="(el) => el instanceof HTMLElement && setRef(el)"
                       class="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-red-500 shadow-lg"
                     >
                       <div class="h-2 w-2 rounded-full bg-white"></div>
@@ -527,7 +529,7 @@ ${SCRIPT_END}
                 <VMarker :coordinates="amsterdam.coordinates">
                   <template #markers="{ setRef }">
                     <div
-                      :ref="setRef"
+                      :ref="(el) => el instanceof HTMLElement && setRef(el)"
                       class="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-emerald-500 shadow-lg"
                     >
                       <div class="h-2 w-2 rounded-full bg-white"></div>
@@ -689,7 +691,10 @@ ${SCRIPT_END}
                 <!-- Store marker with icon -->
                 <VMarker :coordinates="store.coordinates">
                   <template #markers="{ setRef }">
-                    <div :ref="setRef" class="relative">
+                    <div
+                      :ref="(el) => el instanceof HTMLElement && setRef(el)"
+                      class="relative"
+                    >
                       <div
                         class="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-zinc-900/80 px-2 py-0.5 text-xs font-medium text-white"
                       >
@@ -710,7 +715,10 @@ ${SCRIPT_END}
                 <!-- Truck marker with ETA tooltip -->
                 <VMarker v-if="truckPosition" :coordinates="truckPosition">
                   <template #markers="{ setRef }">
-                    <div :ref="setRef" class="relative">
+                    <div
+                      :ref="(el) => el instanceof HTMLElement && setRef(el)"
+                      class="relative"
+                    >
                       <div
                         v-if="deliveryRouteInfo"
                         class="absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-zinc-900/90 px-2 py-1 text-xs font-medium text-white shadow-lg"
@@ -735,7 +743,10 @@ ${SCRIPT_END}
                 <!-- Home marker with icon -->
                 <VMarker :coordinates="home.coordinates">
                   <template #markers="{ setRef }">
-                    <div :ref="setRef" class="relative">
+                    <div
+                      :ref="(el) => el instanceof HTMLElement && setRef(el)"
+                      class="relative"
+                    >
                       <div
                         class="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-zinc-900/80 px-2 py-0.5 text-xs font-medium text-white"
                       >
