@@ -401,4 +401,84 @@ describe('Deck.gl Layer Components', () => {
       expect(wrapper.exists()).toBe(true);
     });
   });
+
+  describe('VLayerDeckglCOG', () => {
+    it('renders within VMap', () => {
+      const wrapper = mount(VMap, {
+        props: { options: defaultMapOptions },
+        slots: {
+          default: {
+            template: `<VLayerDeckglCOG 
+              id="test-cog" 
+              geotiff="https://example.com/test.tif"
+            />`,
+            components: { VLayerDeckglCOG: deckglExports.VLayerDeckglCOG },
+          },
+        },
+      });
+      expect(wrapper.exists()).toBe(true);
+    });
+
+    it('accepts optional props', () => {
+      const wrapper = mount(VMap, {
+        props: { options: defaultMapOptions },
+        slots: {
+          default: {
+            template: `<VLayerDeckglCOG 
+              id="test-cog-props" 
+              geotiff="https://example.com/test.tif"
+              :opacity="0.8"
+              :visible="true"
+              :pickable="false"
+              :tile-size="512"
+              :debug="false"
+            />`,
+            components: { VLayerDeckglCOG: deckglExports.VLayerDeckglCOG },
+          },
+        },
+      });
+      expect(wrapper.exists()).toBe(true);
+    });
+  });
+
+  describe('VLayerDeckglGeoTIFF', () => {
+    it('renders within VMap', () => {
+      const wrapper = mount(VMap, {
+        props: { options: defaultMapOptions },
+        slots: {
+          default: {
+            template: `<VLayerDeckglGeoTIFF 
+              id="test-geotiff" 
+              geotiff="https://example.com/small.tif"
+            />`,
+            components: {
+              VLayerDeckglGeoTIFF: deckglExports.VLayerDeckglGeoTIFF,
+            },
+          },
+        },
+      });
+      expect(wrapper.exists()).toBe(true);
+    });
+
+    it('accepts optional props', () => {
+      const wrapper = mount(VMap, {
+        props: { options: defaultMapOptions },
+        slots: {
+          default: {
+            template: `<VLayerDeckglGeoTIFF 
+              id="test-geotiff-props" 
+              geotiff="https://example.com/small.tif"
+              :opacity="0.9"
+              :visible="true"
+              :bounds="[-180, -90, 180, 90]"
+            />`,
+            components: {
+              VLayerDeckglGeoTIFF: deckglExports.VLayerDeckglGeoTIFF,
+            },
+          },
+        },
+      });
+      expect(wrapper.exists()).toBe(true);
+    });
+  });
 });
