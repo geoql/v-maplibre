@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.4.0](https://github.com/geoql/v-maplibre/compare/v1.3.0...v1.4.0) (2026-01-13)
+
+
+### Features
+
+* **mapcn-vue:** add multi-stop optimized route example with draggable markers ([97423dd](https://github.com/geoql/v-maplibre/commit/97423dd241e093bafba1de4cf8d8ee6f50d2a2d0))
+* **v-maplibre:** add deck.gl-raster COG and GeoTIFF layer components ([9a8dc03](https://github.com/geoql/v-maplibre/commit/9a8dc03220092e085dc4da14647ab30b4cb0a16e))
+* **v-maplibre:** add VLayerMaplibreRoute component and route planning example ([b36cadd](https://github.com/geoql/v-maplibre/commit/b36caddee135feda375aeb4d15cd74233a1a070c))
+
+
+### Bug Fixes
+
+* **mapcn-vue:** improve stop number badge visibility ([3f0ebf3](https://github.com/geoql/v-maplibre/commit/3f0ebf3aed6db1ab9be3e5845adbcab1af1b2bcb))
+* **v-maplibre:** fix VMarker setRef type for Vue ref compatibility ([5a651ba](https://github.com/geoql/v-maplibre/commit/5a651ba7e8cb53b400ef1c71dd32d3a3edabb9aa))
+* **v-maplibre:** only render popup when default slot has content ([bedbb3f](https://github.com/geoql/v-maplibre/commit/bedbb3fa5fb4aee6c4b7e7813ceb959c02cf194b))
+* **v-maplibre:** properly detect #markers slot before creating marker ([3f0ebf3](https://github.com/geoql/v-maplibre/commit/3f0ebf3aed6db1ab9be3e5845adbcab1af1b2bcb))
+* **v-maplibre:** wait for slot ref before creating marker ([97423dd](https://github.com/geoql/v-maplibre/commit/97423dd241e093bafba1de4cf8d8ee6f50d2a2d0))
+
+
+### Miscellaneous
+
+* remove stale files from pre-monorepo structure ([b4fc0f4](https://github.com/geoql/v-maplibre/commit/b4fc0f430553694190eed4fc037541fa5c0ba2e7))
+
 ## [1.3.0](https://github.com/geoql/v-maplibre/compare/v1.2.4...v1.3.0) (2026-01-13)
 
 
