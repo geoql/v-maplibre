@@ -105,11 +105,7 @@
       };
 
       const url = `/api/valhalla?json=${encodeURIComponent(JSON.stringify(params))}`;
-      const response = await fetch(url);
-
-      if (!response.ok) throw new Error('Failed to fetch route');
-
-      const data = await response.json();
+      const data = await $fetch(url);
       deliveryRouteCoordinates.value = decodePolyline(data.trip.legs[0].shape);
       deliveryRouteInfo.value = {
         distance: data.trip.summary.length,
@@ -173,11 +169,7 @@
       };
 
       const url = `/api/valhalla?json=${encodeURIComponent(JSON.stringify(params))}`;
-      const response = await fetch(url);
-
-      if (!response.ok) throw new Error('Failed to fetch routes');
-
-      const data = await response.json();
+      const data = await $fetch(url);
 
       // Valhalla returns main trip + alternates array
       const routes: RouteOption[] = [];
