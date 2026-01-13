@@ -63,8 +63,10 @@
     });
   };
 
-  const setSlotRef = (el: HTMLElement) => {
-    slotRef.value = el;
+  const setSlotRef = (el: HTMLElement | Element | null) => {
+    if (el instanceof HTMLElement) {
+      slotRef.value = el;
+    }
   };
 
   const setMarkerCoordinates = (markerInstance: Marker): void => {

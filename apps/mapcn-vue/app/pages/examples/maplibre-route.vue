@@ -298,15 +298,23 @@ import { VMap, VMarker, VLayerMaplibreRoute } from '@geoql/v-maplibre';
 const start = { coordinates: [4.4777, 51.9244] }; // Rotterdam
 const end = { coordinates: [4.9041, 52.3676] };   // Amsterdam
 
-// Fetch routes with alternatives from OSRM API
-const coords = \`\${start.coordinates[0]},\${start.coordinates[1]};\${end.coordinates[0]},\${end.coordinates[1]}\`;
-const response = await fetch(\`/api/osrm?coordinates=\${encodeURIComponent(coords)}&alternatives=true\`);
+// Fetch routes with alternatives from Valhalla API
+const params = {
+  locations: [
+    { lat: start.coordinates[1], lon: start.coordinates[0], type: 'break' },
+    { lat: end.coordinates[1], lon: end.coordinates[0], type: 'break' },
+  ],
+  costing: 'auto',
+  alternates: 2,
+};
+const response = await fetch(\`/api/valhalla?json=\${encodeURIComponent(JSON.stringify(params))}\`);
 const data = await response.json();
 
-const routes = data.routes.map(route => ({
-  coordinates: route.geometry.coordinates,
-  duration: route.duration,
-  distance: route.distance,
+// Parse main route + alternates
+const routes = [data.trip, ...(data.alternates?.map(a => a.trip) || [])].map(trip => ({
+  coordinates: decodePolyline(trip.legs[0].shape),
+  duration: trip.summary.time,
+  distance: trip.summary.length * 1000,
 }));
 
 const selectedRoute = ref(0);
@@ -394,10 +402,10 @@ ${SCRIPT_END}
           Display multiple route options and let users select between them. This
           example fetches real driving directions from the
           <a
-            href="https://project-osrm.org/"
+            href="https://valhalla.github.io/valhalla/"
             target="_blank"
             class="underline hover:text-foreground"
-            >OSRM API</a
+            >Valhalla API</a
           >. Click on a route or use the buttons to switch.
         </p>
 
@@ -517,7 +525,7 @@ ${SCRIPT_END}
                 <VMarker :coordinates="rotterdam.coordinates">
                   <template #markers="{ setRef }">
                     <div
-                      :ref="(el) => el instanceof HTMLElement && setRef(el)"
+                      :ref="setRef"
                       class="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-red-500 shadow-lg"
                     >
                       <div class="h-2 w-2 rounded-full bg-white"></div>
@@ -529,7 +537,19 @@ ${SCRIPT_END}
                 <VMarker :coordinates="amsterdam.coordinates">
                   <template #markers="{ setRef }">
                     <div
-                      :ref="(el) => el instanceof HTMLElement && setRef(el)"
+                      :ref="setRef"
+                      class="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-emerald-500 shadow-lg"
+                    >
+                      <div class="h-2 w-2 rounded-full bg-white"></div>
+                    </div>
+                  </template>
+                </VMarker>
+
+                <!-- Amsterdam marker (green) -->
+                <VMarker :coordinates="amsterdam.coordinates">
+                  <template #markers="{ setRef }">
+                    <div
+                      :ref="setRef as any"
                       class="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-emerald-500 shadow-lg"
                     >
                       <div class="h-2 w-2 rounded-full bg-white"></div>
@@ -691,10 +711,7 @@ ${SCRIPT_END}
                 <!-- Store marker with icon -->
                 <VMarker :coordinates="store.coordinates">
                   <template #markers="{ setRef }">
-                    <div
-                      :ref="(el) => el instanceof HTMLElement && setRef(el)"
-                      class="relative"
-                    >
+                    <div :ref="setRef" class="relative">
                       <div
                         class="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-zinc-900/80 px-2 py-0.5 text-xs font-medium text-white"
                       >
@@ -715,10 +732,7 @@ ${SCRIPT_END}
                 <!-- Truck marker with ETA tooltip -->
                 <VMarker v-if="truckPosition" :coordinates="truckPosition">
                   <template #markers="{ setRef }">
-                    <div
-                      :ref="(el) => el instanceof HTMLElement && setRef(el)"
-                      class="relative"
-                    >
+                    <div :ref="setRef" class="relative">
                       <div
                         v-if="deliveryRouteInfo"
                         class="absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-zinc-900/90 px-2 py-1 text-xs font-medium text-white shadow-lg"
@@ -743,10 +757,7 @@ ${SCRIPT_END}
                 <!-- Home marker with icon -->
                 <VMarker :coordinates="home.coordinates">
                   <template #markers="{ setRef }">
-                    <div
-                      :ref="(el) => el instanceof HTMLElement && setRef(el)"
-                      class="relative"
-                    >
+                    <div :ref="setRef" class="relative">
                       <div
                         class="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-zinc-900/80 px-2 py-0.5 text-xs font-medium text-white"
                       >
