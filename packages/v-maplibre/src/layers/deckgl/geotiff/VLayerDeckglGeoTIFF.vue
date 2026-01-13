@@ -74,23 +74,33 @@
   const createLayer = () => {
     if (!GeoTIFFLayerClass.value) return null;
 
-    return new GeoTIFFLayerClass.value({
+    // Only include defined props to avoid overriding library defaults
+    const layerProps: Record<string, unknown> = {
       id: props.id,
       geotiff: props.geotiff,
-      geoKeysParser: props.geoKeysParser,
-      renderTile: props.renderTile,
-      bounds: props.bounds,
       opacity: props.opacity,
       visible: props.visible,
       pickable: props.pickable,
       autoHighlight: props.autoHighlight,
-      highlightColor: props.highlightColor,
-      beforeId: props.beforeId,
       onClick: (info: PickingInfo) => emit('click', info),
       onHover: (info: PickingInfo) => emit('hover', info),
-    } as ConstructorParameters<
-      typeof import('@developmentseed/deck.gl-geotiff').GeoTIFFLayer
-    >[0]);
+    };
+
+    // Only add optional props if they are defined
+    if (props.geoKeysParser !== undefined)
+      layerProps.geoKeysParser = props.geoKeysParser;
+    if (props.renderTile !== undefined)
+      layerProps.renderTile = props.renderTile;
+    if (props.bounds !== undefined) layerProps.bounds = props.bounds;
+    if (props.highlightColor !== undefined)
+      layerProps.highlightColor = props.highlightColor;
+    if (props.beforeId !== undefined) layerProps.beforeId = props.beforeId;
+
+    return new GeoTIFFLayerClass.value(
+      layerProps as ConstructorParameters<
+        typeof import('@developmentseed/deck.gl-geotiff').GeoTIFFLayer
+      >[0],
+    );
   };
 
   const initializeLayer = async () => {

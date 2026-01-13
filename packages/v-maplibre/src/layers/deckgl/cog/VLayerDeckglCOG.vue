@@ -103,24 +103,14 @@
   const createLayer = () => {
     if (!COGLayerClass.value) return null;
 
-    return new COGLayerClass.value({
+    // Only include defined props to avoid overriding library defaults
+    const layerProps: Record<string, unknown> = {
       id: props.id,
       geotiff: props.geotiff,
-      geoKeysParser: props.geoKeysParser,
-      getTileData: props.getTileData,
-      renderTile: props.renderTile,
-      tileSize: props.tileSize,
-      maxZoom: props.maxZoom,
-      minZoom: props.minZoom,
-      maxCacheSize: props.maxCacheSize,
-      refinementStrategy: props.refinementStrategy,
-      maxRequests: props.maxRequests,
       opacity: props.opacity,
       visible: props.visible,
       pickable: props.pickable,
       autoHighlight: props.autoHighlight,
-      highlightColor: props.highlightColor,
-      beforeId: props.beforeId,
       onClick: (info: PickingInfo) => emit('click', info),
       onHover: (info: PickingInfo) => emit('hover', info),
       onViewportLoad: (tiles: unknown[]) => emit('viewportLoad', tiles),
@@ -128,9 +118,33 @@
       onTileUnload: (tile: unknown) => emit('tileUnload', tile),
       onTileError: (error: Error, tile: unknown) =>
         emit('tileError', error, tile),
-    } as ConstructorParameters<
-      typeof import('@developmentseed/deck.gl-geotiff').COGLayer
-    >[0]);
+    };
+
+    // Only add optional props if they are defined
+    if (props.geoKeysParser !== undefined)
+      layerProps.geoKeysParser = props.geoKeysParser;
+    if (props.getTileData !== undefined)
+      layerProps.getTileData = props.getTileData;
+    if (props.renderTile !== undefined)
+      layerProps.renderTile = props.renderTile;
+    if (props.tileSize !== undefined) layerProps.tileSize = props.tileSize;
+    if (props.maxZoom !== undefined) layerProps.maxZoom = props.maxZoom;
+    if (props.minZoom !== undefined) layerProps.minZoom = props.minZoom;
+    if (props.maxCacheSize !== undefined)
+      layerProps.maxCacheSize = props.maxCacheSize;
+    if (props.refinementStrategy !== undefined)
+      layerProps.refinementStrategy = props.refinementStrategy;
+    if (props.maxRequests !== undefined)
+      layerProps.maxRequests = props.maxRequests;
+    if (props.highlightColor !== undefined)
+      layerProps.highlightColor = props.highlightColor;
+    if (props.beforeId !== undefined) layerProps.beforeId = props.beforeId;
+
+    return new COGLayerClass.value(
+      layerProps as ConstructorParameters<
+        typeof import('@developmentseed/deck.gl-geotiff').COGLayer
+      >[0],
+    );
   };
 
   const initializeLayer = async () => {
