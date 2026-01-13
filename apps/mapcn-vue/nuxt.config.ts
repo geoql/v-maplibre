@@ -15,6 +15,7 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxt/content',
     'shadcn-nuxt',
+    '@vueuse/nuxt',
     [
       '@nuxtjs/plausible',
       {
