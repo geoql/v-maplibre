@@ -151,47 +151,54 @@
             filename="COGLayer.vue"
           ></CodeBlock>
 
-          <div class="mt-6 space-y-4">
-            <div class="rounded-lg border border-border bg-card p-4">
-              <h3 class="mb-2 font-semibold">Features</h3>
-              <ul class="space-y-1 text-sm text-muted-foreground">
-                <li class="flex items-center gap-2">
-                  <Icon
-                    name="lucide:check"
-                    class="h-4 w-4 text-emerald-500"
-                  ></Icon>
-                  Fully client-side - no server required
-                </li>
-                <li class="flex items-center gap-2">
-                  <Icon
-                    name="lucide:check"
-                    class="h-4 w-4 text-emerald-500"
-                  ></Icon>
-                  GPU-accelerated rendering
-                </li>
-                <li class="flex items-center gap-2">
-                  <Icon
-                    name="lucide:check"
-                    class="h-4 w-4 text-emerald-500"
-                  ></Icon>
-                  Automatic reprojection from source CRS
-                </li>
-                <li class="flex items-center gap-2">
-                  <Icon
-                    name="lucide:check"
-                    class="h-4 w-4 text-emerald-500"
-                  ></Icon>
-                  Intelligent tile streaming (fetches only visible portions)
-                </li>
-                <li class="flex items-center gap-2">
-                  <Icon
-                    name="lucide:check"
-                    class="h-4 w-4 text-emerald-500"
-                  ></Icon>
-                  Automatic overview selection based on zoom
-                </li>
-              </ul>
-            </div>
+          <div class="mt-6 rounded-lg border border-border bg-card p-4">
+            <h3 class="mb-3 font-semibold">Features</h3>
+            <ul
+              class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm text-muted-foreground"
+            >
+              <li class="flex items-center gap-2">
+                <Icon
+                  name="lucide:check"
+                  class="h-4 w-4 shrink-0 text-emerald-500"
+                ></Icon>
+                Fully client-side
+              </li>
+              <li class="flex items-center gap-2">
+                <Icon
+                  name="lucide:check"
+                  class="h-4 w-4 shrink-0 text-emerald-500"
+                ></Icon>
+                GPU-accelerated
+              </li>
+              <li class="flex items-center gap-2">
+                <Icon
+                  name="lucide:check"
+                  class="h-4 w-4 shrink-0 text-emerald-500"
+                ></Icon>
+                Auto reprojection
+              </li>
+              <li class="flex items-center gap-2">
+                <Icon
+                  name="lucide:check"
+                  class="h-4 w-4 shrink-0 text-emerald-500"
+                ></Icon>
+                Tile streaming
+              </li>
+              <li class="flex items-center gap-2">
+                <Icon
+                  name="lucide:check"
+                  class="h-4 w-4 shrink-0 text-emerald-500"
+                ></Icon>
+                Auto overview selection
+              </li>
+              <li class="flex items-center gap-2">
+                <Icon
+                  name="lucide:check"
+                  class="h-4 w-4 shrink-0 text-emerald-500"
+                ></Icon>
+                No server required
+              </li>
+            </ul>
           </div>
         </div>
       </div>

@@ -182,40 +182,40 @@
             filename="LandCoverCOG.vue"
           ></CodeBlock>
 
-          <div class="mt-6 space-y-4">
-            <div class="rounded-lg border border-border bg-card p-4">
-              <h3 class="mb-2 font-semibold">Features</h3>
-              <ul class="space-y-1 text-sm text-muted-foreground">
-                <li class="flex items-center gap-2">
-                  <Icon
-                    name="lucide:check"
-                    class="h-4 w-4 text-emerald-500"
-                  ></Icon>
-                  Automatic colormap from embedded palette
-                </li>
-                <li class="flex items-center gap-2">
-                  <Icon
-                    name="lucide:check"
-                    class="h-4 w-4 text-emerald-500"
-                  ></Icon>
-                  Efficient streaming of 1.3GB dataset
-                </li>
-                <li class="flex items-center gap-2">
-                  <Icon
-                    name="lucide:check"
-                    class="h-4 w-4 text-emerald-500"
-                  ></Icon>
-                  Zoom-based overview selection
-                </li>
-                <li class="flex items-center gap-2">
-                  <Icon
-                    name="lucide:check"
-                    class="h-4 w-4 text-emerald-500"
-                  ></Icon>
-                  GPU-accelerated reprojection
-                </li>
-              </ul>
-            </div>
+          <div class="mt-6 rounded-lg border border-border bg-card p-4">
+            <h3 class="mb-3 font-semibold">Features</h3>
+            <ul
+              class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm text-muted-foreground"
+            >
+              <li class="flex items-center gap-2">
+                <Icon
+                  name="lucide:check"
+                  class="h-4 w-4 shrink-0 text-emerald-500"
+                ></Icon>
+                Auto colormap
+              </li>
+              <li class="flex items-center gap-2">
+                <Icon
+                  name="lucide:check"
+                  class="h-4 w-4 shrink-0 text-emerald-500"
+                ></Icon>
+                1.3GB streaming
+              </li>
+              <li class="flex items-center gap-2">
+                <Icon
+                  name="lucide:check"
+                  class="h-4 w-4 shrink-0 text-emerald-500"
+                ></Icon>
+                Overview selection
+              </li>
+              <li class="flex items-center gap-2">
+                <Icon
+                  name="lucide:check"
+                  class="h-4 w-4 shrink-0 text-emerald-500"
+                ></Icon>
+                GPU reprojection
+              </li>
+            </ul>
           </div>
         </div>
       </div>
