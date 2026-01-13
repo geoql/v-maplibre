@@ -18,10 +18,6 @@ export default defineNuxtConfig({
     url: 'https://v-maplibre.geoql.in',
   },
 
-  llms: {
-    domain: 'v-maplibre.geoql.in',
-  },
-
   content: {
     database: {
       type: 'd1',
@@ -46,5 +42,9 @@ export default defineNuxtConfig({
     replace: {
       'process.stdout': 'undefined',
     },
+  },
+
+  llms: {
+    domain: 'v-maplibre.geoql.in',
   },
 });
