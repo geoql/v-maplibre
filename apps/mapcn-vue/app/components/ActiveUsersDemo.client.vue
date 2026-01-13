@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { ref, onMounted, onBeforeUnmount } from 'vue';
   import { VMap, VLayerDeckglScatterplot } from '@geoql/v-maplibre';
+  import type { PickingInfo } from '@deck.gl/core';
 
   const colorMode = useColorMode();
 
@@ -76,6 +77,19 @@
     }
   });
 
+  // Hover state for tooltip
+  const hoveredCity = ref<UserData | null>(null);
+  const tooltipPosition = ref({ x: 0, y: 0 });
+
+  const handleHover = (info: PickingInfo) => {
+    if (info.object) {
+      hoveredCity.value = info.object as UserData;
+      tooltipPosition.value = { x: info.x ?? 0, y: info.y ?? 0 };
+    } else {
+      hoveredCity.value = null;
+    }
+  };
+
   // Accessors
   const getPosition = (d: unknown) => (d as UserData).coordinates;
 
@@ -104,7 +118,7 @@
 </script>
 
 <template>
-  <div class="h-full w-full">
+  <div class="relative h-full w-full">
     <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
       <!-- Outer pulsing ring layer -->
       <VLayerDeckglScatterplot
@@ -141,8 +155,33 @@
         :line-width-min-pixels="2"
         :filled="true"
         :antialiasing="true"
+        @hover="handleHover"
       />
     </VMap>
+
+    <!-- Hover tooltip -->
+    <Transition name="tooltip">
+      <div
+        v-if="hoveredCity"
+        class="pointer-events-none absolute z-50 rounded-lg bg-white px-4 py-3 shadow-lg dark:bg-zinc-900"
+        :style="{
+          left: `${tooltipPosition.x + 12}px`,
+          top: `${tooltipPosition.y - 60}px`,
+        }"
+      >
+        <div class="text-center">
+          <div class="font-semibold text-zinc-900 dark:text-white">
+            {{ hoveredCity.city }}
+          </div>
+          <div class="text-xl font-bold text-emerald-500">
+            {{ hoveredCity.weight.toLocaleString() }}
+          </div>
+          <div class="text-xs text-zinc-500 dark:text-zinc-400">
+            active users
+          </div>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -150,5 +189,18 @@
   #active-users-map {
     width: 100%;
     height: 100%;
+  }
+
+  .tooltip-enter-active,
+  .tooltip-leave-active {
+    transition:
+      opacity 0.15s ease,
+      transform 0.15s ease;
+  }
+
+  .tooltip-enter-from,
+  .tooltip-leave-to {
+    opacity: 0;
+    transform: translateY(4px);
   }
 </style>
