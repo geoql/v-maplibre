@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.4.0](https://github.com/geoql/v-maplibre/compare/v1.3.0...v1.4.0) (2026-01-13)
+
+
+### Features
+
+* **v-maplibre:** add VLayerMaplibreRoute component and route planning example ([b36cadd](https://github.com/geoql/v-maplibre/commit/b36caddee135feda375aeb4d15cd74233a1a070c))
+
+
+### Miscellaneous
+
+* remove stale files from pre-monorepo structure ([b4fc0f4](https://github.com/geoql/v-maplibre/commit/b4fc0f430553694190eed4fc037541fa5c0ba2e7))
+
 ## [1.3.0](https://github.com/geoql/v-maplibre/compare/v1.2.4...v1.3.0) (2026-01-13)
 
 
