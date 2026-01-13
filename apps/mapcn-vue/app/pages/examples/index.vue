@@ -257,6 +257,13 @@
           icon: 'lucide:satellite',
           badge: 'Raster',
         },
+        {
+          title: 'Land Cover COG',
+          description: 'NLCD land use classification with automatic colormap.',
+          href: '/examples/deckgl-landcover',
+          icon: 'lucide:trees',
+          badge: 'Raster',
+        },
       ],
     },
     {
