@@ -16,6 +16,7 @@ import {
   VLayerMaplibreVector,
   VLayerMaplibreVideo,
   VLayerMaplibrePmtile,
+  VLayerMaplibreRoute,
 } from './layers';
 
 import VMap from './map/VMap.vue';
@@ -34,6 +35,7 @@ export {
   VLayerMaplibreVector,
   VLayerMaplibreVideo,
   VLayerMaplibrePmtile,
+  VLayerMaplibreRoute,
   VControlAttribution,
   VControlFullscreen,
   VControlGeolocate,

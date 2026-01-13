@@ -6,5 +6,6 @@ export { VectorLayer as VLayerMaplibreVector } from './maplibre/vector';
 export { VideoLayer as VLayerMaplibreVideo } from './maplibre/video';
 export { PmtileLayer as VLayerMaplibrePmtile } from './maplibre/pmtile';
 export { ClusterLayer as VLayerMaplibreCluster } from './maplibre/cluster';
+export { RouteLayer as VLayerMaplibreRoute } from './maplibre/route';
 
 export * from './deckgl';
