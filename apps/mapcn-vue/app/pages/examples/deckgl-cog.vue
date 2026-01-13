@@ -19,18 +19,18 @@
     colorMode.value === 'dark' ? darkStyle : lightStyle,
   );
 
-  // Center on continental US for the land cover COG
+  // Sentinel-2 RGB imagery COG (uses standard EPSG:32618 UTM projection)
+  // From Element84's public STAC catalog
+  const COG_URL =
+    'https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/Q/WD/2020/7/S2A_36QWD_20200701_0_L2A/TCI.tif';
+
+  // Center on the imagery location (Egypt/Nile area)
   const mapOptions = computed(() => ({
     container: `cog-example-${mapId}`,
     style: mapStyle.value,
-    center: [-98.5, 39.8] as [number, number],
-    zoom: 4,
+    center: [31.5, 30.0] as [number, number],
+    zoom: 8,
   }));
-
-  // NLCD Land Cover COG from Development Seed's examples
-  // This is a large (1.3GB) Cloud-Optimized GeoTIFF that streams efficiently
-  const COG_URL =
-    'https://storage.googleapis.com/open-cogs/stac-examples/20201211_223832_CS2.tif';
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
@@ -40,12 +40,12 @@ import { VMap, VLayerDeckglCOG, VControlNavigation } from '@geoql/v-maplibre';
 
 const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-  center: [-98.5, 39.8],
-  zoom: 4,
+  center: [31.5, 30.0], // Egypt/Nile area
+  zoom: 8,
 };
 
-// Cloud-Optimized GeoTIFF URL
-const COG_URL = 'https://storage.googleapis.com/open-cogs/stac-examples/20201211_223832_CS2.tif';
+// Sentinel-2 RGB imagery COG
+const COG_URL = 'https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/Q/WD/2020/7/S2A_36QWD_20200701_0_L2A/TCI.tif';
 ${SCRIPT_END}
 
 <template>
@@ -54,8 +54,6 @@ ${SCRIPT_END}
     <VLayerDeckglCOG
       id="cog-layer"
       :geotiff="COG_URL"
-      :opacity="0.8"
-      :pickable="true"
     />
   </VMap>
 </template>`;
@@ -87,7 +85,13 @@ ${SCRIPT_END}
             class="text-primary hover:underline"
             >@developmentseed/deck.gl-raster</a
           >
-          - fully client-side, no server required.
+          - fully client-side, no server required. Data:
+          <a
+            href="https://registry.opendata.aws/sentinel-2-l2a-cogs/"
+            target="_blank"
+            class="text-primary hover:underline"
+            >Sentinel-2 L2A COGs</a
+          >.
         </p>
       </div>
 
@@ -101,8 +105,6 @@ ${SCRIPT_END}
               <VLayerDeckglCOG
                 id="cog-layer"
                 :geotiff="COG_URL"
-                :opacity="0.8"
-                :pickable="true"
               ></VLayerDeckglCOG>
             </VMap>
           </ClientOnly>
