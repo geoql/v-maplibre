@@ -19,24 +19,16 @@ export default defineCachedEventHandler(
       });
     }
 
-    const url = `https://valhalla1.openstreetmap.de/${endpoint}?json=${encodeURIComponent(json)}`;
-
-    const response = await fetch(url, {
-      headers: {
-        Accept: 'application/json',
-        'User-Agent': 'mapcn-vue/1.0',
+    const data = await $fetch(
+      `https://valhalla1.openstreetmap.de/${endpoint}?json=${encodeURIComponent(json)}`,
+      {
+        headers: {
+          Accept: 'application/json',
+          'User-Agent': 'mapcn-vue/1.0',
+        },
       },
-    });
+    );
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw createError({
-        statusCode: response.status,
-        message: `Valhalla API error: ${errorText}`,
-      });
-    }
-
-    const data = await response.json();
     return data;
   },
   {

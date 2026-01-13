@@ -343,10 +343,27 @@
     }
   };
 
-  // Handle marker drag - update coordinates and refetch route
-  const handleStopDrag = (index: number, newCoords: [number, number]) => {
+  const reverseGeocode = async (coords: [number, number]): Promise<string> => {
+    try {
+      const data = await $fetch<{ name: string }>(
+        `/api/geocode?lat=${coords[1]}&lon=${coords[0]}`,
+      );
+      return data.name;
+    } catch {
+      return 'Unknown location';
+    }
+  };
+
+  const handleStopDrag = async (index: number, newCoords: [number, number]) => {
     stops.value[index].coordinates = newCoords;
-    fetchMultiStopRoute();
+    stops.value[index].name = 'Loading...';
+
+    const [name] = await Promise.all([
+      reverseGeocode(newCoords),
+      fetchMultiStopRoute(),
+    ]);
+
+    stops.value[index].name = name;
   };
 
   // Format time for journey view
