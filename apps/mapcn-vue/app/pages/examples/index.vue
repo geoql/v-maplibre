@@ -257,6 +257,13 @@
           icon: 'lucide:satellite',
           badge: 'Raster',
         },
+        {
+          title: 'GeoTIFF Layer',
+          description: 'Render small non-tiled GeoTIFFs directly in browser.',
+          href: '/examples/deckgl-geotiff',
+          icon: 'lucide:file-image',
+          badge: 'Raster',
+        },
       ],
     },
     {

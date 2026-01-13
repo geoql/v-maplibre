@@ -1,5 +1,12 @@
 <script setup lang="ts">
-  import { onMounted, onBeforeUnmount, watch, shallowRef } from 'vue';
+  import {
+    onMounted,
+    onBeforeUnmount,
+    watch,
+    shallowRef,
+    toRaw,
+    markRaw,
+  } from 'vue';
   import type { Color, PickingInfo } from '@deck.gl/core';
   import { injectStrict, MapKey } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
@@ -10,14 +17,6 @@
      * GeoTIFF source - URL string, ArrayBuffer, Blob, or geotiff.js instance
      */
     geotiff: string | ArrayBuffer | Blob | object;
-    /**
-     * Custom parser for GeoTIFF geo keys (default: uses epsg.io)
-     */
-    geoKeysParser?: (geoKeys: object) => Promise<string>;
-    /**
-     * Custom render pipeline (overrides inferred pipeline from metadata)
-     */
-    renderTile?: (params: object) => unknown;
     /**
      * Geographic bounds [west, south, east, north]
      * If not provided, will be inferred from GeoTIFF metadata
@@ -59,58 +58,113 @@
   const emit = defineEmits<{
     click: [info: PickingInfo];
     hover: [info: PickingInfo];
-    load: [];
+    geotiffLoad: [
+      tiff: unknown,
+      options: {
+        geographicBounds: {
+          west: number;
+          south: number;
+          east: number;
+          north: number;
+        };
+      },
+    ];
     error: [error: Error];
   }>();
 
   const map = injectStrict(MapKey);
   const { addLayer, removeLayer, updateLayer } = useDeckOverlay(map);
 
-  // Store the GeoTIFFLayer class once imported
+  // Store module references
   const GeoTIFFLayerClass = shallowRef<
     typeof import('@developmentseed/deck.gl-geotiff').GeoTIFFLayer | null
   >(null);
+  const projModule = shallowRef<
+    typeof import('@developmentseed/deck.gl-geotiff').proj | null
+  >(null);
+  const toProj4Fn = shallowRef<
+    typeof import('geotiff-geokeys-to-proj4').toProj4 | null
+  >(null);
+
+  // Create geoKeysParser using geotiff-geokeys-to-proj4
+  const createGeoKeysParser = () => {
+    if (!projModule.value || !toProj4Fn.value) return undefined;
+
+    const proj = projModule.value;
+    const toProj4 = toProj4Fn.value;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return async (geoKeys: any) => {
+      const projDefinition = toProj4(geoKeys);
+      return {
+        def: projDefinition.proj4,
+        parsed: proj.parseCrs(projDefinition.proj4),
+        coordinatesUnits: projDefinition.coordinatesUnits as 'degree' | 'metre',
+      };
+    };
+  };
 
   const createLayer = () => {
     if (!GeoTIFFLayerClass.value) return null;
 
-    // Only include defined props to avoid overriding library defaults
-    const layerProps: Record<string, unknown> = {
-      id: props.id,
-      geotiff: props.geotiff,
-      opacity: props.opacity,
-      visible: props.visible,
-      pickable: props.pickable,
-      autoHighlight: props.autoHighlight,
+    const geoKeysParser = createGeoKeysParser();
+
+    // Use toRaw() to unwrap Vue reactive proxies - required for web worker serialization
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const layerProps: Record<string, any> = {
+      id: toRaw(props.id),
+      geotiff: toRaw(props.geotiff),
+      opacity: toRaw(props.opacity),
+      visible: toRaw(props.visible),
+      pickable: toRaw(props.pickable),
+      autoHighlight: toRaw(props.autoHighlight),
       onClick: (info: PickingInfo) => emit('click', info),
       onHover: (info: PickingInfo) => emit('hover', info),
     };
 
-    // Only add optional props if they are defined
-    if (props.geoKeysParser !== undefined)
-      layerProps.geoKeysParser = props.geoKeysParser;
-    if (props.renderTile !== undefined)
-      layerProps.renderTile = props.renderTile;
-    if (props.bounds !== undefined) layerProps.bounds = props.bounds;
-    if (props.highlightColor !== undefined)
-      layerProps.highlightColor = props.highlightColor;
-    if (props.beforeId !== undefined) layerProps.beforeId = props.beforeId;
+    if (geoKeysParser) {
+      layerProps.geoKeysParser = geoKeysParser;
+    }
 
-    return new GeoTIFFLayerClass.value(
-      layerProps as ConstructorParameters<
-        typeof import('@developmentseed/deck.gl-geotiff').GeoTIFFLayer
-      >[0],
-    );
+    layerProps.onGeoTIFFLoad = (
+      tiff: unknown,
+      options: {
+        geographicBounds: {
+          west: number;
+          south: number;
+          east: number;
+          north: number;
+        };
+      },
+    ) => {
+      emit('geotiffLoad', tiff, options);
+    };
+
+    // Only add optional props if they are defined
+    if (props.bounds !== undefined) layerProps.bounds = toRaw(props.bounds);
+    if (props.highlightColor !== undefined)
+      layerProps.highlightColor = toRaw(props.highlightColor);
+    if (props.beforeId !== undefined)
+      layerProps.beforeId = toRaw(props.beforeId);
+
+    const layer = new GeoTIFFLayerClass.value(layerProps);
+    return markRaw(layer);
   };
 
   const initializeLayer = async () => {
     try {
-      const module = await import('@developmentseed/deck.gl-geotiff');
-      GeoTIFFLayerClass.value = module.GeoTIFFLayer;
+      const [geotiffModule, proj4Module] = await Promise.all([
+        import('@developmentseed/deck.gl-geotiff'),
+        import('geotiff-geokeys-to-proj4'),
+      ]);
+
+      GeoTIFFLayerClass.value = markRaw(geotiffModule.GeoTIFFLayer);
+      projModule.value = markRaw(geotiffModule.proj);
+      toProj4Fn.value = markRaw(proj4Module.toProj4);
+
       const layer = createLayer();
       if (layer) {
         addLayer(layer);
-        emit('load');
       }
     } catch (error) {
       console.error('[deck.gl-raster] Error loading GeoTIFFLayer:', error);
