@@ -1,0 +1,17 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://v-maplibre.geoql.in
+    about: Check the documentation for guides and API reference
+  - name: mapcn-vue Examples
+    url: https://mapcn-vue.geoql.in/examples
+    about: Browse interactive examples and demos
+  - name: GitHub Discussions
+    url: https://github.com/geoql/v-maplibre/discussions
+    about: Ask questions and discuss ideas with the community
+  - name: MapLibre GL JS Docs
+    url: https://maplibre.org/maplibre-gl-js/docs/
+    about: Reference the underlying MapLibre GL JS documentation
+  - name: deck.gl Docs
+    url: https://deck.gl/docs
+    about: Reference deck.gl layer documentation
