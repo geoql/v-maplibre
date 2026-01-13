@@ -1,9 +1,11 @@
 <script setup lang="ts">
+  import { ref } from 'vue';
   import {
     VMap,
     VLayerMaplibreCluster,
     VControlNavigation,
   } from '@geoql/v-maplibre';
+  import type { Map, GeoJSONSource } from 'maplibre-gl';
 
   useSeoMeta({
     title: 'Clustered Points - mapcn-vue Examples',
@@ -28,6 +30,36 @@
     center: [-74.006, 40.7128] as [number, number],
     zoom: 10,
   }));
+
+  // Store map reference for cluster expansion
+  const mapRef = ref<Map | null>(null);
+
+  const onMapLoaded = (map: Map) => {
+    mapRef.value = map;
+  };
+
+  // Handle cluster click - zoom to expand
+  const handleClusterClick = (event: {
+    features: GeoJSON.Feature[];
+    coordinates: { lng: number; lat: number };
+  }) => {
+    if (!mapRef.value || !event.features[0]) return;
+
+    const clusterId = event.features[0].properties?.cluster_id;
+    const source = mapRef.value.getSource('cluster-source') as GeoJSONSource;
+
+    if (source && clusterId !== undefined) {
+      source.getClusterExpansionZoom(clusterId, (err, zoom) => {
+        if (err || !mapRef.value) return;
+
+        mapRef.value.easeTo({
+          center: [event.coordinates.lng, event.coordinates.lat],
+          zoom: zoom ?? 14,
+          duration: 500,
+        });
+      });
+    }
+  };
 
   // Generate random points around NYC
   const generatePoints = (): GeoJSON.FeatureCollection => {
@@ -54,7 +86,9 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
+import { ref } from 'vue';
 import { VMap, VLayerMaplibreCluster, VControlNavigation } from '@geoql/v-maplibre';
+import type { Map, GeoJSONSource } from 'maplibre-gl';
 
 const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
@@ -65,18 +99,36 @@ const mapOptions = {
 // GeoJSON FeatureCollection with Point features
 const pointsData = { type: 'FeatureCollection', features: [...] };
 
-const source = { type: 'geojson', data: pointsData };
+const mapRef = ref<Map | null>(null);
+
+// Handle cluster click - zoom to expand
+const handleClusterClick = (event) => {
+  if (!mapRef.value || !event.features[0]) return;
+  
+  const clusterId = event.features[0].properties?.cluster_id;
+  const source = mapRef.value.getSource('cluster-source') as GeoJSONSource;
+  
+  source.getClusterExpansionZoom(clusterId, (err, zoom) => {
+    if (err) return;
+    mapRef.value.easeTo({
+      center: [event.coordinates.lng, event.coordinates.lat],
+      zoom: zoom ?? 14,
+      duration: 500,
+    });
+  });
+};
 ${SCRIPT_END}
 
 <template>
-  <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
+  <VMap :options="mapOptions" class="h-125 w-full rounded-lg" @loaded="(map) => mapRef = map">
     <VControlNavigation position="top-right" />
     <VLayerMaplibreCluster
       source-id="cluster-source"
       base-layer-id="clusters"
-      :source="source"
-      :cluster-paint="{ colors: ['#10b981', '#059669', '#047857'], radii: [20, 30, 40] }"
-      :unclustered-paint="{ color: '#10b981', radius: 6 }"
+      :source="{ type: 'geojson', data: pointsData }"
+      :cluster-paint="{ colors: ['#10b981', '#059669', '#047857'], radii: [15, 22, 30] }"
+      :unclustered-paint="{ color: '#10b981', radius: 5 }"
+      @cluster-click="handleClusterClick"
     />
   </VMap>
 </template>`;
@@ -95,8 +147,8 @@ ${SCRIPT_END}
         </NuxtLink>
         <h1 class="mt-4 text-3xl font-bold tracking-tight">Clustered Points</h1>
         <p class="mt-2 text-lg text-muted-foreground">
-          Cluster large datasets of points for better performance. Zoom in to
-          see individual points.
+          Cluster large datasets of points for better performance. Click on a
+          cluster to expand it, or zoom in to see individual points.
         </p>
       </div>
 
@@ -105,7 +157,12 @@ ${SCRIPT_END}
           class="h-125 min-w-0 overflow-hidden rounded-lg border border-border"
         >
           <ClientOnly>
-            <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
+            <VMap
+              :key="mapStyle"
+              :options="mapOptions"
+              class="h-full w-full"
+              @loaded="onMapLoaded"
+            >
               <VControlNavigation position="top-right"></VControlNavigation>
               <VLayerMaplibreCluster
                 source-id="cluster-source"
@@ -113,12 +170,13 @@ ${SCRIPT_END}
                 :source="{ type: 'geojson', data: pointsData }"
                 :cluster-paint="{
                   colors: ['#10b981', '#059669', '#047857'],
-                  radii: [20, 30, 40],
+                  radii: [15, 22, 30],
                 }"
                 :unclustered-paint="{
                   color: '#10b981',
-                  radius: 6,
+                  radius: 5,
                 }"
+                @cluster-click="handleClusterClick"
               ></VLayerMaplibreCluster>
             </VMap>
           </ClientOnly>
