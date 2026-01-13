@@ -10,7 +10,7 @@ export default defineCachedEventHandler(
       });
     }
 
-    const url = `https://valhalla1.openstreetmap.de/optimized_route?json=${encodeURIComponent(json)}`;
+    const url = `https://valhalla1.openstreetmap.de/route?json=${encodeURIComponent(json)}`;
 
     const response = await fetch(url, {
       headers: {

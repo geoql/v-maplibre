@@ -196,20 +196,20 @@
     box-shadow:
       0 4px 6px -1px rgb(0 0 0 / 0.1),
       0 2px 4px -2px rgb(0 0 0 / 0.1);
-    border: 1px solid hsl(var(--border) / 0.5);
-    background: hsl(var(--background));
+    border: 1px solid #e4e4e7;
+    background: #ffffff;
   }
 
   .active-users-popup .maplibregl-popup-tip {
-    border-top-color: hsl(var(--background));
+    border-top-color: #ffffff;
   }
 
   .dark .active-users-popup .maplibregl-popup-content {
-    background: hsl(var(--background));
-    border-color: hsl(var(--border) / 0.5);
+    background: #18181b;
+    border-color: #3f3f46;
   }
 
   .dark .active-users-popup .maplibregl-popup-tip {
-    border-top-color: hsl(var(--background));
+    border-top-color: #18181b;
   }
 </style>
