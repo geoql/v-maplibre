@@ -39,7 +39,8 @@
     "@deck.gl/mapbox": "^9.2.5",
     "@deck.gl/aggregation-layers": "^9.2.5",
     "@deck.gl/geo-layers": "^9.2.5",
-    "@deck.gl/mesh-layers": "^9.2.5"
+    "@deck.gl/mesh-layers": "^9.2.5",
+    "maplibre-gl-lidar": "^0.5.0"
   },
   "peerDependenciesMeta": {
     "@deck.gl/core": {
@@ -59,6 +60,9 @@
     },
     "@deck.gl/mesh-layers": {
       "optional": true
+    },
+    "maplibre-gl-lidar": {
+      "optional": true
     }
   },
   "dependencies": {
@@ -72,6 +76,7 @@
     "@deck.gl/aggregation-layers": "catalog:deckgl",
     "@deck.gl/geo-layers": "catalog:deckgl",
     "@deck.gl/mesh-layers": "catalog:deckgl",
+    "maplibre-gl-lidar": "^0.5.0",
     "@awmottaz/prettier-plugin-void-html": "catalog:",
     "@types/node": "^25.0.6",
     "@vitejs/plugin-vue": "^6.0.3",

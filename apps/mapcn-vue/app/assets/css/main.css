@@ -70,12 +70,10 @@ canvas {
   outline: none !important;
 }
 
-/* Map container styling */
 .map-container {
   @apply w-full h-full min-h-100 rounded-lg border border-border overflow-hidden;
 }
 
-/* Code block styling */
 pre {
   @apply rounded-lg border border-border bg-card p-4 overflow-x-auto mb-6;
 }
@@ -84,7 +82,6 @@ code {
   @apply font-mono text-sm;
 }
 
-/* Prose styling for markdown content */
 .prose {
   @apply max-w-none;
 }
@@ -143,18 +140,15 @@ code {
   @apply opacity-100;
 }
 
-/* Demo card map container - no min-height constraints */
 .demo-map-container {
   @apply w-full h-full overflow-hidden;
 }
 
-/* Override MapLibre attribution for demo cards */
 .maplibregl-ctrl-attrib {
   font-size: 9px !important;
   opacity: 0.6;
 }
 
-/* Global animations for homepage */
 @keyframes fade-up {
   from {
     opacity: 0;
@@ -186,7 +180,6 @@ code {
   }
 }
 
-/* Animation utility classes */
 .animate-fade-up {
   animation: fade-up 0.6s ease-out forwards;
   opacity: 0;
@@ -202,7 +195,6 @@ code {
   opacity: 0;
 }
 
-/* Animation delays */
 .delay-100 {
   animation-delay: 100ms;
 }
@@ -228,7 +220,6 @@ code {
   animation-delay: 800ms;
 }
 
-/* Aurora animation keyframes */
 @keyframes aurora-1 {
   0%,
   100% {
@@ -280,7 +271,6 @@ code {
   animation: aurora-3 30s ease-in-out infinite;
 }
 
-/* Card hover lift effect */
 .example-card {
   transform: translateY(0) translateZ(0);
   will-change: transform, box-shadow;
@@ -290,7 +280,6 @@ code {
   transform: translateY(-4px) translateZ(0);
 }
 
-/* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   .animate-aurora-1,
   .animate-aurora-2,
@@ -309,4 +298,345 @@ code {
   .example-card:hover {
     transform: none;
   }
+}
+
+.lidar-control {
+  background: var(--color-card);
+  border-radius: var(--radius);
+  box-shadow:
+    0 1px 3px 0 rgb(0 0 0 / 0.1),
+    0 1px 2px -1px rgb(0 0 0 / 0.1);
+  border: 1px solid var(--color-border);
+}
+
+.lidar-control-toggle {
+  color: var(--color-foreground);
+}
+
+.lidar-control-toggle:hover {
+  background-color: var(--color-accent);
+}
+
+.lidar-control-panel {
+  background: var(--color-card);
+  border-radius: var(--radius);
+  box-shadow:
+    0 10px 15px -3px rgb(0 0 0 / 0.1),
+    0 4px 6px -4px rgb(0 0 0 / 0.1);
+  border: 1px solid var(--color-border);
+  font-family: inherit;
+  scrollbar-color: var(--color-muted-foreground) transparent;
+}
+
+.lidar-control-panel::-webkit-scrollbar-thumb {
+  background-color: var(--color-muted-foreground);
+}
+
+.lidar-control-panel::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-foreground);
+}
+
+.lidar-control-header {
+  color: var(--color-card-foreground);
+  border-bottom-color: var(--color-border);
+}
+
+.lidar-control-title {
+  color: var(--color-card-foreground);
+  font-weight: 600;
+}
+
+.lidar-control-close {
+  color: var(--color-muted-foreground);
+}
+
+.lidar-control-close:hover {
+  color: var(--color-foreground);
+}
+
+.lidar-control-section {
+  border-bottom-color: var(--color-border);
+}
+
+.lidar-control-section-header {
+  color: var(--color-muted-foreground);
+}
+
+.lidar-control-label {
+  color: var(--color-foreground);
+}
+
+.lidar-control-value {
+  color: var(--color-muted-foreground);
+}
+
+.lidar-control-input {
+  background: var(--color-background);
+  border-color: var(--color-input);
+  color: var(--color-foreground);
+  border-radius: calc(var(--radius) - 2px);
+}
+
+.lidar-control-input:focus {
+  border-color: var(--color-ring);
+  box-shadow: 0 0 0 2px color-mix(in oklch, var(--color-ring) 20%, transparent);
+}
+
+.lidar-control-input::placeholder {
+  color: var(--color-muted-foreground);
+}
+
+.lidar-control-select {
+  background: var(--color-background);
+  border-color: var(--color-input);
+  color: var(--color-foreground);
+  border-radius: calc(var(--radius) - 2px);
+}
+
+.lidar-control-select:focus {
+  border-color: var(--color-ring);
+  box-shadow: 0 0 0 2px color-mix(in oklch, var(--color-ring) 20%, transparent);
+}
+
+.lidar-control-slider {
+  background: var(--color-secondary);
+}
+
+.lidar-control-slider::-webkit-slider-thumb {
+  background: var(--color-primary);
+  border-color: var(--color-card);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+}
+
+.lidar-control-slider::-moz-range-thumb {
+  background: var(--color-primary);
+  border-color: var(--color-card);
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+}
+
+.lidar-control-button {
+  background: var(--color-primary);
+  color: var(--color-primary-foreground);
+  border-radius: calc(var(--radius) - 2px);
+  font-weight: 500;
+  transition:
+    background-color 0.15s,
+    opacity 0.15s;
+}
+
+.lidar-control-button:hover {
+  background: color-mix(in oklch, var(--color-primary) 90%, black);
+}
+
+.lidar-control-button:disabled {
+  background: var(--color-muted);
+  color: var(--color-muted-foreground);
+  opacity: 0.5;
+}
+
+.lidar-control-button.secondary {
+  background: var(--color-secondary);
+  color: var(--color-secondary-foreground);
+}
+
+.lidar-control-button.secondary:hover {
+  background: color-mix(in oklch, var(--color-secondary) 80%, black);
+}
+
+.lidar-file-input-label {
+  background: var(--color-secondary);
+  border-color: var(--color-border);
+  color: var(--color-muted-foreground);
+  border-radius: calc(var(--radius) - 2px);
+}
+
+.lidar-file-input-label:hover,
+.lidar-file-input-label.drag-over {
+  border-color: var(--color-primary);
+  background: color-mix(
+    in oklch,
+    var(--color-primary) 10%,
+    var(--color-secondary)
+  );
+}
+
+.lidar-file-input-label svg {
+  color: var(--color-muted-foreground);
+}
+
+.lidar-pointclouds-empty {
+  color: var(--color-muted-foreground);
+}
+
+.lidar-pointcloud-item {
+  background: var(--color-secondary);
+  border-radius: calc(var(--radius) - 2px);
+}
+
+.lidar-pointcloud-name {
+  color: var(--color-foreground);
+}
+
+.lidar-pointcloud-details {
+  color: var(--color-muted-foreground);
+}
+
+.lidar-control-panel .lidar-pointcloud-action {
+  background: var(--color-background);
+  border-color: var(--color-border);
+  color: var(--color-foreground);
+  border-radius: calc(var(--radius) - 4px);
+}
+
+.lidar-control-panel .lidar-pointcloud-action:hover {
+  background: var(--color-accent);
+  border-color: var(--color-border);
+}
+
+.lidar-control-panel .lidar-pointcloud-action.remove {
+  background: color-mix(in oklch, var(--color-destructive) 10%, transparent);
+  color: var(--color-destructive);
+  border-color: var(--color-destructive);
+}
+
+.lidar-control-panel .lidar-pointcloud-action.remove:hover {
+  background: var(--color-destructive);
+  color: var(--color-destructive-foreground);
+}
+
+.lidar-loading {
+  background: color-mix(in oklch, var(--color-card) 95%, transparent);
+  color: var(--color-muted-foreground);
+  border-radius: var(--radius);
+}
+
+.lidar-loading-spinner {
+  border-color: var(--color-secondary);
+  border-top-color: var(--color-primary);
+}
+
+.lidar-loading-text {
+  color: var(--color-foreground);
+}
+
+.lidar-loading-progress {
+  color: var(--color-muted-foreground);
+}
+
+.lidar-loading-bar {
+  background: var(--color-secondary);
+}
+
+.lidar-loading-bar-fill {
+  background: var(--color-primary);
+}
+
+.lidar-error {
+  background: color-mix(in oklch, var(--color-destructive) 10%, transparent);
+  border-color: color-mix(in oklch, var(--color-destructive) 30%, transparent);
+  color: var(--color-destructive);
+}
+
+.lidar-classification-legend {
+  border-color: var(--color-border);
+  border-radius: calc(var(--radius) - 2px);
+}
+
+.lidar-classification-legend-header {
+  background: var(--color-secondary);
+  border-bottom-color: var(--color-border);
+}
+
+.lidar-legend-action-btn,
+.lidar-control-panel .lidar-legend-action-btn {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-primary-foreground);
+  border-radius: calc(var(--radius) - 4px);
+}
+
+.lidar-legend-action-btn:hover,
+.lidar-legend-action-btn:focus-visible,
+.lidar-control-panel
+  .lidar-classification-legend-header
+  button.lidar-legend-action-btn:hover,
+.lidar-control-panel
+  .lidar-classification-legend-header
+  button.lidar-legend-action-btn:focus-visible {
+  background-color: color-mix(in oklch, var(--color-primary) 90%, black);
+  border-color: color-mix(in oklch, var(--color-primary) 90%, black);
+  color: var(--color-primary-foreground);
+}
+
+.lidar-classification-legend-list {
+  scrollbar-color: var(--color-muted-foreground) transparent;
+}
+
+.lidar-classification-legend-list::-webkit-scrollbar-thumb {
+  background-color: var(--color-muted-foreground);
+}
+
+.lidar-classification-legend-item:hover {
+  background: var(--color-accent);
+}
+
+.lidar-classification-label {
+  color: var(--color-foreground);
+}
+
+.lidar-classification-empty {
+  color: var(--color-muted-foreground);
+}
+
+.lidar-control-panel input[type='checkbox'] {
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--color-border);
+  border-radius: calc(var(--radius) - 4px);
+  background: var(--color-background);
+  cursor: pointer;
+  position: relative;
+}
+
+.lidar-control-panel input[type='checkbox']:checked {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.lidar-control-panel input[type='checkbox']:checked::after {
+  content: '';
+  position: absolute;
+  left: 5px;
+  top: 2px;
+  width: 4px;
+  height: 8px;
+  border: solid var(--color-primary-foreground);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+.lidar-control-panel input[type='checkbox']:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px color-mix(in oklch, var(--color-ring) 20%, transparent);
+}
+
+.lidar-control-content {
+  scrollbar-color: var(--color-muted-foreground) transparent;
+}
+
+.lidar-control-content::-webkit-scrollbar-thumb {
+  background-color: var(--color-muted-foreground);
+}
+
+.lidar-control-content::-webkit-scrollbar-thumb:hover {
+  background-color: var(--color-foreground);
+}
+
+.lidar-pointclouds-list {
+  scrollbar-color: var(--color-muted-foreground) transparent;
+}
+
+.lidar-pointclouds-list::-webkit-scrollbar-thumb {
+  background-color: var(--color-muted-foreground);
 }

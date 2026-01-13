@@ -1,0 +1,65 @@
+{
+  "$schema": "https://shadcn-vue.com/schema/registry-item.json",
+  "name": "map-layers",
+  "type": "registry:ui",
+  "title": "Map Layers",
+  "description": "MapLibre native layer components: GeoJSON, Vector, Raster, Cluster, PMTiles.",
+  "dependencies": ["@geoql/v-maplibre", "maplibre-gl"],
+  "registryDependencies": ["map"],
+  "files": [
+    {
+      "path": "src/registry/ui/map-layers/MapLayerGeojson.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerMaplibreGeojson } from '@geoql/v-maplibre';\n  import type {\n    GeoJSONSourceSpecification,\n    LayerSpecification,\n  } from 'maplibre-gl';\n\n  export interface MapLayerGeojsonProps {\n    id: string;\n    source: GeoJSONSourceSpecification;\n    layer: Omit<LayerSpecification, 'id' | 'source'>;\n    before?: string;\n  }\n\n  const props = defineProps<MapLayerGeojsonProps>();\n\n  const emit = defineEmits<{\n    click: [e: maplibregl.MapLayerMouseEvent];\n    mouseenter: [e: maplibregl.MapLayerMouseEvent];\n    mouseleave: [e: maplibregl.MapLayerMouseEvent];\n  }>();\n</script>\n\n<template>\n  <VLayerMaplibreGeojson\n    :id=\"props.id\"\n    :source=\"props.source\"\n    :layer=\"props.layer\"\n    :before=\"props.before\"\n    @click=\"(e) => emit('click', e)\"\n    @mouseenter=\"(e) => emit('mouseenter', e)\"\n    @mouseleave=\"(e) => emit('mouseleave', e)\"\n  ></VLayerMaplibreGeojson>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/layers/MapLayerGeojson.vue"
+    },
+    {
+      "path": "src/registry/ui/map-layers/MapLayerVector.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerMaplibreVector } from '@geoql/v-maplibre';\n  import type {\n    VectorSourceSpecification,\n    LayerSpecification,\n  } from 'maplibre-gl';\n\n  export interface MapLayerVectorProps {\n    id: string;\n    source: VectorSourceSpecification;\n    layer: Omit<LayerSpecification, 'id' | 'source'>;\n    before?: string;\n  }\n\n  const props = defineProps<MapLayerVectorProps>();\n\n  const emit = defineEmits<{\n    click: [e: maplibregl.MapLayerMouseEvent];\n    mouseenter: [e: maplibregl.MapLayerMouseEvent];\n    mouseleave: [e: maplibregl.MapLayerMouseEvent];\n  }>();\n</script>\n\n<template>\n  <VLayerMaplibreVector\n    :id=\"props.id\"\n    :source=\"props.source\"\n    :layer=\"props.layer\"\n    :before=\"props.before\"\n    @click=\"(e) => emit('click', e)\"\n    @mouseenter=\"(e) => emit('mouseenter', e)\"\n    @mouseleave=\"(e) => emit('mouseleave', e)\"\n  ></VLayerMaplibreVector>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/layers/MapLayerVector.vue"
+    },
+    {
+      "path": "src/registry/ui/map-layers/MapLayerRaster.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerMaplibreRaster } from '@geoql/v-maplibre';\n  import type {\n    RasterSourceSpecification,\n    RasterLayerSpecification,\n  } from 'maplibre-gl';\n\n  export interface MapLayerRasterProps {\n    id: string;\n    source: RasterSourceSpecification;\n    layer?: Partial<Omit<RasterLayerSpecification, 'id' | 'source' | 'type'>>;\n    before?: string;\n  }\n\n  const props = defineProps<MapLayerRasterProps>();\n</script>\n\n<template>\n  <VLayerMaplibreRaster\n    :id=\"props.id\"\n    :source=\"props.source\"\n    :layer=\"props.layer\"\n    :before=\"props.before\"\n  ></VLayerMaplibreRaster>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/layers/MapLayerRaster.vue"
+    },
+    {
+      "path": "src/registry/ui/map-layers/MapLayerCluster.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerMaplibreCluster } from '@geoql/v-maplibre';\n  import type { GeoJSON } from 'geojson';\n\n  export interface MapLayerClusterProps {\n    id: string;\n    data: string | GeoJSON.FeatureCollection;\n    clusterRadius?: number;\n    clusterMaxZoom?: number;\n    clusterMinPoints?: number;\n    clusterProperties?: Record<string, unknown>;\n    maxZoom?: number;\n  }\n\n  const props = withDefaults(defineProps<MapLayerClusterProps>(), {\n    clusterRadius: 50,\n    clusterMaxZoom: 14,\n    clusterMinPoints: 2,\n  });\n\n  const emit = defineEmits<{\n    clusterClick: [clusterId: number, coordinates: [number, number]];\n    pointClick: [feature: GeoJSON.Feature, coordinates: [number, number]];\n  }>();\n</script>\n\n<template>\n  <VLayerMaplibreCluster\n    :id=\"props.id\"\n    :data=\"props.data\"\n    :cluster-radius=\"props.clusterRadius\"\n    :cluster-max-zoom=\"props.clusterMaxZoom\"\n    :cluster-min-points=\"props.clusterMinPoints\"\n    :cluster-properties=\"props.clusterProperties\"\n    :max-zoom=\"props.maxZoom\"\n    @cluster-click=\"(id, coords) => emit('clusterClick', id, coords)\"\n    @point-click=\"(feature, coords) => emit('pointClick', feature, coords)\"\n  ></VLayerMaplibreCluster>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/layers/MapLayerCluster.vue"
+    },
+    {
+      "path": "src/registry/ui/map-layers/MapLayerPmtiles.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerMaplibrePmtile } from '@geoql/v-maplibre';\n  import type { LayerSpecification } from 'maplibre-gl';\n\n  export interface MapLayerPmtilesProps {\n    id: string;\n    url: string;\n    layer: Omit<LayerSpecification, 'id' | 'source'>;\n    before?: string;\n  }\n\n  const props = defineProps<MapLayerPmtilesProps>();\n\n  const emit = defineEmits<{\n    click: [e: maplibregl.MapLayerMouseEvent];\n    mouseenter: [e: maplibregl.MapLayerMouseEvent];\n    mouseleave: [e: maplibregl.MapLayerMouseEvent];\n  }>();\n</script>\n\n<template>\n  <VLayerMaplibrePmtile\n    :id=\"props.id\"\n    :url=\"props.url\"\n    :layer=\"props.layer\"\n    :before=\"props.before\"\n    @click=\"(e) => emit('click', e)\"\n    @mouseenter=\"(e) => emit('mouseenter', e)\"\n    @mouseleave=\"(e) => emit('mouseleave', e)\"\n  ></VLayerMaplibrePmtile>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/layers/MapLayerPmtiles.vue"
+    },
+    {
+      "path": "src/registry/ui/map-layers/MapLayerImage.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerMaplibreImage } from '@geoql/v-maplibre';\n  import type {\n    ImageSourceSpecification,\n    RasterLayerSpecification,\n  } from 'maplibre-gl';\n\n  export interface MapLayerImageProps {\n    id: string;\n    source: ImageSourceSpecification;\n    layer?: Partial<Omit<RasterLayerSpecification, 'id' | 'source' | 'type'>>;\n    before?: string;\n  }\n\n  const props = defineProps<MapLayerImageProps>();\n</script>\n\n<template>\n  <VLayerMaplibreImage\n    :id=\"props.id\"\n    :source=\"props.source\"\n    :layer=\"props.layer\"\n    :before=\"props.before\"\n  ></VLayerMaplibreImage>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/layers/MapLayerImage.vue"
+    },
+    {
+      "path": "src/registry/ui/map-layers/MapLayerVideo.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerMaplibreVideo } from '@geoql/v-maplibre';\n  import type {\n    VideoSourceSpecification,\n    RasterLayerSpecification,\n  } from 'maplibre-gl';\n\n  export interface MapLayerVideoProps {\n    id: string;\n    source: VideoSourceSpecification;\n    layer?: Partial<Omit<RasterLayerSpecification, 'id' | 'source' | 'type'>>;\n    before?: string;\n  }\n\n  const props = defineProps<MapLayerVideoProps>();\n</script>\n\n<template>\n  <VLayerMaplibreVideo\n    :id=\"props.id\"\n    :source=\"props.source\"\n    :layer=\"props.layer\"\n    :before=\"props.before\"\n  ></VLayerMaplibreVideo>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/layers/MapLayerVideo.vue"
+    },
+    {
+      "path": "src/registry/ui/map-layers/MapLayerCanvas.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerMaplibreCanvas } from '@geoql/v-maplibre';\n  import type {\n    CanvasSourceSpecification,\n    RasterLayerSpecification,\n  } from 'maplibre-gl';\n\n  export interface MapLayerCanvasProps {\n    id: string;\n    source: CanvasSourceSpecification;\n    layer?: Partial<Omit<RasterLayerSpecification, 'id' | 'source' | 'type'>>;\n    before?: string;\n  }\n\n  const props = defineProps<MapLayerCanvasProps>();\n</script>\n\n<template>\n  <VLayerMaplibreCanvas\n    :id=\"props.id\"\n    :source=\"props.source\"\n    :layer=\"props.layer\"\n    :before=\"props.before\"\n  ></VLayerMaplibreCanvas>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/layers/MapLayerCanvas.vue"
+    },
+    {
+      "path": "src/registry/ui/map-layers/index.ts",
+      "content": "export { default as MapLayerGeojson } from './MapLayerGeojson.vue';\nexport { default as MapLayerVector } from './MapLayerVector.vue';\nexport { default as MapLayerRaster } from './MapLayerRaster.vue';\nexport { default as MapLayerCluster } from './MapLayerCluster.vue';\nexport { default as MapLayerPmtiles } from './MapLayerPmtiles.vue';\nexport { default as MapLayerImage } from './MapLayerImage.vue';\nexport { default as MapLayerVideo } from './MapLayerVideo.vue';\nexport { default as MapLayerCanvas } from './MapLayerCanvas.vue';\n\nexport type { MapLayerGeojsonProps } from './MapLayerGeojson.vue';\nexport type { MapLayerVectorProps } from './MapLayerVector.vue';\nexport type { MapLayerRasterProps } from './MapLayerRaster.vue';\nexport type { MapLayerClusterProps } from './MapLayerCluster.vue';\nexport type { MapLayerPmtilesProps } from './MapLayerPmtiles.vue';\nexport type { MapLayerImageProps } from './MapLayerImage.vue';\nexport type { MapLayerVideoProps } from './MapLayerVideo.vue';\nexport type { MapLayerCanvasProps } from './MapLayerCanvas.vue';\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/layers/index.ts"
+    }
+  ]
+}

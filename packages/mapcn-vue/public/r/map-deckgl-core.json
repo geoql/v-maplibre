@@ -1,0 +1,83 @@
+{
+  "$schema": "https://shadcn-vue.com/schema/registry-item.json",
+  "name": "map-deckgl-core",
+  "type": "registry:ui",
+  "title": "deck.gl Core Layers",
+  "description": "High-performance visualization layers: Scatterplot, Arc, Line, Path, Polygon, GeoJSON, Icon, Text, Column, Bitmap.",
+  "dependencies": [
+    "@geoql/v-maplibre",
+    "maplibre-gl",
+    "@deck.gl/core",
+    "@deck.gl/layers",
+    "@deck.gl/mapbox"
+  ],
+  "registryDependencies": ["map"],
+  "files": [
+    {
+      "path": "src/registry/ui/map-deckgl-core/MapLayerScatterplot.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglScatterplot } from '@geoql/v-maplibre';\n  import type { ScatterplotLayerProps } from '@deck.gl/layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerScatterplotProps extends Partial<ScatterplotLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerScatterplotProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglScatterplot\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglScatterplot>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerScatterplot.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-core/MapLayerArc.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglArc } from '@geoql/v-maplibre';\n  import type { ArcLayerProps } from '@deck.gl/layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerArcProps extends Partial<ArcLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerArcProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglArc\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglArc>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerArc.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-core/MapLayerLine.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglLine } from '@geoql/v-maplibre';\n  import type { LineLayerProps } from '@deck.gl/layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerLineProps extends Partial<LineLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerLineProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglLine\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglLine>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerLine.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-core/MapLayerPath.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglPath } from '@geoql/v-maplibre';\n  import type { PathLayerProps } from '@deck.gl/layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerPathProps extends Partial<PathLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerPathProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglPath\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglPath>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerPath.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-core/MapLayerPolygon.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglPolygon } from '@geoql/v-maplibre';\n  import type { PolygonLayerProps } from '@deck.gl/layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerPolygonProps extends Partial<PolygonLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerPolygonProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglPolygon\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglPolygon>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerPolygon.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-core/MapLayerGeojson.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglGeojson } from '@geoql/v-maplibre';\n  import type { GeoJsonLayerProps } from '@deck.gl/layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerGeojsonProps extends Partial<GeoJsonLayerProps> {\n    id: string;\n    data: unknown[] | string | object;\n  }\n\n  const props = defineProps<MapLayerGeojsonProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglGeojson\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglGeojson>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerGeojson.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-core/MapLayerIcon.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglIcon } from '@geoql/v-maplibre';\n  import type { IconLayerProps } from '@deck.gl/layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerIconProps extends Partial<IconLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerIconProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglIcon\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglIcon>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerIcon.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-core/MapLayerText.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglText } from '@geoql/v-maplibre';\n  import type { TextLayerProps } from '@deck.gl/layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerTextProps extends Partial<TextLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerTextProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglText\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglText>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerText.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-core/MapLayerColumn.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglColumn } from '@geoql/v-maplibre';\n  import type { ColumnLayerProps } from '@deck.gl/layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerColumnProps extends Partial<ColumnLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerColumnProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglColumn\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglColumn>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerColumn.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-core/MapLayerBitmap.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglBitmap } from '@geoql/v-maplibre';\n  import type { BitmapLayerProps } from '@deck.gl/layers';\n\n  export interface MapLayerBitmapProps extends Partial<BitmapLayerProps> {\n    id: string;\n  }\n\n  const props = defineProps<MapLayerBitmapProps>();\n</script>\n\n<template>\n  <VLayerDeckglBitmap v-bind=\"props\"></VLayerDeckglBitmap>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerBitmap.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-core/index.ts",
+      "content": "export { default as MapLayerScatterplot } from './MapLayerScatterplot.vue';\nexport { default as MapLayerArc } from './MapLayerArc.vue';\nexport { default as MapLayerLine } from './MapLayerLine.vue';\nexport { default as MapLayerPath } from './MapLayerPath.vue';\nexport { default as MapLayerPolygon } from './MapLayerPolygon.vue';\nexport { default as MapLayerGeojson } from './MapLayerGeojson.vue';\nexport { default as MapLayerIcon } from './MapLayerIcon.vue';\nexport { default as MapLayerText } from './MapLayerText.vue';\nexport { default as MapLayerColumn } from './MapLayerColumn.vue';\nexport { default as MapLayerBitmap } from './MapLayerBitmap.vue';\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/index.ts"
+    }
+  ]
+}

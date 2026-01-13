@@ -1,6 +1,4 @@
 <script setup lang="ts">
-  import { codeToHtml } from 'shiki';
-
   const props = withDefaults(
     defineProps<{
       code: string;
@@ -13,19 +11,7 @@
     },
   );
 
-  const colorMode = useColorMode();
   const copied = ref(false);
-
-  const { data: highlightedCode } = await useAsyncData(
-    `code-${props.code.slice(0, 50)}`,
-    async () => {
-      return codeToHtml(props.code, {
-        lang: props.lang,
-        theme: colorMode.value === 'dark' ? 'github-dark' : 'github-light',
-      });
-    },
-    { watch: [() => colorMode.value] },
-  );
 
   async function copyCode() {
     try {
@@ -56,7 +42,6 @@
 
 <template>
   <div class="overflow-hidden rounded-lg border border-border max-w-full">
-    <!-- Header -->
     <div
       class="flex items-center justify-between border-b border-border bg-muted/50 px-4 py-2"
     >
@@ -76,10 +61,18 @@
         ></Icon>
       </button>
     </div>
-    <!-- Code -->
-    <div
-      class="max-h-110 overflow-auto text-sm [&_pre]:m-0! [&_pre]:rounded-none! [&_pre]:p-4!"
-      v-html="highlightedCode"
-    ></div>
+    <ClientOnly>
+      <CodeBlockContent :code="code" :lang="lang"></CodeBlockContent>
+      <template #fallback>
+        <div class="max-h-110 overflow-auto bg-muted/30 p-4">
+          <div class="space-y-2">
+            <div class="h-4 w-3/4 animate-pulse rounded bg-muted"></div>
+            <div class="h-4 w-1/2 animate-pulse rounded bg-muted"></div>
+            <div class="h-4 w-5/6 animate-pulse rounded bg-muted"></div>
+            <div class="h-4 w-2/3 animate-pulse rounded bg-muted"></div>
+          </div>
+        </div>
+      </template>
+    </ClientOnly>
   </div>
 </template>

@@ -1,0 +1,40 @@
+{
+  "$schema": "https://shadcn-vue.com/schema/registry-item.json",
+  "name": "map",
+  "type": "registry:ui",
+  "title": "Map",
+  "description": "A theme-aware MapLibre map component with built-in controls, markers, and popups.",
+  "dependencies": ["@geoql/v-maplibre", "maplibre-gl", "@vueuse/core"],
+  "files": [
+    {
+      "path": "src/registry/ui/map/Map.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VMap } from '@geoql/v-maplibre';\n  import { useColorMode } from '@vueuse/core';\n  import { computed, type StyleValue } from 'vue';\n  import type { MapOptions, StyleSpecification } from 'maplibre-gl';\n  import 'maplibre-gl/dist/maplibre-gl.css';\n\n  export interface MapProps {\n    center?: [number, number];\n    zoom?: number;\n    bearing?: number;\n    pitch?: number;\n    minZoom?: number;\n    maxZoom?: number;\n    styles?: {\n      light?: string | StyleSpecification;\n      dark?: string | StyleSpecification;\n    };\n    options?: Partial<MapOptions>;\n    class?: string;\n    style?: StyleValue;\n  }\n\n  const props = withDefaults(defineProps<MapProps>(), {\n    center: () => [0, 0],\n    zoom: 2,\n    bearing: 0,\n    pitch: 0,\n  });\n\n  const emit = defineEmits<{\n    load: [map: maplibregl.Map];\n    click: [e: maplibregl.MapMouseEvent];\n    move: [e: maplibregl.MapMouseEvent];\n    zoom: [e: maplibregl.MapMouseEvent];\n  }>();\n\n  const { isDark } = useColorMode();\n\n  const defaultStyles = {\n    light: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',\n    dark: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',\n  };\n\n  const mapStyle = computed(() => {\n    if (props.styles) {\n      return isDark.value\n        ? (props.styles.dark ?? defaultStyles.dark)\n        : (props.styles.light ?? defaultStyles.light);\n    }\n    return isDark.value ? defaultStyles.dark : defaultStyles.light;\n  });\n\n  const mapOptions = computed<MapOptions>(() => ({\n    style: mapStyle.value,\n    center: props.center,\n    zoom: props.zoom,\n    bearing: props.bearing,\n    pitch: props.pitch,\n    minZoom: props.minZoom,\n    maxZoom: props.maxZoom,\n    ...props.options,\n  }));\n\n  function handleLoad(map: maplibregl.Map) {\n    emit('load', map);\n  }\n</script>\n\n<template>\n  <VMap\n    :options=\"mapOptions\"\n    :class=\"['h-full w-full', props.class]\"\n    :style=\"props.style\"\n    @loaded=\"handleLoad\"\n    @click=\"(e) => emit('click', e)\"\n    @move=\"(e) => emit('move', e)\"\n    @zoom=\"(e) => emit('zoom', e)\"\n  >\n    <slot></slot>\n  </VMap>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/Map.vue"
+    },
+    {
+      "path": "src/registry/ui/map/MapMarker.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VMarker } from '@geoql/v-maplibre';\n  import type { LngLatLike } from 'maplibre-gl';\n\n  export interface MapMarkerProps {\n    lngLat: LngLatLike;\n    draggable?: boolean;\n    anchor?:\n      | 'center'\n      | 'top'\n      | 'bottom'\n      | 'left'\n      | 'right'\n      | 'top-left'\n      | 'top-right'\n      | 'bottom-left'\n      | 'bottom-right';\n    offset?: [number, number];\n    color?: string;\n    scale?: number;\n    class?: string;\n  }\n\n  const props = withDefaults(defineProps<MapMarkerProps>(), {\n    draggable: false,\n    anchor: 'bottom',\n    scale: 1,\n  });\n\n  const emit = defineEmits<{\n    click: [e: MouseEvent];\n    dragstart: [e: { lngLat: { lng: number; lat: number } }];\n    drag: [e: { lngLat: { lng: number; lat: number } }];\n    dragend: [e: { lngLat: { lng: number; lat: number } }];\n  }>();\n</script>\n\n<template>\n  <VMarker\n    :lng-lat=\"props.lngLat\"\n    :draggable=\"props.draggable\"\n    :anchor=\"props.anchor\"\n    :offset=\"props.offset\"\n    :color=\"props.color\"\n    :scale=\"props.scale\"\n    :class=\"props.class\"\n    @click=\"(e) => emit('click', e)\"\n    @dragstart=\"(e) => emit('dragstart', e)\"\n    @drag=\"(e) => emit('drag', e)\"\n    @dragend=\"(e) => emit('dragend', e)\"\n  >\n    <slot></slot>\n  </VMarker>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/MapMarker.vue"
+    },
+    {
+      "path": "src/registry/ui/map/MapPopup.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VPopup } from '@geoql/v-maplibre';\n  import type { LngLatLike } from 'maplibre-gl';\n\n  export interface MapPopupProps {\n    lngLat: LngLatLike;\n    closeButton?: boolean;\n    closeOnClick?: boolean;\n    closeOnMove?: boolean;\n    anchor?:\n      | 'center'\n      | 'top'\n      | 'bottom'\n      | 'left'\n      | 'right'\n      | 'top-left'\n      | 'top-right'\n      | 'bottom-left'\n      | 'bottom-right';\n    offset?: number | [number, number];\n    maxWidth?: string;\n    class?: string;\n  }\n\n  const props = withDefaults(defineProps<MapPopupProps>(), {\n    closeButton: true,\n    closeOnClick: true,\n    closeOnMove: false,\n    anchor: 'bottom',\n    maxWidth: '240px',\n  });\n\n  const emit = defineEmits<{\n    open: [];\n    close: [];\n  }>();\n</script>\n\n<template>\n  <VPopup\n    :lng-lat=\"props.lngLat\"\n    :close-button=\"props.closeButton\"\n    :close-on-click=\"props.closeOnClick\"\n    :close-on-move=\"props.closeOnMove\"\n    :anchor=\"props.anchor\"\n    :offset=\"props.offset\"\n    :max-width=\"props.maxWidth\"\n    :class=\"['rounded-lg bg-background p-3 shadow-lg border', props.class]\"\n    @open=\"emit('open')\"\n    @close=\"emit('close')\"\n  >\n    <slot></slot>\n  </VPopup>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/MapPopup.vue"
+    },
+    {
+      "path": "src/registry/ui/map/MapControls.vue",
+      "content": "<script setup lang=\"ts\">\n  import {\n    VControlNavigation,\n    VControlScale,\n    VControlGeolocate,\n    VControlFullscreen,\n  } from '@geoql/v-maplibre';\n\n  export interface MapControlsProps {\n    position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';\n    showNavigation?: boolean;\n    showScale?: boolean;\n    showGeolocate?: boolean;\n    showFullscreen?: boolean;\n  }\n\n  const props = withDefaults(defineProps<MapControlsProps>(), {\n    position: 'bottom-right',\n    showNavigation: true,\n    showScale: false,\n    showGeolocate: false,\n    showFullscreen: false,\n  });\n\n  const emit = defineEmits<{\n    geolocate: [position: GeolocationPosition];\n    geolocateError: [error: GeolocationPositionError];\n  }>();\n</script>\n\n<template>\n  <VControlNavigation\n    v-if=\"props.showNavigation\"\n    :position=\"props.position\"\n  ></VControlNavigation>\n  <VControlScale\n    v-if=\"props.showScale\"\n    :position=\"props.position\"\n  ></VControlScale>\n  <VControlGeolocate\n    v-if=\"props.showGeolocate\"\n    :position=\"props.position\"\n    @geolocate=\"(e) => emit('geolocate', e)\"\n    @error=\"(e) => emit('geolocateError', e)\"\n  ></VControlGeolocate>\n  <VControlFullscreen\n    v-if=\"props.showFullscreen\"\n    :position=\"props.position\"\n  ></VControlFullscreen>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/MapControls.vue"
+    },
+    {
+      "path": "src/registry/ui/map/index.ts",
+      "content": "export { default as Map } from './Map.vue';\nexport { default as MapMarker } from './MapMarker.vue';\nexport { default as MapPopup } from './MapPopup.vue';\nexport { default as MapControls } from './MapControls.vue';\n\nexport type { MapProps } from './Map.vue';\nexport type { MapMarkerProps } from './MapMarker.vue';\nexport type { MapPopupProps } from './MapPopup.vue';\nexport type { MapControlsProps } from './MapControls.vue';\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/index.ts"
+    }
+  ]
+}

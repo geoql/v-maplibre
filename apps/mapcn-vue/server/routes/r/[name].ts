@@ -330,6 +330,28 @@ const registry: Record<string, RegistryItem> = {
       },
     ],
   },
+  'map-control-lidar': {
+    $schema: 'https://shadcn-vue.com/schema/registry-item.json',
+    name: 'map-control-lidar',
+    type: 'registry:ui',
+    title: 'LiDAR Control',
+    description:
+      'LiDAR point cloud visualization with LAS/LAZ/COPC support, dynamic streaming, classification filtering, and interactive controls.',
+    dependencies: ['@geoql/v-maplibre', 'maplibre-gl', 'maplibre-gl-lidar'],
+    registryDependencies: [`${REGISTRY_BASE_URL}/r/map.json`],
+    files: [
+      {
+        path: 'map-control-lidar/MapControlLidar.vue',
+        type: 'registry:ui',
+        target: 'components/ui/map/controls/MapControlLidar.vue',
+      },
+      {
+        path: 'map-control-lidar/index.ts',
+        type: 'registry:ui',
+        target: 'components/ui/map/controls/index.ts',
+      },
+    ],
+  },
 };
 
 function readFileContent(relativePath: string): string {

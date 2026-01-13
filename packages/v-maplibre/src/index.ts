@@ -4,6 +4,7 @@ import {
   VControlGeolocate,
   VControlNavigation,
   VControlScale,
+  VControlLidar,
 } from './controls';
 
 import {
@@ -38,7 +39,17 @@ export {
   VControlGeolocate,
   VControlNavigation,
   VControlScale,
+  VControlLidar,
 };
+
+export type {
+  LidarControlOptions,
+  ColorScheme,
+  CopcLoadingMode,
+  PointCloudInfo,
+  PointCloudBounds,
+  StreamingProgress,
+} from './controls';
 
 export * from './layers/deckgl';
 

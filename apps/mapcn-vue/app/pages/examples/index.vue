@@ -310,6 +310,14 @@
           badge: '3D',
         },
         {
+          title: 'LiDAR Viewer',
+          description:
+            'Load LAS/LAZ/COPC files with streaming and classification.',
+          href: '/examples/lidar',
+          icon: 'lucide:radar',
+          badge: 'LiDAR',
+        },
+        {
           title: 'Solid Polygon',
           description: '3D extruded solid polygon buildings.',
           href: '/examples/deckgl-solid-polygon',

@@ -29,7 +29,7 @@
     }
   },
   "scripts": {
-    "build": "bun run --filter '*' build",
+    "build": "bun run --cwd packages/v-maplibre build && bun run --cwd packages/mapcn-vue build && bun run --cwd apps/docs build && bun run --cwd apps/mapcn-vue build",
     "build:docs": "cd apps/docs && bun run build",
     "build:mapcn": "bun run --cwd apps/mapcn-vue build",
     "setup:docs": "cd apps/docs && bun install",

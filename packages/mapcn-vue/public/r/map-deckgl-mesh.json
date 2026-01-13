@@ -1,0 +1,35 @@
+{
+  "$schema": "https://shadcn-vue.com/schema/registry-item.json",
+  "name": "map-deckgl-mesh",
+  "type": "registry:ui",
+  "title": "deck.gl Mesh Layers",
+  "description": "3D mesh layers: SimpleMesh, Scenegraph (glTF/GLB models).",
+  "dependencies": [
+    "@geoql/v-maplibre",
+    "maplibre-gl",
+    "@deck.gl/core",
+    "@deck.gl/mesh-layers",
+    "@deck.gl/mapbox"
+  ],
+  "registryDependencies": ["map"],
+  "files": [
+    {
+      "path": "src/registry/ui/map-deckgl-mesh/MapLayerSimpleMesh.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglSimpleMesh } from '@geoql/v-maplibre';\n  import type { SimpleMeshLayerProps } from '@deck.gl/mesh-layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerSimpleMeshProps extends Partial<SimpleMeshLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerSimpleMeshProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglSimpleMesh\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglSimpleMesh>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerSimpleMesh.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-mesh/MapLayerScenegraph.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglScenegraph } from '@geoql/v-maplibre';\n  import type { ScenegraphLayerProps } from '@deck.gl/mesh-layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerScenegraphProps extends Partial<ScenegraphLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerScenegraphProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglScenegraph\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglScenegraph>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerScenegraph.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-mesh/index.ts",
+      "content": "export { default as MapLayerSimpleMesh } from './MapLayerSimpleMesh.vue';\nexport { default as MapLayerScenegraph } from './MapLayerScenegraph.vue';\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/mesh/index.ts"
+    }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "$schema": "https://shadcn-vue.com/schema/registry-item.json",
+  "name": "map-deckgl-aggregation",
+  "type": "registry:ui",
+  "title": "deck.gl Aggregation Layers",
+  "description": "Data aggregation layers: Heatmap, Hexagon, Grid, Contour, ScreenGrid.",
+  "dependencies": [
+    "@geoql/v-maplibre",
+    "maplibre-gl",
+    "@deck.gl/core",
+    "@deck.gl/aggregation-layers",
+    "@deck.gl/mapbox"
+  ],
+  "registryDependencies": ["map"],
+  "files": [
+    {
+      "path": "src/registry/ui/map-deckgl-aggregation/MapLayerHeatmap.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglHeatmap } from '@geoql/v-maplibre';\n  import type { HeatmapLayerProps } from '@deck.gl/aggregation-layers';\n\n  export interface MapLayerHeatmapProps extends Partial<HeatmapLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerHeatmapProps>();\n</script>\n\n<template>\n  <VLayerDeckglHeatmap v-bind=\"props\"></VLayerDeckglHeatmap>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerHeatmap.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-aggregation/MapLayerHexagon.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglHexagon } from '@geoql/v-maplibre';\n  import type { HexagonLayerProps } from '@deck.gl/aggregation-layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerHexagonProps extends Partial<HexagonLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerHexagonProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglHexagon\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglHexagon>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerHexagon.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-aggregation/MapLayerGrid.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglGrid } from '@geoql/v-maplibre';\n  import type { GridLayerProps } from '@deck.gl/aggregation-layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerGridProps extends Partial<GridLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerGridProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglGrid\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglGrid>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerGrid.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-aggregation/MapLayerContour.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglContour } from '@geoql/v-maplibre';\n  import type { ContourLayerProps } from '@deck.gl/aggregation-layers';\n\n  export interface MapLayerContourProps extends Partial<ContourLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerContourProps>();\n</script>\n\n<template>\n  <VLayerDeckglContour v-bind=\"props\"></VLayerDeckglContour>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerContour.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-aggregation/MapLayerScreenGrid.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglScreenGrid } from '@geoql/v-maplibre';\n  import type { ScreenGridLayerProps } from '@deck.gl/aggregation-layers';\n\n  export interface MapLayerScreenGridProps extends Partial<ScreenGridLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerScreenGridProps>();\n</script>\n\n<template>\n  <VLayerDeckglScreenGrid v-bind=\"props\"></VLayerDeckglScreenGrid>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerScreenGrid.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-aggregation/index.ts",
+      "content": "export { default as MapLayerHeatmap } from './MapLayerHeatmap.vue';\nexport { default as MapLayerHexagon } from './MapLayerHexagon.vue';\nexport { default as MapLayerGrid } from './MapLayerGrid.vue';\nexport { default as MapLayerContour } from './MapLayerContour.vue';\nexport { default as MapLayerScreenGrid } from './MapLayerScreenGrid.vue';\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/aggregation/index.ts"
+    }
+  ]
+}

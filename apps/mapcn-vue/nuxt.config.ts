@@ -64,6 +64,7 @@ export default defineNuxtConfig({
   css: [
     'maplibre-gl/dist/maplibre-gl.css',
     '@geoql/v-maplibre/dist/v-maplibre.css',
+    'maplibre-gl-lidar/style.css',
     '~/assets/css/main.css',
   ],
 
