@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.3.0](https://github.com/geoql/v-maplibre/compare/v1.2.4...v1.3.0) (2026-01-13)
+
+
+### Features
+
+* add LiDAR control integration with shadcn theming ([0d8fb0d](https://github.com/geoql/v-maplibre/commit/0d8fb0d3057f826d65bdfb8e8b7ee927932dee3a))
+* **v-maplibre:** add _animations/_lighting to ScenegraphLayer, improve example ([dad8b3b](https://github.com/geoql/v-maplibre/commit/dad8b3b3abb536f37792a783ab6554a18a916c6d))
+
+
+### Bug Fixes
+
+* **mapcn-vue:** fix Quadkey coords, remove Tile3D example (no free datasets work) ([ff1a838](https://github.com/geoql/v-maplibre/commit/ff1a8387e824e7f670a14e7b730baba2df89be92))
+* **v-maplibre:** fix ScenegraphLayer and SimpleMeshLayer undefined prop bugs ([212743f](https://github.com/geoql/v-maplibre/commit/212743f6f1ffed2e8cb8b8733adfd36a7fb0052c))
+* **v-maplibre:** fix Tile3DLayer undefined loader prop bug, add [@loaders](https://github.com/loaders).gl/3d-tiles ([d9371d0](https://github.com/geoql/v-maplibre/commit/d9371d0ebfed9246c9708f3ccec96f21e0e02590))
+
 ## [1.2.4](https://github.com/geoql/v-maplibre/compare/v1.2.3...v1.2.4) (2026-01-11)
 
 
