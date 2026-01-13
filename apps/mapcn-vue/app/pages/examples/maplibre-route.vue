@@ -536,18 +536,6 @@ ${SCRIPT_END}
                     </div>
                   </template>
                 </VMarker>
-
-                <!-- Amsterdam marker (green) -->
-                <VMarker :coordinates="amsterdam.coordinates">
-                  <template #markers="{ setRef }">
-                    <div
-                      :ref="setRef as any"
-                      class="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-emerald-500 shadow-lg"
-                    >
-                      <div class="h-2 w-2 rounded-full bg-white"></div>
-                    </div>
-                  </template>
-                </VMarker>
               </VMap>
             </ClientOnly>
           </div>

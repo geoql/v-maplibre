@@ -183,7 +183,7 @@
 <template>
   <section :id="`marker-${Date.now()}`" class="absolute">
     <slot :set-ref="setSlotRef" name="markers"></slot>
-    <template v-if="isMarkerAvailable">
+    <template v-if="isMarkerAvailable && $slots.default">
       <v-popup
         :marker="marker!"
         :options="popupOptions"
