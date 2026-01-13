@@ -40,6 +40,7 @@
     "@deck.gl/aggregation-layers": "^9.2.5",
     "@deck.gl/geo-layers": "^9.2.5",
     "@deck.gl/mesh-layers": "^9.2.5",
+    "@developmentseed/deck.gl-geotiff": "^0.1.0",
     "maplibre-gl-lidar": "^0.5.0"
   },
   "peerDependenciesMeta": {
@@ -59,6 +60,9 @@
       "optional": true
     },
     "@deck.gl/mesh-layers": {
+      "optional": true
+    },
+    "@developmentseed/deck.gl-geotiff": {
       "optional": true
     },
     "maplibre-gl-lidar": {

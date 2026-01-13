@@ -46,6 +46,9 @@ bun add @deck.gl/core @deck.gl/layers @deck.gl/mapbox
 bun add @deck.gl/aggregation-layers  # Heatmap, Hexagon, Grid
 bun add @deck.gl/geo-layers          # Trips, MVT, Tile, H3
 bun add @deck.gl/mesh-layers         # SimpleMesh, Scenegraph
+
+# Raster layers (COG/GeoTIFF)
+bun add @developmentseed/deck.gl-geotiff
 ```
 
 ## Quick Start
@@ -128,6 +131,11 @@ High-performance WebGL visualization layers powered by deck.gl:
 
 - `VLayerDeckglSimpleMesh` - 3D meshes
 - `VLayerDeckglScenegraph` - glTF/GLB models
+
+**Raster Layers** (requires `@developmentseed/deck.gl-geotiff`)
+
+- `VLayerDeckglCOG` - Cloud-Optimized GeoTIFF visualization
+- `VLayerDeckglGeoTIFF` - Non-tiled GeoTIFF rendering
 
 ### Control Components
 

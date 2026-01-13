@@ -20,6 +20,7 @@
     "@deck.gl/layers": "catalog:deckgl",
     "@deck.gl/mapbox": "catalog:deckgl",
     "@deck.gl/mesh-layers": "catalog:deckgl",
+    "@developmentseed/deck.gl-geotiff": "^0.1.0",
     "@geoql/v-maplibre": "workspace:*",
     "@iconify-json/lucide": "^1.2.84",
     "@iconify-json/simple-icons": "^1.2.66",

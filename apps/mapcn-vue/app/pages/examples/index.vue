@@ -250,6 +250,13 @@
           href: '/examples/deckgl-bitmap',
           icon: 'lucide:image',
         },
+        {
+          title: 'COG Layer',
+          description: 'GPU-accelerated Cloud-Optimized GeoTIFF visualization.',
+          href: '/examples/deckgl-cog',
+          icon: 'lucide:satellite',
+          badge: 'Raster',
+        },
       ],
     },
     {
