@@ -157,6 +157,21 @@
           "target": "components/ui/map/deckgl/MapLayerBitmap.vue"
         },
         {
+          "path": "src/registry/ui/map-deckgl-core/MapLayerPointCloud.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerPointCloud.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-core/MapLayerGridCell.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerGridCell.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-core/MapLayerSolidPolygon.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerSolidPolygon.vue"
+        },
+        {
           "path": "src/registry/ui/map-deckgl-core/index.ts",
           "type": "registry:ui",
           "target": "components/ui/map/deckgl/index.ts"
@@ -254,9 +269,34 @@
           "target": "components/ui/map/deckgl/MapLayerH3Hexagon.vue"
         },
         {
+          "path": "src/registry/ui/map-deckgl-geo/MapLayerH3Cluster.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerH3Cluster.vue"
+        },
+        {
           "path": "src/registry/ui/map-deckgl-geo/MapLayerGreatCircle.vue",
           "type": "registry:ui",
           "target": "components/ui/map/deckgl/MapLayerGreatCircle.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-geo/MapLayerWMS.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerWMS.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-geo/MapLayerS2.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerS2.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-geo/MapLayerGeohash.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerGeohash.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-geo/MapLayerQuadkey.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerQuadkey.vue"
         },
         {
           "path": "src/registry/ui/map-deckgl-geo/index.ts",
@@ -293,6 +333,53 @@
           "path": "src/registry/ui/map-deckgl-mesh/index.ts",
           "type": "registry:ui",
           "target": "components/ui/map/deckgl/mesh/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "map-deckgl-raster",
+      "type": "registry:ui",
+      "title": "deck.gl Raster Layers",
+      "description": "Cloud-Optimized GeoTIFF (COG) visualization with GPU-accelerated rendering.",
+      "dependencies": [
+        "@geoql/v-maplibre",
+        "maplibre-gl",
+        "@deck.gl/core",
+        "@deck.gl/mapbox",
+        "@developmentseed/deck.gl-raster",
+        "geotiff-geokeys-to-proj4"
+      ],
+      "registryDependencies": ["map"],
+      "files": [
+        {
+          "path": "src/registry/ui/map-deckgl-raster/MapLayerCOG.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerCOG.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-raster/index.ts",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/raster/index.ts"
+        }
+      ]
+    },
+    {
+      "name": "map-control-lidar",
+      "type": "registry:ui",
+      "title": "LiDAR Control",
+      "description": "LiDAR point cloud viewer with LAS/LAZ/COPC support and dynamic streaming.",
+      "dependencies": ["@geoql/v-maplibre", "maplibre-gl", "maplibre-gl-lidar"],
+      "registryDependencies": ["map"],
+      "files": [
+        {
+          "path": "src/registry/ui/map-control-lidar/MapControlLidar.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/controls/MapControlLidar.vue"
+        },
+        {
+          "path": "src/registry/ui/map-control-lidar/index.ts",
+          "type": "registry:ui",
+          "target": "components/ui/map/controls/lidar/index.ts"
         }
       ]
     }
