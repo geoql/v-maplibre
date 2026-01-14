@@ -66,10 +66,10 @@ What's included
   icon: i-lucide-layers
   ---
   #title
-  Layer Components
+  50+ Layer Components
 
   #description
-  GeoJSON, Vector, Raster, Video, Canvas, and PMTiles layers
+  MapLibre + deck.gl layers including COG/GeoTIFF, H3, S2, and more
   :::
 
   :::u-page-feature
@@ -80,7 +80,7 @@ What's included
   Controls
 
   #description
-  Navigation, Scale, Geolocate, Fullscreen, and Attribution controls
+  Navigation, Scale, Geolocate, Fullscreen, LiDAR viewer, and more
   :::
 
   :::u-page-feature
