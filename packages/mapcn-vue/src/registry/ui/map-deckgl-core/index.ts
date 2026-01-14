@@ -8,3 +8,6 @@ export { default as MapLayerIcon } from './MapLayerIcon.vue';
 export { default as MapLayerText } from './MapLayerText.vue';
 export { default as MapLayerColumn } from './MapLayerColumn.vue';
 export { default as MapLayerBitmap } from './MapLayerBitmap.vue';
+export { default as MapLayerPointCloud } from './MapLayerPointCloud.vue';
+export { default as MapLayerGridCell } from './MapLayerGridCell.vue';
+export { default as MapLayerSolidPolygon } from './MapLayerSolidPolygon.vue';
