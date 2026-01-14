@@ -1,0 +1,23 @@
+{
+  "$schema": "https://shadcn-vue.com/schema/registry-item.json",
+  "name": "map-control-lidar",
+  "type": "registry:ui",
+  "title": "LiDAR Control",
+  "description": "LiDAR point cloud viewer with LAS/LAZ/COPC support and dynamic streaming.",
+  "dependencies": ["@geoql/v-maplibre", "maplibre-gl", "maplibre-gl-lidar"],
+  "registryDependencies": ["map"],
+  "files": [
+    {
+      "path": "src/registry/ui/map-control-lidar/MapControlLidar.vue",
+      "content": "<script setup lang=\"ts\">\n  import { computed } from 'vue';\n  import { VControlLidar } from '@geoql/v-maplibre';\n  import type { LidarControlOptions, ColorScheme } from '@geoql/v-maplibre';\n\n  export interface MapControlLidarProps {\n    position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';\n    options?: LidarControlOptions;\n    defaultUrl?: string;\n    collapsed?: boolean;\n    pointSize?: number;\n    colorScheme?: ColorScheme;\n    pickable?: boolean;\n  }\n\n  const props = withDefaults(defineProps<MapControlLidarProps>(), {\n    position: 'top-right',\n    collapsed: true,\n    pointSize: 2,\n    colorScheme: 'elevation',\n    pickable: true,\n  });\n\n  const emit = defineEmits<{\n    load: [info: unknown];\n    loadstart: [];\n    loaderror: [error: Error];\n    unload: [];\n    statechange: [];\n    stylechange: [];\n    collapse: [];\n    expand: [];\n    streamingstart: [];\n    streamingstop: [];\n    streamingprogress: [];\n    budgetreached: [];\n  }>();\n\n  const computedOptions = computed<LidarControlOptions>(() => ({\n    collapsed: props.collapsed,\n    pointSize: props.pointSize,\n    colorScheme: props.colorScheme,\n    pickable: props.pickable,\n    autoZoom: true,\n    ...props.options,\n  }));\n</script>\n\n<template>\n  <VControlLidar\n    :position=\"props.position\"\n    :options=\"computedOptions\"\n    :default-url=\"props.defaultUrl\"\n    @load=\"emit('load', $event)\"\n    @loadstart=\"emit('loadstart')\"\n    @loaderror=\"emit('loaderror', $event)\"\n    @unload=\"emit('unload')\"\n    @statechange=\"emit('statechange')\"\n    @stylechange=\"emit('stylechange')\"\n    @collapse=\"emit('collapse')\"\n    @expand=\"emit('expand')\"\n    @streamingstart=\"emit('streamingstart')\"\n    @streamingstop=\"emit('streamingstop')\"\n    @streamingprogress=\"emit('streamingprogress')\"\n    @budgetreached=\"emit('budgetreached')\"\n  ></VControlLidar>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/controls/MapControlLidar.vue"
+    },
+    {
+      "path": "src/registry/ui/map-control-lidar/index.ts",
+      "content": "export { default as MapControlLidar } from './MapControlLidar.vue';\nexport type { MapControlLidarProps } from './MapControlLidar.vue';\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/controls/lidar/index.ts"
+    }
+  ]
+}
