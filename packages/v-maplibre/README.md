@@ -17,6 +17,8 @@
 - 🚀 **Nuxt 4 Ready** - Seamlessly works with Nuxt 4 and SSR
 - 🎯 **PMTiles Built-in** - Native support for PMTiles protocol
 - 🌐 **deck.gl Integration** - High-performance WebGL visualization layers
+- 🛰️ **COG/GeoTIFF Support** - GPU-accelerated Cloud-Optimized GeoTIFF layers
+- 📡 **LiDAR Viewer** - LAS/LAZ/COPC point cloud visualization with streaming
 
 ## Installation
 
@@ -48,7 +50,13 @@ bun add @deck.gl/geo-layers          # Trips, MVT, Tile, H3
 bun add @deck.gl/mesh-layers         # SimpleMesh, Scenegraph
 
 # Raster layers (COG/GeoTIFF)
-bun add @developmentseed/deck.gl-geotiff
+bun add @developmentseed/deck.gl-raster geotiff-geokeys-to-proj4
+
+# LiDAR viewer control
+bun add maplibre-gl-lidar
+
+# IDW interpolation heatmap (optional)
+bun add maplibre-gl-interpolate-heatmap
 ```
 
 ## Quick Start
@@ -91,6 +99,7 @@ bun add @developmentseed/deck.gl-geotiff
 - **`VLayerMaplibreCanvas`** - Canvas layers
 - **`VLayerMaplibreCluster`** - Clustered point layers
 - **`VLayerMaplibrePmtile`** - PMTiles layers
+- **`VLayerMaplibreRoute`** - Route/delivery tracking visualization
 
 ### deck.gl Layer Components
 
@@ -125,16 +134,34 @@ High-performance WebGL visualization layers powered by deck.gl:
 - `VLayerDeckglTile3D` - 3D Tiles (Cesium)
 - `VLayerDeckglTerrain` - Terrain mesh
 - `VLayerDeckglH3Hexagon` - H3 hexagons
+- `VLayerDeckglH3Cluster` - Clustered H3 hexagon regions
 - `VLayerDeckglGreatCircle` - Great circle arcs
+- `VLayerDeckglWMS` - Web Map Service tiles
+
+**Tile System Layers**
+
+- `VLayerDeckglS2` - Google S2 geometry cells
+- `VLayerDeckglGeohash` - Geohash spatial indexing
+- `VLayerDeckglQuadkey` - Bing Maps Quadkey tiles
+- `VLayerDeckglGridCell` - Pre-aggregated grid cells
 
 **Mesh Layers**
 
 - `VLayerDeckglSimpleMesh` - 3D meshes
 - `VLayerDeckglScenegraph` - glTF/GLB models
 
-**Raster Layers** (requires `@developmentseed/deck.gl-geotiff`)
+**Point Cloud Layers**
 
-- `VLayerDeckglCOG` - Cloud-Optimized GeoTIFF visualization
+- `VLayerDeckglPointCloud` - LiDAR/photogrammetry point clouds
+- `VLayerDeckglSolidPolygon` - 3D extruded solid polygons
+
+**Raster Layers** (requires `@developmentseed/deck.gl-raster`)
+
+- `VLayerDeckglCOG` - Cloud-Optimized GeoTIFF visualization (GPU-accelerated, auto-reprojection)
+
+**Generic Layer**
+
+- `VLayerDeckgl` - Use any deck.gl layer class directly
 
 ### Control Components
 
@@ -143,6 +170,7 @@ High-performance WebGL visualization layers powered by deck.gl:
 - **`VControlGeolocate`** - Geolocation control
 - **`VControlFullscreen`** - Fullscreen toggle
 - **`VControlAttribution`** - Attribution control
+- **`VControlLidar`** - LiDAR point cloud viewer (LAS/LAZ/COPC support, streaming, color schemes)
 
 ## deck.gl Example
 
