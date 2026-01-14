@@ -50,14 +50,44 @@
       "target": "components/ui/map/deckgl/MapLayerH3Hexagon.vue"
     },
     {
+      "path": "src/registry/ui/map-deckgl-geo/MapLayerH3Cluster.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglH3Cluster } from '@geoql/v-maplibre';\n  import type { H3ClusterLayerProps } from '@deck.gl/geo-layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerH3ClusterProps extends Partial<H3ClusterLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerH3ClusterProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglH3Cluster\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglH3Cluster>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerH3Cluster.vue"
+    },
+    {
       "path": "src/registry/ui/map-deckgl-geo/MapLayerGreatCircle.vue",
       "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglGreatCircle } from '@geoql/v-maplibre';\n  import type { GreatCircleLayerProps } from '@deck.gl/geo-layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerGreatCircleProps extends Partial<GreatCircleLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerGreatCircleProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglGreatCircle\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglGreatCircle>\n</template>\n",
       "type": "registry:ui",
       "target": "components/ui/map/deckgl/MapLayerGreatCircle.vue"
     },
     {
+      "path": "src/registry/ui/map-deckgl-geo/MapLayerWMS.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglWMS } from '@geoql/v-maplibre';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerWMSProps {\n    id: string;\n    data: string;\n    serviceType?: 'wms' | 'template';\n    layers?: string[];\n    tileSize?: number;\n    minZoom?: number;\n    maxZoom?: number;\n    opacity?: number;\n    visible?: boolean;\n    pickable?: boolean;\n  }\n\n  const props = defineProps<MapLayerWMSProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglWMS\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglWMS>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerWMS.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-geo/MapLayerS2.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglS2 } from '@geoql/v-maplibre';\n  import type { S2LayerProps } from '@deck.gl/geo-layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerS2Props extends Partial<S2LayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerS2Props>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglS2\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglS2>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerS2.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-geo/MapLayerGeohash.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglGeohash } from '@geoql/v-maplibre';\n  import type { GeohashLayerProps } from '@deck.gl/geo-layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerGeohashProps extends Partial<GeohashLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerGeohashProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglGeohash\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglGeohash>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerGeohash.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-geo/MapLayerQuadkey.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglQuadkey } from '@geoql/v-maplibre';\n  import type { QuadkeyLayerProps } from '@deck.gl/geo-layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerQuadkeyProps extends Partial<QuadkeyLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerQuadkeyProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglQuadkey\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglQuadkey>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerQuadkey.vue"
+    },
+    {
       "path": "src/registry/ui/map-deckgl-geo/index.ts",
-      "content": "export { default as MapLayerTrips } from './MapLayerTrips.vue';\nexport { default as MapLayerMVT } from './MapLayerMVT.vue';\nexport { default as MapLayerTile } from './MapLayerTile.vue';\nexport { default as MapLayerTile3D } from './MapLayerTile3D.vue';\nexport { default as MapLayerTerrain } from './MapLayerTerrain.vue';\nexport { default as MapLayerH3Hexagon } from './MapLayerH3Hexagon.vue';\nexport { default as MapLayerGreatCircle } from './MapLayerGreatCircle.vue';\n",
+      "content": "export { default as MapLayerTrips } from './MapLayerTrips.vue';\nexport { default as MapLayerMVT } from './MapLayerMVT.vue';\nexport { default as MapLayerTile } from './MapLayerTile.vue';\nexport { default as MapLayerTile3D } from './MapLayerTile3D.vue';\nexport { default as MapLayerTerrain } from './MapLayerTerrain.vue';\nexport { default as MapLayerH3Hexagon } from './MapLayerH3Hexagon.vue';\nexport { default as MapLayerH3Cluster } from './MapLayerH3Cluster.vue';\nexport { default as MapLayerGreatCircle } from './MapLayerGreatCircle.vue';\nexport { default as MapLayerWMS } from './MapLayerWMS.vue';\nexport { default as MapLayerS2 } from './MapLayerS2.vue';\nexport { default as MapLayerGeohash } from './MapLayerGeohash.vue';\nexport { default as MapLayerQuadkey } from './MapLayerQuadkey.vue';\n",
       "type": "registry:ui",
       "target": "components/ui/map/deckgl/geo/index.ts"
     }
