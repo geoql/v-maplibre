@@ -74,8 +74,26 @@
       "target": "components/ui/map/deckgl/MapLayerBitmap.vue"
     },
     {
+      "path": "src/registry/ui/map-deckgl-core/MapLayerPointCloud.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglPointCloud } from '@geoql/v-maplibre';\n  import type { PointCloudLayerProps } from '@deck.gl/layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerPointCloudProps extends Partial<PointCloudLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerPointCloudProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglPointCloud\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglPointCloud>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerPointCloud.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-core/MapLayerGridCell.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglGridCell } from '@geoql/v-maplibre';\n  import type { GridCellLayerProps } from '@deck.gl/layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerGridCellProps extends Partial<GridCellLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerGridCellProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglGridCell\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglGridCell>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerGridCell.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-core/MapLayerSolidPolygon.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglSolidPolygon } from '@geoql/v-maplibre';\n  import type { SolidPolygonLayerProps } from '@deck.gl/layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerSolidPolygonProps extends Partial<SolidPolygonLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerSolidPolygonProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglSolidPolygon\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglSolidPolygon>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerSolidPolygon.vue"
+    },
+    {
       "path": "src/registry/ui/map-deckgl-core/index.ts",
-      "content": "export { default as MapLayerScatterplot } from './MapLayerScatterplot.vue';\nexport { default as MapLayerArc } from './MapLayerArc.vue';\nexport { default as MapLayerLine } from './MapLayerLine.vue';\nexport { default as MapLayerPath } from './MapLayerPath.vue';\nexport { default as MapLayerPolygon } from './MapLayerPolygon.vue';\nexport { default as MapLayerGeojson } from './MapLayerGeojson.vue';\nexport { default as MapLayerIcon } from './MapLayerIcon.vue';\nexport { default as MapLayerText } from './MapLayerText.vue';\nexport { default as MapLayerColumn } from './MapLayerColumn.vue';\nexport { default as MapLayerBitmap } from './MapLayerBitmap.vue';\n",
+      "content": "export { default as MapLayerScatterplot } from './MapLayerScatterplot.vue';\nexport { default as MapLayerArc } from './MapLayerArc.vue';\nexport { default as MapLayerLine } from './MapLayerLine.vue';\nexport { default as MapLayerPath } from './MapLayerPath.vue';\nexport { default as MapLayerPolygon } from './MapLayerPolygon.vue';\nexport { default as MapLayerGeojson } from './MapLayerGeojson.vue';\nexport { default as MapLayerIcon } from './MapLayerIcon.vue';\nexport { default as MapLayerText } from './MapLayerText.vue';\nexport { default as MapLayerColumn } from './MapLayerColumn.vue';\nexport { default as MapLayerBitmap } from './MapLayerBitmap.vue';\nexport { default as MapLayerPointCloud } from './MapLayerPointCloud.vue';\nexport { default as MapLayerGridCell } from './MapLayerGridCell.vue';\nexport { default as MapLayerSolidPolygon } from './MapLayerSolidPolygon.vue';\n",
       "type": "registry:ui",
       "target": "components/ui/map/deckgl/index.ts"
     }
