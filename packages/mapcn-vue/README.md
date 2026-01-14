@@ -65,6 +65,9 @@ High-performance deck.gl visualization layers.
 - `MapLayerText` - Text labels
 - `MapLayerColumn` - 3D columns
 - `MapLayerBitmap` - Bitmap images
+- `MapLayerPointCloud` - 3D point clouds
+- `MapLayerGridCell` - Pre-aggregated grid cells
+- `MapLayerSolidPolygon` - Extruded 3D polygons
 
 ### map-deckgl-aggregation
 
@@ -86,7 +89,12 @@ Geospatial layers.
 - `MapLayerTile3D` - 3D Tiles (Cesium)
 - `MapLayerTerrain` - Terrain mesh
 - `MapLayerH3Hexagon` - H3 hexagons
+- `MapLayerH3Cluster` - H3 hexagon clusters
 - `MapLayerGreatCircle` - Great circle arcs
+- `MapLayerWMS` - WMS tile service
+- `MapLayerS2` - Google S2 cells
+- `MapLayerGeohash` - Geohash grid cells
+- `MapLayerQuadkey` - Quadkey tiles
 
 ### map-deckgl-mesh
 
@@ -94,6 +102,18 @@ Geospatial layers.
 
 - `MapLayerSimpleMesh` - 3D meshes
 - `MapLayerScenegraph` - glTF/GLB models
+
+### map-deckgl-raster
+
+Raster/satellite imagery layers.
+
+- `MapLayerCOG` - Cloud-Optimized GeoTIFF (GPU-accelerated)
+
+### map-control-lidar
+
+LiDAR point cloud visualization.
+
+- `MapControlLidar` - LAS/LAZ/COPC viewer with streaming
 
 ## Usage Example
 
