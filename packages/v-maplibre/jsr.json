@@ -5,7 +5,16 @@
   "imports": {
     "vue": "npm:vue@^3.5.0",
     "maplibre-gl": "npm:maplibre-gl@^5.15.0",
-    "pmtiles": "npm:pmtiles@^4.3.2"
+    "pmtiles": "npm:pmtiles@^4.3.2",
+    "@deck.gl/core": "npm:@deck.gl/core@^9.2.5",
+    "@deck.gl/layers": "npm:@deck.gl/layers@^9.2.5",
+    "@deck.gl/mapbox": "npm:@deck.gl/mapbox@^9.2.5",
+    "@deck.gl/aggregation-layers": "npm:@deck.gl/aggregation-layers@^9.2.5",
+    "@deck.gl/geo-layers": "npm:@deck.gl/geo-layers@^9.2.5",
+    "@deck.gl/mesh-layers": "npm:@deck.gl/mesh-layers@^9.2.5",
+    "@developmentseed/deck.gl-geotiff": "npm:@developmentseed/deck.gl-geotiff@^0.1.0",
+    "geotiff-geokeys-to-proj4": "npm:geotiff-geokeys-to-proj4@^2024.4.0",
+    "maplibre-gl-lidar": "npm:maplibre-gl-lidar@^0.5.0"
   },
   "publish": {
     "exclude": [
