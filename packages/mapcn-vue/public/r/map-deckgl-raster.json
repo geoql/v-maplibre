@@ -1,0 +1,30 @@
+{
+  "$schema": "https://shadcn-vue.com/schema/registry-item.json",
+  "name": "map-deckgl-raster",
+  "type": "registry:ui",
+  "title": "deck.gl Raster Layers",
+  "description": "Cloud-Optimized GeoTIFF (COG) visualization with GPU-accelerated rendering.",
+  "dependencies": [
+    "@geoql/v-maplibre",
+    "maplibre-gl",
+    "@deck.gl/core",
+    "@deck.gl/mapbox",
+    "@developmentseed/deck.gl-raster",
+    "geotiff-geokeys-to-proj4"
+  ],
+  "registryDependencies": ["map"],
+  "files": [
+    {
+      "path": "src/registry/ui/map-deckgl-raster/MapLayerCOG.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglCOG } from '@geoql/v-maplibre';\n  import type { PickingInfo, Color } from '@deck.gl/core';\n\n  export interface MapLayerCOGProps {\n    id: string;\n    geotiff: string | ArrayBuffer | Blob | object;\n    tileSize?: number;\n    maxZoom?: number;\n    minZoom?: number;\n    maxCacheSize?: number;\n    refinementStrategy?: 'best-available' | 'no-overlap' | 'never';\n    maxRequests?: number;\n    opacity?: number;\n    visible?: boolean;\n    pickable?: boolean;\n    autoHighlight?: boolean;\n    highlightColor?: Color;\n    beforeId?: string;\n    debug?: boolean;\n    debugOpacity?: number;\n  }\n\n  const props = withDefaults(defineProps<MapLayerCOGProps>(), {\n    tileSize: 256,\n    minZoom: 0,\n    refinementStrategy: 'best-available',\n    maxRequests: 6,\n    opacity: 1,\n    visible: true,\n    pickable: false,\n    autoHighlight: false,\n    debug: false,\n    debugOpacity: 0.25,\n  });\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n    geotiffLoad: [\n      tiff: unknown,\n      options: {\n        geographicBounds: {\n          west: number;\n          south: number;\n          east: number;\n          north: number;\n        };\n      },\n    ];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglCOG\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n    @geotiff-load=\"(tiff, options) => emit('geotiffLoad', tiff, options)\"\n  ></VLayerDeckglCOG>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerCOG.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-raster/index.ts",
+      "content": "export { default as MapLayerCOG } from './MapLayerCOG.vue';\nexport type { MapLayerCOGProps } from './MapLayerCOG.vue';\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/raster/index.ts"
+    }
+  ]
+}
