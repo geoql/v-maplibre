@@ -57,6 +57,9 @@ bun add maplibre-gl-lidar
 
 # IDW interpolation heatmap (optional)
 bun add maplibre-gl-interpolate-heatmap
+
+# Wind particle visualization
+bun add maplibre-gl-wind
 ```
 
 ## Quick Start
@@ -159,6 +162,10 @@ High-performance WebGL visualization layers powered by deck.gl:
 
 - `VLayerDeckglCOG` - Cloud-Optimized GeoTIFF visualization (GPU-accelerated, auto-reprojection)
 
+**Wind Visualization** (requires `maplibre-gl-wind`)
+
+- `VLayerDeckglWindParticle` - Animated wind particle flow with speed-based color ramps
+
 **Generic Layer**
 
 - `VLayerDeckgl` - Use any deck.gl layer class directly
@@ -202,6 +209,44 @@ High-performance WebGL visualization layers powered by deck.gl:
       :pickable="true"
       @click="(info) => console.log('Clicked:', info.object)"
     ></VLayerDeckglScatterplot>
+  </VMap>
+</template>
+```
+
+## Wind Visualization Example
+
+```vue
+<script setup lang="ts">
+  import { VMap, VLayerDeckglWindParticle } from '@geoql/v-maplibre';
+
+  const mapOptions = {
+    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+    center: [0, 20],
+    zoom: 2,
+  };
+
+  // Wind data points with speed (m/s) and direction (degrees, 0=North)
+  const windData = [
+    { lat: 40.7, lon: -74.0, speed: 5.2, direction: 180 },
+    { lat: 34.0, lon: -118.2, speed: 3.1, direction: 270 },
+    // ... more points
+  ];
+</script>
+
+<template>
+  <VMap :options="mapOptions" style="height: 500px">
+    <VLayerDeckglWindParticle
+      id="wind"
+      :wind-data="windData"
+      :num-particles="8192"
+      :speed-factor="50"
+      :color-ramp="[
+        [0.0, [59, 130, 189, 255]],
+        [0.5, [253, 174, 97, 255]],
+        [1.0, [213, 62, 79, 255]],
+      ]"
+      :speed-range="[0, 30]"
+    ></VLayerDeckglWindParticle>
   </VMap>
 </template>
 ```

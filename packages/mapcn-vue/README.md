@@ -109,6 +109,12 @@ Raster/satellite imagery layers.
 
 - `MapLayerCOG` - Cloud-Optimized GeoTIFF (GPU-accelerated)
 
+### map-deckgl-wind
+
+Animated wind visualization.
+
+- `MapLayerWindParticle` - Wind particle flow with speed-based color ramps
+
 ### map-control-lidar
 
 LiDAR point cloud visualization.
