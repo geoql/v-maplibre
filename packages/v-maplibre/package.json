@@ -42,7 +42,8 @@
     "@deck.gl/mesh-layers": "^9.2.5",
     "@developmentseed/deck.gl-geotiff": "^0.1.0",
     "geotiff-geokeys-to-proj4": "^2024.4.0",
-    "maplibre-gl-lidar": "^0.5.0"
+    "maplibre-gl-lidar": "^0.5.0",
+    "maplibre-gl-wind": "^0.2.0"
   },
   "peerDependenciesMeta": {
     "@deck.gl/core": {
@@ -71,6 +72,9 @@
     },
     "maplibre-gl-lidar": {
       "optional": true
+    },
+    "maplibre-gl-wind": {
+      "optional": true
     }
   },
   "dependencies": {
@@ -78,20 +82,24 @@
     "pmtiles": "^4.3.2"
   },
   "devDependencies": {
+    "@awmottaz/prettier-plugin-void-html": "catalog:",
+    "@deck.gl/aggregation-layers": "catalog:deckgl",
     "@deck.gl/core": "catalog:deckgl",
+    "@deck.gl/geo-layers": "catalog:deckgl",
     "@deck.gl/layers": "catalog:deckgl",
     "@deck.gl/mapbox": "catalog:deckgl",
-    "@deck.gl/aggregation-layers": "catalog:deckgl",
-    "@deck.gl/geo-layers": "catalog:deckgl",
     "@deck.gl/mesh-layers": "catalog:deckgl",
-    "maplibre-gl-lidar": "^0.5.0",
-    "@awmottaz/prettier-plugin-void-html": "catalog:",
+    "@luma.gl/core": "^9.2.5",
+    "@luma.gl/engine": "^9.2.5",
+    "@luma.gl/shadertools": "^9.2.5",
     "@types/node": "^25.0.6",
     "@vitejs/plugin-vue": "^6.0.3",
     "@vitest/coverage-v8": "^4.0.16",
     "@vitest/ui": "^4.0.16",
     "@vue/test-utils": "^2.4.6",
     "happy-dom": "^20.1.0",
+    "maplibre-gl-lidar": "^0.5.0",
+    "maplibre-gl-wind": "^0.2.0",
     "oxlint": "catalog:",
     "prettier": "catalog:",
     "typescript": "catalog:",

@@ -36,6 +36,19 @@ export { VLayerDeckglScenegraph } from './scenegraph';
 
 export { VLayerDeckglCOG } from './cog';
 
+export {
+  VLayerDeckglWindParticle,
+  WindParticleLayer,
+  generateWindTexture,
+  createWindDataFromOpenWeatherMap,
+} from './wind-particle';
+export type {
+  WindDataPoint,
+  WindTextureResult,
+  GenerateWindTextureOptions,
+  ColorStop,
+} from './wind-particle';
+
 export { VLayerDeckgl } from './generic';
 
 export {

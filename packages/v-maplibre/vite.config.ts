@@ -19,6 +19,10 @@ export default defineConfig({
         '@deck.gl/aggregation-layers',
         '@deck.gl/geo-layers',
         '@deck.gl/mesh-layers',
+        // luma.gl packages (deck.gl dependencies)
+        '@luma.gl/core',
+        '@luma.gl/engine',
+        '@luma.gl/shadertools',
         // Raster packages (optional peer deps)
         '@developmentseed/deck.gl-geotiff',
         'geotiff-geokeys-to-proj4',

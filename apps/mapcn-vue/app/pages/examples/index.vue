@@ -92,6 +92,22 @@
       ],
     },
     {
+      id: 'weather',
+      title: 'Weather & Environmental',
+      description: 'Meteorological and environmental data visualizations',
+      icon: 'lucide:cloud',
+      examples: [
+        {
+          title: 'Wind Animation',
+          description:
+            'Animated wind particle visualization like Windy.com using GFS data.',
+          href: '/examples/wind',
+          icon: 'lucide:wind',
+          badge: 'Animated',
+        },
+      ],
+    },
+    {
       id: 'deckgl-core',
       title: 'deck.gl Core Layers',
       description: 'Fundamental visualization primitives',
