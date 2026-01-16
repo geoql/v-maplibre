@@ -24,39 +24,39 @@
 
 ```bash
 # bun
-bun add @geoql/v-maplibre maplibre-gl
+bun add @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox
 
 # npm
-npm install @geoql/v-maplibre maplibre-gl
+npm install @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox
 
 # yarn
-yarn add @geoql/v-maplibre maplibre-gl
+yarn add @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox
 
 # pnpm
-pnpm add @geoql/v-maplibre maplibre-gl
+pnpm add @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox
 ```
 
-### deck.gl Layers (Optional)
+> **Note:** The core deck.gl packages (`@deck.gl/core`, `@deck.gl/layers`, `@deck.gl/mapbox`) are required peer dependencies. Without them, your build will fail with missing export errors.
 
-For deck.gl visualization layers, install the required packages:
+### Additional deck.gl Layers (Optional)
+
+Install these packages based on the layers you need:
 
 ```bash
-# Core deck.gl packages
-bun add @deck.gl/core @deck.gl/layers @deck.gl/mapbox
+# Aggregation layers (Heatmap, Hexagon, Grid, Contour, ScreenGrid)
+bun add @deck.gl/aggregation-layers
 
-# Additional layer packages (as needed)
-bun add @deck.gl/aggregation-layers  # Heatmap, Hexagon, Grid
-bun add @deck.gl/geo-layers          # Trips, MVT, Tile, H3
-bun add @deck.gl/mesh-layers         # SimpleMesh, Scenegraph
+# Geo layers (Trips, MVT, Tile, Tile3D, Terrain, H3, GreatCircle, WMS, S2, Geohash, Quadkey)
+bun add @deck.gl/geo-layers
 
-# Raster layers (COG/GeoTIFF)
+# Mesh layers (SimpleMesh, Scenegraph)
+bun add @deck.gl/mesh-layers
+
+# Raster/COG layers (Cloud-Optimized GeoTIFF)
 bun add @developmentseed/deck.gl-raster geotiff-geokeys-to-proj4
 
 # LiDAR viewer control
 bun add maplibre-gl-lidar
-
-# IDW interpolation heatmap (optional)
-bun add maplibre-gl-interpolate-heatmap
 
 # Wind particle visualization
 bun add maplibre-gl-wind

@@ -25,8 +25,10 @@
 ### Option 1: Install the library
 
 ```bash
-bun add @geoql/v-maplibre maplibre-gl
+bun add @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox
 ```
+
+> **Note:** The core deck.gl packages are required peer dependencies. See the [package README](./packages/v-maplibre/README.md#installation) for additional optional packages.
 
 ```vue
 <script setup lang="ts">
