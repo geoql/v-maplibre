@@ -30,6 +30,7 @@
     sizeUnits?: 'meters' | 'common' | 'pixels';
     sizeMinPixels?: number;
     sizeMaxPixels?: number;
+    characterSet?: string | string[];
     fontFamily?: string;
     fontWeight?: string | number;
     lineHeight?: number;
@@ -53,6 +54,7 @@
     sizeUnits: 'pixels',
     sizeMinPixels: 0,
     sizeMaxPixels: Number.MAX_SAFE_INTEGER,
+    characterSet: 'auto',
     fontFamily: 'Monaco, monospace',
     fontWeight: 'normal',
     lineHeight: 1,
@@ -95,6 +97,7 @@
       sizeUnits: props.sizeUnits,
       sizeMinPixels: props.sizeMinPixels,
       sizeMaxPixels: props.sizeMaxPixels,
+      characterSet: props.characterSet,
       fontFamily: props.fontFamily,
       fontWeight: props.fontWeight,
       lineHeight: props.lineHeight,
