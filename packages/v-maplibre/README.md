@@ -24,34 +24,25 @@
 
 ```bash
 # bun
-bun add @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox
+bun add @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox @deck.gl/aggregation-layers @deck.gl/geo-layers @deck.gl/mesh-layers
 
 # npm
-npm install @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox
+npm install @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox @deck.gl/aggregation-layers @deck.gl/geo-layers @deck.gl/mesh-layers
 
 # yarn
-yarn add @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox
+yarn add @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox @deck.gl/aggregation-layers @deck.gl/geo-layers @deck.gl/mesh-layers
 
 # pnpm
-pnpm add @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox
+pnpm add @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox @deck.gl/aggregation-layers @deck.gl/geo-layers @deck.gl/mesh-layers
 ```
 
-> **Note:** The core deck.gl packages (`@deck.gl/core`, `@deck.gl/layers`, `@deck.gl/mapbox`) are required peer dependencies. Without them, your build will fail with missing export errors.
+> **Note:** All deck.gl packages listed above are required peer dependencies. Without them, your build will fail with missing export errors.
 
-### Additional deck.gl Layers (Optional)
+### Additional Optional Dependencies
 
-Install these packages based on the layers you need:
+Install these packages based on the features you need:
 
 ```bash
-# Aggregation layers (Heatmap, Hexagon, Grid, Contour, ScreenGrid)
-bun add @deck.gl/aggregation-layers
-
-# Geo layers (Trips, MVT, Tile, Tile3D, Terrain, H3, GreatCircle, WMS, S2, Geohash, Quadkey)
-bun add @deck.gl/geo-layers
-
-# Mesh layers (SimpleMesh, Scenegraph)
-bun add @deck.gl/mesh-layers
-
 # Raster/COG layers (Cloud-Optimized GeoTIFF)
 bun add @developmentseed/deck.gl-raster geotiff-geokeys-to-proj4
 
