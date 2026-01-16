@@ -1,5 +1,10 @@
 <script setup lang="ts">
-  import { VMap, VLayerDeckglCOG, VControlNavigation } from '@geoql/v-maplibre';
+  import {
+    VMap,
+    VLayerDeckglCOG,
+    VControlNavigation,
+    VControlScale,
+  } from '@geoql/v-maplibre';
   import type { Map } from 'maplibre-gl';
 
   useSeoMeta({
@@ -149,6 +154,7 @@
                 @loaded="onMapLoaded"
               >
                 <VControlNavigation position="top-right"></VControlNavigation>
+                <VControlScale position="bottom-left"></VControlScale>
                 <VLayerDeckglCOG
                   id="landcover-layer"
                   :geotiff="COG_URL"

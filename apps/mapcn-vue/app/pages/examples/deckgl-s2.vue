@@ -1,5 +1,10 @@
 <script setup lang="ts">
-  import { VMap, VLayerDeckglS2, VControlNavigation } from '@geoql/v-maplibre';
+  import {
+    VMap,
+    VLayerDeckglS2,
+    VControlNavigation,
+    VControlScale,
+  } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'S2 Layer (deck.gl) - mapcn-vue Examples',
@@ -143,6 +148,7 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
+              <VControlScale position="bottom-left"></VControlScale>
               <VLayerDeckglS2
                 id="s2-layer"
                 :data="s2Data"

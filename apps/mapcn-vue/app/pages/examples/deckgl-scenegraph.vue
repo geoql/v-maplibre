@@ -3,6 +3,7 @@
     VMap,
     VLayerDeckglScenegraph,
     VControlNavigation,
+    VControlScale,
   } from '@geoql/v-maplibre';
   import { GLTFLoader } from '@loaders.gl/gltf';
   import { registerLoaders } from '@loaders.gl/core';
@@ -125,6 +126,7 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
+              <VControlScale position="bottom-left"></VControlScale>
               <VLayerDeckglScenegraph
                 id="bart-stations"
                 :data="DATA_URL"

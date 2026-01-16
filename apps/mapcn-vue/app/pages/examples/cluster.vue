@@ -4,6 +4,7 @@
     VMap,
     VLayerMaplibreCluster,
     VControlNavigation,
+    VControlScale,
     VPopup,
   } from '@geoql/v-maplibre';
   import type { Map, GeoJSONSource, LngLatLike } from 'maplibre-gl';
@@ -231,6 +232,7 @@ ${SCRIPT_END}
               @loaded="onMapLoaded"
             >
               <VControlNavigation position="top-right"></VControlNavigation>
+              <VControlScale position="bottom-left"></VControlScale>
               <VLayerMaplibreCluster
                 source-id="cluster-source"
                 base-layer-id="clusters"

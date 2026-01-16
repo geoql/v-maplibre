@@ -1,5 +1,11 @@
 <script setup lang="ts">
-  import { VMap, VMarker, VPopup, VControlNavigation } from '@geoql/v-maplibre';
+  import {
+    VMap,
+    VMarker,
+    VPopup,
+    VControlNavigation,
+    VControlScale,
+  } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Markers & Popups - mapcn-vue Examples',
@@ -115,6 +121,7 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
+              <VControlScale position="bottom-left"></VControlScale>
               <VMarker
                 v-for="marker in markers"
                 :key="marker.title"

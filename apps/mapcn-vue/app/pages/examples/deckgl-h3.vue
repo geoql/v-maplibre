@@ -3,6 +3,7 @@
     VMap,
     VLayerDeckglH3Hexagon,
     VControlNavigation,
+    VControlScale,
   } from '@geoql/v-maplibre';
 
   useSeoMeta({
@@ -129,6 +130,7 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
+              <VControlScale position="bottom-left"></VControlScale>
               <VLayerDeckglH3Hexagon
                 id="h3-layer"
                 :data="h3Data"

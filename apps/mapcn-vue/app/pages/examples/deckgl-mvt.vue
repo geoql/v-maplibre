@@ -1,5 +1,10 @@
 <script setup lang="ts">
-  import { VMap, VLayerDeckglMVT, VControlNavigation } from '@geoql/v-maplibre';
+  import {
+    VMap,
+    VLayerDeckglMVT,
+    VControlNavigation,
+    VControlScale,
+  } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'MVT Layer (deck.gl) - mapcn-vue Examples',
@@ -121,6 +126,7 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
+              <VControlScale position="bottom-left"></VControlScale>
               <VLayerDeckglMVT
                 id="mvt-layer"
                 :data="MVT_URL"

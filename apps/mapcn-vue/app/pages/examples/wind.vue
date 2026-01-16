@@ -3,6 +3,7 @@
   import {
     VMap,
     VControlNavigation,
+    VControlScale,
     VLayerDeckglWindParticle,
     createWindDataFromOpenWeatherMap,
   } from '@geoql/v-maplibre';
@@ -296,6 +297,7 @@ ${SCRIPT_END}
                 @error="handleWindError"
               ></VLayerDeckglWindParticle>
               <VControlNavigation position="top-right"></VControlNavigation>
+              <VControlScale position="bottom-left"></VControlScale>
             </VMap>
           </ClientOnly>
         </div>

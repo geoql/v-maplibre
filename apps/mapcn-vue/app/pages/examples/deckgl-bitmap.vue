@@ -3,6 +3,7 @@
     VMap,
     VLayerDeckglBitmap,
     VControlNavigation,
+    VControlScale,
   } from '@geoql/v-maplibre';
 
   useSeoMeta({
@@ -102,6 +103,7 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
+              <VControlScale position="bottom-left"></VControlScale>
               <VLayerDeckglBitmap
                 id="bitmap-layer"
                 :image="IMAGE_URL"

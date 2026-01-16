@@ -3,6 +3,7 @@
     VMap,
     VLayerMaplibreImage,
     VControlNavigation,
+    VControlScale,
   } from '@geoql/v-maplibre';
 
   useSeoMeta({
@@ -122,6 +123,7 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
+              <VControlScale position="bottom-left"></VControlScale>
               <VLayerMaplibreImage
                 source-id="image-source"
                 layer-id="image-overlay"

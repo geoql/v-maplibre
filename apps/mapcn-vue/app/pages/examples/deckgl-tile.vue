@@ -3,6 +3,7 @@
     VMap,
     VLayerDeckglTile,
     VControlNavigation,
+    VControlScale,
   } from '@geoql/v-maplibre';
   import { BitmapLayer } from '@deck.gl/layers';
 
@@ -141,6 +142,7 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
+              <VControlScale position="bottom-left"></VControlScale>
               <VLayerDeckglTile
                 id="tile-layer"
                 :data="TILE_URL"

@@ -1,5 +1,10 @@
 <script setup lang="ts">
-  import { VMap, VLayerDeckglArc, VControlNavigation } from '@geoql/v-maplibre';
+  import {
+    VMap,
+    VLayerDeckglArc,
+    VControlNavigation,
+    VControlScale,
+  } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Arc Layer (deck.gl) - mapcn-vue Examples',
@@ -127,6 +132,7 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
+              <VControlScale position="bottom-left"></VControlScale>
               <VLayerDeckglArc
                 id="arcs"
                 :data="arcData"

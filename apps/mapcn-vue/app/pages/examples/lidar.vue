@@ -1,5 +1,10 @@
 <script setup lang="ts">
-  import { VMap, VControlLidar, VControlNavigation } from '@geoql/v-maplibre';
+  import {
+    VMap,
+    VControlLidar,
+    VControlNavigation,
+    VControlScale,
+  } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'LiDAR Viewer - mapcn-vue Examples',
@@ -104,6 +109,7 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-left"></VControlNavigation>
+              <VControlScale position="bottom-left"></VControlScale>
               <VControlLidar
                 position="top-right"
                 :options="{

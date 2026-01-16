@@ -1,10 +1,12 @@
 <script setup lang="ts">
   import { ref, onMounted, computed, watch } from 'vue';
+  import type { Map as MaplibreMap } from 'maplibre-gl';
   import {
     VMap,
     VMarker,
     VLayerMaplibreRoute,
     VControlNavigation,
+    VControlScale,
   } from '@geoql/v-maplibre';
 
   useSeoMeta({
@@ -14,6 +16,8 @@
   });
 
   const colorMode = useColorMode();
+  const route = useRoute();
+  const router = useRouter();
   const mapId = useId();
   const mapId2 = useId();
   const mapId3 = useId();
@@ -27,7 +31,33 @@
     colorMode.value === 'dark' ? darkStyle : lightStyle,
   );
 
-  const activeTab = ref<'delivery' | 'planning' | 'multiStop'>('planning');
+  type TabType = 'delivery' | 'planning' | 'multiStop' | 'tripPlanner';
+
+  const tabToQuery: Record<TabType, string> = {
+    planning: 'route-planning',
+    delivery: 'delivery-tracker',
+    multiStop: 'multi-stop',
+    tripPlanner: 'trip-planner',
+  };
+
+  const queryToTab: Record<string, TabType> = {
+    'route-planning': 'planning',
+    'delivery-tracker': 'delivery',
+    'multi-stop': 'multiStop',
+    'trip-planner': 'tripPlanner',
+  };
+
+  const getInitialTab = (): TabType => {
+    const tabQuery = route.query.tab as string;
+    return queryToTab[tabQuery] || 'planning';
+  };
+
+  const activeTab = ref<TabType>(getInitialTab());
+
+  const setActiveTab = (tab: TabType) => {
+    activeTab.value = tab;
+    router.replace({ query: { tab: tabToQuery[tab] } });
+  };
 
   // ============ DELIVERY TRACKING ============
   const deliveryMapOptions = computed(() => ({
@@ -45,6 +75,24 @@
     null,
   );
   const deliveryLoading = ref(false);
+
+  const onDeliveryMapLoaded = (map: MaplibreMap) => {
+    const bounds: [[number, number], [number, number]] = [
+      [
+        Math.min(store.coordinates[0], home.coordinates[0]),
+        Math.min(store.coordinates[1], home.coordinates[1]),
+      ],
+      [
+        Math.max(store.coordinates[0], home.coordinates[0]),
+        Math.max(store.coordinates[1], home.coordinates[1]),
+      ],
+    ];
+
+    map.fitBounds(bounds, {
+      padding: { top: 80, bottom: 60, left: 60, right: 60 },
+      maxZoom: 14,
+    });
+  };
 
   const decodePolyline = (
     encoded: string,
@@ -146,6 +194,24 @@
   const routeOptions = ref<RouteOption[]>([]);
   const selectedRouteIndex = ref(0);
   const planningLoading = ref(false);
+
+  const onPlanningMapLoaded = (map: MaplibreMap) => {
+    const bounds: [[number, number], [number, number]] = [
+      [
+        Math.min(rotterdam.coordinates[0], amsterdam.coordinates[0]),
+        Math.min(rotterdam.coordinates[1], amsterdam.coordinates[1]),
+      ],
+      [
+        Math.max(rotterdam.coordinates[0], amsterdam.coordinates[0]),
+        Math.max(rotterdam.coordinates[1], amsterdam.coordinates[1]),
+      ],
+    ];
+
+    map.fitBounds(bounds, {
+      padding: { top: 60, bottom: 60, left: 60, right: 60 },
+      maxZoom: 12,
+    });
+  };
 
   const fetchRoutePlanning = async () => {
     planningLoading.value = true;
@@ -290,6 +356,22 @@
   const multiStopLoading = ref(false);
   const optimizedOrder = ref<number[]>([]);
 
+  const onMultiStopMapLoaded = (map: MaplibreMap) => {
+    const coords = stops.value.map((s) => s.coordinates);
+    const lngs = coords.map((c) => c[0]);
+    const lats = coords.map((c) => c[1]);
+
+    const bounds: [[number, number], [number, number]] = [
+      [Math.min(...lngs), Math.min(...lats)],
+      [Math.max(...lngs), Math.max(...lats)],
+    ];
+
+    map.fitBounds(bounds, {
+      padding: { top: 60, bottom: 60, left: 60, right: 60 },
+      maxZoom: 14,
+    });
+  };
+
   const fetchMultiStopRoute = async () => {
     multiStopLoading.value = true;
 
@@ -341,6 +423,121 @@
     } finally {
       multiStopLoading.value = false;
     }
+  };
+
+  // ============ TRIP PLANNER ============
+  interface TripActivity {
+    name: string;
+    type: 'Attraction' | 'Dining';
+    time: string;
+    coordinates: [number, number];
+  }
+
+  interface TripDayPlan {
+    day: number;
+    title: string;
+    activities: TripActivity[];
+    stay: { name: string; price: string; coordinates: [number, number] };
+  }
+
+  interface TripData {
+    title: string;
+    duration: string;
+    budget: string;
+    highlights: { name: string; coordinates: [number, number] }[];
+    days: TripDayPlan[];
+    routeWaypoints: [number, number][];
+  }
+
+  const mapId4 = useId();
+
+  const tripPlannerMapOptions = computed(() => ({
+    container: `trip-planner-map-${mapId4}`,
+    style: mapStyle.value,
+    center: [-120.5, 35.5] as [number, number],
+    zoom: 5,
+  }));
+
+  const tripData = ref<TripData | null>(null);
+  const tripRouteCoordinates = ref<[number, number][]>([]);
+  const tripLoading = ref(false);
+  const expandedDays = ref<Set<number>>(new Set([1]));
+
+  const onTripMapLoaded = (map: MaplibreMap) => {
+    if (!tripData.value?.routeWaypoints.length) return;
+
+    const waypoints = tripData.value.routeWaypoints;
+    const lngs = waypoints.map((w) => w[0]);
+    const lats = waypoints.map((w) => w[1]);
+
+    const bounds: [[number, number], [number, number]] = [
+      [Math.min(...lngs), Math.min(...lats)],
+      [Math.max(...lngs), Math.max(...lats)],
+    ];
+
+    map.fitBounds(bounds, {
+      padding: { top: 50, bottom: 50, left: 50, right: 50 },
+      maxZoom: 8,
+    });
+  };
+
+  const fetchTripPlan = async (regenerate = false) => {
+    tripLoading.value = true;
+    try {
+      const seed = regenerate ? Date.now() : 'default';
+      const data = await $fetch<TripData>(`/api/trip-planner?seed=${seed}`);
+      tripData.value = data;
+
+      if (data.routeWaypoints.length > 1) {
+        const locations = data.routeWaypoints.map(([lon, lat]) => ({
+          lat,
+          lon,
+          type: 'break',
+        }));
+        const params = {
+          locations,
+          costing: 'auto',
+          directions_options: { units: 'kilometers' },
+        };
+        const url = `/api/valhalla?json=${encodeURIComponent(JSON.stringify(params))}`;
+        const routeData = await $fetch(url);
+
+        const allCoordinates: [number, number][] = [];
+        if (routeData.trip?.legs) {
+          for (const leg of routeData.trip.legs) {
+            allCoordinates.push(...decodePolyline(leg.shape));
+          }
+        }
+        tripRouteCoordinates.value = allCoordinates;
+      }
+    } catch (err) {
+      console.error('Trip planner fetch error:', err);
+    } finally {
+      tripLoading.value = false;
+    }
+  };
+
+  const toggleDayExpanded = (day: number) => {
+    if (expandedDays.value.has(day)) {
+      expandedDays.value.delete(day);
+    } else {
+      expandedDays.value.add(day);
+    }
+  };
+
+  const getActivityBadge = (type: 'Attraction' | 'Dining') => {
+    if (type === 'Attraction') {
+      return {
+        bg: 'bg-indigo-500/10',
+        text: 'text-indigo-600 dark:text-indigo-400',
+        icon: 'lucide:landmark',
+      };
+    }
+    return {
+      bg: 'bg-zinc-500/10',
+      text: 'text-zinc-600 dark:text-zinc-400',
+      icon: 'lucide:utensils',
+    };
   };
 
   const reverseGeocode = async (coords: [number, number]): Promise<string> => {
@@ -399,6 +596,8 @@
         multiStopRouteCoordinates.value.length === 0
       ) {
         fetchMultiStopRoute();
+      } else if (tab === 'tripPlanner' && !tripData.value) {
+        fetchTripPlan();
       }
     },
     { immediate: true },
@@ -553,6 +752,85 @@ ${SCRIPT_END}
     </VMarker>
   </VMap>
 </template>`;
+
+  const tripPlannerCodeExample = `${SCRIPT_START}
+import { ref, nextTick } from 'vue';
+import { VMap, VMarker, VLayerMaplibreRoute } from '@geoql/v-maplibre';
+
+interface TripData {
+  title: string;
+  duration: string;
+  budget: string;
+  highlights: { name: string; coordinates: [number, number] }[];
+  days: { day: number; title: string; activities: any[]; stay: any }[];
+  routeWaypoints: [number, number][];
+}
+
+const tripData = ref<TripData | null>(null);
+const routeCoordinates = ref<[number, number][]>([]);
+const mapRef = ref(null);
+
+const fetchTripPlan = async () => {
+  // Fetch trip data from API
+  const data = await fetch('/api/trip-planner').then(r => r.json());
+  tripData.value = data;
+
+  // Fetch route from Valhalla
+  const locations = data.routeWaypoints.map(([lon, lat]) => ({ lat, lon, type: 'break' }));
+  const params = { locations, costing: 'auto' };
+  const routeData = await fetch(\`/api/valhalla?json=\${encodeURIComponent(JSON.stringify(params))}\`).then(r => r.json());
+  
+  routeCoordinates.value = routeData.trip.legs.flatMap(leg => decodePolyline(leg.shape));
+
+  // Fit map to show all waypoints
+  nextTick(() => {
+    const waypoints = data.routeWaypoints;
+    const bounds = [
+      [Math.min(...waypoints.map(w => w[0])), Math.min(...waypoints.map(w => w[1]))],
+      [Math.max(...waypoints.map(w => w[0])), Math.max(...waypoints.map(w => w[1]))]
+    ];
+    mapRef.value?.map?.fitBounds(bounds, { padding: 50 });
+  });
+};
+${SCRIPT_END}
+
+<template>
+  <div v-if="tripData">
+    <h2>{{ tripData.title }}</h2>
+    <p>{{ tripData.duration }} • {{ tripData.budget }} budget</p>
+
+    <VMap ref="mapRef" :options="mapOptions" class="h-80 rounded-xl">
+      <VLayerMaplibreRoute
+        id="trip-route"
+        :coordinates="routeCoordinates"
+        color="#6366f1"
+        :width="4"
+      />
+      <VMarker
+        v-for="(highlight, i) in tripData.highlights"
+        :key="i"
+        :coordinates="highlight.coordinates"
+      />
+    </VMap>
+
+    <!-- Route Highlights -->
+    <div class="flex items-center">
+      <template v-for="(h, i) in tripData.highlights" :key="i">
+        <span>{{ h.name }}</span>
+        <span v-if="i < tripData.highlights.length - 1" class="border-dashed" />
+      </template>
+    </div>
+
+    <!-- Day Cards -->
+    <div v-for="day in tripData.days" :key="day.day">
+      <h3>Day {{ day.day }}: {{ day.title }}</h3>
+      <div v-for="activity in day.activities" :key="activity.name">
+        {{ activity.name }} - {{ activity.time }}
+      </div>
+      <p>Stay: {{ day.stay.name }} - {{ day.stay.price }}</p>
+    </div>
+  </div>
+</template>`;
 </script>
 
 <template>
@@ -582,7 +860,7 @@ ${SCRIPT_END}
                 ? 'text-foreground'
                 : 'text-muted-foreground hover:text-foreground',
             ]"
-            @click="activeTab = 'planning'"
+            @click="setActiveTab('planning')"
           >
             Route Planning
             <span
@@ -597,7 +875,7 @@ ${SCRIPT_END}
                 ? 'text-foreground'
                 : 'text-muted-foreground hover:text-foreground',
             ]"
-            @click="activeTab = 'delivery'"
+            @click="setActiveTab('delivery')"
           >
             Delivery Tracking
             <span
@@ -612,11 +890,26 @@ ${SCRIPT_END}
                 ? 'text-foreground'
                 : 'text-muted-foreground hover:text-foreground',
             ]"
-            @click="activeTab = 'multiStop'"
+            @click="setActiveTab('multiStop')"
           >
             Multi-Stop
             <span
               v-if="activeTab === 'multiStop'"
+              class="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
+            ></span>
+          </button>
+          <button
+            :class="[
+              'relative px-1 pb-3 text-sm font-medium transition-colors',
+              activeTab === 'tripPlanner'
+                ? 'text-foreground'
+                : 'text-muted-foreground hover:text-foreground',
+            ]"
+            @click="setActiveTab('tripPlanner')"
+          >
+            Trip Planner
+            <span
+              v-if="activeTab === 'tripPlanner'"
               class="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
             ></span>
           </button>
@@ -715,8 +1008,10 @@ ${SCRIPT_END}
                 :key="`planning-${mapStyle}`"
                 :options="planningMapOptions"
                 class="h-full w-full"
+                @loaded="onPlanningMapLoaded"
               >
                 <VControlNavigation position="top-right"></VControlNavigation>
+                <VControlScale position="bottom-left"></VControlScale>
 
                 <!-- Render ALL routes - non-selected first (gray, behind) -->
                 <VLayerMaplibreRoute
@@ -908,8 +1203,10 @@ ${SCRIPT_END}
                 :key="`delivery-${mapStyle}`"
                 :options="deliveryMapOptions"
                 class="h-full w-full"
+                @loaded="onDeliveryMapLoaded"
               >
                 <VControlNavigation position="top-right"></VControlNavigation>
+                <VControlScale position="bottom-left"></VControlScale>
 
                 <!-- Route line -->
                 <VLayerMaplibreRoute
@@ -1180,8 +1477,10 @@ ${SCRIPT_END}
                 :key="`multistop-${mapStyle}`"
                 :options="multiStopMapOptions"
                 class="h-full w-full"
+                @loaded="onMultiStopMapLoaded"
               >
                 <VControlNavigation position="top-right"></VControlNavigation>
+                <VControlScale position="bottom-left"></VControlScale>
 
                 <!-- Route line -->
                 <VLayerMaplibreRoute
@@ -1246,10 +1545,233 @@ ${SCRIPT_END}
           ></LazyCodeBlock>
         </div>
       </div>
+
+      <!-- Trip Planner Tab -->
+      <div v-show="activeTab === 'tripPlanner'">
+        <!-- Header Section -->
+        <div class="mb-6 flex items-start justify-between">
+          <div>
+            <h2 class="text-xl font-semibold tracking-tight">
+              {{ tripData?.title || 'Loading trip...' }}
+            </h2>
+            <p v-if="tripData" class="mt-1 text-sm text-muted-foreground">
+              {{ tripData.duration }} &bull; {{ tripData.budget }} budget
+            </p>
+          </div>
+          <button
+            class="inline-flex items-center gap-2 rounded-full border border-border px-4 py-2 text-sm font-medium transition-colors hover:bg-muted"
+            :disabled="tripLoading"
+            @click="fetchTripPlan(true)"
+          >
+            <Icon
+              name="lucide:refresh-cw"
+              :class="['h-4 w-4', tripLoading && 'animate-spin']"
+            ></Icon>
+            Regenerate
+          </button>
+        </div>
+
+        <!-- Loading State -->
+        <div
+          v-if="tripLoading && !tripData"
+          class="flex items-center justify-center py-20"
+        >
+          <div class="flex items-center gap-3 text-muted-foreground">
+            <Icon name="lucide:loader-2" class="h-5 w-5 animate-spin"></Icon>
+            <span>Planning your adventure...</span>
+          </div>
+        </div>
+
+        <template v-else-if="tripData">
+          <!-- Map Section -->
+          <div
+            class="mb-8 h-80 overflow-hidden rounded-xl border border-border"
+          >
+            <ClientOnly>
+              <VMap
+                :key="`tripplanner-${mapStyle}`"
+                :options="tripPlannerMapOptions"
+                class="h-full w-full"
+                @loaded="onTripMapLoaded"
+              >
+                <VControlNavigation position="top-right"></VControlNavigation>
+                <VControlScale position="bottom-left"></VControlScale>
+
+                <!-- Route line -->
+                <VLayerMaplibreRoute
+                  v-if="tripRouteCoordinates.length > 0"
+                  id="trip-route"
+                  :coordinates="tripRouteCoordinates"
+                  color="#6366f1"
+                  :width="4"
+                  :opacity="0.85"
+                  line-cap="round"
+                  line-join="round"
+                />
+
+                <!-- Waypoint markers -->
+                <VMarker
+                  v-for="(highlight, index) in tripData.highlights"
+                  :key="`highlight-${index}`"
+                  :coordinates="highlight.coordinates"
+                >
+                  <template #markers="{ setRef }">
+                    <div
+                      :ref="setRef"
+                      class="flex h-6 w-6 items-center justify-center rounded-full border-2 border-white bg-indigo-500 shadow-lg"
+                    >
+                      <div class="h-2 w-2 rounded-full bg-white"></div>
+                    </div>
+                  </template>
+                </VMarker>
+              </VMap>
+            </ClientOnly>
+          </div>
+
+          <!-- Route Highlights Section -->
+          <div class="mb-8">
+            <h3
+              class="mb-4 text-xs font-medium uppercase tracking-wider text-muted-foreground"
+            >
+              Route Highlights
+            </h3>
+            <div class="flex items-center">
+              <template
+                v-for="(highlight, index) in tripData.highlights"
+                :key="`route-highlight-${index}`"
+              >
+                <!-- Waypoint -->
+                <div class="flex shrink-0 items-center gap-2">
+                  <div
+                    class="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-500/10"
+                  >
+                    <Icon
+                      name="lucide:map-pin"
+                      class="h-4 w-4 text-indigo-600 dark:text-indigo-400"
+                    ></Icon>
+                  </div>
+                  <span class="text-sm font-medium">{{ highlight.name }}</span>
+                </div>
+                <!-- Connector (except after last item) - grows to fill space -->
+                <div
+                  v-if="index < tripData.highlights.length - 1"
+                  class="mx-3 flex min-w-8 flex-1 items-center justify-center"
+                >
+                  <div
+                    class="h-px w-full border-t-2 border-dashed border-border"
+                  ></div>
+                </div>
+              </template>
+            </div>
+          </div>
+
+          <!-- Day Cards (Accordion) -->
+          <div class="space-y-3">
+            <div
+              v-for="day in tripData.days"
+              :key="`day-${day.day}`"
+              class="overflow-hidden rounded-xl border border-border bg-card"
+            >
+              <!-- Day Header (clickable) -->
+              <button
+                class="flex w-full items-center justify-between p-4 text-left transition-colors hover:bg-muted/50"
+                @click="toggleDayExpanded(day.day)"
+              >
+                <div class="flex items-center gap-3">
+                  <div
+                    class="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-500/10 text-sm font-bold text-indigo-600 dark:text-indigo-400"
+                  >
+                    {{ day.day }}
+                  </div>
+                  <span class="font-medium"
+                    >Day {{ day.day }}: {{ day.title }}</span
+                  >
+                </div>
+                <Icon
+                  name="lucide:chevron-down"
+                  :class="[
+                    'h-5 w-5 text-muted-foreground transition-transform duration-200',
+                    expandedDays.has(day.day) && 'rotate-180',
+                  ]"
+                ></Icon>
+              </button>
+
+              <!-- Day Content (collapsible) -->
+              <div
+                v-show="expandedDays.has(day.day)"
+                class="border-t border-border"
+              >
+                <!-- Activities -->
+                <div class="divide-y divide-border">
+                  <div
+                    v-for="(activity, actIndex) in day.activities"
+                    :key="`activity-${day.day}-${actIndex}`"
+                    class="flex items-center gap-3 px-4 py-3"
+                  >
+                    <!-- Arrow icon -->
+                    <Icon
+                      name="lucide:arrow-right"
+                      class="h-4 w-4 shrink-0 text-muted-foreground"
+                    ></Icon>
+
+                    <!-- Activity name -->
+                    <span class="flex-1 text-sm">{{ activity.name }}</span>
+
+                    <!-- Badge -->
+                    <span
+                      :class="[
+                        'inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium',
+                        getActivityBadge(activity.type).bg,
+                        getActivityBadge(activity.type).text,
+                      ]"
+                    >
+                      <Icon
+                        :name="getActivityBadge(activity.type).icon"
+                        class="h-3 w-3"
+                      ></Icon>
+                      {{ activity.type }}
+                    </span>
+
+                    <!-- Time -->
+                    <span
+                      class="shrink-0 text-xs tabular-nums text-muted-foreground"
+                    >
+                      {{ activity.time }}
+                    </span>
+                  </div>
+                </div>
+
+                <!-- Footer: Overnight Stay -->
+                <div
+                  class="flex items-center justify-between border-t border-border bg-muted/30 px-4 py-3"
+                >
+                  <div class="flex items-center gap-2 text-sm">
+                    <Icon
+                      name="lucide:bed"
+                      class="h-4 w-4 text-muted-foreground"
+                    ></Icon>
+                    <span class="text-muted-foreground">Overnight Stay:</span>
+                    <span class="font-medium">{{ day.stay.name }}</span>
+                  </div>
+                  <span
+                    class="text-sm font-semibold text-indigo-600 dark:text-indigo-400"
+                  >
+                    {{ day.stay.price }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </template>
+
+        <div class="mt-8">
+          <LazyCodeBlock
+            :code="tripPlannerCodeExample"
+            lang="vue"
+            filename="TripPlanner.vue"
+          ></LazyCodeBlock>
+        </div>
+      </div>
     </div>
   </div>
 </template>
-
-<style scoped>
-  /* Custom marker styles - already handled inline */
-</style>

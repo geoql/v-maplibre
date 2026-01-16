@@ -3,6 +3,7 @@
     VMap,
     VLayerDeckglH3Cluster,
     VControlNavigation,
+    VControlScale,
   } from '@geoql/v-maplibre';
 
   useSeoMeta({
@@ -188,6 +189,7 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
+              <VControlScale position="bottom-left"></VControlScale>
               <VLayerDeckglH3Cluster
                 id="h3-cluster-layer"
                 :data="h3ClusterData"

@@ -3,6 +3,7 @@
     VMap,
     VLayerDeckglSimpleMesh,
     VControlNavigation,
+    VControlScale,
   } from '@geoql/v-maplibre';
   import { CubeGeometry } from '@luma.gl/engine';
 
@@ -165,6 +166,7 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
+              <VControlScale position="bottom-left"></VControlScale>
               <VLayerDeckglSimpleMesh
                 id="simple-mesh-layer"
                 :data="cubes"

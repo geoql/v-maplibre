@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { VMap, VControlNavigation } from '@geoql/v-maplibre';
+  import { VMap, VControlNavigation, VControlScale } from '@geoql/v-maplibre';
   import { MaplibreInterpolateHeatmapLayer } from 'maplibre-gl-interpolate-heatmap';
   import type { Map, CustomLayerInterface } from 'maplibre-gl';
 
@@ -223,6 +223,7 @@ ${SCRIPT_END}
               @loaded="onMapLoaded"
             >
               <VControlNavigation position="top-right"></VControlNavigation>
+              <VControlScale position="bottom-left"></VControlScale>
             </VMap>
           </ClientOnly>
         </div>

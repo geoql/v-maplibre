@@ -1,5 +1,10 @@
 <script setup lang="ts">
-  import { VMap, VLayerDeckglWMS, VControlNavigation } from '@geoql/v-maplibre';
+  import {
+    VMap,
+    VLayerDeckglWMS,
+    VControlNavigation,
+    VControlScale,
+  } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'WMS Layer (deck.gl) - mapcn-vue Examples',
@@ -88,6 +93,7 @@ ${SCRIPT_END}
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
               <VControlNavigation position="top-right"></VControlNavigation>
+              <VControlScale position="bottom-left"></VControlScale>
               <VLayerDeckglWMS
                 id="wms-layer"
                 :data="WMS_URL"
