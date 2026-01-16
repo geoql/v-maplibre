@@ -24,16 +24,16 @@
 
 ```bash
 # bun
-bun add @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox @deck.gl/aggregation-layers @deck.gl/geo-layers @deck.gl/mesh-layers maplibre-gl-wind
+bun add @geoql/v-maplibre maplibre-gl @deck.gl/{core,layers,mapbox,aggregation-layers,geo-layers,mesh-layers} maplibre-gl-wind
 
 # npm
-npm install @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox @deck.gl/aggregation-layers @deck.gl/geo-layers @deck.gl/mesh-layers maplibre-gl-wind
+npm install @geoql/v-maplibre maplibre-gl @deck.gl/{core,layers,mapbox,aggregation-layers,geo-layers,mesh-layers} maplibre-gl-wind
 
 # yarn
-yarn add @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox @deck.gl/aggregation-layers @deck.gl/geo-layers @deck.gl/mesh-layers maplibre-gl-wind
+yarn add @geoql/v-maplibre maplibre-gl @deck.gl/{core,layers,mapbox,aggregation-layers,geo-layers,mesh-layers} maplibre-gl-wind
 
 # pnpm
-pnpm add @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox @deck.gl/aggregation-layers @deck.gl/geo-layers @deck.gl/mesh-layers maplibre-gl-wind
+pnpm add @geoql/v-maplibre maplibre-gl @deck.gl/{core,layers,mapbox,aggregation-layers,geo-layers,mesh-layers} maplibre-gl-wind
 ```
 
 > **Note:** All packages listed above are required peer dependencies. Without them, your build will fail with missing export errors.
