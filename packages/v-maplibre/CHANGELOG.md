@@ -1,5 +1,35 @@
 # Changelog
 
+## [1.5.0](https://github.com/geoql/v-maplibre/compare/v1.4.0...v1.5.0) (2026-01-16)
+
+
+### Features
+
+* use maplibre-gl-wind@0.2.0 for wind particle visualization ([f27a526](https://github.com/geoql/v-maplibre/commit/f27a526e9f42cffdefe9459e2f1c1af0f4e0878e))
+
+
+### Bug Fixes
+
+* **jsr:** add deck.gl peer deps to imports map for JSR publishing ([c962177](https://github.com/geoql/v-maplibre/commit/c962177881ecc1871dd94e32062eab5f33898d1e))
+* update deck.gl layer count test for wind particle layer ([87d38b5](https://github.com/geoql/v-maplibre/commit/87d38b525e63a08ea699ee21e53773c1f1587b77))
+* **v-maplibre:** add characterSet prop to TextLayer to fix SDF initialization error ([53a021f](https://github.com/geoql/v-maplibre/commit/53a021f50b55dbadfc941f8511ea18e184737070))
+* **v-maplibre:** add fontSettings with sdf:true to fix TextLayer initialization ([3ff2579](https://github.com/geoql/v-maplibre/commit/3ff2579c29a5b01acd0a07bc3b96dfc7e66149ba))
+
+
+### Documentation
+
+* add all required deck.gl packages to installation instructions ([9eddfa7](https://github.com/geoql/v-maplibre/commit/9eddfa78421eb8c3c51448dca0eb8418c73a4867))
+* add maplibre-gl-wind to required peer dependencies ([045d2f8](https://github.com/geoql/v-maplibre/commit/045d2f8467cc970f54280bd73635e7e55430c3f4))
+* add wind particle layer documentation and mapcn-vue registry ([cfc0b62](https://github.com/geoql/v-maplibre/commit/cfc0b62ec439cfba53fc80a99d1111b581792187))
+* clarify that deck.gl core packages are required peer dependencies ([27562b0](https://github.com/geoql/v-maplibre/commit/27562b0996c8470ffb54635aaa35cf7b6f10c89e))
+* use brace expansion for deck.gl packages in install commands ([d6f1318](https://github.com/geoql/v-maplibre/commit/d6f13187110db0fabcf72e2377dfb3e6391bcffe))
+* **v-maplibre:** add COG, LiDAR, IDW, and route layer to features list ([2e2812e](https://github.com/geoql/v-maplibre/commit/2e2812ea8a6507fa83867850e64d62b5dbee8859))
+
+
+### Code Refactoring
+
+* **mapcn-vue:** split maplibre-route page into modular components ([be62229](https://github.com/geoql/v-maplibre/commit/be6222998997ef5faf1a931b4e1d18065c869bf6))
+
 ## [1.4.0](https://github.com/geoql/v-maplibre/compare/v1.3.0...v1.4.0) (2026-01-13)
 
 
