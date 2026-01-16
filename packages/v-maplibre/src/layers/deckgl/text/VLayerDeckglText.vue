@@ -34,7 +34,14 @@
     fontFamily?: string;
     fontWeight?: string | number;
     lineHeight?: number;
-    fontSettings?: object;
+    fontSettings?: {
+      sdf?: boolean;
+      fontSize?: number;
+      buffer?: number;
+      radius?: number;
+      cutoff?: number;
+      smoothing?: number;
+    };
     wordBreak?: 'break-all' | 'break-word';
     maxWidth?: number;
     outlineWidth?: number;
@@ -58,6 +65,7 @@
     fontFamily: 'Monaco, monospace',
     fontWeight: 'normal',
     lineHeight: 1,
+    fontSettings: () => ({ sdf: true }),
     wordBreak: 'break-word',
     maxWidth: -1,
     outlineWidth: 0,
