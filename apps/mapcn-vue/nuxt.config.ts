@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '@nuxt/content',
     'shadcn-nuxt',
     '@vueuse/nuxt',
+    'motion-v/nuxt',
     [
       '@nuxtjs/plausible',
       {
