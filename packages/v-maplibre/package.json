@@ -42,7 +42,7 @@
     "@deck.gl/mesh-layers": "^9.2.5",
     "@developmentseed/deck.gl-geotiff": "^0.1.0",
     "geotiff-geokeys-to-proj4": "^2024.4.0",
-    "maplibre-gl-lidar": "^0.5.0",
+    "maplibre-gl-lidar": "^0.8.0",
     "maplibre-gl-wind": "^0.2.0"
   },
   "peerDependenciesMeta": {
@@ -98,7 +98,7 @@
     "@vitest/ui": "^4.0.16",
     "@vue/test-utils": "^2.4.6",
     "happy-dom": "^20.1.0",
-    "maplibre-gl-lidar": "^0.5.0",
+    "maplibre-gl-lidar": "^0.8.0",
     "maplibre-gl-wind": "^0.2.0",
     "oxlint": "catalog:",
     "prettier": "catalog:",
