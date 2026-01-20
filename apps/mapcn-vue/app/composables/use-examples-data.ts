@@ -204,6 +204,14 @@ export function useExamplesData() {
       icon: 'lucide:globe',
       examples: [
         {
+          title: 'AC Transit Live',
+          description:
+            'Real-time bus tracking for Oakland/East Bay with historical trails.',
+          href: '/examples/deckgl-actransit',
+          icon: 'lucide:bus',
+          badge: 'Live',
+        },
+        {
           title: 'Trips Animation',
           description: 'Animated path visualization for temporal data.',
           href: '/examples/deckgl-trips',
