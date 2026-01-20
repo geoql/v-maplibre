@@ -1,0 +1,30 @@
+{
+  "$schema": "https://shadcn-vue.com/schema/registry-item.json",
+  "name": "map-deckgl-wind",
+  "type": "registry:ui",
+  "title": "deck.gl Wind Visualization",
+  "description": "Animated wind particle flow visualization with speed-based color ramps.",
+  "dependencies": [
+    "@geoql/v-maplibre",
+    "maplibre-gl",
+    "@deck.gl/core",
+    "@deck.gl/layers",
+    "@deck.gl/mapbox",
+    "maplibre-gl-wind"
+  ],
+  "registryDependencies": ["map"],
+  "files": [
+    {
+      "path": "src/registry/ui/map-deckgl-wind/MapLayerWindParticle.vue",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglWindParticle } from '@geoql/v-maplibre';\n  import type { PickingInfo, Color } from '@deck.gl/core';\n  import type { ColorStop, WindDataPoint } from 'maplibre-gl-wind';\n\n  export interface MapLayerWindParticleProps {\n    id: string;\n    imageUrl?: string;\n    windData?: WindDataPoint[];\n    bounds?: [number, number, number, number];\n    uMin?: number;\n    uMax?: number;\n    vMin?: number;\n    vMax?: number;\n    numParticles?: number;\n    maxAge?: number;\n    speedFactor?: number;\n    color?: Color;\n    colorRamp?: ColorStop[];\n    speedRange?: [number, number];\n    width?: number;\n    animate?: boolean;\n    opacity?: number;\n    visible?: boolean;\n    pickable?: boolean;\n    beforeId?: string;\n  }\n\n  const props = withDefaults(defineProps<MapLayerWindParticleProps>(), {\n    bounds: () => [-180, -90, 180, 90],\n    uMin: -50,\n    uMax: 50,\n    vMin: -50,\n    vMax: 50,\n    numParticles: 8192,\n    maxAge: 30,\n    speedFactor: 50,\n    color: () => [255, 255, 255, 200] as Color,\n    colorRamp: () =>\n      [\n        [0.0, [59, 130, 189, 255]],\n        [0.1, [102, 194, 165, 255]],\n        [0.2, [171, 221, 164, 255]],\n        [0.3, [230, 245, 152, 255]],\n        [0.4, [254, 224, 139, 255]],\n        [0.5, [253, 174, 97, 255]],\n        [0.6, [244, 109, 67, 255]],\n        [1.0, [213, 62, 79, 255]],\n      ] as ColorStop[],\n    speedRange: () => [0, 30],\n    width: 1.5,\n    animate: true,\n    opacity: 1,\n    visible: true,\n    pickable: false,\n  });\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n    loaded: [];\n    error: [error: Error];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglWindParticle\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n    @loaded=\"emit('loaded')\"\n    @error=\"(err) => emit('error', err)\"\n  ></VLayerDeckglWindParticle>\n</template>\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/MapLayerWindParticle.vue"
+    },
+    {
+      "path": "src/registry/ui/map-deckgl-wind/index.ts",
+      "content": "export { default as MapLayerWindParticle } from './MapLayerWindParticle.vue';\n",
+      "type": "registry:ui",
+      "target": "components/ui/map/deckgl/wind/index.ts"
+    }
+  ]
+}

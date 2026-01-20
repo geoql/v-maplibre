@@ -382,6 +382,33 @@
           "target": "components/ui/map/controls/lidar/index.ts"
         }
       ]
+    },
+    {
+      "name": "map-deckgl-wind",
+      "type": "registry:ui",
+      "title": "deck.gl Wind Visualization",
+      "description": "Animated wind particle flow visualization with speed-based color ramps.",
+      "dependencies": [
+        "@geoql/v-maplibre",
+        "maplibre-gl",
+        "@deck.gl/core",
+        "@deck.gl/layers",
+        "@deck.gl/mapbox",
+        "maplibre-gl-wind"
+      ],
+      "registryDependencies": ["map"],
+      "files": [
+        {
+          "path": "src/registry/ui/map-deckgl-wind/MapLayerWindParticle.vue",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/MapLayerWindParticle.vue"
+        },
+        {
+          "path": "src/registry/ui/map-deckgl-wind/index.ts",
+          "type": "registry:ui",
+          "target": "components/ui/map/deckgl/wind/index.ts"
+        }
+      ]
     }
   ]
 }
