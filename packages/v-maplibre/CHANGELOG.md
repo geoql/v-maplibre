@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.6.0](https://github.com/geoql/v-maplibre/compare/v1.5.0...v1.6.0) (2026-01-20)
+
+
+### Features
+
+* **layers:** add VLayerDeckglMosaic for client-side COG mosaicking ([faf78d0](https://github.com/geoql/v-maplibre/commit/faf78d0581f98073b06b70cd6262752700d3e16d))
+
+
+### Bug Fixes
+
+* resolve luma.gl multiple versions error by centralizing deck.gl stack in catalog ([9d2fbf1](https://github.com/geoql/v-maplibre/commit/9d2fbf1ecaeb8ae7ac4cd4739291ba3b18baf22e))
+
 ## [1.5.0](https://github.com/geoql/v-maplibre/compare/v1.4.0...v1.5.0) (2026-01-16)
 
 
