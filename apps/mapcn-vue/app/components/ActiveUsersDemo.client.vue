@@ -182,25 +182,25 @@
   }
 
   .active-users-popup .maplibregl-popup-content {
-    padding: 8px 12px;
-    border-radius: 8px;
+    padding: 8px 12px !important;
+    border-radius: 8px !important;
     box-shadow:
       0 4px 6px -1px rgb(0 0 0 / 0.1),
-      0 2px 4px -2px rgb(0 0 0 / 0.1);
-    border: 1px solid #e4e4e7;
-    background: #ffffff;
+      0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
+    border: 1px solid #e4e4e7 !important;
+    background: #ffffff !important;
   }
 
   .active-users-popup .maplibregl-popup-tip {
-    border-top-color: #ffffff;
+    border-top-color: #ffffff !important;
   }
 
-  .dark .active-users-popup .maplibregl-popup-content {
-    background: #18181b;
-    border-color: #3f3f46;
+  html.dark .active-users-popup .maplibregl-popup-content {
+    background: #18181b !important;
+    border-color: #3f3f46 !important;
   }
 
-  .dark .active-users-popup .maplibregl-popup-tip {
-    border-top-color: #18181b;
+  html.dark .active-users-popup .maplibregl-popup-tip {
+    border-top-color: #18181b !important;
   }
 </style>
