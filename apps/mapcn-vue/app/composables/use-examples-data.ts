@@ -336,20 +336,51 @@ export function useExamplesData() {
           icon: 'lucide:cloud',
           badge: '3D',
         },
-        {
-          title: 'LiDAR Viewer',
-          description:
-            'Load LAS/LAZ/COPC files with streaming and classification.',
-          href: '/examples/lidar',
-          icon: 'lucide:radar',
-          badge: 'LiDAR',
-        },
+
         {
           title: 'Solid Polygon',
           description: '3D extruded solid polygon buildings.',
           href: '/examples/deckgl-solid-polygon',
           icon: 'lucide:building-2',
           badge: '3D',
+        },
+      ],
+    },
+    {
+      id: 'lidar',
+      title: 'LiDAR Point Clouds',
+      description: 'LAS/LAZ/COPC/EPT point cloud visualization with streaming',
+      icon: 'lucide:radar',
+      examples: [
+        {
+          title: 'COPC Streaming',
+          description:
+            'Cloud-Optimized Point Cloud with dynamic viewport-based loading.',
+          href: '/examples/lidar-copc',
+          icon: 'lucide:cloud',
+          badge: 'Streaming',
+        },
+        {
+          title: 'EPT Streaming',
+          description:
+            'Entwine Point Tile datasets with viewport-based streaming.',
+          href: '/examples/lidar-ept',
+          icon: 'lucide:database',
+          badge: 'EPT',
+        },
+        {
+          title: 'Classification Filter',
+          description:
+            'Filter point clouds by ASPRS classification (ground, buildings, vegetation).',
+          href: '/examples/lidar-classification',
+          icon: 'lucide:filter',
+          badge: 'Filter',
+        },
+        {
+          title: 'Multiple Point Clouds',
+          description: 'Load and manage multiple point cloud datasets.',
+          href: '/examples/lidar-multiple',
+          icon: 'lucide:layers',
         },
       ],
     },

@@ -7,9 +7,9 @@
   } from '@geoql/v-maplibre';
 
   useSeoMeta({
-    title: 'LiDAR Viewer - mapcn-vue Examples',
+    title: 'COPC Streaming - LiDAR Examples - mapcn-vue',
     description:
-      'Visualize LiDAR point clouds with LAS/LAZ/COPC support and dynamic streaming.',
+      'Cloud-Optimized Point Cloud with dynamic viewport-based loading for large LiDAR datasets.',
   });
 
   const colorMode = useColorMode();
@@ -94,11 +94,11 @@ ${SCRIPT_END}
           <Icon name="lucide:arrow-left" class="mr-2 h-4 w-4"></Icon>
           Back to Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">LiDAR Viewer</h1>
+        <h1 class="mt-4 text-3xl font-bold tracking-tight">COPC Streaming</h1>
         <p class="mt-2 text-lg text-muted-foreground">
-          Visualize LiDAR point clouds with LAS/LAZ/COPC support. Features
-          dynamic streaming, multiple color schemes, and classification
-          filtering.
+          Cloud-Optimized Point Cloud (COPC) with dynamic viewport-based
+          loading. Only points visible in the current view are loaded,
+          dramatically reducing memory usage for large datasets.
         </p>
       </div>
 

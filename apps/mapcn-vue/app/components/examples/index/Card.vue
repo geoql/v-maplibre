@@ -14,10 +14,11 @@
     :animate="{ opacity: 1, y: 0 }"
     :transition="{ delay }"
     :while-hover="{ y: -4 }"
+    class="h-full"
   >
     <NuxtLink
       :to="example.href"
-      class="group relative block overflow-hidden rounded-xl border border-border/50 bg-card/50 p-5 backdrop-blur-md transition-all duration-300 hover:border-primary/30 hover:bg-card/80 hover:shadow-lg hover:shadow-primary/5"
+      class="group relative flex h-full flex-col overflow-hidden rounded-xl border border-border/50 bg-card/50 p-5 backdrop-blur-md transition-all duration-300 hover:border-primary/30 hover:bg-card/80 hover:shadow-lg hover:shadow-primary/5"
     >
       <div
         class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
@@ -48,7 +49,7 @@
       >
         {{ example.title }}
       </h3>
-      <p class="relative text-sm leading-relaxed text-muted-foreground">
+      <p class="relative flex-1 text-sm leading-relaxed text-muted-foreground">
         {{ example.description }}
       </p>
 
