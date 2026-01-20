@@ -7,7 +7,8 @@
    * 2. Remove getProj4String() helper - newer version supports EPSG strings in `def` field
    * 3. Remove unit normalization ('m' -> 'metre') - newer version handles this
    * 4. Import MosaicLayer directly: import { MosaicLayer } from '@developmentseed/deck.gl-geotiff'
-   * 5. See working example: https://github.com/developmentseed/deck.gl-raster/blob/main/examples/naip-mosaic/src/App.tsx
+   * 5. Restore Colormap module usage for NDVI with colormapData prop support (currently using inline shader)
+   * 6. See working example: https://github.com/developmentseed/deck.gl-raster/blob/main/examples/naip-mosaic/src/App.tsx
    *
    * Current hacks are needed because npm v0.1.0 doesn't include MosaicLayer from PR #184
    * https://github.com/developmentseed/deck.gl-raster/pull/184
@@ -88,6 +89,12 @@
      * Custom render modules (only used when renderMode is 'custom')
      */
     customRenderModules?: (texture: Texture) => RenderModule[];
+    /**
+     * Custom colormap data for NDVI (Uint8ClampedArray of RGBA values, 256 colors)
+     * @reserved Currently not implemented - NDVI uses built-in cfastie colormap.
+     * Will be supported when deck.gl-geotiff >0.1.0 is released with proper Colormap module support.
+     */
+    colormapData?: Uint8ClampedArray;
     /**
      * Maximum number of tiles to cache
      */
