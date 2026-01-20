@@ -89,11 +89,6 @@
      */
     customRenderModules?: (texture: Texture) => RenderModule[];
     /**
-     * Custom colormap texture data for NDVI (Uint8ClampedArray of RGBA values, 256 colors)
-     * If not provided, uses cfastie colormap
-     */
-    colormapData?: Uint8ClampedArray;
-    /**
      * Maximum number of tiles to cache
      */
     maxCacheSize?: number;
@@ -152,7 +147,6 @@
   // Loaded module references
   interface LoadedModules {
     COGLayer: typeof import('@developmentseed/deck.gl-geotiff').COGLayer;
-    Colormap: RasterModule['module'];
     CreateTexture: RasterModule['module'];
     TileLayer: typeof import('@deck.gl/geo-layers').TileLayer;
     Tileset2D: typeof import('@deck.gl/geo-layers')._Tileset2D;
@@ -166,75 +160,6 @@
   }
 
   const modules = shallowRef<LoadedModules | null>(null);
-  const colormapTexture = shallowRef<Texture | null>(null);
-  const deviceRef = shallowRef<Device | null>(null);
-
-  // Default cfastie colormap for NDVI visualization
-  const CFASTIE_COLORMAP = new Uint8ClampedArray([
-    255, 255, 255, 255, 250, 250, 250, 255, 246, 246, 246, 255, 242, 242, 242,
-    255, 238, 238, 238, 255, 233, 233, 233, 255, 229, 229, 229, 255, 225, 225,
-    225, 255, 221, 221, 221, 255, 216, 216, 216, 255, 212, 212, 212, 255, 208,
-    208, 208, 255, 204, 204, 204, 255, 200, 200, 200, 255, 195, 195, 195, 255,
-    191, 191, 191, 255, 187, 187, 187, 255, 183, 183, 183, 255, 178, 178, 178,
-    255, 174, 174, 174, 255, 170, 170, 170, 255, 166, 166, 166, 255, 161, 161,
-    161, 255, 157, 157, 157, 255, 153, 153, 153, 255, 149, 149, 149, 255, 145,
-    145, 145, 255, 140, 140, 140, 255, 136, 136, 136, 255, 132, 132, 132, 255,
-    128, 128, 128, 255, 123, 123, 123, 255, 119, 119, 119, 255, 115, 115, 115,
-    255, 111, 111, 111, 255, 106, 106, 106, 255, 102, 102, 102, 255, 98, 98, 98,
-    255, 94, 94, 94, 255, 90, 90, 90, 255, 85, 85, 85, 255, 81, 81, 81, 255, 77,
-    77, 77, 255, 73, 73, 73, 255, 68, 68, 68, 255, 64, 64, 64, 255, 60, 60, 60,
-    255, 56, 56, 56, 255, 52, 52, 52, 255, 56, 56, 56, 255, 60, 60, 60, 255, 64,
-    64, 64, 255, 68, 68, 68, 255, 73, 73, 73, 255, 77, 77, 77, 255, 81, 81, 81,
-    255, 85, 85, 85, 255, 90, 90, 90, 255, 94, 94, 94, 255, 98, 98, 98, 255,
-    102, 102, 102, 255, 106, 106, 106, 255, 111, 111, 111, 255, 115, 115, 115,
-    255, 119, 119, 119, 255, 123, 123, 123, 255, 128, 128, 128, 255, 132, 132,
-    132, 255, 136, 136, 136, 255, 140, 140, 140, 255, 145, 145, 145, 255, 149,
-    149, 149, 255, 153, 153, 153, 255, 157, 157, 157, 255, 161, 161, 161, 255,
-    166, 166, 166, 255, 170, 170, 170, 255, 174, 174, 174, 255, 178, 178, 178,
-    255, 183, 183, 183, 255, 187, 187, 187, 255, 191, 191, 191, 255, 195, 195,
-    195, 255, 200, 200, 200, 255, 204, 204, 204, 255, 208, 208, 208, 255, 212,
-    212, 212, 255, 216, 216, 216, 255, 221, 221, 221, 255, 225, 225, 225, 255,
-    229, 229, 229, 255, 233, 233, 233, 255, 238, 238, 238, 255, 242, 242, 242,
-    255, 246, 246, 246, 255, 250, 250, 250, 255, 255, 255, 255, 255, 250, 250,
-    250, 255, 245, 245, 245, 255, 240, 240, 240, 255, 235, 235, 235, 255, 230,
-    230, 230, 255, 225, 225, 225, 255, 220, 220, 220, 255, 215, 215, 215, 255,
-    210, 210, 210, 255, 205, 205, 205, 255, 200, 200, 200, 255, 195, 195, 195,
-    255, 190, 190, 190, 255, 185, 185, 185, 255, 180, 180, 180, 255, 175, 175,
-    175, 255, 170, 170, 170, 255, 165, 165, 165, 255, 160, 160, 160, 255, 155,
-    155, 155, 255, 151, 151, 151, 255, 146, 146, 146, 255, 141, 141, 141, 255,
-    136, 136, 136, 255, 131, 131, 131, 255, 126, 126, 126, 255, 121, 121, 121,
-    255, 116, 116, 116, 255, 111, 111, 111, 255, 106, 106, 106, 255, 101, 101,
-    101, 255, 96, 96, 96, 255, 91, 91, 91, 255, 86, 86, 86, 255, 81, 81, 81,
-    255, 76, 76, 76, 255, 71, 71, 71, 255, 66, 66, 66, 255, 61, 61, 61, 255, 56,
-    56, 56, 255, 66, 66, 80, 255, 77, 77, 105, 255, 87, 87, 130, 255, 98, 98,
-    155, 255, 108, 108, 180, 255, 119, 119, 205, 255, 129, 129, 230, 255, 140,
-    140, 255, 255, 131, 147, 239, 255, 122, 154, 223, 255, 113, 161, 207, 255,
-    105, 168, 191, 255, 96, 175, 175, 255, 87, 183, 159, 255, 78, 190, 143, 255,
-    70, 197, 127, 255, 61, 204, 111, 255, 52, 211, 95, 255, 43, 219, 79, 255,
-    35, 226, 63, 255, 26, 233, 47, 255, 17, 240, 31, 255, 8, 247, 15, 255, 1,
-    255, 1, 255, 7, 255, 1, 255, 15, 255, 1, 255, 23, 255, 1, 255, 31, 255, 1,
-    255, 39, 255, 1, 255, 47, 255, 1, 255, 55, 255, 1, 255, 63, 255, 1, 255, 71,
-    255, 1, 255, 79, 255, 1, 255, 87, 255, 1, 255, 95, 255, 1, 255, 103, 255, 1,
-    255, 111, 255, 1, 255, 119, 255, 1, 255, 127, 255, 1, 255, 135, 255, 1, 255,
-    143, 255, 1, 255, 151, 255, 1, 255, 159, 255, 1, 255, 167, 255, 1, 255, 175,
-    255, 1, 255, 183, 255, 1, 255, 191, 255, 1, 255, 199, 255, 1, 255, 207, 255,
-    1, 255, 215, 255, 1, 255, 223, 255, 1, 255, 231, 255, 1, 255, 239, 255, 1,
-    255, 247, 255, 1, 255, 255, 255, 1, 255, 255, 249, 1, 255, 255, 244, 1, 255,
-    255, 239, 1, 255, 255, 233, 1, 255, 255, 228, 1, 255, 255, 223, 1, 255, 255,
-    217, 1, 255, 255, 212, 1, 255, 255, 207, 1, 255, 255, 201, 1, 255, 255, 196,
-    1, 255, 255, 191, 1, 255, 255, 185, 1, 255, 255, 180, 1, 255, 255, 175, 1,
-    255, 255, 170, 1, 255, 255, 164, 1, 255, 255, 159, 1, 255, 255, 154, 1, 255,
-    255, 148, 1, 255, 255, 143, 1, 255, 255, 138, 1, 255, 255, 132, 1, 255, 255,
-    127, 1, 255, 255, 122, 1, 255, 255, 116, 1, 255, 255, 111, 1, 255, 255, 106,
-    1, 255, 255, 100, 1, 255, 255, 95, 1, 255, 255, 90, 1, 255, 255, 85, 1, 255,
-    255, 79, 1, 255, 255, 74, 1, 255, 255, 69, 1, 255, 255, 63, 1, 255, 255, 58,
-    1, 255, 255, 53, 1, 255, 255, 47, 1, 255, 255, 42, 1, 255, 255, 37, 1, 255,
-    255, 31, 1, 255, 255, 26, 1, 255, 255, 21, 1, 255, 255, 15, 1, 255, 255, 10,
-    1, 255, 255, 5, 1, 255, 255, 1, 1, 255, 255, 1, 15, 255, 255, 1, 31, 255,
-    255, 1, 47, 255, 255, 1, 63, 255, 255, 1, 79, 255, 255, 1, 95, 255, 255, 1,
-    111, 255, 255, 1, 127, 255, 255, 1, 143, 255, 255, 1, 159, 255, 255, 1, 175,
-    255, 255, 1, 191, 255, 255, 1, 207, 255, 255, 1, 223, 255, 255, 1, 239, 255,
-  ]);
 
   // Shader modules for different render modes
   const SetAlpha1 = {
@@ -353,9 +278,7 @@
     texture: Texture,
     mods: {
       CreateTexture: RasterModule['module'];
-      Colormap: RasterModule['module'];
     },
-    _colormapTex: Texture | null,
     customModules?: (texture: Texture) => RenderModule[],
   ): RasterModule[] {
     if (mode === 'custom' && customModules) {
@@ -388,7 +311,6 @@
 
     const {
       COGLayer,
-      Colormap,
       CreateTexture,
       TileLayer,
       Tileset2D,
@@ -401,7 +323,6 @@
     const rawSources = toRaw(props.sources);
     const renderMode = toRaw(props.renderMode);
     const customRenderModules = props.customRenderModules;
-    const currentColormapTexture = colormapTexture.value;
 
     // Map EPSG codes to proj4 definition strings
     // The published version of deck.gl-geotiff (0.1.0) requires proj4 strings, not EPSG codes
@@ -545,8 +466,7 @@
                 getRenderModules(
                   effectiveRenderMode,
                   tileData.texture,
-                  { CreateTexture, Colormap },
-                  currentColormapTexture,
+                  { CreateTexture },
                   customRenderModules,
                 ),
               // Pass signal to allow aborting when tile goes out of viewport
@@ -569,25 +489,9 @@
     return markRaw(layer);
   }
 
-  function initializeColormapTexture() {
-    if (!deviceRef.value) return;
-    const data = props.colormapData ?? CFASTIE_COLORMAP;
-    colormapTexture.value = deviceRef.value.createTexture({
-      data,
-      width: 256,
-      height: 1,
-      format: 'rgba8unorm',
-      sampler: {
-        addressModeU: 'clamp-to-edge',
-        addressModeV: 'clamp-to-edge',
-      },
-    });
-  }
-
   async function initializeLayer() {
     try {
       const [
-        { MapboxOverlay },
         geotiffModule,
         rasterModule,
         geoLayersModule,
@@ -596,7 +500,6 @@
         flatbushModule,
         proj4Module,
       ] = await Promise.all([
-        import('@deck.gl/mapbox'),
         import('@developmentseed/deck.gl-geotiff'),
         import('@developmentseed/deck.gl-raster/gpu-modules'),
         import('@deck.gl/geo-layers'),
@@ -619,7 +522,6 @@
 
       modules.value = markRaw({
         COGLayer: geotiffModule.COGLayer,
-        Colormap: rasterModule.Colormap,
         CreateTexture: rasterModule.CreateTexture,
         TileLayer: geoLayersModule.TileLayer,
         Tileset2D: geoLayersModule._Tileset2D,
@@ -629,24 +531,11 @@
         proj4Defs: proj4Fn.defs,
       });
 
-      // Get device for colormap texture creation
-      const tempOverlay = new MapboxOverlay({
-        layers: [],
-        interleaved: true,
-        onDeviceInitialized: (dev: Device) => {
-          deviceRef.value = dev;
-          initializeColormapTexture();
-
-          // Now create and add the actual layer
-          const layer = createLayer();
-          if (layer) {
-            addLayer(layer);
-          }
-        },
-      });
-
-      // Add overlay to trigger device initialization
-      map.value?.addControl(tempOverlay as unknown as maplibregl.IControl);
+      // Create and add the layer using deck overlay
+      const layer = createLayer();
+      if (layer) {
+        addLayer(layer);
+      }
     } catch (error) {
       console.error('[deck.gl-mosaic] Error loading MosaicLayer:', error);
       console.error(
@@ -675,19 +564,6 @@
       }
     },
     { deep: true },
-  );
-
-  watch(
-    () => props.colormapData,
-    () => {
-      initializeColormapTexture();
-      if (modules.value) {
-        const layer = createLayer();
-        if (layer) {
-          updateLayer(props.id, layer);
-        }
-      }
-    },
   );
 
   onBeforeUnmount(() => {
