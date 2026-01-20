@@ -458,12 +458,21 @@
       sources: MosaicSource[];
       maxCacheSize?: number;
       beforeId?: string;
+      renderMode?: MosaicRenderMode;
     }> {
       static layerName = 'MosaicLayer';
 
       renderLayers() {
-        const { sources, maxCacheSize, id } = this.props;
+        const {
+          sources,
+          maxCacheSize,
+          id,
+          renderMode: layerRenderMode,
+        } = this.props;
         if (!sources?.length) return null;
+
+        // Use renderMode from layer props for proper reactivity
+        const effectiveRenderMode = layerRenderMode ?? renderMode;
 
         return new TileLayer<{
           source: MosaicTileIndex;
@@ -473,6 +482,10 @@
           id: `mosaic-tile-${id}`,
           TilesetClass: MosaicTilesetClass,
           maxCacheSize,
+          // Force sublayer re-render when renderMode changes
+          updateTriggers: {
+            renderSubLayers: [effectiveRenderMode],
+          },
           getTileData: async (tileProps: TileLoadProps) => {
             // tileProps.index is our MosaicTileIndex
             const source = tileProps.index as unknown as MosaicTileIndex;
@@ -498,13 +511,13 @@
 
             // Create COGLayer - signal is passed via getTileData options internally
             return new COGLayer<TextureData>({
-              id: `cog-${source.assets.image.href}`,
+              id: `cog-${source.assets.image.href}-${effectiveRenderMode}`,
               geotiff: tiff,
               geoKeysParser,
               getTileData,
               renderTile: (tileData) =>
                 getRenderModules(
-                  renderMode,
+                  effectiveRenderMode,
                   tileData.texture,
                   { CreateTexture, Colormap },
                   currentColormapTexture,
@@ -524,6 +537,7 @@
       sources: rawSources,
       maxCacheSize: toRaw(props.maxCacheSize),
       beforeId: toRaw(props.beforeId),
+      renderMode: renderMode,
     });
 
     return markRaw(layer);
