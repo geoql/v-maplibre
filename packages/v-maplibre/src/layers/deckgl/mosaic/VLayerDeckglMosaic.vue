@@ -254,14 +254,48 @@
     },
   };
 
-  const NDVI = {
-    name: 'ndvi',
+  // NDVI with built-in colormap (cfastie-inspired gradient)
+  // This applies the colormap directly in the shader for reliability
+  const NDVIWithColormap = {
+    name: 'ndvi-with-colormap',
     inject: {
       'fs:DECKGL_FILTER_COLOR': `
         float nir = color[3];
         float red = color[0];
-        float ndvi = (nir - red) / (nir + red);
-        color.r = (ndvi + 1.0) / 2.0;
+        float sum = nir + red;
+        
+        // Prevent division by zero
+        float ndvi = sum > 0.001 ? (nir - red) / sum : 0.0;
+        
+        // Normalize from [-1, 1] to [0, 1]
+        float t = clamp((ndvi + 1.0) / 2.0, 0.0, 1.0);
+        
+        // Cfastie-inspired colormap gradient
+        // Low NDVI (water/bare): blue/cyan -> Mid (sparse): yellow -> High (vegetation): green
+        vec3 result;
+        if (t < 0.4) {
+          // Water/bare soil: blue to cyan (NDVI < -0.2)
+          float localT = t / 0.4;
+          result = mix(vec3(0.0, 0.0, 0.5), vec3(0.5, 0.8, 0.9), localT);
+        } else if (t < 0.5) {
+          // Bare/sparse: cyan to yellow (NDVI -0.2 to 0)
+          float localT = (t - 0.4) / 0.1;
+          result = mix(vec3(0.5, 0.8, 0.9), vec3(0.9, 0.9, 0.4), localT);
+        } else if (t < 0.6) {
+          // Sparse vegetation: yellow to light green (NDVI 0 to 0.2)
+          float localT = (t - 0.5) / 0.1;
+          result = mix(vec3(0.9, 0.9, 0.4), vec3(0.6, 0.8, 0.2), localT);
+        } else if (t < 0.75) {
+          // Moderate vegetation: light green to green (NDVI 0.2 to 0.5)
+          float localT = (t - 0.6) / 0.15;
+          result = mix(vec3(0.6, 0.8, 0.2), vec3(0.1, 0.6, 0.1), localT);
+        } else {
+          // Dense vegetation: green to dark green (NDVI > 0.5)
+          float localT = (t - 0.75) / 0.25;
+          result = mix(vec3(0.1, 0.6, 0.1), vec3(0.0, 0.3, 0.0), localT);
+        }
+        
+        color.rgb = result;
       `,
     },
   };
@@ -321,7 +355,7 @@
       CreateTexture: RasterModule['module'];
       Colormap: RasterModule['module'];
     },
-    colormapTex: Texture | null,
+    _colormapTex: Texture | null,
     customModules?: (texture: Texture) => RenderModule[],
   ): RasterModule[] {
     if (mode === 'custom' && customModules) {
@@ -340,17 +374,9 @@
       return [...base, { module: FalseColorInfrared }, { module: SetAlpha1 }];
     }
 
-    // NDVI - only use colormap if texture exists
-    if (!colormapTex) {
-      return [...base, { module: NDVI }, { module: SetAlpha1 }];
-    }
-
-    return [
-      ...base,
-      { module: NDVI },
-      { module: mods.Colormap, props: { colormapTexture: colormapTex } },
-      { module: SetAlpha1 },
-    ];
+    // NDVI - use built-in colormap shader for reliability
+    // The external Colormap module from deck.gl-raster can be finicky with texture passing
+    return [...base, { module: NDVIWithColormap }, { module: SetAlpha1 }];
   }
 
   /**
