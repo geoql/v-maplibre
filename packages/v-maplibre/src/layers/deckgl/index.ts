@@ -35,6 +35,8 @@ export { VLayerDeckglSimpleMesh } from './simple-mesh';
 export { VLayerDeckglScenegraph } from './scenegraph';
 
 export { VLayerDeckglCOG } from './cog';
+export { VLayerDeckglMosaic } from './mosaic';
+export type { MosaicSource, MosaicRenderMode, RenderModule } from './mosaic';
 
 export {
   VLayerDeckglWindParticle,

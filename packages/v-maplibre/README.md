@@ -44,7 +44,10 @@ Install these packages based on the features you need:
 
 ```bash
 # Raster/COG layers (Cloud-Optimized GeoTIFF)
-bun add @developmentseed/deck.gl-raster geotiff-geokeys-to-proj4
+bun add @developmentseed/deck.gl-raster @developmentseed/deck.gl-geotiff geotiff
+
+# COG Mosaic layers (client-side mosaicking of multiple COGs)
+bun add @developmentseed/deck.gl-raster @developmentseed/deck.gl-geotiff geotiff flatbush proj4
 
 # LiDAR viewer control
 bun add maplibre-gl-lidar
@@ -149,9 +152,10 @@ High-performance WebGL visualization layers powered by deck.gl:
 - `VLayerDeckglPointCloud` - LiDAR/photogrammetry point clouds
 - `VLayerDeckglSolidPolygon` - 3D extruded solid polygons
 
-**Raster Layers** (requires `@developmentseed/deck.gl-raster`)
+**Raster Layers** (requires `@developmentseed/deck.gl-raster` and `@developmentseed/deck.gl-geotiff`)
 
 - `VLayerDeckglCOG` - Cloud-Optimized GeoTIFF visualization (GPU-accelerated, auto-reprojection)
+- `VLayerDeckglMosaic` - Client-side COG mosaic from STAC items (requires `flatbush`, `proj4`)
 
 **Wind Visualization** (requires `maplibre-gl-wind`)
 

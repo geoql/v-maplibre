@@ -112,6 +112,7 @@ MIT License - see [LICENSE](./packages/v-maplibre/LICENSE) for details
 - **50+ Layer Components** - deck.gl core, aggregation, geo, mesh, and raster layers
 - **LiDAR Viewer** - LAS/LAZ/COPC point cloud visualization with streaming
 - **COG/GeoTIFF** - GPU-accelerated Cloud-Optimized GeoTIFF layers
+- **COG Mosaic** - Client-side mosaicking of multiple COGs from STAC APIs (no server required)
 - **Spatial Indexing** - H3, S2, Geohash, Quadkey tile system layers
 
 Check out the [live examples](https://mapcn-vue.geoql.in/examples) for interactive demos.

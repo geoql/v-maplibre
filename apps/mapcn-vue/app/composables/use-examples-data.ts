@@ -269,6 +269,14 @@ export function useExamplesData() {
           icon: 'lucide:trees',
           badge: 'NLCD',
         },
+        {
+          title: 'NAIP Imagery',
+          description:
+            'STAC API integration with dynamic COG loading from Planetary Computer.',
+          href: '/examples/deckgl-naip-mosaic',
+          icon: 'lucide:satellite-dish',
+          badge: 'STAC',
+        },
       ],
     },
     {

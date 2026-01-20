@@ -108,6 +108,7 @@ Geospatial layers.
 Raster/satellite imagery layers.
 
 - `MapLayerCOG` - Cloud-Optimized GeoTIFF (GPU-accelerated)
+- `MapLayerMosaic` - Client-side COG mosaic from STAC items (no server required)
 
 ### map-deckgl-wind
 

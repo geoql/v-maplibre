@@ -1,0 +1,343 @@
+<script setup lang="ts">
+  import {
+    VMap,
+    VControlNavigation,
+    VControlScale,
+    VLayerDeckglMosaic,
+    type MosaicSource,
+    type MosaicRenderMode,
+  } from '@geoql/v-maplibre';
+  import type { Map } from 'maplibre-gl';
+
+  useSeoMeta({
+    title: 'NAIP Mosaic - mapcn-vue Examples',
+    description:
+      'Client-side COG mosaic of NAIP imagery from Microsoft Planetary Computer with multiple render modes.',
+  });
+
+  const colorMode = useColorMode();
+  const mapId = useId();
+  const mapInstance = shallowRef<Map | null>(null);
+
+  const onMapLoaded = (map: Map) => {
+    mapInstance.value = map;
+  };
+
+  const lightStyle =
+    'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
+  const darkStyle =
+    'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
+
+  const mapStyle = computed(() =>
+    colorMode.value === 'dark' ? darkStyle : lightStyle,
+  );
+
+  // Colorado area bounding box for NAIP query
+  const STAC_BBOX: [number, number, number, number] = [
+    -106.6059, 38.7455, -104.5917, 40.4223,
+  ];
+
+  const mapOptions = computed(() => ({
+    container: `naip-mosaic-example-${mapId}`,
+    style: mapStyle.value,
+    center: [-104.9903, 39.7392] as [number, number],
+    zoom: 10,
+    maxBounds: [
+      [STAC_BBOX[0] - 1, STAC_BBOX[1] - 1],
+      [STAC_BBOX[2] + 1, STAC_BBOX[3] + 1],
+    ] as [[number, number], [number, number]],
+    minZoom: 4,
+  }));
+
+  const renderMode = ref<MosaicRenderMode>('trueColor');
+  const loading = ref(true);
+  const error = ref<string | null>(null);
+  const stacItems = ref<MosaicSource[]>([]);
+
+  // Fetch STAC items from Microsoft Planetary Computer
+  async function fetchSTACItems() {
+    try {
+      loading.value = true;
+      error.value = null;
+
+      const params = {
+        collections: 'naip',
+        bbox: STAC_BBOX.join(','),
+        filter: JSON.stringify({
+          op: '=',
+          args: [{ property: 'naip:state' }, 'co'],
+        }),
+        'filter-lang': 'cql2-json',
+        datetime: '2023-01-01T00:00:00Z/2023-12-31T23:59:59Z',
+        limit: '1000',
+      };
+
+      const queryString = new URLSearchParams(params).toString();
+      const stacUrl = `https://planetarycomputer.microsoft.com/api/stac/v1/search?${queryString}`;
+
+      const response = await fetch(stacUrl);
+      if (!response.ok)
+        throw new Error(`STAC API error: ${response.statusText}`);
+
+      const data = await response.json();
+      stacItems.value = data.features as MosaicSource[];
+
+      if (stacItems.value.length === 0) {
+        error.value = 'No STAC items found';
+      }
+    } catch (err) {
+      console.error('Error fetching STAC items:', err);
+      error.value = err instanceof Error ? err.message : 'Failed to load';
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  // Fetch STAC items on component mount
+  onMounted(fetchSTACItems);
+
+  function handleSourceLoad(source: MosaicSource) {
+    console.log('Loaded COG:', source.assets.image.href);
+  }
+
+  function handleError(err: Error, source?: MosaicSource) {
+    console.error('Mosaic error:', err, source);
+  }
+
+  const renderModeOptions = [
+    { value: 'trueColor', label: 'True Color' },
+    { value: 'falseColor', label: 'False Color Infrared' },
+    { value: 'ndvi', label: 'NDVI' },
+  ];
+
+  const SCRIPT_END = '</' + 'script>';
+  const SCRIPT_START = '<' + 'script setup lang="ts">';
+
+  const codeExample = `${SCRIPT_START}
+  import {
+    VMap,
+    VLayerDeckglMosaic,
+    type MosaicSource,
+    type MosaicRenderMode,
+  } from '@geoql/v-maplibre';
+
+  const renderMode = ref<MosaicRenderMode>('trueColor');
+  const stacItems = ref<MosaicSource[]>([]);
+
+  // Fetch STAC items from Microsoft Planetary Computer
+  async function fetchSTACItems() {
+    const params = {
+      collections: 'naip',
+      bbox: '-106.6,38.7,-104.6,40.4',
+      datetime: '2023-01-01/2023-12-31',
+      limit: '1000',
+    };
+
+    const response = await fetch(
+      'https://planetarycomputer.microsoft.com/api/stac/v1/search?' +
+      new URLSearchParams(params)
+    );
+    const { features } = await response.json();
+    stacItems.value = features;
+  }
+
+  onMounted(fetchSTACItems);
+  ${SCRIPT_END}
+
+  <template>
+    <VMap :options="mapOptions">
+      <VLayerDeckglMosaic
+        id="naip-mosaic"
+        :sources="stacItems"
+        :render-mode="renderMode"
+      />
+    </VMap>
+  </template>`;
+</script>
+
+<template>
+  <div class="container max-w-screen-2xl py-10">
+    <div class="mx-auto w-full max-w-300">
+      <div class="mb-8">
+        <NuxtLink
+          to="/examples"
+          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+        >
+          <Icon name="lucide:arrow-left" class="mr-2 size-4"></Icon>
+          Back to Examples
+        </NuxtLink>
+        <h1 class="mt-4 text-3xl font-bold tracking-tight">NAIP Mosaic</h1>
+        <p class="mt-2 text-lg text-muted-foreground">
+          Client-side mosaic of NAIP aerial imagery from Microsoft Planetary
+          Computer. All rendering happens in the browser with no server
+          required.
+        </p>
+        <p class="mt-2 text-sm text-muted-foreground">
+          Powered by
+          <a
+            href="https://github.com/developmentseed/deck.gl-raster"
+            target="_blank"
+            class="text-primary hover:underline"
+            >@developmentseed/deck.gl-raster</a
+          >. Data from
+          <a
+            href="https://planetarycomputer.microsoft.com/dataset/naip"
+            target="_blank"
+            class="text-primary hover:underline"
+            >Microsoft Planetary Computer NAIP</a
+          >.
+        </p>
+      </div>
+
+      <div class="grid gap-8 lg:grid-cols-2">
+        <div class="space-y-4">
+          <div
+            class="relative h-125 min-w-0 overflow-hidden rounded-lg border border-border"
+          >
+            <ClientOnly>
+              <VMap
+                :key="mapStyle"
+                :options="mapOptions"
+                class="h-full w-full"
+                @loaded="onMapLoaded"
+              >
+                <VControlNavigation position="top-right"></VControlNavigation>
+                <VControlScale position="bottom-left"></VControlScale>
+
+                <VLayerDeckglMosaic
+                  v-if="stacItems.length > 0"
+                  id="naip-mosaic"
+                  :sources="stacItems"
+                  :render-mode="renderMode"
+                  @source-load="handleSourceLoad"
+                  @error="handleError"
+                ></VLayerDeckglMosaic>
+              </VMap>
+            </ClientOnly>
+
+            <div
+              class="absolute left-4 top-4 z-10 max-w-xs rounded-lg border bg-background/95 p-4 shadow-lg backdrop-blur-sm"
+            >
+              <h3 class="mb-2 text-sm font-semibold">NAIP Mosaic</h3>
+              <p class="mb-3 text-xs text-muted-foreground">
+                <span v-if="loading">Loading STAC items...</span>
+                <span v-else-if="error" class="text-destructive">{{
+                  error
+                }}</span>
+                <template v-else>
+                  Fetched {{ stacItems.length }}
+                  <a
+                    href="https://stacspec.org/en"
+                    target="_blank"
+                    class="text-primary hover:underline"
+                    >STAC</a
+                  >
+                  Items from
+                  <a
+                    href="https://planetarycomputer.microsoft.com"
+                    target="_blank"
+                    class="text-primary hover:underline"
+                    >Microsoft Planetary Computer</a
+                  >'s
+                  <a
+                    href="https://planetarycomputer.microsoft.com/dataset/naip"
+                    target="_blank"
+                    class="text-primary hover:underline"
+                    >NAIP dataset</a
+                  >.
+                </template>
+              </p>
+              <p class="mb-3 text-xs text-muted-foreground">
+                All imagery is rendered client-side with
+                <strong>no server involved</strong> using
+                <a
+                  href="https://github.com/developmentseed/deck.gl-raster"
+                  target="_blank"
+                  class="font-mono text-primary hover:underline"
+                  >@developmentseed/deck.gl-raster</a
+                >.
+              </p>
+
+              <div>
+                <label class="mb-1.5 block text-xs font-medium"
+                  >Render Mode</label
+                >
+                <select
+                  v-model="renderMode"
+                  class="w-full rounded-md border bg-background px-2 py-1.5 text-sm"
+                  :disabled="loading"
+                >
+                  <option
+                    v-for="opt in renderModeOptions"
+                    :key="opt.value"
+                    :value="opt.value"
+                  >
+                    {{ opt.label }}
+                  </option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="min-w-0">
+          <LazyCodeBlock
+            :code="codeExample"
+            lang="vue"
+            filename="NAIPMosaic.vue"
+          ></LazyCodeBlock>
+
+          <div class="mt-6 rounded-lg border border-border bg-card p-4">
+            <h3 class="mb-3 font-semibold">Features</h3>
+            <ul
+              class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm text-muted-foreground"
+            >
+              <li class="flex items-center gap-2">
+                <Icon
+                  name="lucide:check"
+                  class="size-4 shrink-0 text-emerald-500"
+                ></Icon>
+                Client-side mosaic
+              </li>
+              <li class="flex items-center gap-2">
+                <Icon
+                  name="lucide:check"
+                  class="size-4 shrink-0 text-emerald-500"
+                ></Icon>
+                STAC API integration
+              </li>
+              <li class="flex items-center gap-2">
+                <Icon
+                  name="lucide:check"
+                  class="size-4 shrink-0 text-emerald-500"
+                ></Icon>
+                4-band imagery (RGBN)
+              </li>
+              <li class="flex items-center gap-2">
+                <Icon
+                  name="lucide:check"
+                  class="size-4 shrink-0 text-emerald-500"
+                ></Icon>
+                GPU-accelerated
+              </li>
+              <li class="flex items-center gap-2">
+                <Icon
+                  name="lucide:check"
+                  class="size-4 shrink-0 text-emerald-500"
+                ></Icon>
+                No server required
+              </li>
+              <li class="flex items-center gap-2">
+                <Icon
+                  name="lucide:check"
+                  class="size-4 shrink-0 text-emerald-500"
+                ></Icon>
+                Multi-render modes
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
