@@ -184,6 +184,14 @@ export function useExamplesData() {
           href: '/examples/maplibre-proximity',
           icon: 'lucide:link',
         },
+        {
+          title: 'Wind Animation',
+          description:
+            'Animated wind particle visualization like Windy.com using GFS data.',
+          href: '/examples/wind',
+          icon: 'lucide:wind',
+          badge: 'Animated',
+        },
       ],
     },
     {
@@ -298,6 +306,14 @@ export function useExamplesData() {
           description: 'Text labels with collision detection.',
           href: '/examples/deckgl-text',
           icon: 'lucide:type',
+        },
+        {
+          title: 'Trips Animation',
+          description:
+            'Animated path visualization for temporal trajectory data.',
+          href: '/examples/deckgl-trips',
+          icon: 'lucide:route',
+          badge: 'Animated',
         },
       ],
     },
