@@ -8,6 +8,14 @@
     type MosaicRenderMode,
   } from '@geoql/v-maplibre';
   import type { Map } from 'maplibre-gl';
+  import { motion, AnimatePresence } from 'motion-v';
+  import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+  } from '~/components/ui/select';
 
   useSeoMeta({
     title: 'NAIP Mosaic - mapcn-vue Examples',
@@ -18,6 +26,7 @@
   const { mapStyle } = useMapStyle();
   const mapId = useId();
   const mapInstance = shallowRef<Map | null>(null);
+  const panelOpen = ref(true);
 
   const onMapLoaded = (map: Map) => {
     mapInstance.value = map;
@@ -100,6 +109,14 @@
     { value: 'falseColor', label: 'False Color Infrared' },
     { value: 'ndvi', label: 'NDVI' },
   ];
+
+  function togglePanel() {
+    panelOpen.value = !panelOpen.value;
+  }
+
+  function getRenderModeLabel(value: MosaicRenderMode) {
+    return renderModeOptions.find((opt) => opt.value === value)?.label ?? value;
+  }
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
@@ -206,68 +223,92 @@
               </VMap>
             </ClientOnly>
 
-            <div
-              class="absolute top-4 left-4 z-10 max-w-xs rounded-lg border bg-background/95 p-4 shadow-lg backdrop-blur-sm"
+            <!-- Toggle button - always visible -->
+            <button
+              class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg border bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
+              :class="{
+                'bg-primary text-primary-foreground hover:bg-primary/90':
+                  !panelOpen,
+              }"
+              @click="togglePanel"
             >
-              <h3 class="mb-2 text-sm font-semibold">NAIP Mosaic</h3>
-              <p class="mb-3 text-xs text-muted-foreground">
-                <span v-if="loading">Loading STAC items...</span>
-                <span v-else-if="error" class="text-destructive">{{
-                  error
-                }}</span>
-                <template v-else>
-                  Fetched {{ stacItems.length }}
-                  <a
-                    href="https://stacspec.org/en"
-                    target="_blank"
-                    class="text-primary hover:underline"
-                    >STAC</a
-                  >
-                  Items from
-                  <a
-                    href="https://planetarycomputer.microsoft.com"
-                    target="_blank"
-                    class="text-primary hover:underline"
-                    >Microsoft Planetary Computer</a
-                  >'s
-                  <a
-                    href="https://planetarycomputer.microsoft.com/dataset/naip"
-                    target="_blank"
-                    class="text-primary hover:underline"
-                    >NAIP dataset</a
-                  >.
-                </template>
-              </p>
-              <p class="mb-3 text-xs text-muted-foreground">
-                All imagery is rendered client-side with
-                <strong>no server involved</strong> using
-                <a
-                  href="https://github.com/developmentseed/deck.gl-raster"
-                  target="_blank"
-                  class="font-mono text-primary hover:underline"
-                  >@developmentseed/deck.gl-raster</a
-                >.
-              </p>
+              <Icon
+                :name="
+                  panelOpen
+                    ? 'lucide:panel-left-close'
+                    : 'lucide:panel-left-open'
+                "
+                class="size-4"
+              />
+            </button>
 
-              <div>
-                <label class="mb-1.5 block text-xs font-medium"
-                  >Render Mode</label
-                >
-                <select
-                  v-model="renderMode"
-                  class="w-full rounded-md border bg-background px-2 py-1.5 text-sm"
-                  :disabled="loading"
-                >
-                  <option
-                    v-for="opt in renderModeOptions"
-                    :key="opt.value"
-                    :value="opt.value"
+            <!-- Collapsible panel with motion-v -->
+            <AnimatePresence>
+              <motion.div
+                v-if="panelOpen"
+                :initial="{ opacity: 0, x: -20, scale: 0.95 }"
+                :animate="{ opacity: 1, x: 0, scale: 1 }"
+                :exit="{ opacity: 0, x: -20, scale: 0.95 }"
+                :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
+                class="absolute top-16 left-4 z-10 w-64 rounded-lg border bg-background/95 p-4 shadow-lg backdrop-blur-sm"
+              >
+                <h3 class="mb-2 text-sm font-semibold">NAIP Mosaic</h3>
+                <p class="mb-3 text-xs text-muted-foreground">
+                  <span v-if="loading">Loading STAC items...</span>
+                  <span v-else-if="error" class="text-destructive">{{
+                    error
+                  }}</span>
+                  <template v-else>
+                    Fetched {{ stacItems.length }}
+                    <a
+                      href="https://stacspec.org/en"
+                      target="_blank"
+                      class="text-primary hover:underline"
+                      >STAC</a
+                    >
+                    Items from
+                    <a
+                      href="https://planetarycomputer.microsoft.com"
+                      target="_blank"
+                      class="text-primary hover:underline"
+                      >Microsoft Planetary Computer</a
+                    >.
+                  </template>
+                </p>
+                <p class="mb-3 text-xs text-muted-foreground">
+                  All imagery is rendered client-side with
+                  <strong>no server involved</strong> using
+                  <a
+                    href="https://github.com/developmentseed/deck.gl-raster"
+                    target="_blank"
+                    class="font-mono text-primary hover:underline"
+                    >@developmentseed/deck.gl-raster</a
+                  >.
+                </p>
+
+                <div>
+                  <label class="mb-1.5 block text-xs font-medium"
+                    >Render Mode</label
                   >
-                    {{ opt.label }}
-                  </option>
-                </select>
-              </div>
-            </div>
+                  <Select v-model="renderMode" :disabled="loading">
+                    <SelectTrigger class="w-full">
+                      <SelectValue
+                        :placeholder="getRenderModeLabel(renderMode)"
+                      />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem
+                        v-for="opt in renderModeOptions"
+                        :key="opt.value"
+                        :value="opt.value"
+                      >
+                        {{ opt.label }}
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
 
