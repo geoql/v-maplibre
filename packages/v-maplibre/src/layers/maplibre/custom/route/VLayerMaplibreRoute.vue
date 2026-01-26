@@ -7,7 +7,7 @@
     MapLayerMouseEvent,
     LineLayerSpecification,
   } from 'maplibre-gl';
-  import { injectStrict, MapKey } from '../../../utils';
+  import { injectStrict, MapKey } from '../../../../utils';
 
   interface RouteClick {
     coordinates: {

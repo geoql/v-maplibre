@@ -11,7 +11,7 @@
     MapLayerMouseEvent,
     DataDrivenPropertyValueSpecification,
   } from 'maplibre-gl';
-  import { injectStrict, MapKey } from '../../../utils';
+  import { injectStrict, MapKey } from '../../../../utils';
 
   interface LayerClick {
     features: GeoJSON.Feature[];

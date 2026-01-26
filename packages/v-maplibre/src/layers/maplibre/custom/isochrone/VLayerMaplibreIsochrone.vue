@@ -8,7 +8,7 @@
     FillLayerSpecification,
     LineLayerSpecification,
   } from 'maplibre-gl';
-  import { injectStrict, MapKey } from '../../../utils';
+  import { injectStrict, MapKey } from '../../../../utils';
 
   interface IsochroneFeature {
     type: 'Feature';
