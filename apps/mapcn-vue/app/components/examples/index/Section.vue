@@ -78,12 +78,6 @@
                 : 'text-primary'
           "
         />
-        <!-- Pulsing ring for featured -->
-        <div
-          v-if="isFeatured"
-          class="absolute inset-0 animate-ping rounded-xl border border-amber-500/30"
-          style="animation-duration: 3s"
-        ></div>
       </motion.div>
 
       <!-- Title and description -->
