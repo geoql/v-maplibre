@@ -48,7 +48,7 @@
         "class-variance-authority": "^0.7.1",
         "clsx": "^2.1.1",
         "flatbush": "^4.5.0",
-        "geotiff": "2.1.3",
+        "geotiff": "3.0.0",
         "geotiff-geokeys-to-proj4": "^2024.4.13",
         "maplibre-gl": "catalog:",
         "maplibre-gl-interpolate-heatmap": "0.1.2",
@@ -128,7 +128,7 @@
         "@vitest/ui": "^4.0.17",
         "@vue/test-utils": "^2.4.6",
         "flatbush": "^4.5.0",
-        "geotiff": "2.1.3",
+        "geotiff": "3.0.0",
         "happy-dom": "^20.3.4",
         "maplibre-gl-lidar": "^0.8.0",
         "maplibre-gl-wind": "^0.2.0",
@@ -151,7 +151,7 @@
         "@developmentseed/deck.gl-geotiff": "^0.1.0",
         "@developmentseed/deck.gl-raster": "^0.1.0",
         "flatbush": "^4.5.0",
-        "geotiff": "2.1.3",
+        "geotiff": "3.0.0",
         "geotiff-geokeys-to-proj4": "^2024.4.0",
         "maplibre-gl-lidar": "^0.5.0",
         "maplibre-gl-wind": "^0.2.0",
@@ -2043,7 +2043,7 @@
 
     "geojson-vt": ["geojson-vt@4.0.2", "", {}, "sha512-AV9ROqlNqoZEIJGfm1ncNjEXfkz2hdFlZf0qkVfmkwdKa8vj7H16YUOT81rJw1rdFhyEDlN2Tds91p/glzbl5A=="],
 
-    "geotiff": ["geotiff@2.1.3", "", { "dependencies": { "@petamoriken/float16": "^3.4.7", "lerc": "^3.0.0", "pako": "^2.0.4", "parse-headers": "^2.0.2", "quick-lru": "^6.1.1", "web-worker": "^1.2.0", "xml-utils": "^1.0.2", "zstddec": "^0.1.0" } }, "sha512-PT6uoF5a1+kbC3tHmZSUsLHBp2QJlHasxxxxPW47QIY1VBKpFB+FcDvX+MxER6UzgLQZ0xDzJ9s48B9JbOCTqA=="],
+    "geotiff": ["geotiff@3.0.0", "", { "dependencies": { "@petamoriken/float16": "^3.4.7", "lerc": "^3.0.0", "pako": "^2.0.4", "parse-headers": "^2.0.2", "quick-lru": "^6.1.1", "web-worker": "^1.5.0", "xml-utils": "^1.10.2", "zstddec": "^0.2.0" } }, "sha512-skoz9vd8ovTH1BUEt4Mzg2N0rcv3lQG+f57nokoPhIISg5bbmcX5okUe30avjfEuu0Yk24KZCr45nJvkUHBH1Q=="],
 
     "geotiff-geokeys-to-proj4": ["geotiff-geokeys-to-proj4@2024.4.13", "", {}, "sha512-Jgtm/lcPkgB44wCqQHaVQx5/fyhmiVDRUKQcI/vMolsED8/GRWBnn5qkQo/CgutQg9xkGzig21DY9Px9mFRdvg=="],
 
@@ -3531,7 +3531,7 @@
 
     "zstd-codec": ["zstd-codec@0.1.5", "", {}, "sha512-v3fyjpK8S/dpY/X5WxqTK3IoCnp/ZOLxn144GZVlNUjtwAchzrVo03h+oMATFhCIiJ5KTr4V3vDQQYz4RU684g=="],
 
-    "zstddec": ["zstddec@0.1.0", "", {}, "sha512-w2NTI8+3l3eeltKAdK8QpiLo/flRAr2p8AGeakfMZOXBxOg9HIu4LVDxBi81sYgVhFhdJjv1OrB5ssI8uFPoLg=="],
+    "zstddec": ["zstddec@0.2.0", "", {}, "sha512-oyPnDa1X5c13+Y7mA/FDMNJrn4S8UNBe0KCqtDmor40Re7ALrPN6npFwyYVRRh+PqozZQdeg23QtbcamZnG5rA=="],
 
     "zwitch": ["zwitch@2.0.4", "", {}, "sha512-bXE4cR/kVZhKZX/RjPEflHaKVhUVl85noU3v6b8apfQEc1x4A+zBxjZ4lN8LqGd6WZ3dl98pY4o717VFmoPp+A=="],
 
@@ -3556,6 +3556,8 @@
     "@commitlint/types/chalk": ["chalk@5.6.2", "", {}, "sha512-7NzBL0rN6fMUW+f7A6Io4h40qQlG+xGmtMxfbnH/K7TAtt8JQWVQK+6g0UXKMeVJoyV5EkkNsErQ8pVD3bLHbA=="],
 
     "@cspotcode/source-map-support/@jridgewell/trace-mapping": ["@jridgewell/trace-mapping@0.3.9", "", { "dependencies": { "@jridgewell/resolve-uri": "^3.0.3", "@jridgewell/sourcemap-codec": "^1.4.10" } }, "sha512-3Belt6tdc8bPgAtbcmdtNJlirVoTmEb5e2gC94PnkwEW9jI6CAHUeoG85tjWP5WquqfavoMtMwiG4P926ZKKuQ=="],
+
+    "@developmentseed/deck.gl-geotiff/geotiff": ["geotiff@2.1.3", "", { "dependencies": { "@petamoriken/float16": "^3.4.7", "lerc": "^3.0.0", "pako": "^2.0.4", "parse-headers": "^2.0.2", "quick-lru": "^6.1.1", "web-worker": "^1.2.0", "xml-utils": "^1.0.2", "zstddec": "^0.1.0" } }, "sha512-PT6uoF5a1+kbC3tHmZSUsLHBp2QJlHasxxxxPW47QIY1VBKpFB+FcDvX+MxER6UzgLQZ0xDzJ9s48B9JbOCTqA=="],
 
     "@dotenvx/dotenvx/commander": ["commander@11.1.0", "", {}, "sha512-yPVavfyCcRhmorC7rWlkHn15b4wDVgVmBA7kV4QVBsF7kv/9TKJAbAXVTxvTnwP8HHKjRCJDClKbciiYS7p0DQ=="],
 
@@ -3968,6 +3970,8 @@
     "@commitlint/top-level/find-up/locate-path": ["locate-path@7.2.0", "", { "dependencies": { "p-locate": "^6.0.0" } }, "sha512-gvVijfZvn7R+2qyPX8mAuKcFGDf6Nc61GdvGafQsHL0sBIxfKzA+usWn4GFC/bk+QdwPUD4kWFJLhElipq+0VA=="],
 
     "@commitlint/top-level/find-up/path-exists": ["path-exists@5.0.0", "", {}, "sha512-RjhtfwJOxzcFmNOi6ltcbcu4Iu+FL3zEj83dk4kAS+fVpTxXLO1b38RvJgT/0QwvV/L3aY9TAnyv0EOqW4GoMQ=="],
+
+    "@developmentseed/deck.gl-geotiff/geotiff/zstddec": ["zstddec@0.1.0", "", {}, "sha512-w2NTI8+3l3eeltKAdK8QpiLo/flRAr2p8AGeakfMZOXBxOg9HIu4LVDxBi81sYgVhFhdJjv1OrB5ssI8uFPoLg=="],
 
     "@dxup/nuxt/chokidar/readdirp": ["readdirp@4.1.2", "", {}, "sha512-GDhwkLfywWL2s6vEjyhri+eXmfH6j1L7JE27WhqLeYzoh/A3DBaYGEj2H/HFZCn/kMfim73FXxEJTw06WtxQwg=="],
 
