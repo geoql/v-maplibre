@@ -16,13 +16,12 @@
 
   const props = withDefaults(
     defineProps<{
-      coordinates: LngLatLike | null;
+      coordinates: LngLatLike;
       options?: MarkerOptions;
       popupOptions?: PopupOptions;
       cursor?: string;
     }>(),
     {
-      coordinates: null,
       options: () => ({}),
       popupOptions: () => ({}),
       cursor: 'pointer',
@@ -72,12 +71,10 @@
   };
 
   const setMarkerCoordinates = (markerInstance: Marker): void => {
-    if (props.coordinates !== null) {
-      try {
-        markerInstance.setLngLat(props.coordinates);
-      } catch (error) {
-        console.error('Error setting marker coordinates:', error);
-      }
+    try {
+      markerInstance.setLngLat(props.coordinates);
+    } catch (error) {
+      console.error('Error setting marker coordinates:', error);
     }
   };
 
@@ -201,7 +198,7 @@
       <v-popup
         :marker="marker!"
         :options="popupOptions"
-        :coordinates="coordinates!"
+        :coordinates="coordinates"
       >
         <slot></slot>
       </v-popup>
