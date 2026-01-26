@@ -18,12 +18,12 @@ export function useExamplesData() {
           badge: 'Live',
         },
         {
-          title: 'Wind Animation',
+          title: 'Isochrone Analysis',
           description:
-            'Animated wind particle visualization like Windy.com using GFS data.',
-          href: '/examples/wind',
-          icon: 'lucide:wind',
-          badge: 'Animated',
+            'Travel time zones showing reachable areas from any point.',
+          href: '/examples/maplibre-isochrone',
+          icon: 'lucide:timer',
+          badge: 'Valhalla',
         },
         {
           title: 'COPC Streaming',
@@ -42,12 +42,11 @@ export function useExamplesData() {
           badge: 'STAC',
         },
         {
-          title: 'Trips Animation',
-          description:
-            'Animated NYC taxi path visualization for temporal data.',
-          href: '/examples/deckgl-trips',
-          icon: 'lucide:route',
-          badge: 'Animated',
+          title: 'Trip Planner',
+          description: 'Multi-day itinerary generator with route optimization.',
+          href: '/examples/valhalla-trip-planner',
+          icon: 'lucide:calendar-days',
+          badge: 'Valhalla',
         },
         {
           title: 'Interpolate Heatmap',
@@ -90,20 +89,6 @@ export function useExamplesData() {
           href: '/examples/valhalla-trip-playback',
           icon: 'lucide:play-circle',
           badge: 'Playback',
-        },
-        {
-          title: 'Trip Planner',
-          description: 'Multi-day itinerary generator with POI suggestions.',
-          href: '/examples/valhalla-trip-planner',
-          icon: 'lucide:calendar-days',
-        },
-        {
-          title: 'Isochrone',
-          description:
-            'Travel time accessibility zones showing reachable areas.',
-          href: '/examples/maplibre-isochrone',
-          icon: 'lucide:timer',
-          badge: 'Analysis',
         },
       ],
     },
