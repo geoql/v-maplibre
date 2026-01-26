@@ -182,17 +182,6 @@ ${SCRIPT_END}
 
 <template>
   <div>
-    <p class="mb-6 text-muted-foreground">
-      Display multiple route options and let users select between them. This
-      example fetches real driving directions from the
-      <a
-        href="https://valhalla.github.io/valhalla/"
-        target="_blank"
-        class="underline hover:text-foreground"
-        >Valhalla API</a
-      >. Click on a route or use the buttons to switch.
-    </p>
-
     <div class="grid gap-8 lg:grid-cols-3">
       <div class="space-y-3">
         <div

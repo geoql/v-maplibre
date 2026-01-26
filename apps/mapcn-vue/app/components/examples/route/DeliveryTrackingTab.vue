@@ -142,10 +142,6 @@ ${SCRIPT_END}
 
 <template>
   <div>
-    <p class="mb-6 text-muted-foreground">
-      Real-time delivery route visualization using VLayerMaplibreRoute.
-    </p>
-
     <div class="grid gap-8 lg:grid-cols-2">
       <div class="min-w-0 space-y-4">
         <div class="rounded-lg border border-border bg-card p-4">

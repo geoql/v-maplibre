@@ -257,11 +257,6 @@ ${SCRIPT_END}
 
 <template>
   <div>
-    <p class="mb-6 text-muted-foreground">
-      Optimized multi-stop route using Valhalla's TSP solver.
-      <strong>Drag markers</strong> to adjust stops and recalculate the route.
-    </p>
-
     <div class="grid gap-8 lg:grid-cols-3">
       <div class="space-y-4">
         <div class="rounded-xl border border-border bg-card p-4 shadow-sm">
