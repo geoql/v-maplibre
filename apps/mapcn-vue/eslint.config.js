@@ -5,26 +5,13 @@ import oxlint from 'eslint-plugin-oxlint';
 
 export default createConfigForNuxt({
   features: {
-    stylistic: {
-      semi: true,
-    },
+    stylistic: false,
     tooling: true,
     typescript: true,
   },
 })
-  .override('nuxt/stylistic', {
-    rules: {
-      '@stylistic/arrow-parens': 'off',
-      '@stylistic/brace-style': 'off',
-      '@stylistic/indent': 'off',
-      '@stylistic/indent-binary-ops': 'off',
-      '@stylistic/operator-linebreak': 'off',
-    },
-  })
   .override('nuxt/vue/rules', {
     rules: {
-      'vue/max-attributes-per-line': ['error', { singleline: 5, multiline: 1 }],
-      'vue/html-indent': ['error', 2],
       'vue/html-self-closing': [
         'error',
         {
@@ -41,27 +28,34 @@ export default createConfigForNuxt({
       'vue/multi-word-component-names': 'off',
     },
   })
+  .override('nuxt/vue/rules', {
+    files: ['app/components/ui/**/*.vue'],
+    rules: {
+      'vue/require-default-prop': 'off',
+      'vue/one-component-per-file': 'off',
+    },
+  })
   .append({
     plugins: {
       'better-tailwindcss': betterTailwindcss,
     },
     rules: {
-      ...betterTailwindcss.configs['recommended-warn'].rules,
-      'better-tailwindcss/no-unknown-classes': [
+      'better-tailwindcss/no-conflicting-classes': [
+        'error',
+        { entryPoint: 'app/assets/css/main.css' },
+      ],
+      'better-tailwindcss/no-duplicate-classes': [
         'warn',
-        {
-          ignore: [
-            // Color mode class (used by @nuxtjs/color-mode)
-            '^dark$',
-          ],
-        },
+        { entryPoint: 'app/assets/css/main.css' },
+      ],
+      'better-tailwindcss/no-unnecessary-whitespace': [
+        'warn',
+        { entryPoint: 'app/assets/css/main.css' },
       ],
     },
     settings: {
       'better-tailwindcss': {
         entryPoint: 'app/assets/css/main.css',
-        // Auto-detect custom component classes from CSS (e.g., @layer components)
-        detectComponentClasses: true,
       },
     },
   })
