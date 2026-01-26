@@ -32,17 +32,8 @@
     closePopup: [];
   }>();
 
-  const colorMode = useColorMode();
   const mapId = useId();
-
-  const lightStyle =
-    'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
-  const darkStyle =
-    'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
-
-  const mapStyle = computed(() =>
-    colorMode.value === 'dark' ? darkStyle : lightStyle,
-  );
+  const { mapStyle } = useMapStyle();
 
   const mapOptions = computed(() => ({
     container: `cluster-example-${mapId}`,

@@ -13,22 +13,13 @@
       'GPU-accelerated Cloud-Optimized GeoTIFF visualization with automatic reprojection.',
   });
 
-  const colorMode = useColorMode();
+  const { mapStyle } = useMapStyle();
   const mapId = useId();
   const mapInstance = shallowRef<Map | null>(null);
 
   const onMapLoaded = (map: Map) => {
     mapInstance.value = map;
   };
-
-  const lightStyle =
-    'https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json';
-  const darkStyle =
-    'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json';
-
-  const mapStyle = computed(() =>
-    colorMode.value === 'dark' ? darkStyle : lightStyle,
-  );
 
   const COG_URL =
     'https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/Q/WD/2020/7/S2A_36QWD_20200701_0_L2A/TCI.tif';

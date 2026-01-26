@@ -10,55 +10,62 @@
       'Dynamic basemap/style switching between satellite, terrain, streets, and more.',
   });
 
+  const config = useRuntimeConfig();
+  const mapsguruApiKey = config.public.mapsguruApiKey;
+
   const mapId = useId();
   const mapRef = ref<MaplibreMap | null>(null);
   const dropdownRef = ref<HTMLDivElement | null>(null);
 
-  const mapStyles: MapStyle[] = [
+  // Style definitions with maps.guru URLs (API key from runtime config)
+  const mapStyles = computed<MapStyle[]>(() => [
     {
-      id: 'positron',
+      id: 'light',
       name: 'Light',
-      url: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+      url: `https://maps.guru/api/v1/styles/standard/light/style.json?key=${mapsguruApiKey}`,
       icon: 'lucide:sun',
     },
     {
-      id: 'dark-matter',
+      id: 'dark',
       name: 'Dark',
-      url: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+      url: `https://maps.guru/api/v1/styles/standard/dark/style.json?key=${mapsguruApiKey}`,
       icon: 'lucide:moon',
     },
-    {
-      id: 'voyager',
-      name: 'Voyager',
-      url: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json',
-      icon: 'lucide:compass',
-    },
-    {
-      id: 'osm-bright',
-      name: 'OSM Bright',
-      url: 'https://tiles.openfreemap.org/styles/bright',
-      icon: 'lucide:map',
-    },
-    {
-      id: 'liberty',
-      name: 'Liberty',
-      url: 'https://tiles.openfreemap.org/styles/liberty',
-      icon: 'lucide:landmark',
-    },
-    {
-      id: 'positron-nolabels',
-      name: 'No Labels',
-      url: 'https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json',
-      icon: 'lucide:eye-off',
-    },
-  ];
 
-  const currentStyleId = ref('positron');
+    {
+      id: 'vintage',
+      name: 'Vintage',
+      url: `https://maps.guru/api/v1/styles/standard/vintage/style.json?key=${mapsguruApiKey}`,
+      icon: 'lucide:scroll',
+    },
+    {
+      id: 'minimal',
+      name: 'Minimal',
+      url: `https://maps.guru/api/v1/styles/standard/minimal/style.json?key=${mapsguruApiKey}`,
+      icon: 'lucide:minimize-2',
+    },
+    {
+      id: 'grayscale',
+      name: 'Grayscale',
+      url: `https://maps.guru/api/v1/styles/standard/grayscale/style.json?key=${mapsguruApiKey}`,
+      icon: 'lucide:contrast',
+    },
+    {
+      id: 'high-contrast',
+      name: 'High Contrast',
+      url: `https://maps.guru/api/v1/styles/standard/high_contrast/style.json?key=${mapsguruApiKey}`,
+      icon: 'lucide:eye',
+    },
+  ]);
+
+  const currentStyleId = ref('light');
   const isDropdownOpen = ref(false);
 
-  const currentStyle = computed(
-    () => mapStyles.find((s) => s.id === currentStyleId.value) ?? mapStyles[0],
-  );
+  const currentStyle = computed(() => {
+    const found = mapStyles.value.find((s) => s.id === currentStyleId.value);
+    // Always return a valid style - default to first if not found
+    return found ?? mapStyles.value[0]!;
+  });
 
   const mapOptions = computed(() => ({
     container: `layer-switcher-map-${mapId}`,
@@ -253,16 +260,25 @@ ${SCRIPT_END}
             <h3 class="mb-2 font-medium">Available Styles</h3>
             <ul class="space-y-2 text-sm text-muted-foreground">
               <li>
-                <strong class="text-foreground">CARTO:</strong> Positron
-                (light), Dark Matter (dark), Voyager (colorful)
+                <strong class="text-foreground">Light & Dark:</strong> Clean
+                themes for day/night modes
+              </li>
+
+              <li>
+                <strong class="text-foreground">Vintage:</strong> Warm,
+                paper-like aesthetic with muted tones
               </li>
               <li>
-                <strong class="text-foreground">OpenFreeMap:</strong> Bright,
-                Liberty - completely free, no API key
+                <strong class="text-foreground">Minimal:</strong> Clean, modern
+                with fewer labels
               </li>
               <li>
-                <strong class="text-foreground">Custom:</strong> Any MapLibre
-                style URL or JSON object
+                <strong class="text-foreground">Grayscale:</strong> Monochrome
+                map with shades of gray
+              </li>
+              <li>
+                <strong class="text-foreground">High Contrast:</strong>
+                Accessibility-focused with strong contrast
               </li>
             </ul>
           </div>

@@ -13,22 +13,13 @@
       'Render NLCD Land Cover classification data with automatic colormap visualization.',
   });
 
-  const colorMode = useColorMode();
+  const { mapStyle } = useMapStyle();
   const mapId = useId();
   const mapInstance = shallowRef<Map | null>(null);
 
   const onMapLoaded = (map: Map) => {
     mapInstance.value = map;
   };
-
-  const lightStyle =
-    'https://basemaps.cartocdn.com/gl/positron-nolabels-gl-style/style.json';
-  const darkStyle =
-    'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json';
-
-  const mapStyle = computed(() =>
-    colorMode.value === 'dark' ? darkStyle : lightStyle,
-  );
 
   // NLCD Land Cover COG - 1.3GB file streamed efficiently via COG tiling
   // Shows land use classification across the continental US
