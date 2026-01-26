@@ -2,40 +2,35 @@
 
 ## [1.6.0](https://github.com/geoql/v-maplibre/compare/v1.5.0...v1.6.0) (2026-01-26)
 
-
 ### Features
 
-* **layers:** add VLayerDeckglMosaic for client-side COG mosaicking ([faf78d0](https://github.com/geoql/v-maplibre/commit/faf78d0581f98073b06b70cd6262752700d3e16d))
-* upgrade deck.gl-raster to v0.2.0 with built-in MosaicLayer ([bd9f065](https://github.com/geoql/v-maplibre/commit/bd9f0656e47fd60d7a795873bfc6bdc24c09e2a5))
-* **v-maplibre:** add VLayerMaplibreIsochrone component ([0f52336](https://github.com/geoql/v-maplibre/commit/0f52336fb199fe817b6665d2102a7fa1c1abfb73))
-
+- **layers:** add VLayerDeckglMosaic for client-side COG mosaicking ([faf78d0](https://github.com/geoql/v-maplibre/commit/faf78d0581f98073b06b70cd6262752700d3e16d))
+- upgrade deck.gl-raster to v0.2.0 with built-in MosaicLayer ([bd9f065](https://github.com/geoql/v-maplibre/commit/bd9f0656e47fd60d7a795873bfc6bdc24c09e2a5))
+- **v-maplibre:** add VLayerMaplibreIsochrone component ([0f52336](https://github.com/geoql/v-maplibre/commit/0f52336fb199fe817b6665d2102a7fa1c1abfb73))
 
 ### Bug Fixes
 
-* **layers:** mosaic renderMode changes now update tiles properly ([368f51d](https://github.com/geoql/v-maplibre/commit/368f51d92b36d773def8ed0be30cf8b5bc88b030))
-* **layers:** use inline colormap shader for NDVI to avoid texture issues ([621f56c](https://github.com/geoql/v-maplibre/commit/621f56c87b0c4fb1358b14cefdcce003d99b914e))
-* resolve luma.gl multiple versions error by centralizing deck.gl stack in catalog ([9d2fbf1](https://github.com/geoql/v-maplibre/commit/9d2fbf1ecaeb8ae7ac4cd4739291ba3b18baf22e))
-* restore getProj4String helper for deck.gl-geotiff geoKeysParser ([d143554](https://github.com/geoql/v-maplibre/commit/d1435541dbb964751479551a1b054b44fed70107))
-* **v-maplibre:** make VMarker coordinates prop required ([112afb1](https://github.com/geoql/v-maplibre/commit/112afb1347b5c2de6e8eb5ce9eb9ee105df41e39))
-* **v-maplibre:** resolve layer initialization race condition in GeoJSON and Isochrone components ([824f926](https://github.com/geoql/v-maplibre/commit/824f9267b1e581e40622f476ed4d3544a1654f14))
-
+- **layers:** mosaic renderMode changes now update tiles properly ([368f51d](https://github.com/geoql/v-maplibre/commit/368f51d92b36d773def8ed0be30cf8b5bc88b030))
+- **layers:** use inline colormap shader for NDVI to avoid texture issues ([621f56c](https://github.com/geoql/v-maplibre/commit/621f56c87b0c4fb1358b14cefdcce003d99b914e))
+- resolve luma.gl multiple versions error by centralizing deck.gl stack in catalog ([9d2fbf1](https://github.com/geoql/v-maplibre/commit/9d2fbf1ecaeb8ae7ac4cd4739291ba3b18baf22e))
+- restore getProj4String helper for deck.gl-geotiff geoKeysParser ([d143554](https://github.com/geoql/v-maplibre/commit/d1435541dbb964751479551a1b054b44fed70107))
+- **v-maplibre:** make VMarker coordinates prop required ([112afb1](https://github.com/geoql/v-maplibre/commit/112afb1347b5c2de6e8eb5ce9eb9ee105df41e39))
+- **v-maplibre:** resolve layer initialization race condition in GeoJSON and Isochrone components ([824f926](https://github.com/geoql/v-maplibre/commit/824f9267b1e581e40622f476ed4d3544a1654f14))
 
 ### Documentation
 
-* **layers:** update TODO and add reserved colormapData prop for future use ([f11e6e6](https://github.com/geoql/v-maplibre/commit/f11e6e69a3660ec21cd8d8c1e780c22cf6fc964e))
-
+- **layers:** update TODO and add reserved colormapData prop for future use ([f11e6e6](https://github.com/geoql/v-maplibre/commit/f11e6e69a3660ec21cd8d8c1e780c22cf6fc964e))
 
 ### Miscellaneous
 
-* migrate to oxfmt/oxlint, integrate maps.guru tiles ([0a2a4b1](https://github.com/geoql/v-maplibre/commit/0a2a4b12f4c98063f34f677f491582df111ae50e))
-* remove flatbush from dependencies (now built into deck.gl-geotiff v0.2.0) ([607e369](https://github.com/geoql/v-maplibre/commit/607e369898bd691e5b25edb83e0fe29e8fdf508b))
-
+- migrate to oxfmt/oxlint, integrate maps.guru tiles ([0a2a4b1](https://github.com/geoql/v-maplibre/commit/0a2a4b12f4c98063f34f677f491582df111ae50e))
+- remove flatbush from dependencies (now built into deck.gl-geotiff v0.2.0) ([607e369](https://github.com/geoql/v-maplibre/commit/607e369898bd691e5b25edb83e0fe29e8fdf508b))
 
 ### Code Refactoring
 
-* extract getProj4Def helper for cleaner EPSG code handling ([1e5a9f3](https://github.com/geoql/v-maplibre/commit/1e5a9f3ecb1c8af07e9aef206641a0af0898d6af))
-* **layers:** remove unused colormap texture code from mosaic layer ([e895ebb](https://github.com/geoql/v-maplibre/commit/e895ebb7adc65c6a70760906480a9cd08a5570c1))
-* **v-maplibre:** move derived layers to layers/maplibre/custom/ ([5a2505a](https://github.com/geoql/v-maplibre/commit/5a2505a9b291b9d6f7ad4ac740f560de132d7ebd))
+- extract getProj4Def helper for cleaner EPSG code handling ([1e5a9f3](https://github.com/geoql/v-maplibre/commit/1e5a9f3ecb1c8af07e9aef206641a0af0898d6af))
+- **layers:** remove unused colormap texture code from mosaic layer ([e895ebb](https://github.com/geoql/v-maplibre/commit/e895ebb7adc65c6a70760906480a9cd08a5570c1))
+- **v-maplibre:** move derived layers to layers/maplibre/custom/ ([5a2505a](https://github.com/geoql/v-maplibre/commit/5a2505a9b291b9d6f7ad4ac740f560de132d7ebd))
 
 ## [1.5.0](https://github.com/geoql/v-maplibre/compare/v1.4.0...v1.5.0) (2026-01-16)
 

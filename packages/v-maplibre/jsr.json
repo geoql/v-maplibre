@@ -18,10 +18,6 @@
     "@geoql/maplibre-gl-wind": "npm:@geoql/maplibre-gl-wind@^0.1.0"
   },
   "publish": {
-    "exclude": [
-      "!dist",
-      "!README.md",
-      "!LICENSE"
-    ]
+    "exclude": ["!dist", "!README.md", "!LICENSE"]
   }
 }
