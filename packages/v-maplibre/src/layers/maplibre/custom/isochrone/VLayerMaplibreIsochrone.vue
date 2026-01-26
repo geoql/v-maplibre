@@ -1,6 +1,13 @@
 <script setup lang="ts">
   import type { Ref } from 'vue';
-  import { onMounted, onBeforeUnmount, ref, watch, computed } from 'vue';
+  import {
+    onMounted,
+    onBeforeUnmount,
+    ref,
+    watch,
+    computed,
+    nextTick,
+  } from 'vue';
   import type {
     GeoJSONSource,
     Map,
@@ -74,6 +81,7 @@
 
   const map = injectStrict(MapKey);
   const loaded: Ref<boolean> = ref(false);
+  const initialized = ref(false);
 
   const sourceId = computed(() => `${props.id}-source`);
   const fillLayerId = computed(() => `${props.id}-fill`);
@@ -286,6 +294,25 @@
     }
   };
 
+  // Single initialization function to prevent race conditions
+  const initializeLayers = async () => {
+    if (initialized.value) return;
+
+    const mapInstance = getMapInstance();
+    if (!mapInstance || !mapInstance.isStyleLoaded()) return;
+    if (!processedData.value) return;
+
+    // Wait for next tick to ensure all watchers are set up
+    await nextTick();
+
+    // Double-check we haven't been initialized during the tick
+    if (initialized.value) return;
+
+    addLayers();
+    setupLayerEvents(mapInstance);
+    initialized.value = true;
+  };
+
   // Watch for data changes
   watch(
     () => props.data,
@@ -314,6 +341,14 @@
     { deep: true },
   );
 
+  // IMPORTANT: watch(loaded) must be defined BEFORE watch(map) with immediate: true
+  // Otherwise, when map watcher sets loaded.value = true, this watcher won't catch it
+  watch(loaded, (value) => {
+    if (value) {
+      initializeLayers();
+    }
+  });
+
   // Watch for map instance changes
   watch(
     map,
@@ -322,34 +357,20 @@
         setupMap(newMap);
         if (newMap.isStyleLoaded()) {
           loaded.value = true;
+          // Also call initializeLayers directly in case loaded watcher already ran
+          initializeLayers();
         }
       }
     },
     { immediate: true },
   );
 
-  // Watch loaded state
-  watch(loaded, (value) => {
-    if (value && processedData.value) {
-      const mapInstance = getMapInstance();
-      if (mapInstance) {
-        addLayers();
-        setupLayerEvents(mapInstance);
-      }
-    }
-  });
-
   // Lifecycle hooks
   onMounted(() => {
-    try {
-      const mapInstance = getMapInstance();
-      if (mapInstance?.isStyleLoaded() && processedData.value) {
-        addLayers();
-        setupLayerEvents(mapInstance);
-      }
-    } catch (error) {
-      console.error('Error mounting isochrone layer:', error);
-    }
+    // Use nextTick to ensure all watchers are registered
+    nextTick(() => {
+      initializeLayers();
+    });
   });
 
   onBeforeUnmount(() => {

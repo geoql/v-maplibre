@@ -1,7 +1,7 @@
 <!-- web/app/lib/v-mapbox/layers/maplibre/geojson/VLayerMaplibreGeojson.vue -->
 <script setup lang="ts">
   import type { Ref } from 'vue';
-  import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
+  import { onMounted, onBeforeUnmount, ref, watch, nextTick } from 'vue';
   import type {
     GeoJSONSource,
     GeoJSONSourceSpecification,
@@ -213,7 +213,54 @@
     }
   };
 
-  // Watchers - Modified to handle timing and prevent unnecessary updates
+  // Track if layer has been initialized to prevent duplicate setup
+  const initialized = ref(false);
+
+  // Initialize layer - single entry point to prevent race conditions
+  const initializeLayer = async () => {
+    if (initialized.value) return;
+
+    const mapInstance = getMapInstance();
+    if (!mapInstance || !mapInstance.isStyleLoaded()) return;
+    if (!hasValidData(props.source.data)) return;
+
+    // Use nextTick to ensure Vue has finished setup
+    await nextTick();
+
+    // Double-check conditions after nextTick
+    if (initialized.value) return;
+    if (!mapInstance.isStyleLoaded()) return;
+
+    addLayer();
+    setupLayerEvents(mapInstance);
+    initialized.value = true;
+  };
+
+  // Watch loaded state - MUST be defined BEFORE watch(map) to catch immediate changes
+  watch(loaded, (value) => {
+    if (value) {
+      initializeLayer();
+    }
+  });
+
+  // Watch for map instance changes
+  watch(
+    map,
+    (newMap) => {
+      if (newMap) {
+        setupMap(newMap);
+        // Check if style is already loaded
+        if (newMap.isStyleLoaded()) {
+          loaded.value = true;
+          // Also try to initialize directly in case watch(loaded) already fired
+          initializeLayer();
+        }
+      }
+    },
+    { immediate: true },
+  );
+
+  // Watchers for updates after initialization
   watch(
     () => props.source,
     (newSource, oldSource) => {
@@ -229,6 +276,10 @@
           // If source doesn't exist yet, add the whole layer
           if (!mapInstance.getSource(props.sourceId)) {
             addLayer();
+            if (!initialized.value) {
+              setupLayerEvents(mapInstance);
+              initialized.value = true;
+            }
           } else {
             // Source exists, just update data
             updateSource();
@@ -240,32 +291,6 @@
   );
 
   watch(() => props.layer, updateLayer, { deep: true });
-
-  // Watch for map instance changes
-  watch(
-    map,
-    (newMap) => {
-      if (newMap) {
-        setupMap(newMap);
-        // Check if style is already loaded
-        if (newMap.isStyleLoaded()) {
-          loaded.value = true;
-        }
-      }
-    },
-    { immediate: true },
-  );
-
-  // Watch loaded state - only add layer when we have valid data
-  watch(loaded, (value) => {
-    if (value && hasValidData(props.source.data)) {
-      const mapInstance = getMapInstance();
-      if (mapInstance) {
-        addLayer();
-        setupLayerEvents(mapInstance);
-      }
-    }
-  });
 
   // Watch for visibility changes
   watch(
@@ -302,15 +327,10 @@
 
   // Lifecycle hooks
   onMounted(() => {
-    try {
-      const mapInstance = getMapInstance();
-      // Only add layer if map is ready AND we have valid data
-      if (mapInstance?.isStyleLoaded() && hasValidData(props.source.data)) {
-        addLayer();
-      }
-    } catch (error) {
-      console.error('Error adding layer:', error);
-    }
+    // Use nextTick to ensure all watchers are set up
+    nextTick(() => {
+      initializeLayer();
+    });
   });
 
   onBeforeUnmount(() => {

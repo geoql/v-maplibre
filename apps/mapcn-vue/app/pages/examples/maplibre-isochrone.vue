@@ -4,7 +4,7 @@
     VMap,
     VControlNavigation,
     VMarker,
-    VLayerMaplibreGeojson,
+    VLayerMaplibreIsochrone,
   } from '@geoql/v-maplibre';
   import type {
     IsochroneResponse,
@@ -149,78 +149,55 @@
     mapLoaded.value = false;
   });
 
-  // Process features: reverse order and add fillColor with # prefix
-  const reversedFeatures = computed(() => {
-    if (!isochroneData.value) return null;
-    return {
-      ...isochroneData.value,
-      features: [...isochroneData.value.features].reverse().map((f) => ({
-        ...f,
-        properties: {
-          ...f.properties,
-          fillColor: `#${f.properties.color}`,
-        },
-      })),
-    };
-  });
-
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VMarker, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+  import { VMap, VMarker, VLayerMaplibreIsochrone } from '@geoql/v-maplibre';
 
-const originPoint = ref([-73.985, 40.758]);
-const isochroneData = ref(null);
+  const originPoint = ref([-73.985, 40.758]);
+  const isochroneData = ref(null);
 
-// Contours - Valhalla expects colors without # prefix
-const contours = [
-  { time: 5, color: '2563eb' },
-  { time: 10, color: '7c3aed' },
-  { time: 15, color: 'db2777' },
-  { time: 20, color: 'ea580c' },
-];
+  // Contours - Valhalla expects colors without # prefix
+  const contours = [
+    { time: 5, color: '2563eb' },
+    { time: 10, color: '7c3aed' },
+    { time: 15, color: 'db2777' },
+    { time: 20, color: 'ea580c' },
+  ];
 
-// Process data: add # prefix for valid MapLibre colors
-const processedData = computed(() => ({
-  ...isochroneData.value,
-  features: isochroneData.value?.features.map(f => ({
-    ...f,
-    properties: { ...f.properties, fillColor: '#' + f.properties.color }
-  })) ?? []
-}));
+  async function fetchIsochrone() {
+    const params = {
+      locations: [{ lat: originPoint.value[1], lon: originPoint.value[0] }],
+      costing: 'auto',
+      contours,
+      polygons: true,
+    };
+    const response = await $fetch('/api/valhalla?endpoint=isochrone&json=' +
+      encodeURIComponent(JSON.stringify(params)));
+    isochroneData.value = response;
+  }
 
-async function fetchIsochrone() {
-  const params = {
-    locations: [{ lat: originPoint.value[1], lon: originPoint.value[0] }],
-    costing: 'auto',
-    contours,
-    polygons: true,
-  };
-  const response = await $fetch('/api/valhalla?endpoint=isochrone&json=' +
-    encodeURIComponent(JSON.stringify(params)));
-  isochroneData.value = response;
-}
+  function handleMarkerDrag(e) {
+    const { lng, lat } = e.target.getLngLat();
+    originPoint.value = [lng, lat];
+    fetchIsochrone();
+  }
+  ${SCRIPT_END}
 
-function handleMarkerDrag(e) {
-  const { lng, lat } = e.target.getLngLat();
-  originPoint.value = [lng, lat];
-  fetchIsochrone();
-}
-${SCRIPT_END}
-
-<template>
-  <VMap :options="mapOptions" @loaded="fetchIsochrone">
-    <VLayerMaplibreGeojson
-      v-if="processedData"
-      source-id="isochrone"
-      layer-id="isochrone-fill"
-      :source="{ type: 'geojson', data: processedData }"
-      :layer="{ type: 'fill', paint: { 'fill-color': ['get', 'fillColor'], 'fill-opacity': 0.5 } }"
-    />
-    <VMarker :coordinates="originPoint" :options="{ draggable: true }" @dragend="handleMarkerDrag" />
-  </VMap>
-</template>`;
+  <template>
+    <VMap :options="mapOptions" @loaded="fetchIsochrone">
+      <!-- VLayerMaplibreIsochrone handles color formatting, fill & line layers -->
+      <VLayerMaplibreIsochrone
+        v-if="isochroneData"
+        id="isochrone"
+        :data="isochroneData"
+        :fill-opacity="0.4"
+        :line-width="2"
+      />
+      <VMarker :coordinates="originPoint" :options="{ draggable: true }" @dragend="handleMarkerDrag" />
+    </VMap>
+  </template>`;
 </script>
 
 <template>
@@ -253,37 +230,17 @@ ${SCRIPT_END}
               >
                 <VControlNavigation position="top-right" />
 
-                <VLayerMaplibreGeojson
-                  v-if="mapLoaded && reversedFeatures"
-                  source-id="isochrone-source"
-                  layer-id="isochrone-fill"
-                  :source="{ type: 'geojson', data: reversedFeatures }"
-                  :layer="{
-                    id: 'isochrone-fill',
-                    type: 'fill',
-                    source: 'isochrone-source',
-                    paint: {
-                      'fill-color': ['get', 'fillColor'],
-                      'fill-opacity': 0.4,
-                    },
-                  }"
-                />
-
-                <VLayerMaplibreGeojson
-                  v-if="mapLoaded && reversedFeatures"
-                  source-id="isochrone-line-source"
-                  layer-id="isochrone-line"
-                  :source="{ type: 'geojson', data: reversedFeatures }"
-                  :layer="{
-                    id: 'isochrone-line',
-                    type: 'line',
-                    source: 'isochrone-line-source',
-                    paint: {
-                      'line-color': ['get', 'fillColor'],
-                      'line-width': 2,
-                      'line-opacity': 0.8,
-                    },
-                  }"
+                <!-- VLayerMaplibreIsochrone handles:
+                     - Color formatting (adds # prefix if needed)
+                     - Reversing feature order for proper stacking
+                     - Both fill and line layers -->
+                <VLayerMaplibreIsochrone
+                  v-if="mapLoaded && isochroneData"
+                  id="isochrone"
+                  :data="isochroneData"
+                  :fill-opacity="0.4"
+                  :line-width="2"
+                  :line-opacity="0.8"
                 />
 
                 <VMarker
