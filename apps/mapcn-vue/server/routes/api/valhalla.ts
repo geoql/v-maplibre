@@ -11,7 +11,12 @@ export default defineCachedEventHandler(
       });
     }
 
-    const validEndpoints = ['route', 'optimized_route', 'isochrone', 'matrix'];
+    const validEndpoints = [
+      'route',
+      'optimized_route',
+      'isochrone',
+      'sources_to_targets',
+    ];
     if (!validEndpoints.includes(endpoint)) {
       throw createError({
         statusCode: 400,

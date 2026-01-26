@@ -102,7 +102,7 @@
         units: 'kilometers',
       };
 
-      const url = `/api/valhalla?endpoint=matrix&json=${encodeURIComponent(JSON.stringify(params))}`;
+      const url = `/api/valhalla?endpoint=sources_to_targets&json=${encodeURIComponent(JSON.stringify(params))}`;
       const data = await $fetch<ValhallaMatrixResponse>(url);
 
       const conns: Connection[] = [];
@@ -268,7 +268,7 @@ async function fetchDistances() {
     units: 'kilometers',
   };
 
-  const url = \`/api/valhalla?endpoint=matrix&json=\${encodeURIComponent(JSON.stringify(params))}\`;
+  const url = \`/api/valhalla?endpoint=sources_to_targets&json=\${encodeURIComponent(JSON.stringify(params))}\`;
   const data = await $fetch(url);
 
   const conns = [];
