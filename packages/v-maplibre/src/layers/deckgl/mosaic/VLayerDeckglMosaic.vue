@@ -257,8 +257,28 @@
     const renderMode = toRaw(props.renderMode);
     const customRenderModules = props.customRenderModules;
 
-    // Create geoKeysParser that resolves EPSG codes
-    // v0.2.0 supports EPSG strings directly in `def` field
+    // Map EPSG codes to proj4 definition strings
+    // proj4.defs() requires actual proj4 strings, not EPSG code references
+    const getProj4String = (epsgCode: number): string => {
+      // NAD83 / UTM zones (26910-26919 for continental US)
+      if (epsgCode >= 26910 && epsgCode <= 26919) {
+        const zone = epsgCode - 26900;
+        return `+proj=utm +zone=${zone} +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs`;
+      }
+      // WGS84
+      if (epsgCode === 4326) {
+        return '+proj=longlat +datum=WGS84 +no_defs +type=crs';
+      }
+      // Web Mercator
+      if (epsgCode === 3857) {
+        return '+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs +type=crs';
+      }
+      throw new Error(
+        `Unknown EPSG code: ${epsgCode}. Add proj4 string to getProj4String().`,
+      );
+    };
+
+    // Create geoKeysParser that resolves EPSG codes to proj4 strings
     const geoKeysParser = async (geoKeys: Record<string, unknown>) => {
       const code =
         (geoKeys.ProjectedCSTypeGeoKey as number) ||
@@ -269,9 +289,11 @@
       const crs = proj4Defs(crsString);
       if (!crs) throw new Error(`Unknown CRS: ${crsString}`);
 
-      // v0.2.0 supports EPSG string directly and handles unit normalization
+      // Get proj4 string for the def field (required by deck.gl-geotiff)
+      const proj4String = getProj4String(code);
+
       return {
-        def: crsString,
+        def: proj4String,
         parsed: crs,
         coordinatesUnits: crs.units as 'm' | 'metre' | 'degree',
       };
