@@ -59,4 +59,9 @@ export default createConfigForNuxt({
       },
     },
   })
-  .append(...oxlint.configs['flat/recommended']);
+  .append(...oxlint.configs['flat/recommended'])
+  .append({
+    rules: {
+      'unicorn/number-literal-case': 'off',
+    },
+  });
