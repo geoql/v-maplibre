@@ -424,7 +424,7 @@ ${SCRIPT_END}
               :max="100"
               :step="0.1"
               :disabled="routeCoordinates.length === 0"
-              @update:model-value="(val) => setProgress(val[0] ?? 0)"
+              @update:model-value="(val) => setProgress(val?.[0] ?? 0)"
             />
           </div>
 
