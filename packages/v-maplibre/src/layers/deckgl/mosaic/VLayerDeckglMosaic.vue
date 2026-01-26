@@ -2,16 +2,10 @@
   /**
    * VLayerDeckglMosaic - Client-side COG mosaic layer for STAC items
    *
-   * TODO: When @developmentseed/deck.gl-geotiff releases a version > 0.1.0 with MosaicLayer:
-   * 1. Remove inline MosaicTileset2D and MosaicLayer classes - use from package instead
-   * 2. Remove getProj4String() helper - newer version supports EPSG strings in `def` field
-   * 3. Remove unit normalization ('m' -> 'metre') - newer version handles this
-   * 4. Import MosaicLayer directly: import { MosaicLayer } from '@developmentseed/deck.gl-geotiff'
-   * 5. Restore Colormap module usage for NDVI with colormapData prop support (currently using inline shader)
-   * 6. See working example: https://github.com/developmentseed/deck.gl-raster/blob/main/examples/naip-mosaic/src/App.tsx
+   * Uses @developmentseed/deck.gl-geotiff v0.2.0 MosaicLayer for efficient
+   * client-side rendering of multiple COGs from STAC APIs.
    *
-   * Current hacks are needed because npm v0.1.0 doesn't include MosaicLayer from PR #184
-   * https://github.com/developmentseed/deck.gl-raster/pull/184
+   * @see https://github.com/developmentseed/deck.gl-raster/blob/main/examples/naip-mosaic/src/App.tsx
    */
   import {
     onMounted,
@@ -21,19 +15,18 @@
     markRaw,
     toRaw,
   } from 'vue';
-  import type { Color, PickingInfo, Viewport } from '@deck.gl/core';
-  import type { _TileLoadProps } from '@deck.gl/geo-layers';
+  import type { Color, PickingInfo } from '@deck.gl/core';
   import type { GeoTIFF, GeoTIFFImage } from 'geotiff';
-
-  // TileIndex is not exported from @deck.gl/geo-layers, define locally
-  type TileIndex = { x: number; y: number; z: number };
-
-  // Re-export TileLoadProps for internal use
-  type TileLoadProps = _TileLoadProps;
   import type { Device, Texture } from '@luma.gl/core';
   import type { RasterModule } from '@developmentseed/deck.gl-raster';
-  import type { COGLayerProps } from '@developmentseed/deck.gl-geotiff';
+  import type {
+    COGLayerProps,
+    MosaicLayerProps,
+    MosaicSource as BaseMosaicSource,
+  } from '@developmentseed/deck.gl-geotiff';
   import type { Pool } from 'geotiff';
+  import { injectStrict, MapKey } from '../../../utils';
+  import { useDeckOverlay } from '../_shared/useDeckOverlay';
 
   // GetTileDataOptions is not exported from @developmentseed/deck.gl-geotiff, define locally
   interface GetTileDataOptions {
@@ -42,25 +35,17 @@
     signal?: AbortSignal;
     pool: Pool;
   }
-  import { injectStrict, MapKey } from '../../../utils';
-  import { useDeckOverlay } from '../_shared/useDeckOverlay';
 
   /**
    * A STAC-like item with bounding box and COG asset URL
+   * Extends the base MosaicSource from deck.gl-geotiff with asset info
    */
-  export interface MosaicSource {
-    /** Bounding box [minX, minY, maxX, maxY] in WGS84 */
-    bbox: [number, number, number, number];
+  export interface MosaicSource extends BaseMosaicSource {
     /** Asset containing the COG URL */
     assets: {
       image: { href: string };
     };
   }
-
-  /**
-   * Extended TileIndex that includes MosaicSource data
-   */
-  interface MosaicTileIndex extends TileIndex, MosaicSource {}
 
   /**
    * Render mode for the mosaic layer
@@ -92,7 +77,6 @@
     /**
      * Custom colormap data for NDVI (Uint8ClampedArray of RGBA values, 256 colors)
      * @reserved Currently not implemented - NDVI uses built-in cfastie colormap.
-     * Will be supported when deck.gl-geotiff >0.1.0 is released with proper Colormap module support.
      */
     colormapData?: Uint8ClampedArray;
     /**
@@ -153,13 +137,10 @@
 
   // Loaded module references
   interface LoadedModules {
+    MosaicLayer: typeof import('@developmentseed/deck.gl-geotiff').MosaicLayer;
     COGLayer: typeof import('@developmentseed/deck.gl-geotiff').COGLayer;
     CreateTexture: RasterModule['module'];
-    TileLayer: typeof import('@deck.gl/geo-layers').TileLayer;
-    Tileset2D: typeof import('@deck.gl/geo-layers')._Tileset2D;
-    CompositeLayer: typeof import('@deck.gl/core').CompositeLayer;
     fromUrl: typeof import('geotiff').fromUrl;
-    Flatbush: typeof import('flatbush').default;
     proj4Defs: (
       name: string,
       def?: string,
@@ -233,51 +214,6 @@
   };
 
   /**
-   * Create a custom Tileset2D class that uses Flatbush spatial indexing
-   */
-  function createMosaicTilesetClass(
-    Tileset2D: LoadedModules['Tileset2D'],
-    Flatbush: LoadedModules['Flatbush'],
-    mosaicSources: MosaicSource[],
-  ) {
-    // Convert MosaicSource[] to MosaicTileIndex[] with x, y, z
-    const indexedSources: MosaicTileIndex[] = mosaicSources.map(
-      (source, i) => ({
-        x: i,
-        y: 0,
-        z: 0,
-        ...source,
-      }),
-    );
-
-    // Build spatial index
-    const spatialIndex = new Flatbush(mosaicSources.length);
-    for (const source of mosaicSources) {
-      const [minX, minY, maxX, maxY] = source.bbox;
-      spatialIndex.add(minX, minY, maxX, maxY);
-    }
-    spatialIndex.finish();
-
-    return class MosaicTileset2D extends Tileset2D {
-      getTileIndices(params: {
-        viewport: Viewport;
-        maxZoom?: number;
-        minZoom?: number;
-      }): TileIndex[] {
-        const { viewport, maxZoom, minZoom } = params;
-        if (viewport.zoom < (minZoom ?? -Infinity)) return [];
-        if (viewport.zoom > (maxZoom ?? Infinity)) return [];
-
-        const bounds = viewport.getBounds() as [number, number, number, number];
-        const indices = spatialIndex.search(...bounds);
-
-        // Return MosaicTileIndex which extends TileIndex
-        return indices.map((i) => indexedSources[i]) as TileIndex[];
-      }
-    };
-  }
-
-  /**
    * Get render modules based on render mode
    */
   function getRenderModules(
@@ -305,54 +241,24 @@
     }
 
     // NDVI - use built-in colormap shader for reliability
-    // The external Colormap module from deck.gl-raster can be finicky with texture passing
     return [...base, { module: NDVIWithColormap }, { module: SetAlpha1 }];
   }
 
   /**
-   * Create the mosaic layer
+   * Create the mosaic layer using deck.gl-geotiff v0.2.0 MosaicLayer
    */
   function createLayer() {
     const mods = modules.value;
     if (!mods || !props.sources.length) return null;
 
-    const {
-      COGLayer,
-      CreateTexture,
-      TileLayer,
-      Tileset2D,
-      CompositeLayer,
-      fromUrl,
-      Flatbush,
-      proj4Defs,
-    } = mods;
+    const { MosaicLayer, COGLayer, CreateTexture, fromUrl, proj4Defs } = mods;
 
     const rawSources = toRaw(props.sources);
     const renderMode = toRaw(props.renderMode);
     const customRenderModules = props.customRenderModules;
 
-    // Map EPSG codes to proj4 definition strings
-    // The published version of deck.gl-geotiff (0.1.0) requires proj4 strings, not EPSG codes
-    const getProj4String = (epsgCode: number): string => {
-      // NAD83 / UTM zones (26910-26919 for continental US)
-      if (epsgCode >= 26910 && epsgCode <= 26919) {
-        const zone = epsgCode - 26900;
-        return `+proj=utm +zone=${zone} +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs +type=crs`;
-      }
-      // WGS84
-      if (epsgCode === 4326) {
-        return '+proj=longlat +datum=WGS84 +no_defs +type=crs';
-      }
-      // Web Mercator
-      if (epsgCode === 3857) {
-        return '+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs +type=crs';
-      }
-      throw new Error(
-        `Unknown EPSG code: ${epsgCode}. Add proj4 string to getProj4String().`,
-      );
-    };
-
     // Create geoKeysParser that resolves EPSG codes
+    // v0.2.0 supports EPSG strings directly in `def` field
     const geoKeysParser = async (geoKeys: Record<string, unknown>) => {
       const code =
         (geoKeys.ProjectedCSTypeGeoKey as number) ||
@@ -363,22 +269,11 @@
       const crs = proj4Defs(crsString);
       if (!crs) throw new Error(`Unknown CRS: ${crsString}`);
 
-      // deck.gl-geotiff 0.1.0 requires proj4 string for def, not EPSG code
-      const proj4String = getProj4String(code);
-
-      // Normalize units: proj4 returns 'm' but deck.gl-geotiff expects 'metre'
-      const rawUnits = crs.units;
-      const coordinatesUnits =
-        rawUnits === 'm' || rawUnits === 'meter' || rawUnits === 'meters'
-          ? 'metre'
-          : rawUnits === 'degree' || rawUnits === 'degrees'
-            ? 'degree'
-            : rawUnits;
-
+      // v0.2.0 supports EPSG string directly and handles unit normalization
       return {
-        def: proj4String,
+        def: crsString,
         parsed: crs,
-        coordinatesUnits,
+        coordinatesUnits: crs.units as 'm' | 'metre' | 'degree',
       };
     };
 
@@ -400,121 +295,57 @@
       return { texture, width: rasterData.width, height: rasterData.height };
     };
 
-    // Create MosaicTileset class
-    const MosaicTilesetClass = createMosaicTilesetClass(
-      Tileset2D,
-      Flatbush,
-      rawSources,
-    );
-
-    // Create MosaicLayer class extending CompositeLayer
-    class MosaicLayer extends CompositeLayer<{
-      sources: MosaicSource[];
-      maxCacheSize?: number;
-      beforeId?: string;
-      renderMode?: MosaicRenderMode;
-    }> {
-      static layerName = 'MosaicLayer';
-
-      renderLayers() {
-        const {
-          sources,
-          maxCacheSize,
-          id,
-          renderMode: layerRenderMode,
-        } = this.props;
-        if (!sources?.length) return null;
-
-        // Use renderMode from layer props for proper reactivity
-        const effectiveRenderMode = layerRenderMode ?? renderMode;
-
-        return new TileLayer<{
-          source: MosaicTileIndex;
-          data: GeoTIFF;
-          signal?: AbortSignal;
-        }>({
-          id: `mosaic-tile-${id}`,
-          TilesetClass: MosaicTilesetClass,
-          maxCacheSize,
-          // Force sublayer re-render when renderMode changes
-          updateTriggers: {
-            renderSubLayers: [effectiveRenderMode],
-          },
-          getTileData: async (tileProps: TileLoadProps) => {
-            // tileProps.index is our MosaicTileIndex
-            const source = tileProps.index as unknown as MosaicTileIndex;
-            const { signal } = tileProps;
-            try {
-              const tiff = await fromUrl(source.assets.image.href, {}, signal);
-              emit('sourceLoad', source);
-              return { source, data: tiff, signal };
-            } catch (error) {
-              emit('error', error as Error, source);
-              // Re-throw so TileLayer handles the error appropriately
-              throw error;
-            }
-          },
-          renderSubLayers: (subProps) => {
-            const data = subProps.data as {
-              source: MosaicTileIndex;
-              data: GeoTIFF;
-              signal?: AbortSignal;
-            } | null;
-            if (!data?.data) return null;
-            const { source, data: tiff, signal } = data;
-
-            // Create COGLayer - signal is passed via getTileData options internally
-            return new COGLayer<TextureData>({
-              id: `cog-${source.assets.image.href}-${effectiveRenderMode}`,
-              geotiff: tiff,
-              geoKeysParser,
-              getTileData,
-              renderTile: (tileData) =>
-                getRenderModules(
-                  effectiveRenderMode,
-                  tileData.texture,
-                  { CreateTexture },
-                  customRenderModules,
-                ),
-              // Pass signal to allow aborting when tile goes out of viewport
-              // Using type assertion as the vendored types may not have this property
-              ...(signal ? { signal } : {}),
-            } as COGLayerProps<TextureData>);
-          },
-        });
-      }
-    }
-
-    const layer = new MosaicLayer({
+    // Use the built-in MosaicLayer from deck.gl-geotiff v0.2.0
+    const layer = new MosaicLayer<MosaicSource, GeoTIFF>({
       id: toRaw(props.id),
       sources: rawSources,
       maxCacheSize: toRaw(props.maxCacheSize),
-      beforeId: toRaw(props.beforeId),
-      renderMode: renderMode,
-    });
+
+      // Fetch GeoTIFF for each source
+      getSource: async (source, { signal }) => {
+        try {
+          const tiff = await fromUrl(source.assets.image.href, {}, signal);
+          emit('sourceLoad', source);
+          return tiff;
+        } catch (error) {
+          emit('error', error as Error, source);
+          throw error;
+        }
+      },
+
+      // Render each source as a COGLayer
+      renderSource: (source, { data, signal }) => {
+        if (!data) return null;
+
+        return new COGLayer<TextureData>({
+          id: `cog-${source.assets.image.href}-${renderMode}`,
+          geotiff: data,
+          geoKeysParser,
+          getTileData,
+          renderTile: (tileData) =>
+            getRenderModules(
+              renderMode,
+              tileData.texture,
+              { CreateTexture },
+              customRenderModules,
+            ),
+          signal,
+        } as COGLayerProps<TextureData>);
+      },
+    } as MosaicLayerProps<MosaicSource, GeoTIFF>);
 
     return markRaw(layer);
   }
 
   async function initializeLayer() {
     try {
-      const [
-        geotiffModule,
-        rasterModule,
-        geoLayersModule,
-        coreModule,
-        geotiffLib,
-        flatbushModule,
-        proj4Module,
-      ] = await Promise.all([
-        import('@developmentseed/deck.gl-geotiff'),
-        import('@developmentseed/deck.gl-raster/gpu-modules'),
-        import('@deck.gl/geo-layers'),
-        import('@deck.gl/core'),
-        import('geotiff'),
-        import('flatbush'),
-        import('proj4'),
-      ]);
+      const [geotiffModule, rasterModule, geotiffLib, proj4Module] =
+        await Promise.all([
+          import('@developmentseed/deck.gl-geotiff'),
+          import('@developmentseed/deck.gl-raster/gpu-modules'),
+          import('geotiff'),
+          import('proj4'),
+        ]);
 
       // Get proj4.defs function
       const proj4Fn = proj4Module.default;
@@ -528,13 +359,10 @@
       }
 
       modules.value = markRaw({
+        MosaicLayer: geotiffModule.MosaicLayer,
         COGLayer: geotiffModule.COGLayer,
         CreateTexture: rasterModule.CreateTexture,
-        TileLayer: geoLayersModule.TileLayer,
-        Tileset2D: geoLayersModule._Tileset2D,
-        CompositeLayer: coreModule.CompositeLayer,
         fromUrl: geotiffLib.fromUrl,
-        Flatbush: flatbushModule.default,
         proj4Defs: proj4Fn.defs,
       });
 
@@ -546,7 +374,7 @@
     } catch (error) {
       console.error('[deck.gl-mosaic] Error loading MosaicLayer:', error);
       console.error(
-        'Make sure @developmentseed/deck.gl-geotiff, @developmentseed/deck.gl-raster, geotiff, flatbush, and proj4 are installed',
+        'Make sure @developmentseed/deck.gl-geotiff, @developmentseed/deck.gl-raster, geotiff, and proj4 are installed',
       );
       emit('error', error as Error);
     }

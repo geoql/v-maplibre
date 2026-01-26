@@ -47,7 +47,7 @@ Install these packages based on the features you need:
 bun add @developmentseed/deck.gl-raster @developmentseed/deck.gl-geotiff geotiff
 
 # COG Mosaic layers (client-side mosaicking of multiple COGs)
-bun add @developmentseed/deck.gl-raster @developmentseed/deck.gl-geotiff geotiff flatbush proj4
+bun add @developmentseed/deck.gl-raster @developmentseed/deck.gl-geotiff geotiff proj4
 
 # LiDAR viewer control
 bun add maplibre-gl-lidar
