@@ -73,17 +73,26 @@
     selectedMetric.value === 'time' ? timeContours : distanceContours,
   );
 
+  // Helper to remove # from hex color for Valhalla API
+  function toValhallaColor(hex: string): string {
+    return hex.replace('#', '');
+  }
+
   async function fetchIsochrone(): Promise<void> {
     isLoading.value = true;
     error.value = null;
 
     try {
+      // Valhalla expects colors without # prefix
       const contours =
         selectedMetric.value === 'time'
-          ? timeContours.map((c) => ({ time: c.time, color: c.color }))
+          ? timeContours.map((c) => ({
+              time: c.time,
+              color: toValhallaColor(c.color),
+            }))
           : distanceContours.map((c) => ({
               distance: c.distance,
-              color: c.color,
+              color: toValhallaColor(c.color),
             }));
 
       const params = {
@@ -119,9 +128,10 @@
   }
 
   function handleMarkerDragEnd(event: {
-    lngLat: { lng: number; lat: number };
+    target: { getLngLat: () => { lng: number; lat: number } };
   }): void {
-    originPoint.value = [event.lngLat.lng, event.lngLat.lat];
+    const lngLat = event.target.getLngLat();
+    originPoint.value = [lngLat.lng, lngLat.lat];
     fetchIsochrone();
   }
 
@@ -156,29 +166,16 @@ import { VMap, VMarker, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
 const originPoint = ref([-73.985, 40.758]);
 const isochroneData = ref(null);
 const selectedMode = ref('auto'); // 'auto' | 'bicycle' | 'pedestrian'
-const selectedMetric = ref('time'); // 'time' | 'distance'
 
-// Time-based contours (minutes)
-const timeContours = [
-  { time: 5, color: '#2563eb' },
-  { time: 10, color: '#7c3aed' },
-  { time: 15, color: '#db2777' },
-  { time: 20, color: '#ea580c' },
-];
-
-// Distance-based contours (kilometers)
-const distanceContours = [
-  { distance: 2, color: '#2563eb' },
-  { distance: 5, color: '#7c3aed' },
-  { distance: 10, color: '#db2777' },
-  { distance: 15, color: '#ea580c' },
+// Time contours (minutes) - colors without # for Valhalla API
+const contours = [
+  { time: 5, color: '2563eb' },
+  { time: 10, color: '7c3aed' },
+  { time: 15, color: 'db2777' },
+  { time: 20, color: 'ea580c' },
 ];
 
 async function fetchIsochrone() {
-  const contours = selectedMetric.value === 'time'
-    ? timeContours.map(c => ({ time: c.time, color: c.color }))
-    : distanceContours.map(c => ({ distance: c.distance, color: c.color }));
-
   const params = {
     locations: [{ lat: originPoint.value[1], lon: originPoint.value[0] }],
     costing: selectedMode.value,
@@ -191,7 +188,8 @@ async function fetchIsochrone() {
 }
 
 function handleMarkerDrag(event) {
-  originPoint.value = [event.lngLat.lng, event.lngLat.lat];
+  const lngLat = event.target.getLngLat();
+  originPoint.value = [lngLat.lng, lngLat.lat];
   fetchIsochrone();
 }
 ${SCRIPT_END}
@@ -205,7 +203,10 @@ ${SCRIPT_END}
       :source="{ type: 'geojson', data: isochroneData }"
       :layer="{
         type: 'fill',
-        paint: { 'fill-color': ['get', 'fillColor'], 'fill-opacity': 0.3 }
+        paint: {
+          'fill-color': ['concat', '#', ['get', 'color']],
+          'fill-opacity': 0.4
+        }
       }"
     />
     <VMarker
@@ -257,8 +258,8 @@ ${SCRIPT_END}
                     type: 'fill',
                     source: 'isochrone-source',
                     paint: {
-                      'fill-color': ['get', 'fillColor'],
-                      'fill-opacity': 0.35,
+                      'fill-color': ['concat', '#', ['get', 'color']],
+                      'fill-opacity': 0.4,
                     },
                   }"
                 />
@@ -273,8 +274,9 @@ ${SCRIPT_END}
                     type: 'line',
                     source: 'isochrone-line-source',
                     paint: {
-                      'line-color': ['get', 'color'],
+                      'line-color': ['concat', '#', ['get', 'color']],
                       'line-width': 2,
+                      'line-opacity': 0.8,
                     },
                   }"
                 />
