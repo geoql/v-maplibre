@@ -2,6 +2,25 @@
   "name": "@geoql/mapcn-vue",
   "version": "0.0.1",
   "description": "Beautiful map components for Vue. Built on @geoql/v-maplibre, styled with Tailwind CSS, works with shadcn-vue.",
+  "keywords": [
+    "components",
+    "maplibre",
+    "maps",
+    "shadcn",
+    "tailwind",
+    "vue"
+  ],
+  "license": "MIT",
+  "author": {
+    "name": "Vinayak Kulkarni",
+    "email": "inbox.vinayak@gmail.com",
+    "url": "https://vinayakkulkarni.dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/geoql/v-maplibre.git",
+    "directory": "packages/mapcn-vue"
+  },
   "type": "module",
   "scripts": {
     "build": "npx shadcn-vue build",
@@ -17,28 +36,9 @@
     "vue": "catalog:"
   },
   "peerDependencies": {
-    "vue": "^3.5.0",
+    "@vueuse/core": "^13.0.0",
     "tailwindcss": "^4.0.0",
-    "@vueuse/core": "^13.0.0"
+    "vue": "^3.5.0"
   },
-  "packageManager": "bun@1.3.6",
-  "keywords": [
-    "vue",
-    "maplibre",
-    "maps",
-    "shadcn",
-    "tailwind",
-    "components"
-  ],
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/geoql/v-maplibre.git",
-    "directory": "packages/mapcn-vue"
-  },
-  "author": {
-    "name": "Vinayak Kulkarni",
-    "email": "inbox.vinayak@gmail.com",
-    "url": "https://vinayakkulkarni.dev"
-  }
+  "packageManager": "bun@1.3.6"
 }

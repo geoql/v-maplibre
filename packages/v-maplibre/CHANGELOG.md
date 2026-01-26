@@ -2,96 +2,84 @@
 
 ## [1.5.0](https://github.com/geoql/v-maplibre/compare/v1.4.0...v1.5.0) (2026-01-16)
 
-
 ### Features
 
-* use maplibre-gl-wind@0.2.0 for wind particle visualization ([f27a526](https://github.com/geoql/v-maplibre/commit/f27a526e9f42cffdefe9459e2f1c1af0f4e0878e))
-
+- use maplibre-gl-wind@0.2.0 for wind particle visualization ([f27a526](https://github.com/geoql/v-maplibre/commit/f27a526e9f42cffdefe9459e2f1c1af0f4e0878e))
 
 ### Bug Fixes
 
-* **jsr:** add deck.gl peer deps to imports map for JSR publishing ([c962177](https://github.com/geoql/v-maplibre/commit/c962177881ecc1871dd94e32062eab5f33898d1e))
-* update deck.gl layer count test for wind particle layer ([87d38b5](https://github.com/geoql/v-maplibre/commit/87d38b525e63a08ea699ee21e53773c1f1587b77))
-* **v-maplibre:** add characterSet prop to TextLayer to fix SDF initialization error ([53a021f](https://github.com/geoql/v-maplibre/commit/53a021f50b55dbadfc941f8511ea18e184737070))
-* **v-maplibre:** add fontSettings with sdf:true to fix TextLayer initialization ([3ff2579](https://github.com/geoql/v-maplibre/commit/3ff2579c29a5b01acd0a07bc3b96dfc7e66149ba))
-
+- **jsr:** add deck.gl peer deps to imports map for JSR publishing ([c962177](https://github.com/geoql/v-maplibre/commit/c962177881ecc1871dd94e32062eab5f33898d1e))
+- update deck.gl layer count test for wind particle layer ([87d38b5](https://github.com/geoql/v-maplibre/commit/87d38b525e63a08ea699ee21e53773c1f1587b77))
+- **v-maplibre:** add characterSet prop to TextLayer to fix SDF initialization error ([53a021f](https://github.com/geoql/v-maplibre/commit/53a021f50b55dbadfc941f8511ea18e184737070))
+- **v-maplibre:** add fontSettings with sdf:true to fix TextLayer initialization ([3ff2579](https://github.com/geoql/v-maplibre/commit/3ff2579c29a5b01acd0a07bc3b96dfc7e66149ba))
 
 ### Documentation
 
-* add all required deck.gl packages to installation instructions ([9eddfa7](https://github.com/geoql/v-maplibre/commit/9eddfa78421eb8c3c51448dca0eb8418c73a4867))
-* add maplibre-gl-wind to required peer dependencies ([045d2f8](https://github.com/geoql/v-maplibre/commit/045d2f8467cc970f54280bd73635e7e55430c3f4))
-* add wind particle layer documentation and mapcn-vue registry ([cfc0b62](https://github.com/geoql/v-maplibre/commit/cfc0b62ec439cfba53fc80a99d1111b581792187))
-* clarify that deck.gl core packages are required peer dependencies ([27562b0](https://github.com/geoql/v-maplibre/commit/27562b0996c8470ffb54635aaa35cf7b6f10c89e))
-* use brace expansion for deck.gl packages in install commands ([d6f1318](https://github.com/geoql/v-maplibre/commit/d6f13187110db0fabcf72e2377dfb3e6391bcffe))
-* **v-maplibre:** add COG, LiDAR, IDW, and route layer to features list ([2e2812e](https://github.com/geoql/v-maplibre/commit/2e2812ea8a6507fa83867850e64d62b5dbee8859))
-
+- add all required deck.gl packages to installation instructions ([9eddfa7](https://github.com/geoql/v-maplibre/commit/9eddfa78421eb8c3c51448dca0eb8418c73a4867))
+- add maplibre-gl-wind to required peer dependencies ([045d2f8](https://github.com/geoql/v-maplibre/commit/045d2f8467cc970f54280bd73635e7e55430c3f4))
+- add wind particle layer documentation and mapcn-vue registry ([cfc0b62](https://github.com/geoql/v-maplibre/commit/cfc0b62ec439cfba53fc80a99d1111b581792187))
+- clarify that deck.gl core packages are required peer dependencies ([27562b0](https://github.com/geoql/v-maplibre/commit/27562b0996c8470ffb54635aaa35cf7b6f10c89e))
+- use brace expansion for deck.gl packages in install commands ([d6f1318](https://github.com/geoql/v-maplibre/commit/d6f13187110db0fabcf72e2377dfb3e6391bcffe))
+- **v-maplibre:** add COG, LiDAR, IDW, and route layer to features list ([2e2812e](https://github.com/geoql/v-maplibre/commit/2e2812ea8a6507fa83867850e64d62b5dbee8859))
 
 ### Code Refactoring
 
-* **mapcn-vue:** split maplibre-route page into modular components ([be62229](https://github.com/geoql/v-maplibre/commit/be6222998997ef5faf1a931b4e1d18065c869bf6))
+- **mapcn-vue:** split maplibre-route page into modular components ([be62229](https://github.com/geoql/v-maplibre/commit/be6222998997ef5faf1a931b4e1d18065c869bf6))
 
 ## [1.4.0](https://github.com/geoql/v-maplibre/compare/v1.3.0...v1.4.0) (2026-01-13)
 
-
 ### Features
 
-* **mapcn-vue:** add multi-stop optimized route example with draggable markers ([97423dd](https://github.com/geoql/v-maplibre/commit/97423dd241e093bafba1de4cf8d8ee6f50d2a2d0))
-* **v-maplibre:** add deck.gl-raster COG and GeoTIFF layer components ([9a8dc03](https://github.com/geoql/v-maplibre/commit/9a8dc03220092e085dc4da14647ab30b4cb0a16e))
-* **v-maplibre:** add GeoTIFF layer example and fix reactive proxy issues ([9d006a7](https://github.com/geoql/v-maplibre/commit/9d006a7e1aa2f346d75497bba07f8c0ef01e9476))
-* **v-maplibre:** add VLayerMaplibreRoute component and route planning example ([b36cadd](https://github.com/geoql/v-maplibre/commit/b36caddee135feda375aeb4d15cd74233a1a070c))
-
+- **mapcn-vue:** add multi-stop optimized route example with draggable markers ([97423dd](https://github.com/geoql/v-maplibre/commit/97423dd241e093bafba1de4cf8d8ee6f50d2a2d0))
+- **v-maplibre:** add deck.gl-raster COG and GeoTIFF layer components ([9a8dc03](https://github.com/geoql/v-maplibre/commit/9a8dc03220092e085dc4da14647ab30b4cb0a16e))
+- **v-maplibre:** add GeoTIFF layer example and fix reactive proxy issues ([9d006a7](https://github.com/geoql/v-maplibre/commit/9d006a7e1aa2f346d75497bba07f8c0ef01e9476))
+- **v-maplibre:** add VLayerMaplibreRoute component and route planning example ([b36cadd](https://github.com/geoql/v-maplibre/commit/b36caddee135feda375aeb4d15cd74233a1a070c))
 
 ### Bug Fixes
 
-* **mapcn-vue:** improve stop number badge visibility ([3f0ebf3](https://github.com/geoql/v-maplibre/commit/3f0ebf3aed6db1ab9be3e5845adbcab1af1b2bcb))
-* **v-maplibre:** fix VMarker setRef type for Vue ref compatibility ([5a651ba](https://github.com/geoql/v-maplibre/commit/5a651ba7e8cb53b400ef1c71dd32d3a3edabb9aa))
-* **v-maplibre:** only render popup when default slot has content ([bedbb3f](https://github.com/geoql/v-maplibre/commit/bedbb3fa5fb4aee6c4b7e7813ceb959c02cf194b))
-* **v-maplibre:** prevent undefined props from overriding COGLayer defaults ([6805b18](https://github.com/geoql/v-maplibre/commit/6805b181ca0534a28a439e092d475e1c7b334d52))
-* **v-maplibre:** properly detect #markers slot before creating marker ([3f0ebf3](https://github.com/geoql/v-maplibre/commit/3f0ebf3aed6db1ab9be3e5845adbcab1af1b2bcb))
-* **v-maplibre:** remove broken VLayerDeckglGeoTIFF component ([2151632](https://github.com/geoql/v-maplibre/commit/2151632412a437cd2fe756313caebc1fd4f7774d))
-* **v-maplibre:** wait for slot ref before creating marker ([97423dd](https://github.com/geoql/v-maplibre/commit/97423dd241e093bafba1de4cf8d8ee6f50d2a2d0))
-
+- **mapcn-vue:** improve stop number badge visibility ([3f0ebf3](https://github.com/geoql/v-maplibre/commit/3f0ebf3aed6db1ab9be3e5845adbcab1af1b2bcb))
+- **v-maplibre:** fix VMarker setRef type for Vue ref compatibility ([5a651ba](https://github.com/geoql/v-maplibre/commit/5a651ba7e8cb53b400ef1c71dd32d3a3edabb9aa))
+- **v-maplibre:** only render popup when default slot has content ([bedbb3f](https://github.com/geoql/v-maplibre/commit/bedbb3fa5fb4aee6c4b7e7813ceb959c02cf194b))
+- **v-maplibre:** prevent undefined props from overriding COGLayer defaults ([6805b18](https://github.com/geoql/v-maplibre/commit/6805b181ca0534a28a439e092d475e1c7b334d52))
+- **v-maplibre:** properly detect #markers slot before creating marker ([3f0ebf3](https://github.com/geoql/v-maplibre/commit/3f0ebf3aed6db1ab9be3e5845adbcab1af1b2bcb))
+- **v-maplibre:** remove broken VLayerDeckglGeoTIFF component ([2151632](https://github.com/geoql/v-maplibre/commit/2151632412a437cd2fe756313caebc1fd4f7774d))
+- **v-maplibre:** wait for slot ref before creating marker ([97423dd](https://github.com/geoql/v-maplibre/commit/97423dd241e093bafba1de4cf8d8ee6f50d2a2d0))
 
 ### Miscellaneous
 
-* remove stale files from pre-monorepo structure ([b4fc0f4](https://github.com/geoql/v-maplibre/commit/b4fc0f430553694190eed4fc037541fa5c0ba2e7))
+- remove stale files from pre-monorepo structure ([b4fc0f4](https://github.com/geoql/v-maplibre/commit/b4fc0f430553694190eed4fc037541fa5c0ba2e7))
 
 ## [1.3.0](https://github.com/geoql/v-maplibre/compare/v1.2.4...v1.3.0) (2026-01-13)
 
-
 ### Features
 
-* add LiDAR control integration with shadcn theming ([0d8fb0d](https://github.com/geoql/v-maplibre/commit/0d8fb0d3057f826d65bdfb8e8b7ee927932dee3a))
-* **v-maplibre:** add _animations/_lighting to ScenegraphLayer, improve example ([dad8b3b](https://github.com/geoql/v-maplibre/commit/dad8b3b3abb536f37792a783ab6554a18a916c6d))
-
+- add LiDAR control integration with shadcn theming ([0d8fb0d](https://github.com/geoql/v-maplibre/commit/0d8fb0d3057f826d65bdfb8e8b7ee927932dee3a))
+- **v-maplibre:** add \_animations/\_lighting to ScenegraphLayer, improve example ([dad8b3b](https://github.com/geoql/v-maplibre/commit/dad8b3b3abb536f37792a783ab6554a18a916c6d))
 
 ### Bug Fixes
 
-* **mapcn-vue:** fix Quadkey coords, remove Tile3D example (no free datasets work) ([ff1a838](https://github.com/geoql/v-maplibre/commit/ff1a8387e824e7f670a14e7b730baba2df89be92))
-* **v-maplibre:** fix ScenegraphLayer and SimpleMeshLayer undefined prop bugs ([212743f](https://github.com/geoql/v-maplibre/commit/212743f6f1ffed2e8cb8b8733adfd36a7fb0052c))
-* **v-maplibre:** fix Tile3DLayer undefined loader prop bug, add [@loaders](https://github.com/loaders).gl/3d-tiles ([d9371d0](https://github.com/geoql/v-maplibre/commit/d9371d0ebfed9246c9708f3ccec96f21e0e02590))
+- **mapcn-vue:** fix Quadkey coords, remove Tile3D example (no free datasets work) ([ff1a838](https://github.com/geoql/v-maplibre/commit/ff1a8387e824e7f670a14e7b730baba2df89be92))
+- **v-maplibre:** fix ScenegraphLayer and SimpleMeshLayer undefined prop bugs ([212743f](https://github.com/geoql/v-maplibre/commit/212743f6f1ffed2e8cb8b8733adfd36a7fb0052c))
+- **v-maplibre:** fix Tile3DLayer undefined loader prop bug, add [@loaders](https://github.com/loaders).gl/3d-tiles ([d9371d0](https://github.com/geoql/v-maplibre/commit/d9371d0ebfed9246c9708f3ccec96f21e0e02590))
 
 ## [1.2.4](https://github.com/geoql/v-maplibre/compare/v1.2.3...v1.2.4) (2026-01-11)
 
-
 ### Bug Fixes
 
-* configure jsr.json with npm imports for Deno compatibility ([5d3a73a](https://github.com/geoql/v-maplibre/commit/5d3a73a3cde4f211848fe989069729ff4c5f2320))
+- configure jsr.json with npm imports for Deno compatibility ([5d3a73a](https://github.com/geoql/v-maplibre/commit/5d3a73a3cde4f211848fe989069729ff4c5f2320))
 
 ## [1.2.3](https://github.com/geoql/v-maplibre/compare/v1.2.2...v1.2.3) (2026-01-11)
 
-
 ### Bug Fixes
 
-* use hardcoded version for maplibre-gl dependency ([ec81514](https://github.com/geoql/v-maplibre/commit/ec815146f68f972ccde3e5699e066642f2eacf4a))
+- use hardcoded version for maplibre-gl dependency ([ec81514](https://github.com/geoql/v-maplibre/commit/ec815146f68f972ccde3e5699e066642f2eacf4a))
 
 ## [1.2.2](https://github.com/geoql/v-maplibre/compare/v1.2.1...v1.2.2) (2026-01-11)
 
-
 ### Miscellaneous
 
-* consolidate to bun, add catalogs for shared deps ([83238e8](https://github.com/geoql/v-maplibre/commit/83238e83c22df82830d8521c565000e553ec2940))
-* migrate from release-it to release-please ([3cd7c4c](https://github.com/geoql/v-maplibre/commit/3cd7c4c6e9fb679e2b6dafc99208ed523ed6badb))
+- consolidate to bun, add catalogs for shared deps ([83238e8](https://github.com/geoql/v-maplibre/commit/83238e83c22df82830d8521c565000e553ec2940))
+- migrate from release-it to release-please ([3cd7c4c](https://github.com/geoql/v-maplibre/commit/3cd7c4c6e9fb679e2b6dafc99208ed523ed6badb))
 
 ## [1.2.1](https://github.com/geoql/v-maplibre/compare/v1.2.0...v1.2.1) (2026-01-07)
 

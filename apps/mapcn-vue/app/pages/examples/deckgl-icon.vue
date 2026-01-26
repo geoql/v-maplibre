@@ -11,17 +11,8 @@
     description: 'Render icons/sprites at geographic locations.',
   });
 
-  const colorMode = useColorMode();
+  const { mapStyle } = useMapStyle();
   const mapId = useId();
-
-  const lightStyle =
-    'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
-  const darkStyle =
-    'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
-
-  const mapStyle = computed(() =>
-    colorMode.value === 'dark' ? darkStyle : lightStyle,
-  );
 
   const mapOptions = computed(() => ({
     container: `icon-example-${mapId}`,
@@ -99,14 +90,14 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl py-10 overflow-x-hidden">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
     <div class="mx-auto w-full max-w-300">
       <div class="mb-8">
         <NuxtLink
           to="/examples"
           class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 h-4 w-4"></Icon>
+          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
           Back to Examples
         </NuxtLink>
         <h1 class="mt-4 text-3xl font-bold tracking-tight">
@@ -123,9 +114,9 @@ ${SCRIPT_END}
           class="h-125 min-w-0 overflow-hidden rounded-lg border border-border"
         >
           <ClientOnly>
-            <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
-              <VControlNavigation position="top-right"></VControlNavigation>
-              <VControlScale position="bottom-left"></VControlScale>
+            <VMap :key="mapStyle" :options="mapOptions" class="size-full">
+              <VControlNavigation position="top-right" />
+              <VControlScale position="bottom-left" />
               <VLayerDeckglIcon
                 id="icon-layer"
                 :data="iconData"
@@ -136,17 +127,13 @@ ${SCRIPT_END}
                 icon-atlas="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png"
                 :icon-mapping="ICON_MAPPING"
                 :pickable="true"
-              ></VLayerDeckglIcon>
+              />
             </VMap>
           </ClientOnly>
         </div>
 
         <div class="min-w-0">
-          <CodeBlock
-            :code="codeExample"
-            lang="vue"
-            filename="IconLayer.vue"
-          ></CodeBlock>
+          <CodeBlock :code="codeExample" lang="vue" filename="IconLayer.vue" />
         </div>
       </div>
     </div>

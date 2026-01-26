@@ -27,7 +27,7 @@
 
 <template>
   <div
-    class="absolute left-4 top-4 z-10 w-72 rounded-lg bg-background/95 p-4 shadow-lg backdrop-blur-sm"
+    class="absolute top-4 left-4 z-10 w-72 rounded-lg bg-background/95 p-4 shadow-lg backdrop-blur-sm"
   >
     <h3 class="mb-3 flex items-center gap-2 text-lg font-semibold">
       <Icon name="lucide:bus" class="size-5" />
@@ -75,7 +75,7 @@
           placeholder="e.g., 33, 51, 800..."
           class="w-full rounded-md border border-input bg-background px-3 py-1.5 text-sm"
         />
-        <p v-if="routeFilter" class="text-xs italic text-muted-foreground">
+        <p v-if="routeFilter" class="text-xs text-muted-foreground italic">
           Showing routes containing "{{ routeFilter }}"
         </p>
       </div>

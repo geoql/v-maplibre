@@ -29,13 +29,13 @@
       <div class="absolute inset-0 bg-background"></div>
       <!-- Aurora gradient blobs -->
       <div
-        class="absolute -left-[40%] -top-[30%] h-[80%] w-[80%] animate-aurora-1 rounded-full bg-linear-to-br from-primary/20 via-cyan-500/10 to-transparent blur-3xl"
+        class="animate-aurora-1 absolute -top-[30%] -left-[40%] size-[80%] rounded-full bg-linear-to-br from-primary/20 via-cyan-500/10 to-transparent blur-3xl"
       ></div>
       <div
-        class="absolute -right-[30%] top-[20%] h-[60%] w-[60%] animate-aurora-2 rounded-full bg-linear-to-bl from-violet-500/15 via-primary/10 to-transparent blur-3xl"
+        class="animate-aurora-2 absolute top-[20%] -right-[30%] size-[60%] rounded-full bg-linear-to-bl from-violet-500/15 via-primary/10 to-transparent blur-3xl"
       ></div>
       <div
-        class="absolute -bottom-[20%] left-[20%] h-[50%] w-[50%] animate-aurora-3 rounded-full bg-linear-to-tr from-emerald-500/10 via-cyan-500/5 to-transparent blur-3xl"
+        class="animate-aurora-3 absolute -bottom-[20%] left-[20%] size-[50%] rounded-full bg-linear-to-tr from-emerald-500/10 via-cyan-500/5 to-transparent blur-3xl"
       ></div>
       <!-- Grid overlay -->
       <div
@@ -51,7 +51,7 @@
     </div>
 
     <!-- Hero Section - Compact -->
-    <section class="relative px-6 py-6 md:py-8">
+    <section class="relative p-6 md:py-8">
       <div class="relative z-10 mx-auto max-w-5xl">
         <div class="space-y-4">
           <!-- Glowing accent line -->
@@ -68,7 +68,7 @@
               <span class="italic">made simple.</span>
             </h1>
             <p
-              class="animate-fade-up mx-auto max-w-xl text-sm leading-relaxed text-muted-foreground delay-100 md:text-base"
+              class="animate-fade-up mx-auto max-w-xl text-sm/relaxed text-muted-foreground delay-100 md:text-base"
             >
               Beautiful, ready to use, and customizable map components built on
               <a
@@ -91,9 +91,9 @@
               >
                 <Icon
                   :name="copied ? 'lucide:check' : 'lucide:copy'"
-                  class="h-4 w-4"
+                  class="size-4"
                   :class="{ 'text-emerald-500': copied }"
-                ></Icon>
+                />
               </button>
             </div>
           </div>
@@ -106,7 +106,7 @@
               class="inline-flex h-9 items-center justify-center gap-2 rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-lg shadow-primary/25 transition-all hover:bg-primary/90 hover:shadow-xl hover:shadow-primary/30"
             >
               Get Started
-              <Icon name="lucide:arrow-right" class="h-4 w-4"></Icon>
+              <Icon name="lucide:arrow-right" class="size-4" />
             </NuxtLink>
             <NuxtLink
               to="/examples"
@@ -129,42 +129,39 @@
           <ClientOnly>
             <LazyActiveUsersDemo />
             <template #fallback>
-              <div class="flex h-full w-full items-center justify-center">
+              <div class="flex size-full items-center justify-center">
                 <div class="flex gap-1">
                   <span
-                    class="h-1.5 w-1.5 animate-pulse rounded-full bg-muted-foreground/60"
+                    class="size-1.5 animate-pulse rounded-full bg-muted-foreground/60"
                   ></span>
                   <span
-                    class="h-1.5 w-1.5 animate-pulse rounded-full bg-muted-foreground/60 [animation-delay:150ms]"
+                    class="size-1.5 animate-pulse rounded-full bg-muted-foreground/60 [animation-delay:150ms]"
                   ></span>
                   <span
-                    class="h-1.5 w-1.5 animate-pulse rounded-full bg-muted-foreground/60 [animation-delay:300ms]"
+                    class="size-1.5 animate-pulse rounded-full bg-muted-foreground/60 [animation-delay:300ms]"
                   ></span>
                 </div>
               </div>
             </template>
           </ClientOnly>
           <div
-            class="absolute left-3 top-3 z-10 rounded-lg border border-border/50 bg-background/90 p-3 shadow-lg backdrop-blur-md"
+            class="absolute top-3 left-3 z-10 rounded-lg border border-border/50 bg-background/90 p-3 shadow-lg backdrop-blur-md"
           >
             <div
-              class="mb-1 text-[10px] uppercase tracking-wider text-muted-foreground"
+              class="mb-1 text-[10px] tracking-wider text-muted-foreground uppercase"
             >
               Active Users
             </div>
-            <div class="text-2xl font-semibold leading-tight">2,847</div>
+            <div class="text-2xl/tight font-semibold">2,847</div>
             <div class="mt-1 flex items-center gap-1">
-              <Icon
-                name="lucide:trending-up"
-                class="h-3 w-3 text-emerald-500"
-              ></Icon>
+              <Icon name="lucide:trending-up" class="size-3 text-emerald-500" />
               <span class="text-xs text-emerald-500">+12.5%</span>
               <span class="text-xs text-muted-foreground">vs last hour</span>
             </div>
           </div>
           <!-- Subtle glow effect on main demo -->
           <div
-            class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-inset ring-white/10"
+            class="pointer-events-none absolute inset-0 rounded-xl ring-1 ring-white/10 ring-inset"
           ></div>
         </div>
 
@@ -173,23 +170,23 @@
           class="demo-card animate-scale-in relative aspect-4/3 overflow-hidden rounded-xl border border-border/50 bg-card/50 shadow-lg backdrop-blur-md delay-500"
         >
           <div
-            class="absolute left-2 top-2 z-10 rounded bg-background/90 px-2 py-1 text-[10px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm"
+            class="absolute top-2 left-2 z-10 rounded-sm bg-background/90 px-2 py-1 text-[10px] tracking-wider text-muted-foreground uppercase backdrop-blur-sm"
           >
             Global Delivery
           </div>
           <ClientOnly>
             <LazyDeliveryDemo />
             <template #fallback>
-              <div class="flex h-full w-full items-center justify-center">
+              <div class="flex size-full items-center justify-center">
                 <div class="flex gap-1">
                   <span
-                    class="h-1.5 w-1.5 animate-pulse rounded-full bg-muted-foreground/60"
+                    class="size-1.5 animate-pulse rounded-full bg-muted-foreground/60"
                   ></span>
                   <span
-                    class="h-1.5 w-1.5 animate-pulse rounded-full bg-muted-foreground/60 [animation-delay:150ms]"
+                    class="size-1.5 animate-pulse rounded-full bg-muted-foreground/60 [animation-delay:150ms]"
                   ></span>
                   <span
-                    class="h-1.5 w-1.5 animate-pulse rounded-full bg-muted-foreground/60 [animation-delay:300ms]"
+                    class="size-1.5 animate-pulse rounded-full bg-muted-foreground/60 [animation-delay:300ms]"
                   ></span>
                 </div>
               </div>
@@ -201,23 +198,23 @@
           class="demo-card animate-scale-in relative aspect-4/3 overflow-hidden rounded-xl border border-border/50 bg-card/50 shadow-lg backdrop-blur-md delay-600"
         >
           <div
-            class="absolute left-2 top-2 z-10 rounded bg-background/90 px-2 py-1 text-[10px] uppercase tracking-wider text-muted-foreground backdrop-blur-sm"
+            class="absolute top-2 left-2 z-10 rounded-sm bg-background/90 px-2 py-1 text-[10px] tracking-wider text-muted-foreground uppercase backdrop-blur-sm"
           >
             Trips
           </div>
           <ClientOnly>
             <LazyTripsDemo />
             <template #fallback>
-              <div class="flex h-full w-full items-center justify-center">
+              <div class="flex size-full items-center justify-center">
                 <div class="flex gap-1">
                   <span
-                    class="h-1.5 w-1.5 animate-pulse rounded-full bg-muted-foreground/60"
+                    class="size-1.5 animate-pulse rounded-full bg-muted-foreground/60"
                   ></span>
                   <span
-                    class="h-1.5 w-1.5 animate-pulse rounded-full bg-muted-foreground/60 [animation-delay:150ms]"
+                    class="size-1.5 animate-pulse rounded-full bg-muted-foreground/60 [animation-delay:150ms]"
                   ></span>
                   <span
-                    class="h-1.5 w-1.5 animate-pulse rounded-full bg-muted-foreground/60 [animation-delay:300ms]"
+                    class="size-1.5 animate-pulse rounded-full bg-muted-foreground/60 [animation-delay:300ms]"
                   ></span>
                 </div>
               </div>
@@ -250,12 +247,12 @@
             class="example-card rounded-xl border border-border/50 bg-card/50 p-5 backdrop-blur-md transition-all hover:border-primary/30 hover:bg-card/80"
           >
             <div
-              class="flex h-10 w-10 items-center justify-center rounded-lg border border-border/50 bg-muted/50"
+              class="flex size-10 items-center justify-center rounded-lg border border-border/50 bg-muted/50"
             >
-              <Icon name="lucide:map-pin" class="h-5 w-5 text-primary"></Icon>
+              <Icon name="lucide:map-pin" class="size-5 text-primary" />
             </div>
             <h3 class="mt-3 text-base font-semibold">Core Components</h3>
-            <p class="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+            <p class="mt-1.5 text-sm/relaxed text-muted-foreground">
               Map, Markers, Popups, and Navigation Controls. Everything to get
               started.
             </p>
@@ -265,12 +262,12 @@
             class="example-card rounded-xl border border-border/50 bg-card/50 p-5 backdrop-blur-md transition-all hover:border-primary/30 hover:bg-card/80"
           >
             <div
-              class="flex h-10 w-10 items-center justify-center rounded-lg border border-border/50 bg-muted/50"
+              class="flex size-10 items-center justify-center rounded-lg border border-border/50 bg-muted/50"
             >
-              <Icon name="lucide:layers" class="h-5 w-5 text-primary"></Icon>
+              <Icon name="lucide:layers" class="size-5 text-primary" />
             </div>
             <h3 class="mt-3 text-base font-semibold">MapLibre Layers</h3>
-            <p class="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+            <p class="mt-1.5 text-sm/relaxed text-muted-foreground">
               GeoJSON, Vector, Raster, Cluster, PMTiles, Image, Video, and
               Canvas layers.
             </p>
@@ -280,12 +277,12 @@
             class="example-card rounded-xl border border-border/50 bg-card/50 p-5 backdrop-blur-md transition-all hover:border-primary/30 hover:bg-card/80"
           >
             <div
-              class="flex h-10 w-10 items-center justify-center rounded-lg border border-border/50 bg-muted/50"
+              class="flex size-10 items-center justify-center rounded-lg border border-border/50 bg-muted/50"
             >
-              <Icon name="lucide:sparkles" class="h-5 w-5 text-primary"></Icon>
+              <Icon name="lucide:sparkles" class="size-5 text-primary" />
             </div>
             <h3 class="mt-3 text-base font-semibold">deck.gl Layers</h3>
-            <p class="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+            <p class="mt-1.5 text-sm/relaxed text-muted-foreground">
               High-performance WebGL layers: Scatterplot, Arc, Heatmap, Hexagon,
               Trips, and more.
             </p>
@@ -295,12 +292,12 @@
             class="example-card rounded-xl border border-border/50 bg-card/50 p-5 backdrop-blur-md transition-all hover:border-primary/30 hover:bg-card/80"
           >
             <div
-              class="flex h-10 w-10 items-center justify-center rounded-lg border border-border/50 bg-muted/50"
+              class="flex size-10 items-center justify-center rounded-lg border border-border/50 bg-muted/50"
             >
-              <Icon name="lucide:palette" class="h-5 w-5 text-primary"></Icon>
+              <Icon name="lucide:palette" class="size-5 text-primary" />
             </div>
             <h3 class="mt-3 text-base font-semibold">Theme Aware</h3>
-            <p class="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+            <p class="mt-1.5 text-sm/relaxed text-muted-foreground">
               Dark mode support out of the box with automatic basemap switching.
             </p>
           </div>
@@ -309,12 +306,12 @@
             class="example-card rounded-xl border border-border/50 bg-card/50 p-5 backdrop-blur-md transition-all hover:border-primary/30 hover:bg-card/80"
           >
             <div
-              class="flex h-10 w-10 items-center justify-center rounded-lg border border-border/50 bg-muted/50"
+              class="flex size-10 items-center justify-center rounded-lg border border-border/50 bg-muted/50"
             >
-              <Icon name="lucide:copy" class="h-5 w-5 text-primary"></Icon>
+              <Icon name="lucide:copy" class="size-5 text-primary" />
             </div>
             <h3 class="mt-3 text-base font-semibold">Copy & Paste</h3>
-            <p class="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+            <p class="mt-1.5 text-sm/relaxed text-muted-foreground">
               Add components to your project with a single CLI command. No
               complex setup.
             </p>
@@ -324,12 +321,12 @@
             class="example-card rounded-xl border border-border/50 bg-card/50 p-5 backdrop-blur-md transition-all hover:border-primary/30 hover:bg-card/80"
           >
             <div
-              class="flex h-10 w-10 items-center justify-center rounded-lg border border-border/50 bg-muted/50"
+              class="flex size-10 items-center justify-center rounded-lg border border-border/50 bg-muted/50"
             >
-              <Icon name="lucide:code-2" class="h-5 w-5 text-primary"></Icon>
+              <Icon name="lucide:code-2" class="size-5 text-primary" />
             </div>
             <h3 class="mt-3 text-base font-semibold">TypeScript First</h3>
-            <p class="mt-1.5 text-sm leading-relaxed text-muted-foreground">
+            <p class="mt-1.5 text-sm/relaxed text-muted-foreground">
               Full TypeScript support with excellent IDE autocompletion and type
               safety.
             </p>
@@ -359,13 +356,13 @@
             <div
               class="flex items-center gap-2 border-b border-border/50 px-4 py-2"
             >
-              <div class="h-3 w-3 rounded-full bg-red-500/80"></div>
-              <div class="h-3 w-3 rounded-full bg-yellow-500/80"></div>
-              <div class="h-3 w-3 rounded-full bg-green-500/80"></div>
+              <div class="size-3 rounded-full bg-red-500/80"></div>
+              <div class="size-3 rounded-full bg-yellow-500/80"></div>
+              <div class="size-3 rounded-full bg-green-500/80"></div>
               <span class="ml-2 text-xs text-muted-foreground">Terminal</span>
             </div>
             <div class="overflow-x-auto p-4">
-              <code class="whitespace-nowrap text-sm text-foreground"
+              <code class="text-sm whitespace-nowrap text-foreground"
                 >npx shadcn-vue@latest add
                 https://mapcn-vue.geoql.in/r/map</code
               >

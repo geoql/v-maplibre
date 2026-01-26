@@ -8,7 +8,7 @@
     VLayerDeckglWindParticle,
   } from '@geoql/v-maplibre';
 
-  const props = defineProps<{
+  defineProps<{
     windData: WindDataPoint[];
     isLoading: boolean;
     error: string | null;
@@ -63,7 +63,7 @@
 
 <template>
   <div
-    class="lg:col-span-2 relative h-125 min-w-0 overflow-hidden rounded-lg border border-border"
+    class="relative h-125 min-w-0 overflow-hidden rounded-lg border border-border lg:col-span-2"
   >
     <ClientOnly>
       <div
@@ -88,7 +88,7 @@
 
       <div
         v-if="lastUpdated"
-        class="absolute left-2 top-2 z-10 rounded bg-background/80 px-2 py-1 text-xs text-muted-foreground backdrop-blur-sm"
+        class="absolute top-2 left-2 z-10 rounded-sm bg-background/80 px-2 py-1 text-xs text-muted-foreground backdrop-blur-sm"
       >
         <div class="flex items-center gap-2">
           <span>Updated: {{ lastUpdated.toLocaleTimeString() }}</span>

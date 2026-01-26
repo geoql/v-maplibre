@@ -100,7 +100,7 @@
           to="/examples"
           class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 h-4 w-4"></Icon>
+          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
           Back to Examples
         </NuxtLink>
         <h1 class="mt-4 text-3xl font-bold tracking-tight">
@@ -136,16 +136,16 @@
             <VMap
               :key="mapStyle"
               :options="mapOptions"
-              class="h-full w-full"
+              class="size-full"
               @loaded="onMapLoaded"
             >
-              <VControlNavigation position="top-right"></VControlNavigation>
-              <VControlScale position="bottom-left"></VControlScale>
+              <VControlNavigation position="top-right" />
+              <VControlScale position="bottom-left" />
               <VLayerDeckglCOG
                 id="cog-layer"
                 :geotiff="COG_URL"
                 @geotiff-load="handleGeotiffLoad"
-              ></VLayerDeckglCOG>
+              />
             </VMap>
           </ClientOnly>
         </div>
@@ -155,7 +155,7 @@
             :code="codeExample"
             lang="vue"
             filename="COGLayer.vue"
-          ></LazyCodeBlock>
+          />
         </div>
       </div>
 
@@ -167,43 +167,43 @@
           <li class="flex items-center gap-2">
             <Icon
               name="lucide:check"
-              class="h-4 w-4 shrink-0 text-emerald-500"
-            ></Icon>
+              class="size-4 shrink-0 text-emerald-500"
+            />
             Fully client-side
           </li>
           <li class="flex items-center gap-2">
             <Icon
               name="lucide:check"
-              class="h-4 w-4 shrink-0 text-emerald-500"
-            ></Icon>
+              class="size-4 shrink-0 text-emerald-500"
+            />
             GPU-accelerated
           </li>
           <li class="flex items-center gap-2">
             <Icon
               name="lucide:check"
-              class="h-4 w-4 shrink-0 text-emerald-500"
-            ></Icon>
+              class="size-4 shrink-0 text-emerald-500"
+            />
             Auto reprojection
           </li>
           <li class="flex items-center gap-2">
             <Icon
               name="lucide:check"
-              class="h-4 w-4 shrink-0 text-emerald-500"
-            ></Icon>
+              class="size-4 shrink-0 text-emerald-500"
+            />
             Tile streaming
           </li>
           <li class="flex items-center gap-2">
             <Icon
               name="lucide:check"
-              class="h-4 w-4 shrink-0 text-emerald-500"
-            ></Icon>
+              class="size-4 shrink-0 text-emerald-500"
+            />
             Auto overviews
           </li>
           <li class="flex items-center gap-2">
             <Icon
               name="lucide:check"
-              class="h-4 w-4 shrink-0 text-emerald-500"
-            ></Icon>
+              class="size-4 shrink-0 text-emerald-500"
+            />
             No server required
           </li>
         </ul>

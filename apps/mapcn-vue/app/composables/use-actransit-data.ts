@@ -15,8 +15,8 @@ const MAX_MINUTES_AGO = 8;
 
 function isValidCoordinate(lng: number, lat: number): boolean {
   return (
-    !isNaN(lng) &&
-    !isNaN(lat) &&
+    !Number.isNaN(lng) &&
+    !Number.isNaN(lat) &&
     lng >= -180 &&
     lng <= 180 &&
     lat >= -90 &&
@@ -55,7 +55,11 @@ function buildTrailsFromHistory(
 
   const tripGroups: Record<
     string,
-    { coordinates: [number, number][]; timestamps: number[]; routeId: string }
+    {
+      coordinates: [number, number][];
+      timestamps: number[];
+      routeId: string;
+    }
   > = {};
 
   historyData.forEach((snapshot) => {

@@ -18,21 +18,12 @@
       'Visualize travel time or distance zones showing areas reachable from a point.',
   });
 
-  const colorMode = useColorMode();
+  const { mapStyle } = useMapStyle();
   const mapId = useId();
   const mapRef = ref<MaplibreMap | null>(null);
   const mapLoaded = ref(false);
   const isLoading = ref(false);
   const error = ref<string | null>(null);
-
-  const lightStyle =
-    'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
-  const darkStyle =
-    'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
-
-  const mapStyle = computed(() =>
-    colorMode.value === 'dark' ? darkStyle : lightStyle,
-  );
 
   const mapOptions = computed(() => ({
     container: `isochrone-map-${mapId}`,
@@ -206,13 +197,13 @@
       <div class="mb-8">
         <NuxtLink
           to="/examples"
-          class="text-muted-foreground hover:text-foreground inline-flex items-center text-sm"
+          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
         >
           <Icon name="lucide:arrow-left" class="mr-2 size-4" />
           Back to Examples
         </NuxtLink>
         <h1 class="mt-4 text-3xl font-bold tracking-tight">Isochrone Map</h1>
-        <p class="text-muted-foreground mt-2 text-lg">
+        <p class="mt-2 text-lg text-muted-foreground">
           Visualize travel time or distance zones showing areas reachable from a
           point. Drag the marker to change the origin.
         </p>
@@ -250,10 +241,10 @@
                 />
               </VMap>
               <template #fallback>
-                <div class="bg-muted flex h-full items-center justify-center">
+                <div class="flex h-full items-center justify-center bg-muted">
                   <Icon
                     name="lucide:loader-2"
-                    class="text-muted-foreground size-8 animate-spin"
+                    class="size-8 animate-spin text-muted-foreground"
                   />
                 </div>
               </template>
@@ -261,7 +252,7 @@
 
             <div
               v-if="isLoading"
-              class="bg-background/50 absolute inset-0 z-10 flex items-center justify-center"
+              class="absolute inset-0 z-10 flex items-center justify-center bg-background/50"
             >
               <div class="flex items-center gap-2 text-sm">
                 <Icon name="lucide:loader-2" class="size-4 animate-spin" />
@@ -271,14 +262,14 @@
 
             <div
               v-if="error"
-              class="bg-background/80 absolute inset-0 z-10 flex items-center justify-center"
+              class="absolute inset-0 z-10 flex items-center justify-center bg-background/80"
             >
               <div class="text-center">
                 <Icon
                   name="lucide:alert-circle"
-                  class="text-destructive mx-auto size-8"
+                  class="mx-auto size-8 text-destructive"
                 />
-                <p class="text-destructive mt-2 text-sm">
+                <p class="mt-2 text-sm text-destructive">
                   {{ error }}
                 </p>
               </div>
@@ -286,7 +277,7 @@
 
             <!-- Legend -->
             <div
-              class="bg-background/95 absolute bottom-4 left-4 z-10 rounded-lg border p-3 shadow-lg backdrop-blur-sm"
+              class="absolute bottom-4 left-4 z-10 rounded-lg border bg-background/95 p-3 shadow-lg backdrop-blur-sm"
             >
               <h4 class="mb-2 text-xs font-medium">
                 {{ selectedMetric === 'time' ? 'Travel Time' : 'Distance' }}
@@ -308,7 +299,7 @@
           </div>
 
           <!-- Controls -->
-          <div class="bg-card mt-4 rounded-lg border p-4">
+          <div class="mt-4 rounded-lg border bg-card p-4">
             <div class="mb-4">
               <h3 class="mb-3 font-medium">Metric</h3>
               <div class="flex gap-2">
@@ -371,7 +362,7 @@
               </div>
             </div>
 
-            <div class="text-muted-foreground mt-4 text-sm">
+            <div class="mt-4 text-sm text-muted-foreground">
               <p>
                 <strong class="text-foreground">Tip:</strong> Drag the red
                 marker to calculate travel zones from a different location.
@@ -387,9 +378,9 @@
             filename="IsochroneMap.vue"
           />
 
-          <div class="bg-muted/50 mt-4 rounded-lg border p-4">
+          <div class="mt-4 rounded-lg border bg-muted/50 p-4">
             <h3 class="mb-2 font-medium">What is an Isochrone?</h3>
-            <p class="text-muted-foreground text-sm">
+            <p class="text-sm text-muted-foreground">
               An isochrone shows all areas reachable from a point within a
               specific time or distance. It accounts for actual road networks,
               one-way streets, and travel mode. Unlike simple radius circles,
@@ -397,9 +388,9 @@
             </p>
           </div>
 
-          <div class="bg-muted/50 mt-4 rounded-lg border p-4">
+          <div class="mt-4 rounded-lg border bg-muted/50 p-4">
             <h3 class="mb-2 font-medium">Use Cases</h3>
-            <ul class="text-muted-foreground space-y-2 text-sm">
+            <ul class="space-y-2 text-sm text-muted-foreground">
               <li>
                 <strong class="text-foreground">Real Estate:</strong> Show
                 commute times to office locations for home buyers.

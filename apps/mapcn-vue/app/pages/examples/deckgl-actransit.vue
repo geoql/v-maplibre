@@ -14,17 +14,8 @@
     description: 'Real-time AC Transit bus tracking with deck.gl layers.',
   });
 
-  const colorMode = useColorMode();
+  const { mapStyle } = useMapStyle();
   const mapId = useId();
-
-  const lightStyle =
-    'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
-  const darkStyle =
-    'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
-
-  const mapStyle = computed(() =>
-    colorMode.value === 'dark' ? darkStyle : lightStyle,
-  );
 
   const mapOptions = computed(() => ({
     container: `actransit-example-${mapId}`,
@@ -188,7 +179,7 @@ ${SCRIPT_END}
           class="relative h-125 min-w-0 overflow-hidden rounded-lg border border-border"
         >
           <ClientOnly>
-            <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
+            <VMap :key="mapStyle" :options="mapOptions" class="size-full">
               <VControlNavigation position="top-right" />
               <VControlScale position="bottom-left" />
 

@@ -1,9 +1,8 @@
 {
   "recommendations": [
-    "esbenp.prettier-vscode",
+    "oxc.oxc-vscode",
     "Vue.volar",
     "Vue.vscode-typescript-vue-plugin",
-    "antfu.iconify",
-    "dbaeumer.vscode-eslint"
+    "antfu.iconify"
   ]
 }

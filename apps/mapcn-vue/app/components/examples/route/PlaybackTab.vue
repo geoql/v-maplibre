@@ -308,7 +308,7 @@ ${SCRIPT_END}
 
 <template>
   <div>
-    <p class="text-muted-foreground mb-6">
+    <p class="mb-6 text-muted-foreground">
       Animate a marker along a route with play/pause controls and adjustable
       speed. Perfect for delivery tracking replay or journey visualization.
     </p>
@@ -359,10 +359,10 @@ ${SCRIPT_END}
               />
             </VMap>
             <template #fallback>
-              <div class="bg-muted flex h-full items-center justify-center">
+              <div class="flex h-full items-center justify-center bg-muted">
                 <Icon
                   name="lucide:loader-2"
-                  class="text-muted-foreground size-8 animate-spin"
+                  class="size-8 animate-spin text-muted-foreground"
                 />
               </div>
             </template>
@@ -370,7 +370,7 @@ ${SCRIPT_END}
 
           <div
             v-if="routeLoading"
-            class="bg-background/50 absolute inset-0 z-10 flex items-center justify-center"
+            class="absolute inset-0 z-10 flex items-center justify-center bg-background/50"
           >
             <div class="flex items-center gap-2 text-sm">
               <Icon name="lucide:loader-2" class="size-4 animate-spin" />
@@ -379,7 +379,7 @@ ${SCRIPT_END}
           </div>
         </div>
 
-        <div class="bg-card rounded-lg border p-4">
+        <div class="rounded-lg border bg-card p-4">
           <div class="mb-4 flex items-center justify-between">
             <div class="flex gap-2">
               <button
@@ -401,7 +401,7 @@ ${SCRIPT_END}
                 />
               </button>
               <button
-                class="border-border hover:bg-muted flex size-10 items-center justify-center rounded-full border transition-colors"
+                class="flex size-10 items-center justify-center rounded-full border border-border transition-colors hover:bg-muted"
                 :disabled="routeCoordinates.length === 0"
                 @click="stop"
               >
@@ -409,7 +409,7 @@ ${SCRIPT_END}
               </button>
             </div>
 
-            <div class="text-muted-foreground text-right text-sm">
+            <div class="text-right text-sm text-muted-foreground">
               <div>{{ Math.round(progress) }}% complete</div>
               <div v-if="routeInfo" class="text-xs">
                 {{ formatDistanceKm(routeInfo.distance) }} •
@@ -430,7 +430,7 @@ ${SCRIPT_END}
           </div>
 
           <div class="flex items-center gap-4">
-            <span class="text-muted-foreground text-sm">Speed:</span>
+            <span class="text-sm text-muted-foreground">Speed:</span>
             <div class="flex gap-1">
               <button
                 v-for="s in [0.5, 1, 2, 4]"
@@ -460,9 +460,9 @@ ${SCRIPT_END}
           filename="RoutePlayback.vue"
         />
 
-        <div class="bg-muted/50 mt-4 rounded-lg border p-4">
+        <div class="mt-4 rounded-lg border bg-muted/50 p-4">
           <h3 class="mb-2 font-medium">Features</h3>
-          <ul class="text-muted-foreground space-y-2 text-sm">
+          <ul class="space-y-2 text-sm text-muted-foreground">
             <li>
               <strong class="text-foreground">Real Routes:</strong> Uses
               Valhalla routing API for actual road-following paths

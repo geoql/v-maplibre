@@ -232,7 +232,7 @@ ${SCRIPT_END}
           <VMap
             :key="`tripplanner-${mapStyle}`"
             :options="tripPlannerMapOptions"
-            class="h-full w-full"
+            class="size-full"
             @loaded="onMapLoaded"
           >
             <VControlNavigation position="top-right" />
@@ -259,7 +259,7 @@ ${SCRIPT_END}
                   :ref="wrapMarkerRef(setRef)"
                   class="flex size-6 items-center justify-center rounded-full border-2 border-white bg-indigo-500 shadow-lg"
                 >
-                  <div class="size-2 rounded-full bg-white" />
+                  <div class="size-2 rounded-full bg-white"></div>
                 </div>
               </template>
             </VMarker>
@@ -269,7 +269,7 @@ ${SCRIPT_END}
 
       <div class="mb-8">
         <h3
-          class="mb-4 text-xs font-medium uppercase tracking-wider text-muted-foreground"
+          class="mb-4 text-xs font-medium tracking-wider text-muted-foreground uppercase"
         >
           Route Highlights
         </h3>
@@ -293,7 +293,9 @@ ${SCRIPT_END}
               v-if="index < tripData.highlights.length - 1"
               class="mx-3 flex min-w-8 flex-1 items-center justify-center"
             >
-              <div class="h-px w-full border-t-2 border-dashed border-border" />
+              <div
+                class="h-px w-full border-t-2 border-dashed border-border"
+              ></div>
             </div>
           </template>
         </div>
@@ -347,7 +349,10 @@ ${SCRIPT_END}
 
                 <span
                   :class="[
-                    'inline-flex items-center gap-1 rounded-full px-2 py-0.5 text-xs font-medium',
+                    `
+                      inline-flex items-center gap-1 rounded-full px-2 py-0.5
+                      text-xs font-medium
+                    `,
                     getActivityBadgeClasses(activity.type).bg,
                     getActivityBadgeClasses(activity.type).text,
                   ]"
@@ -360,7 +365,7 @@ ${SCRIPT_END}
                 </span>
 
                 <span
-                  class="shrink-0 text-xs tabular-nums text-muted-foreground"
+                  class="shrink-0 text-xs text-muted-foreground tabular-nums"
                 >
                   {{ activity.time }}
                 </span>

@@ -12,17 +12,8 @@
       'Cloud-Optimized Point Cloud with dynamic viewport-based loading for large LiDAR datasets.',
   });
 
-  const colorMode = useColorMode();
+  const { mapStyle } = useMapStyle();
   const mapId = useId();
-
-  const lightStyle =
-    'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
-  const darkStyle =
-    'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
-
-  const mapStyle = computed(() =>
-    colorMode.value === 'dark' ? darkStyle : lightStyle,
-  );
 
   const mapOptions = computed(() => ({
     container: `lidar-example-${mapId}`,
@@ -84,14 +75,14 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl py-10 overflow-x-hidden">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
     <div class="mx-auto w-full max-w-300">
       <div class="mb-8">
         <NuxtLink
           to="/examples"
           class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 h-4 w-4"></Icon>
+          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
           Back to Examples
         </NuxtLink>
         <h1 class="mt-4 text-3xl font-bold tracking-tight">COPC Streaming</h1>
@@ -107,9 +98,9 @@ ${SCRIPT_END}
           class="h-125 min-w-0 overflow-hidden rounded-lg border border-border"
         >
           <ClientOnly>
-            <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
-              <VControlNavigation position="top-left"></VControlNavigation>
-              <VControlScale position="bottom-left"></VControlScale>
+            <VMap :key="mapStyle" :options="mapOptions" class="size-full">
+              <VControlNavigation position="top-left" />
+              <VControlScale position="bottom-left" />
               <VControlLidar
                 position="top-right"
                 :options="{
@@ -122,7 +113,7 @@ ${SCRIPT_END}
                 :default-url="sampleCopcUrl"
                 @load="handleLoad"
                 @loaderror="handleError"
-              ></VControlLidar>
+              />
             </VMap>
           </ClientOnly>
         </div>
@@ -132,15 +123,15 @@ ${SCRIPT_END}
             :code="codeExample"
             lang="vue"
             filename="LidarViewer.vue"
-          ></CodeBlock>
+          />
         </div>
       </div>
 
       <div class="mt-6 space-y-4">
         <div class="rounded-lg border border-border bg-muted/50 p-4">
-          <h3 class="font-semibold mb-2">Features</h3>
+          <h3 class="mb-2 font-semibold">Features</h3>
           <ul
-            class="text-sm text-muted-foreground space-y-1 list-disc list-inside"
+            class="list-inside list-disc space-y-1 text-sm text-muted-foreground"
           >
             <li>LAS/LAZ/COPC file support (LAS 1.0 - 1.4)</li>
             <li>Dynamic COPC streaming for large point clouds</li>
@@ -155,15 +146,15 @@ ${SCRIPT_END}
         </div>
 
         <div class="rounded-lg border border-border bg-muted/50 p-4">
-          <h3 class="font-semibold mb-2">Installation</h3>
+          <h3 class="mb-2 font-semibold">Installation</h3>
           <pre
-            class="text-sm bg-muted p-2 rounded overflow-x-auto"
+            class="overflow-x-auto rounded-sm bg-muted p-2 text-sm"
           ><code>bun add maplibre-gl-lidar</code></pre>
-          <p class="text-sm text-muted-foreground mt-2">
+          <p class="mt-2 text-sm text-muted-foreground">
             Don't forget to import the CSS:
           </p>
           <pre
-            class="text-sm bg-muted p-2 rounded overflow-x-auto mt-1"
+            class="mt-1 overflow-x-auto rounded-sm bg-muted p-2 text-sm"
           ><code>import 'maplibre-gl-lidar/style.css';</code></pre>
         </div>
 

@@ -42,7 +42,7 @@
     <motion.p
       v-bind="fadeUp"
       :transition="{ delay: 0.2 }"
-      class="mx-auto max-w-2xl text-lg leading-relaxed text-muted-foreground md:text-xl"
+      class="mx-auto max-w-2xl text-lg/relaxed text-muted-foreground md:text-xl"
     >
       Discover what's possible with mapcn-vue. From basic maps to advanced
       <span class="text-foreground">WebGL visualizations</span> — each example

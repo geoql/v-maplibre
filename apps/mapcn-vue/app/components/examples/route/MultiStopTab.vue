@@ -265,9 +265,9 @@ ${SCRIPT_END}
     <div class="grid gap-8 lg:grid-cols-3">
       <div class="space-y-4">
         <div class="rounded-xl border border-border bg-card p-4 shadow-sm">
-          <div class="flex items-center justify-between mb-3">
+          <div class="mb-3 flex items-center justify-between">
             <span
-              class="text-xs font-medium uppercase tracking-wider text-muted-foreground"
+              class="text-xs font-medium tracking-wider text-muted-foreground uppercase"
               >Trip Summary</span
             >
             <span
@@ -280,14 +280,14 @@ ${SCRIPT_END}
 
           <div
             v-if="multiStopLoading"
-            class="flex items-center gap-2 text-muted-foreground py-4"
+            class="flex items-center gap-2 py-4 text-muted-foreground"
           >
             <Icon name="lucide:loader-2" class="size-4 animate-spin" />
             <span>Optimizing route...</span>
           </div>
 
           <template v-else-if="multiStopTotalDuration > 0">
-            <div class="flex items-baseline gap-2 mb-1">
+            <div class="mb-1 flex items-baseline gap-2">
               <span class="text-3xl font-bold">{{
                 formatDuration(multiStopTotalDuration)
               }}</span>
@@ -306,10 +306,10 @@ ${SCRIPT_END}
           </template>
         </div>
 
-        <div class="rounded-xl border border-border bg-card overflow-hidden">
-          <div class="px-4 py-3 border-b border-border bg-muted/30">
+        <div class="overflow-hidden rounded-xl border border-border bg-card">
+          <div class="border-b border-border bg-muted/30 px-4 py-3">
             <span
-              class="text-xs font-medium uppercase tracking-wider text-muted-foreground"
+              class="text-xs font-medium tracking-wider text-muted-foreground uppercase"
               >Journey</span
             >
           </div>
@@ -318,13 +318,16 @@ ${SCRIPT_END}
             <div v-for="(stop, index) in stops" :key="index" class="relative">
               <div
                 v-if="index < stops.length - 1"
-                class="absolute left-6 top-12 bottom-0 w-0.5 bg-linear-to-b from-border to-border/50"
-              />
+                class="absolute top-12 bottom-0 left-6 w-0.5 bg-linear-to-b from-border to-border/50"
+              ></div>
 
               <div class="flex gap-3 p-4">
                 <div
                   :class="[
-                    'relative z-10 flex size-8 shrink-0 items-center justify-center rounded-full border-2',
+                    `
+                      relative z-10 flex size-8 shrink-0 items-center
+                      justify-center rounded-full border-2
+                    `,
                     getStopBorderClass(stop),
                   ]"
                 >
@@ -334,9 +337,9 @@ ${SCRIPT_END}
                   />
                 </div>
 
-                <div class="flex-1 min-w-0">
+                <div class="min-w-0 flex-1">
                   <div class="flex items-center justify-between gap-2">
-                    <span class="font-medium truncate">{{ stop.name }}</span>
+                    <span class="truncate font-medium">{{ stop.name }}</span>
                     <span
                       v-if="index === 0"
                       class="shrink-0 text-xs text-muted-foreground"
@@ -378,20 +381,20 @@ ${SCRIPT_END}
           </div>
         </div>
 
-        <div class="flex items-center gap-2 text-xs text-muted-foreground px-1">
+        <div class="flex items-center gap-2 px-1 text-xs text-muted-foreground">
           <Icon name="lucide:move" class="size-3.5" />
           <span>Drag markers on map to adjust stops</span>
         </div>
       </div>
 
       <div
-        class="lg:col-span-2 h-150 min-w-0 overflow-hidden rounded-lg border border-border"
+        class="h-150 min-w-0 overflow-hidden rounded-lg border border-border lg:col-span-2"
       >
         <ClientOnly>
           <VMap
             :key="`multistop-${mapStyle}`"
             :options="multiStopMapOptions"
-            class="h-full w-full"
+            class="size-full"
             @loaded="onMapLoaded"
           >
             <VControlNavigation position="top-right" />
@@ -423,13 +426,17 @@ ${SCRIPT_END}
                   class="relative cursor-grab active:cursor-grabbing"
                 >
                   <div
-                    class="absolute -top-1 -right-1 flex size-4 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white shadow-sm z-10"
+                    class="absolute -top-1 -right-1 z-10 flex size-4 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white shadow-sm"
                   >
                     {{ index + 1 }}
                   </div>
                   <div
                     :class="[
-                      'flex size-10 items-center justify-center rounded-full border-2 border-white shadow-lg transition-transform hover:scale-110',
+                      `
+                        flex size-10 items-center justify-center rounded-full
+                        border-2 border-white shadow-lg transition-transform
+                        hover:scale-110
+                      `,
                       getMarkerBgClass(stop),
                     ]"
                   >

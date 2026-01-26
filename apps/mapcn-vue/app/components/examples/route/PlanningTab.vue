@@ -197,7 +197,7 @@ ${SCRIPT_END}
       <div class="space-y-3">
         <div
           v-if="planningLoading"
-          class="flex items-center gap-2 text-muted-foreground p-4"
+          class="flex items-center gap-2 p-4 text-muted-foreground"
         >
           <Icon name="lucide:loader-2" class="size-4 animate-spin" />
           <span>Calculating routes...</span>
@@ -211,7 +211,10 @@ ${SCRIPT_END}
               'w-full rounded-lg border p-4 text-left transition-all',
               selectedRouteIndex === index
                 ? 'border-indigo-500 bg-card shadow-sm'
-                : 'border-border bg-card/50 hover:bg-card hover:border-border/80',
+                : `
+                  border-border bg-card/50
+                  hover:border-border/80 hover:bg-card
+                `,
             ]"
             @click="selectRoute(index)"
           >
@@ -222,7 +225,7 @@ ${SCRIPT_END}
               }}</span>
               <Icon
                 name="lucide:route"
-                class="size-4 text-muted-foreground ml-2"
+                class="ml-2 size-4 text-muted-foreground"
               />
               <span class="text-muted-foreground">{{
                 formatDistance(route.distance)
@@ -245,27 +248,27 @@ ${SCRIPT_END}
         </template>
 
         <div
-          class="mt-6 rounded-lg border border-border bg-card/50 p-4 space-y-2"
+          class="mt-6 space-y-2 rounded-lg border border-border bg-card/50 p-4"
         >
           <div class="flex items-center gap-2 text-sm">
-            <div class="size-3 rounded-full bg-red-500" />
+            <div class="size-3 rounded-full bg-red-500"></div>
             <span class="text-muted-foreground">Rotterdam</span>
           </div>
           <div class="flex items-center gap-2 text-sm">
-            <div class="size-3 rounded-full bg-emerald-500" />
+            <div class="size-3 rounded-full bg-emerald-500"></div>
             <span class="text-muted-foreground">Amsterdam</span>
           </div>
         </div>
       </div>
 
       <div
-        class="lg:col-span-2 h-125 min-w-0 overflow-hidden rounded-lg border border-border"
+        class="h-125 min-w-0 overflow-hidden rounded-lg border border-border lg:col-span-2"
       >
         <ClientOnly>
           <VMap
             :key="`planning-${mapStyle}`"
             :options="planningMapOptions"
-            class="h-full w-full"
+            class="size-full"
             @loaded="onMapLoaded"
           >
             <VControlNavigation position="top-right" />
@@ -273,8 +276,8 @@ ${SCRIPT_END}
 
             <VLayerMaplibreRoute
               v-for="(route, index) in routeOptions"
-              :key="`route-alt-${index}`"
               :id="`planning-route-alt-${index}`"
+              :key="`route-alt-${index}`"
               :coordinates="route.coordinates"
               :color="getRouteColor(index)"
               :width="4"
@@ -301,7 +304,7 @@ ${SCRIPT_END}
                   :ref="wrapMarkerRef(setRef)"
                   class="flex size-6 items-center justify-center rounded-full border-2 border-white bg-red-500 shadow-lg"
                 >
-                  <div class="size-2 rounded-full bg-white" />
+                  <div class="size-2 rounded-full bg-white"></div>
                 </div>
               </template>
             </VMarker>
@@ -312,7 +315,7 @@ ${SCRIPT_END}
                   :ref="wrapMarkerRef(setRef)"
                   class="flex size-6 items-center justify-center rounded-full border-2 border-white bg-emerald-500 shadow-lg"
                 >
-                  <div class="size-2 rounded-full bg-white" />
+                  <div class="size-2 rounded-full bg-white"></div>
                 </div>
               </template>
             </VMarker>

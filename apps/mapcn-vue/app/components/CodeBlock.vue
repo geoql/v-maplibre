@@ -41,12 +41,12 @@
 </script>
 
 <template>
-  <div class="overflow-hidden rounded-lg border border-border max-w-full">
+  <div class="max-w-full overflow-hidden rounded-lg border border-border">
     <div
       class="flex items-center justify-between border-b border-border bg-muted/50 px-4 py-2"
     >
       <div class="flex items-center gap-2 text-sm text-muted-foreground">
-        <Icon :name="langIcon" class="h-4 w-4"></Icon>
+        <Icon :name="langIcon" class="size-4" />
         <span>{{ filename }}</span>
       </div>
       <button
@@ -56,20 +56,20 @@
       >
         <Icon
           :name="copied ? 'lucide:check' : 'lucide:copy'"
-          class="h-4 w-4"
+          class="size-4"
           :class="{ 'text-emerald-500': copied }"
-        ></Icon>
+        />
       </button>
     </div>
     <ClientOnly>
-      <LazyCodeBlockContent :code="code" :lang="lang"></LazyCodeBlockContent>
+      <LazyCodeBlockContent :code="code" :lang="lang" />
       <template #fallback>
         <div class="max-h-110 overflow-auto bg-muted/30 p-4">
           <div class="space-y-2">
-            <div class="h-4 w-3/4 animate-pulse rounded bg-muted"></div>
-            <div class="h-4 w-1/2 animate-pulse rounded bg-muted"></div>
-            <div class="h-4 w-5/6 animate-pulse rounded bg-muted"></div>
-            <div class="h-4 w-2/3 animate-pulse rounded bg-muted"></div>
+            <div class="h-4 w-3/4 animate-pulse rounded-sm bg-muted"></div>
+            <div class="h-4 w-1/2 animate-pulse rounded-sm bg-muted"></div>
+            <div class="h-4 w-5/6 animate-pulse rounded-sm bg-muted"></div>
+            <div class="h-4 w-2/3 animate-pulse rounded-sm bg-muted"></div>
           </div>
         </div>
       </template>

@@ -160,7 +160,7 @@ ${SCRIPT_END}
               <VMap
                 :key="currentStyleId"
                 :options="mapOptions"
-                class="h-full w-full"
+                class="size-full"
                 @loaded="handleMapLoad"
               >
                 <VControlNavigation position="top-right" />
@@ -228,7 +228,10 @@ ${SCRIPT_END}
                 :class="[
                   currentStyleId === style.id
                     ? 'border-primary bg-primary/10 text-primary'
-                    : 'border-border hover:bg-muted',
+                    : `
+                      border-border
+                      hover:bg-muted
+                    `,
                 ]"
                 @click="selectStyle(style)"
               >

@@ -1,182 +1,166 @@
 <script setup lang="ts">
-import { Separator } from '~/components/ui/separator';
+  import { Separator } from '~/components/ui/separator';
 
-const route = useRoute();
+  const route = useRoute();
 
-// Fetch current page
-const { data: page } = await useAsyncData(`docs-${route.path}`, () =>
-  queryCollection('docs').path(route.path).first(),
-);
-
-if (!page.value) {
-  throw createError({ statusCode: 404, message: 'Page not found' });
-}
-
-// Fetch all docs for navigation
-const { data: allDocs } = await useAsyncData('docs-nav', () =>
-  queryCollection('docs').order('stem', 'ASC').all(),
-);
-
-const navIcons: Record<string, string> = {
-  '/docs/introduction': 'lucide:home',
-  '/docs/installation': 'lucide:download',
-  '/docs/components': 'lucide:component',
-};
-
-const navItems = computed(() => {
-  return (
-    allDocs.value?.map((doc) => ({
-      title: doc.title,
-      path: doc.path,
-      active: doc.path === route.path,
-      icon: navIcons[doc.path] || 'lucide:file-text',
-    })) ?? []
+  // Fetch current page
+  const { data: page } = await useAsyncData(`docs-${route.path}`, () =>
+    queryCollection('docs').path(route.path).first(),
   );
-});
 
-const currentIndex = computed(() => {
-  return navItems.value.findIndex((item) => item.path === route.path);
-});
-
-const prevPage = computed(() => {
-  if (currentIndex.value > 0) {
-    return navItems.value[currentIndex.value - 1];
+  if (!page.value) {
+    throw createError({ statusCode: 404, message: 'Page not found' });
   }
-  return null;
-});
 
-const nextPage = computed(() => {
-  if (currentIndex.value < navItems.value.length - 1) {
-    return navItems.value[currentIndex.value + 1];
-  }
-  return null;
-});
+  // Fetch all docs for navigation
+  const { data: allDocs } = await useAsyncData('docs-nav', () =>
+    queryCollection('docs').order('stem', 'ASC').all(),
+  );
 
-const editUrl = computed(() => {
-  const stem = page.value?.stem;
-  if (!stem) return null;
-  const filename = stem.split('/').pop();
-  return `https://github.com/geoql/v-maplibre/edit/main/apps/mapcn-vue/content/docs/${filename}.md`;
-});
-
-const issueUrl =
-  'https://github.com/geoql/v-maplibre/issues/new?labels=documentation';
-
-// Use built-in TOC from Nuxt Content
-interface TocLink {
-  id: string;
-  text: string;
-  depth: number;
-  children?: TocLink[];
-}
-
-const toc = computed(() => {
-  const tocData = page.value?.body?.toc;
-  if (!tocData?.links) return [];
-
-  // Flatten the TOC links (including children)
-  const flattenLinks = (
-    links: TocLink[],
-    result: { id: string; text: string; level: number }[] = [],
-  ) => {
-    for (const link of links) {
-      result.push({
-        id: link.id,
-        text: link.text,
-        level: link.depth,
-      });
-      if (link.children) {
-        flattenLinks(link.children, result);
-      }
-    }
-    return result;
+  const navIcons: Record<string, string> = {
+    '/docs/introduction': 'lucide:home',
+    '/docs/installation': 'lucide:download',
+    '/docs/components': 'lucide:component',
   };
 
-  return flattenLinks(tocData.links);
-});
-
-// Scroll spy for TOC
-const activeHeading = ref<string>('');
-
-onMounted(() => {
-  const HEADER_OFFSET = 100;
-
-  const updateActiveHeading = () => {
-    const headings = document.querySelectorAll(
-      '.prose h1[id], .prose h2[id], .prose h3[id], .prose h4[id]',
+  const navItems = computed(() => {
+    return (
+      allDocs.value?.map((doc) => ({
+        title: doc.title,
+        path: doc.path,
+        active: doc.path === route.path,
+        icon: navIcons[doc.path] || 'lucide:file-text',
+      })) ?? []
     );
+  });
 
-    if (headings.length === 0) return;
+  const currentIndex = computed(() => {
+    return navItems.value.findIndex((item) => item.path === route.path);
+  });
 
-    let currentHeading = '';
+  const prevPage = computed(() => {
+    if (currentIndex.value > 0) {
+      return navItems.value[currentIndex.value - 1];
+    }
+    return null;
+  });
 
-    for (const heading of headings) {
-      const rect = heading.getBoundingClientRect();
-      if (rect.top <= HEADER_OFFSET) {
-        currentHeading = heading.id;
-      } else {
-        break;
+  const nextPage = computed(() => {
+    if (currentIndex.value < navItems.value.length - 1) {
+      return navItems.value[currentIndex.value + 1];
+    }
+    return null;
+  });
+
+  const editUrl = computed(() => {
+    const stem = page.value?.stem;
+    if (!stem) return null;
+    const filename = stem.split('/').pop();
+    return `https://github.com/geoql/v-maplibre/edit/main/apps/mapcn-vue/content/docs/${filename}.md`;
+  });
+
+  const issueUrl =
+    'https://github.com/geoql/v-maplibre/issues/new?labels=documentation';
+
+  // Use built-in TOC from Nuxt Content
+  interface TocLink {
+    id: string;
+    text: string;
+    depth: number;
+    children?: TocLink[];
+  }
+
+  const toc = computed(() => {
+    const tocData = page.value?.body?.toc;
+    if (!tocData?.links) return [];
+
+    // Flatten the TOC links (including children)
+    const flattenLinks = (
+      links: TocLink[],
+      result: { id: string; text: string; level: number }[] = [],
+    ) => {
+      for (const link of links) {
+        result.push({
+          id: link.id,
+          text: link.text,
+          level: link.depth,
+        });
+        if (link.children) {
+          flattenLinks(link.children, result);
+        }
       }
-    }
+      return result;
+    };
 
-    if (!currentHeading && headings.length > 0) {
-      currentHeading = headings[0]!.id;
-    }
-
-    activeHeading.value = currentHeading;
-  };
-
-  nextTick(() => {
-    updateActiveHeading();
+    return flattenLinks(tocData.links);
   });
 
-  window.addEventListener('scroll', updateActiveHeading, { passive: true });
+  // Scroll spy for TOC
+  const activeHeading = ref<string>('');
 
-  onUnmounted(() => {
-    window.removeEventListener('scroll', updateActiveHeading);
+  onMounted(() => {
+    const HEADER_OFFSET = 100;
+
+    const updateActiveHeading = () => {
+      const headings = document.querySelectorAll(
+        '.prose h1[id], .prose h2[id], .prose h3[id], .prose h4[id]',
+      );
+
+      if (headings.length === 0) return;
+
+      let currentHeading = '';
+
+      for (const heading of headings) {
+        const rect = heading.getBoundingClientRect();
+        if (rect.top <= HEADER_OFFSET) {
+          currentHeading = heading.id;
+        } else {
+          break;
+        }
+      }
+
+      if (!currentHeading && headings.length > 0) {
+        currentHeading = headings[0]!.id;
+      }
+
+      activeHeading.value = currentHeading;
+    };
+
+    nextTick(() => {
+      updateActiveHeading();
+    });
+
+    window.addEventListener('scroll', updateActiveHeading, { passive: true });
+
+    onUnmounted(() => {
+      window.removeEventListener('scroll', updateActiveHeading);
+    });
   });
-});
 
-useSeoMeta({
-  title: page.value.title,
-  description: page.value.description,
-});
+  useSeoMeta({
+    title: page.value.title,
+    description: page.value.description,
+  });
 </script>
 
 <template>
   <div class="relative min-h-dvh">
     <!-- Animated mesh gradient background -->
     <div class="fixed inset-0 -z-10">
-      <div class="bg-background absolute inset-0"></div>
+      <div class="absolute inset-0 bg-background"></div>
       <!-- Aurora gradient blobs -->
       <div
-        class="
-          animate-aurora-1 from-primary/20 absolute -top-[30%] -left-[40%]
-          size-[80%] rounded-full bg-linear-to-br via-cyan-500/10 to-transparent
-          blur-3xl
-        "
+        class="animate-aurora-1 absolute -top-[30%] -left-[40%] size-[80%] rounded-full bg-linear-to-br from-primary/20 via-cyan-500/10 to-transparent blur-3xl"
       ></div>
       <div
-        class="
-          animate-aurora-2 via-primary/10 absolute top-[20%] -right-[30%]
-          size-[60%] rounded-full bg-linear-to-bl from-violet-500/15
-          to-transparent blur-3xl
-        "
+        class="animate-aurora-2 absolute top-[20%] -right-[30%] size-[60%] rounded-full bg-linear-to-bl from-violet-500/15 via-primary/10 to-transparent blur-3xl"
       ></div>
       <div
-        class="
-          animate-aurora-3 absolute -bottom-[20%] left-[20%] size-[50%]
-          rounded-full bg-linear-to-tr from-emerald-500/10 via-cyan-500/5
-          to-transparent blur-3xl
-        "
+        class="animate-aurora-3 absolute -bottom-[20%] left-[20%] size-[50%] rounded-full bg-linear-to-tr from-emerald-500/10 via-cyan-500/5 to-transparent blur-3xl"
       ></div>
       <!-- Grid overlay -->
       <div
-        class="
-          absolute inset-0
-          bg-[linear-gradient(to_right,rgb(128_128_128/0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgb(128_128_128/0.03)_1px,transparent_1px)]
-          bg-size-[60px_60px]
-        "
+        class="absolute inset-0 bg-[linear-gradient(to_right,rgb(128_128_128/0.03)_1px,transparent_1px),linear-gradient(to_bottom,rgb(128_128_128/0.03)_1px,transparent_1px)] bg-size-[60px_60px]"
       ></div>
       <!-- Noise texture overlay -->
       <div
@@ -190,49 +174,30 @@ useSeoMeta({
     <div class="container max-w-screen-2xl py-10">
       <div class="flex gap-10">
         <!-- Left Sidebar - Navigation -->
-        <aside
-          class="
-            hidden w-56 shrink-0
-            lg:block
-          "
-        >
+        <aside class="hidden w-56 shrink-0 lg:block">
           <div class="animate-fade-up sticky top-20">
             <div
-              class="
-                border-border/50 bg-card/50 rounded-xl border p-4
-                backdrop-blur-md
-              "
+              class="rounded-xl border border-border/50 bg-card/50 p-4 backdrop-blur-md"
             >
               <div class="mb-4 flex items-center gap-2">
                 <div
-                  class="
-                    bg-primary/10 flex size-8 items-center justify-center
-                    rounded-lg
-                  "
+                  class="flex size-8 items-center justify-center rounded-lg bg-primary/10"
                 >
-                  <Icon
-                    name="lucide:book-open"
-                    class="text-primary size-4"
-                  />
+                  <Icon name="lucide:book-open" class="size-4 text-primary" />
                 </div>
-                <h4 class="text-sm font-semibold">
-                  Documentation
-                </h4>
+                <h4 class="text-sm font-semibold">Documentation</h4>
               </div>
               <nav class="flex flex-col gap-1">
                 <NuxtLink
                   v-for="item in navItems"
                   :key="item.path"
                   :to="item.path"
-                  class="
-                    group flex items-center gap-2 rounded-lg px-3 py-2 text-sm
-                    transition-all duration-200
-                  "
+                  class="group flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-all duration-200"
                   :class="[
                     item.active
                       ? `
-                        bg-primary/10 text-primary shadow-primary/10 font-medium
-                        shadow-sm
+                        bg-primary/10 font-medium text-primary shadow-sm
+                        shadow-primary/10
                       `
                       : `
                         text-muted-foreground
@@ -241,10 +206,7 @@ useSeoMeta({
                   ]"
                 >
                   <div
-                    class="
-                      flex size-6 items-center justify-center rounded-md
-                      transition-colors duration-200
-                    "
+                    class="flex size-6 items-center justify-center rounded-md transition-colors duration-200"
                     :class="[
                       item.active
                         ? 'bg-primary/20'
@@ -274,39 +236,24 @@ useSeoMeta({
             <div class="mb-10">
               <!-- Glowing accent line -->
               <div
-                class="
-                  animate-fade-in from-primary via-primary/50 mb-6 h-px w-24
-                  bg-linear-to-r to-transparent
-                "
+                class="animate-fade-in mb-6 h-px w-24 bg-linear-to-r from-primary via-primary/50 to-transparent"
               ></div>
 
               <div
-                class="
-                  animate-fade-up border-primary/20 bg-primary/5 text-primary
-                  mb-3 inline-flex items-center gap-2 rounded-full border px-3
-                  py-1 text-xs font-medium tracking-wide backdrop-blur-sm
-                "
+                class="animate-fade-up mb-3 inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-3 py-1 text-xs font-medium tracking-wide text-primary backdrop-blur-sm"
               >
                 <Icon name="lucide:book-open" class="size-3" />
                 <span>Documentation</span>
               </div>
 
               <h1
-                class="
-                  animate-fade-up from-foreground via-foreground
-                  to-foreground/50 mb-4 bg-linear-to-b bg-clip-text text-3xl
-                  font-bold tracking-tight text-transparent delay-100
-                  sm:text-4xl
-                "
+                class="animate-fade-up mb-4 bg-linear-to-b from-foreground via-foreground to-foreground/50 bg-clip-text text-3xl font-bold tracking-tight text-transparent delay-100 sm:text-4xl"
               >
                 {{ page?.title }}
               </h1>
               <p
                 v-if="page?.description"
-                class="
-                  animate-fade-up text-muted-foreground text-lg/relaxed
-                  delay-200
-                "
+                class="animate-fade-up text-lg/relaxed text-muted-foreground delay-200"
               >
                 {{ page.description }}
               </p>
@@ -314,42 +261,24 @@ useSeoMeta({
 
             <!-- Content container with glassmorphism -->
             <div
-              class="
-                animate-fade-up border-border/50 bg-card/30 rounded-xl border
-                p-6 backdrop-blur-md delay-300
-                sm:p-8
-              "
+              class="animate-fade-up rounded-xl border border-border/50 bg-card/30 p-6 backdrop-blur-md delay-300 sm:p-8"
             >
-              <div
-                class="
-                  prose
-                  dark:prose-invert
-                  max-w-none
-                "
-              >
+              <div class="prose dark:prose-invert max-w-none">
                 <ContentRenderer v-if="page" :value="page" />
               </div>
             </div>
 
             <!-- Edit & Report Links -->
             <div
-              class="
-                animate-fade-up mt-10 flex items-center justify-center gap-2
-                text-sm delay-400
-              "
+              class="animate-fade-up mt-10 flex items-center justify-center gap-2 text-sm delay-400"
             >
-              <Separator class="bg-border/50 flex-1" />
+              <Separator class="flex-1 bg-border/50" />
               <a
                 v-if="editUrl"
                 :href="editUrl"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="
-                  border-border/50 bg-card/50 text-muted-foreground
-                  hover:border-primary/30 hover:bg-primary/5 hover:text-primary
-                  inline-flex items-center gap-1.5 rounded-full border px-3
-                  py-1.5 backdrop-blur-sm transition-all
-                "
+                class="inline-flex items-center gap-1.5 rounded-full border border-border/50 bg-card/50 px-3 py-1.5 text-muted-foreground backdrop-blur-sm transition-all hover:border-primary/30 hover:bg-primary/5 hover:text-primary"
               >
                 <Icon name="lucide:pencil" class="size-3.5" />
                 Edit
@@ -358,17 +287,12 @@ useSeoMeta({
                 :href="issueUrl"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="
-                  border-border/50 bg-card/50 text-muted-foreground
-                  hover:border-primary/30 hover:bg-primary/5 hover:text-primary
-                  inline-flex items-center gap-1.5 rounded-full border px-3
-                  py-1.5 backdrop-blur-sm transition-all
-                "
+                class="inline-flex items-center gap-1.5 rounded-full border border-border/50 bg-card/50 px-3 py-1.5 text-muted-foreground backdrop-blur-sm transition-all hover:border-primary/30 hover:bg-primary/5 hover:text-primary"
               >
                 <Icon name="lucide:circle-dot" class="size-3.5" />
                 Report
               </a>
-              <Separator class="bg-border/50 flex-1" />
+              <Separator class="flex-1 bg-border/50" />
             </div>
 
             <!-- Prev/Next Navigation -->
@@ -376,66 +300,36 @@ useSeoMeta({
               <NuxtLink
                 v-if="prevPage"
                 :to="prevPage.path"
-                class="
-                  group border-border/50 bg-card/50
-                  hover:border-primary/30 hover:bg-card/80
-                  hover:shadow-primary/5
-                  relative flex flex-col overflow-hidden rounded-xl border p-5
-                  backdrop-blur-md transition-all duration-300
-                  hover:shadow-lg
-                "
+                class="group relative flex flex-col overflow-hidden rounded-xl border border-border/50 bg-card/50 p-5 backdrop-blur-md transition-all duration-300 hover:border-primary/30 hover:bg-card/80 hover:shadow-lg hover:shadow-primary/5"
               >
                 <!-- Hover glow -->
                 <div
-                  class="
-                    pointer-events-none absolute inset-0 opacity-0
-                    transition-opacity duration-300
-                    group-hover:opacity-100
-                  "
+                  class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                 >
                   <div
-                    class="
-                      from-primary/10 absolute -inset-px rounded-xl
-                      bg-linear-to-b via-transparent to-transparent
-                    "
+                    class="absolute -inset-px rounded-xl bg-linear-to-b from-primary/10 via-transparent to-transparent"
                   ></div>
                 </div>
                 <div class="relative mb-3 flex items-center gap-2">
                   <Icon
                     name="lucide:arrow-left"
-                    class="
-                      text-muted-foreground
-                      group-hover:text-primary
-                      size-4 transition-all duration-300
-                      group-hover:-translate-x-1
-                    "
+                    class="size-4 text-muted-foreground transition-all duration-300 group-hover:-translate-x-1 group-hover:text-primary"
                   />
-                  <span class="text-muted-foreground text-xs">Previous</span>
+                  <span class="text-xs text-muted-foreground">Previous</span>
                 </div>
                 <div class="relative flex items-center gap-3">
                   <div
-                    class="
-                      border-border/50 bg-muted/50
-                      group-hover:border-primary/30 group-hover:bg-primary/10
-                      flex size-9 shrink-0 items-center justify-center
-                      rounded-lg border transition-all duration-300
-                    "
+                    class="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border/50 bg-muted/50 transition-all duration-300 group-hover:border-primary/30 group-hover:bg-primary/10"
                   >
                     <Icon
                       :name="prevPage.icon"
-                      class="
-                        text-muted-foreground
-                        group-hover:text-primary
-                        size-4 transition-colors duration-300
-                      "
+                      class="size-4 text-muted-foreground transition-colors duration-300 group-hover:text-primary"
                     />
                   </div>
                   <span
-                    class="
-                      group-hover:text-primary
-                      font-medium transition-colors duration-300
-                    "
-                  >{{ prevPage.title }}</span>
+                    class="font-medium transition-colors duration-300 group-hover:text-primary"
+                    >{{ prevPage.title }}</span
+                  >
                 </div>
               </NuxtLink>
               <div v-else></div>
@@ -443,65 +337,34 @@ useSeoMeta({
               <NuxtLink
                 v-if="nextPage"
                 :to="nextPage.path"
-                class="
-                  group border-border/50 bg-card/50
-                  hover:border-primary/30 hover:bg-card/80
-                  hover:shadow-primary/5
-                  relative flex flex-col items-end overflow-hidden rounded-xl
-                  border p-5 text-right backdrop-blur-md transition-all
-                  duration-300
-                  hover:shadow-lg
-                "
+                class="group relative flex flex-col items-end overflow-hidden rounded-xl border border-border/50 bg-card/50 p-5 text-right backdrop-blur-md transition-all duration-300 hover:border-primary/30 hover:bg-card/80 hover:shadow-lg hover:shadow-primary/5"
               >
                 <!-- Hover glow -->
                 <div
-                  class="
-                    pointer-events-none absolute inset-0 opacity-0
-                    transition-opacity duration-300
-                    group-hover:opacity-100
-                  "
+                  class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                 >
                   <div
-                    class="
-                      from-primary/10 absolute -inset-px rounded-xl
-                      bg-linear-to-b via-transparent to-transparent
-                    "
+                    class="absolute -inset-px rounded-xl bg-linear-to-b from-primary/10 via-transparent to-transparent"
                   ></div>
                 </div>
                 <div class="relative mb-3 flex items-center gap-2">
-                  <span class="text-muted-foreground text-xs">Next</span>
+                  <span class="text-xs text-muted-foreground">Next</span>
                   <Icon
                     name="lucide:arrow-right"
-                    class="
-                      text-muted-foreground
-                      group-hover:text-primary
-                      size-4 transition-all duration-300
-                      group-hover:translate-x-1
-                    "
+                    class="size-4 text-muted-foreground transition-all duration-300 group-hover:translate-x-1 group-hover:text-primary"
                   />
                 </div>
                 <div class="relative flex items-center gap-3">
                   <span
-                    class="
-                      group-hover:text-primary
-                      font-medium transition-colors duration-300
-                    "
-                  >{{ nextPage.title }}</span>
+                    class="font-medium transition-colors duration-300 group-hover:text-primary"
+                    >{{ nextPage.title }}</span
+                  >
                   <div
-                    class="
-                      border-border/50 bg-muted/50
-                      group-hover:border-primary/30 group-hover:bg-primary/10
-                      flex size-9 shrink-0 items-center justify-center
-                      rounded-lg border transition-all duration-300
-                    "
+                    class="flex size-9 shrink-0 items-center justify-center rounded-lg border border-border/50 bg-muted/50 transition-all duration-300 group-hover:border-primary/30 group-hover:bg-primary/10"
                   >
                     <Icon
                       :name="nextPage.icon"
-                      class="
-                        text-muted-foreground
-                        group-hover:text-primary
-                        size-4 transition-colors duration-300
-                      "
+                      class="size-4 text-muted-foreground transition-colors duration-300 group-hover:text-primary"
                     />
                   </div>
                 </div>
@@ -511,37 +374,23 @@ useSeoMeta({
         </main>
 
         <!-- Right Sidebar - Table of Contents -->
-        <aside
-          class="
-            hidden w-56 shrink-0
-            xl:block
-          "
-        >
+        <aside class="hidden w-56 shrink-0 xl:block">
           <div class="animate-fade-up sticky top-20 delay-200">
             <div
-              class="
-                border-border/50 bg-card/50 rounded-xl border p-4
-                backdrop-blur-md
-              "
+              class="rounded-xl border border-border/50 bg-card/50 p-4 backdrop-blur-md"
             >
               <div class="mb-4 flex items-center gap-2">
                 <div
-                  class="
-                    bg-primary/10 flex size-8 items-center justify-center
-                    rounded-lg
-                  "
+                  class="flex size-8 items-center justify-center rounded-lg bg-primary/10"
                 >
-                  <Icon
-                    name="lucide:align-left"
-                    class="text-primary size-4"
-                  />
+                  <Icon name="lucide:align-left" class="size-4 text-primary" />
                 </div>
                 <span class="text-sm font-semibold">On this page</span>
               </div>
               <nav v-if="toc.length > 0" class="relative flex flex-col">
                 <!-- Vertical line -->
                 <div
-                  class="bg-border/50 absolute top-0 left-0 h-full w-px"
+                  class="absolute top-0 left-0 h-full w-px bg-border/50"
                   aria-hidden="true"
                 ></div>
                 <a
@@ -552,7 +401,7 @@ useSeoMeta({
                   :class="[
                     heading.level === 3 ? 'pl-6' : 'pl-4',
                     activeHeading === heading.id
-                      ? 'text-primary font-medium'
+                      ? 'font-medium text-primary'
                       : `
                         text-muted-foreground
                         hover:text-foreground
@@ -562,15 +411,12 @@ useSeoMeta({
                   <!-- Active indicator -->
                   <span
                     v-if="activeHeading === heading.id"
-                    class="
-                      bg-primary shadow-primary/50 absolute top-1/2 left-0 h-5
-                      w-0.5 -translate-y-1/2 rounded-full shadow-sm
-                    "
+                    class="absolute top-1/2 left-0 h-5 w-0.5 -translate-y-1/2 rounded-full bg-primary shadow-sm shadow-primary/50"
                   ></span>
                   {{ heading.text }}
                 </a>
               </nav>
-              <p v-else class="text-muted-foreground text-sm">
+              <p v-else class="text-sm text-muted-foreground">
                 No headings found
               </p>
             </div>

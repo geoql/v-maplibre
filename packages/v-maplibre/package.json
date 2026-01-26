@@ -1,8 +1,46 @@
 {
   "name": "@geoql/v-maplibre",
   "version": "1.5.0",
+  "private": false,
   "description": "Vue 3 components for MapLibre GL - reactive map components with full TypeScript support",
+  "keywords": [
+    "components",
+    "deck.gl",
+    "deckgl",
+    "geospatial",
+    "gis",
+    "map",
+    "maplibre",
+    "maplibre-gl",
+    "mapping",
+    "nuxt",
+    "visualization",
+    "vue",
+    "vue3",
+    "webgl"
+  ],
+  "homepage": "https://github.com/geoql/v-maplibre#readme",
+  "bugs": {
+    "url": "https://github.com/geoql/v-maplibre/issues"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "Vinayak Kulkarni",
+    "email": "inbox.vinayak@gmail.com",
+    "url": "https://vinayakkulkarni.dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/geoql/v-maplibre.git",
+    "directory": "packages/v-maplibre"
+  },
+  "files": [
+    "dist"
+  ],
   "type": "module",
+  "sideEffects": [
+    "*.css"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -16,9 +54,9 @@
     "./dist/style.css": "./dist/v-maplibre.css",
     "./dist/v-maplibre.css": "./dist/v-maplibre.css"
   },
-  "files": [
-    "dist"
-  ],
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build && vue-tsc --project tsconfig.build.json",
@@ -28,26 +66,61 @@
     "test:coverage": "vitest --coverage",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
-    "format": "prettier --write .",
-    "format:check": "prettier --check .",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check .",
     "prepublishOnly": "bun run lint && bun run format:check && bun run test:coverage && bun run build"
   },
+  "dependencies": {
+    "maplibre-gl": "^5.16.0",
+    "pmtiles": "^4.3.2"
+  },
+  "devDependencies": {
+    "@deck.gl/aggregation-layers": "catalog:deckgl",
+    "@deck.gl/core": "catalog:deckgl",
+    "@deck.gl/geo-layers": "catalog:deckgl",
+    "@deck.gl/layers": "catalog:deckgl",
+    "@deck.gl/mapbox": "catalog:deckgl",
+    "@deck.gl/mesh-layers": "catalog:deckgl",
+    "@developmentseed/deck.gl-geotiff": "^0.1.0",
+    "@developmentseed/deck.gl-raster": "^0.1.0",
+    "@luma.gl/core": "catalog:deckgl",
+    "@luma.gl/engine": "catalog:deckgl",
+    "@luma.gl/shadertools": "catalog:deckgl",
+    "@types/node": "^25.0.9",
+    "@vitejs/plugin-vue": "^6.0.3",
+    "@vitest/coverage-v8": "^4.0.17",
+    "@vitest/ui": "^4.0.17",
+    "@vue/test-utils": "^2.4.6",
+    "flatbush": "^4.5.0",
+    "geotiff": "2.1.3",
+    "happy-dom": "^20.3.4",
+    "maplibre-gl-lidar": "^0.8.0",
+    "maplibre-gl-wind": "^0.2.0",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "proj4": "^2.20.2",
+    "typescript": "catalog:",
+    "vite": "^7.3.1",
+    "vitest": "^4.0.17",
+    "vue": "catalog:",
+    "vue-tsc": "^3.2.2"
+  },
   "peerDependencies": {
-    "vue": "^3.5.0",
+    "@deck.gl/aggregation-layers": "^9.2.6",
     "@deck.gl/core": "^9.2.6",
+    "@deck.gl/geo-layers": "^9.2.6",
     "@deck.gl/layers": "^9.2.6",
     "@deck.gl/mapbox": "^9.2.6",
-    "@deck.gl/aggregation-layers": "^9.2.6",
-    "@deck.gl/geo-layers": "^9.2.6",
     "@deck.gl/mesh-layers": "^9.2.6",
     "@developmentseed/deck.gl-geotiff": "^0.1.0",
     "@developmentseed/deck.gl-raster": "^0.1.0",
-    "geotiff-geokeys-to-proj4": "^2024.4.0",
-    "geotiff": "2.1.3",
     "flatbush": "^4.5.0",
-    "proj4": "^2.20.2",
+    "geotiff": "2.1.3",
+    "geotiff-geokeys-to-proj4": "^2024.4.0",
     "maplibre-gl-lidar": "^0.5.0",
-    "maplibre-gl-wind": "^0.2.0"
+    "maplibre-gl-wind": "^0.2.0",
+    "proj4": "^2.20.2",
+    "vue": "^3.5.0"
   },
   "peerDependenciesMeta": {
     "@deck.gl/core": {
@@ -93,79 +166,5 @@
       "optional": true
     }
   },
-  "dependencies": {
-    "maplibre-gl": "^5.16.0",
-    "pmtiles": "^4.3.2"
-  },
-  "devDependencies": {
-    "@awmottaz/prettier-plugin-void-html": "catalog:",
-    "@deck.gl/aggregation-layers": "catalog:deckgl",
-    "@deck.gl/core": "catalog:deckgl",
-    "@deck.gl/geo-layers": "catalog:deckgl",
-    "@deck.gl/layers": "catalog:deckgl",
-    "@deck.gl/mapbox": "catalog:deckgl",
-    "@deck.gl/mesh-layers": "catalog:deckgl",
-    "@luma.gl/core": "catalog:deckgl",
-    "@luma.gl/engine": "catalog:deckgl",
-    "@luma.gl/shadertools": "catalog:deckgl",
-    "@types/node": "^25.0.9",
-    "@vitejs/plugin-vue": "^6.0.3",
-    "@vitest/coverage-v8": "^4.0.17",
-    "@vitest/ui": "^4.0.17",
-    "@vue/test-utils": "^2.4.6",
-    "happy-dom": "^20.3.4",
-    "@developmentseed/deck.gl-geotiff": "^0.1.0",
-    "@developmentseed/deck.gl-raster": "^0.1.0",
-    "flatbush": "^4.5.0",
-    "geotiff": "2.1.3",
-    "proj4": "^2.20.2",
-    "maplibre-gl-lidar": "^0.8.0",
-    "maplibre-gl-wind": "^0.2.0",
-    "oxlint": "catalog:",
-    "prettier": "catalog:",
-    "typescript": "catalog:",
-    "vite": "^7.3.1",
-    "vitest": "^4.0.17",
-    "vue": "catalog:",
-    "vue-tsc": "^3.2.2"
-  },
-  "packageManager": "bun@1.3.6",
-  "publishConfig": {
-    "access": "public"
-  },
-  "keywords": [
-    "vue",
-    "vue3",
-    "maplibre",
-    "maplibre-gl",
-    "deck.gl",
-    "deckgl",
-    "webgl",
-    "map",
-    "mapping",
-    "gis",
-    "geospatial",
-    "visualization",
-    "components",
-    "nuxt"
-  ],
-  "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/geoql/v-maplibre.git",
-    "directory": "packages/v-maplibre"
-  },
-  "bugs": {
-    "url": "https://github.com/geoql/v-maplibre/issues"
-  },
-  "homepage": "https://github.com/geoql/v-maplibre#readme",
-  "private": false,
-  "sideEffects": [
-    "*.css"
-  ],
-  "author": {
-    "name": "Vinayak Kulkarni",
-    "email": "inbox.vinayak@gmail.com",
-    "url": "https://vinayakkulkarni.dev"
-  }
+  "packageManager": "bun@1.3.6"
 }

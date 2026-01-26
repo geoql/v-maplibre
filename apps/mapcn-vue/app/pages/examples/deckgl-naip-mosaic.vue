@@ -15,22 +15,13 @@
       'Client-side COG mosaic of NAIP imagery from Microsoft Planetary Computer with multiple render modes.',
   });
 
-  const colorMode = useColorMode();
+  const { mapStyle } = useMapStyle();
   const mapId = useId();
   const mapInstance = shallowRef<Map | null>(null);
 
   const onMapLoaded = (map: Map) => {
     mapInstance.value = map;
   };
-
-  const lightStyle =
-    'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
-  const darkStyle =
-    'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
-
-  const mapStyle = computed(() =>
-    colorMode.value === 'dark' ? darkStyle : lightStyle,
-  );
 
   // Colorado area bounding box for NAIP query
   const STAC_BBOX: [number, number, number, number] = [
@@ -163,7 +154,7 @@
           to="/examples"
           class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4"></Icon>
+          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
           Back to Examples
         </NuxtLink>
         <h1 class="mt-4 text-3xl font-bold tracking-tight">NAIP Mosaic</h1>
@@ -198,11 +189,11 @@
               <VMap
                 :key="mapStyle"
                 :options="mapOptions"
-                class="h-full w-full"
+                class="size-full"
                 @loaded="onMapLoaded"
               >
-                <VControlNavigation position="top-right"></VControlNavigation>
-                <VControlScale position="bottom-left"></VControlScale>
+                <VControlNavigation position="top-right" />
+                <VControlScale position="bottom-left" />
 
                 <VLayerDeckglMosaic
                   v-if="stacItems.length > 0"
@@ -211,12 +202,12 @@
                   :render-mode="renderMode"
                   @source-load="handleSourceLoad"
                   @error="handleError"
-                ></VLayerDeckglMosaic>
+                />
               </VMap>
             </ClientOnly>
 
             <div
-              class="absolute left-4 top-4 z-10 max-w-xs rounded-lg border bg-background/95 p-4 shadow-lg backdrop-blur-sm"
+              class="absolute top-4 left-4 z-10 max-w-xs rounded-lg border bg-background/95 p-4 shadow-lg backdrop-blur-sm"
             >
               <h3 class="mb-2 text-sm font-semibold">NAIP Mosaic</h3>
               <p class="mb-3 text-xs text-muted-foreground">
@@ -285,7 +276,7 @@
             :code="codeExample"
             lang="vue"
             filename="NAIPMosaic.vue"
-          ></LazyCodeBlock>
+          />
 
           <div class="mt-6 rounded-lg border border-border bg-card p-4">
             <h3 class="mb-3 font-semibold">Features</h3>
@@ -296,42 +287,42 @@
                 <Icon
                   name="lucide:check"
                   class="size-4 shrink-0 text-emerald-500"
-                ></Icon>
+                />
                 Client-side mosaic
               </li>
               <li class="flex items-center gap-2">
                 <Icon
                   name="lucide:check"
                   class="size-4 shrink-0 text-emerald-500"
-                ></Icon>
+                />
                 STAC API integration
               </li>
               <li class="flex items-center gap-2">
                 <Icon
                   name="lucide:check"
                   class="size-4 shrink-0 text-emerald-500"
-                ></Icon>
+                />
                 4-band imagery (RGBN)
               </li>
               <li class="flex items-center gap-2">
                 <Icon
                   name="lucide:check"
                   class="size-4 shrink-0 text-emerald-500"
-                ></Icon>
+                />
                 GPU-accelerated
               </li>
               <li class="flex items-center gap-2">
                 <Icon
                   name="lucide:check"
                   class="size-4 shrink-0 text-emerald-500"
-                ></Icon>
+                />
                 No server required
               </li>
               <li class="flex items-center gap-2">
                 <Icon
                   name="lucide:check"
                   class="size-4 shrink-0 text-emerald-500"
-                ></Icon>
+                />
                 Multi-render modes
               </li>
             </ul>

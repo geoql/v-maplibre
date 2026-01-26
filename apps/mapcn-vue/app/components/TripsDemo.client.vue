@@ -82,8 +82,8 @@
 </script>
 
 <template>
-  <div class="h-full w-full">
-    <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
+  <div class="size-full">
+    <VMap :key="mapStyle" :options="mapOptions" class="size-full">
       <VLayerDeckglTrips
         id="trips-layer"
         :data="tripsData"
@@ -96,7 +96,7 @@
         :cap-rounded="true"
         :joint-rounded="true"
         :opacity="0.8"
-      ></VLayerDeckglTrips>
+      />
     </VMap>
   </div>
 </template>

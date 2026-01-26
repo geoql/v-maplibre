@@ -24,7 +24,7 @@
 
   const route = useRoute();
   const router = useRouter();
-  const colorMode = useColorMode();
+  const { mapStyle } = useMapStyle();
   const mapId = useId();
   const mapRef = ref<MaplibreMap | null>(null);
 
@@ -50,15 +50,6 @@
       ? `${base} text-foreground`
       : `${base} text-muted-foreground hover:text-foreground`;
   }
-
-  const lightStyle =
-    'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
-  const darkStyle =
-    'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
-
-  const mapStyle = computed(() =>
-    colorMode.value === 'dark' ? darkStyle : lightStyle,
-  );
 
   const mapOptions = computed(() => ({
     container: `choropleth-map-${mapId}-${activeTab.value}`,
@@ -164,9 +155,9 @@
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
     if (result) {
       return [
-        parseInt(result[1], 16),
-        parseInt(result[2], 16),
-        parseInt(result[3], 16),
+        Number.parseInt(result[1], 16),
+        Number.parseInt(result[2], 16),
+        Number.parseInt(result[3], 16),
         alpha,
       ];
     }
@@ -387,8 +378,8 @@ ${SCRIPT_END}
             MapLibre GL
             <span
               v-if="isTabActive('maplibre')"
-              class="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
-            />
+              class="absolute right-0 bottom-0 left-0 h-0.5 bg-foreground"
+            ></span>
           </button>
           <button
             :class="getTabClasses('deckgl')"
@@ -397,8 +388,8 @@ ${SCRIPT_END}
             deck.gl
             <span
               v-if="isTabActive('deckgl')"
-              class="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
-            />
+              class="absolute right-0 bottom-0 left-0 h-0.5 bg-foreground"
+            ></span>
           </button>
         </div>
       </div>
@@ -428,7 +419,9 @@ ${SCRIPT_END}
                       name="lucide:alert-circle"
                       class="mx-auto size-8 text-destructive"
                     />
-                    <p class="mt-2 text-sm text-destructive">{{ error }}</p>
+                    <p class="mt-2 text-sm text-destructive">
+                      {{ error }}
+                    </p>
                   </div>
                 </div>
               </template>
@@ -438,7 +431,7 @@ ${SCRIPT_END}
                   v-if="isTabActive('maplibre')"
                   :key="`maplibre-${mapStyle}`"
                   :options="mapOptions"
-                  class="h-full w-full"
+                  class="size-full"
                   @loaded="handleMapLoad"
                 >
                   <VControlNavigation position="top-right" />
@@ -479,7 +472,7 @@ ${SCRIPT_END}
                   v-else
                   :key="`deckgl-${mapStyle}`"
                   :options="mapOptions"
-                  class="h-full w-full"
+                  class="size-full"
                   @loaded="handleMapLoad"
                 >
                   <VControlNavigation position="top-right" />
@@ -526,9 +519,9 @@ ${SCRIPT_END}
                   class="flex items-center gap-2 text-xs"
                 >
                   <div
-                    class="size-4 rounded"
+                    class="size-4 rounded-sm"
                     :style="{ backgroundColor: item.color }"
-                  />
+                  ></div>
                   <span class="text-muted-foreground">
                     {{ item.threshold }}%+
                   </span>
@@ -538,9 +531,11 @@ ${SCRIPT_END}
 
             <div
               v-if="hoveredState && isTabActive('deckgl')"
-              class="absolute right-4 top-4 z-10 rounded-lg border bg-background/95 px-3 py-2 shadow-lg backdrop-blur-sm"
+              class="absolute top-4 right-4 z-10 rounded-lg border bg-background/95 px-3 py-2 shadow-lg backdrop-blur-sm"
             >
-              <p class="text-sm font-medium">{{ hoveredState.name }}</p>
+              <p class="text-sm font-medium">
+                {{ hoveredState.name }}
+              </p>
               <p class="text-xs text-muted-foreground">
                 Unemployment: {{ hoveredState.rate.toFixed(1) }}%
               </p>
@@ -566,17 +561,19 @@ ${SCRIPT_END}
                     :key="state.name"
                     class="border-b last:border-0"
                   >
-                    <td class="px-4 py-2">{{ state.name }}</td>
+                    <td class="px-4 py-2">
+                      {{ state.name }}
+                    </td>
                     <td class="px-4 py-2 text-right tabular-nums">
                       {{ state.rate.toFixed(1) }}%
                     </td>
                     <td class="px-4 py-2 text-center">
                       <div
-                        class="mx-auto size-4 rounded"
+                        class="mx-auto size-4 rounded-sm"
                         :style="{
                           backgroundColor: getColorForRate(state.rate),
                         }"
-                      />
+                      ></div>
                     </td>
                   </tr>
                 </tbody>

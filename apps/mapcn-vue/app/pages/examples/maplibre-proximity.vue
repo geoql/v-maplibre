@@ -19,21 +19,12 @@
       'Visualize distances and connections between multiple locations.',
   });
 
-  const colorMode = useColorMode();
+  const { mapStyle } = useMapStyle();
   const mapId = useId();
   const mapRef = ref<MaplibreMap | null>(null);
   const mapLoaded = ref(false);
   const distancesLoading = ref(false);
   const distancesError = ref<string | null>(null);
-
-  const lightStyle =
-    'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
-  const darkStyle =
-    'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
-
-  const mapStyle = computed(() =>
-    colorMode.value === 'dark' ? darkStyle : lightStyle,
-  );
 
   const mapOptions = computed(() => ({
     container: `proximity-map-${mapId}`,
@@ -158,7 +149,8 @@
     );
   });
 
-  const linesGeoJson = computed<FeatureCollection<LineString>>(() => ({
+  // Used in code example display only, not in actual component
+  const _linesGeoJson = computed<FeatureCollection<LineString>>(() => ({
     type: 'FeatureCollection',
     features: visibleConnections.value.map((conn) => ({
       type: 'Feature',
@@ -332,7 +324,7 @@ ${SCRIPT_END}
               <VMap
                 :key="mapStyle"
                 :options="mapOptions"
-                class="h-full w-full"
+                class="size-full"
                 @loaded="handleMapLoad"
               >
                 <VControlNavigation position="top-right" />
@@ -381,15 +373,15 @@ ${SCRIPT_END}
               <h4 class="mb-2 text-xs font-medium">Road Distance</h4>
               <div class="space-y-1 text-xs">
                 <div class="flex items-center gap-2">
-                  <div class="h-0.5 w-6 bg-green-500" />
+                  <div class="h-0.5 w-6 bg-green-500"></div>
                   <span>&lt; 5 km</span>
                 </div>
                 <div class="flex items-center gap-2">
-                  <div class="h-0.5 w-6 bg-yellow-500" />
+                  <div class="h-0.5 w-6 bg-yellow-500"></div>
                   <span>5-10 km</span>
                 </div>
                 <div class="flex items-center gap-2">
-                  <div class="h-0.5 w-6 bg-red-500" />
+                  <div class="h-0.5 w-6 bg-red-500"></div>
                   <span>&gt; 10 km</span>
                 </div>
               </div>
@@ -397,15 +389,15 @@ ${SCRIPT_END}
                 <h4 class="mb-1 text-xs font-medium">Locations</h4>
                 <div class="space-y-1 text-xs">
                   <div class="flex items-center gap-2">
-                    <div class="size-3 rounded-full bg-purple-500" />
+                    <div class="size-3 rounded-full bg-purple-500"></div>
                     <span>Warehouse</span>
                   </div>
                   <div class="flex items-center gap-2">
-                    <div class="size-3 rounded-full bg-blue-500" />
+                    <div class="size-3 rounded-full bg-blue-500"></div>
                     <span>Store</span>
                   </div>
                   <div class="flex items-center gap-2">
-                    <div class="size-3 rounded-full bg-green-500" />
+                    <div class="size-3 rounded-full bg-green-500"></div>
                     <span>Customer</span>
                   </div>
                 </div>
@@ -421,7 +413,7 @@ ${SCRIPT_END}
                 <input
                   v-model="showAllConnections"
                   type="checkbox"
-                  class="rounded border-border"
+                  class="rounded-sm border-border"
                 />
                 Show all
               </label>
@@ -435,7 +427,10 @@ ${SCRIPT_END}
                 :class="[
                   selectedLocation === loc.id
                     ? 'border-primary bg-primary/10'
-                    : 'border-border hover:bg-muted',
+                    : `
+                      border-border
+                      hover:bg-muted
+                    `,
                 ]"
                 @click="toggleLocation(loc.id)"
               >
@@ -486,13 +481,17 @@ ${SCRIPT_END}
                     :key="`${conn.from.id}-${conn.to.id}`"
                     class="border-b last:border-0"
                   >
-                    <td class="px-4 py-2">{{ conn.from.name }}</td>
-                    <td class="px-4 py-2">{{ conn.to.name }}</td>
+                    <td class="px-4 py-2">
+                      {{ conn.from.name }}
+                    </td>
+                    <td class="px-4 py-2">
+                      {{ conn.to.name }}
+                    </td>
                     <td class="px-4 py-2 text-right tabular-nums">
                       {{ conn.distance.toFixed(1) }} km
                     </td>
                     <td
-                      class="px-4 py-2 text-right tabular-nums text-muted-foreground"
+                      class="px-4 py-2 text-right text-muted-foreground tabular-nums"
                     >
                       {{ formatDuration(conn.duration) }}
                     </td>

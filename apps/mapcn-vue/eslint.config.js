@@ -59,7 +59,7 @@ export default createConfigForNuxt({
     },
     settings: {
       'better-tailwindcss': {
-        entryPoint: 'app/assets/css/tailwind.css',
+        entryPoint: 'app/assets/css/main.css',
         // Auto-detect custom component classes from CSS (e.g., @layer components)
         detectComponentClasses: true,
       },

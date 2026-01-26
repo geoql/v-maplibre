@@ -3,16 +3,7 @@
   import { VMap, VLayerDeckglScatterplot, VPopup } from '@geoql/v-maplibre';
   import type { PickingInfo } from '@deck.gl/core';
 
-  const colorMode = useColorMode();
-
-  const lightStyle =
-    'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
-  const darkStyle =
-    'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
-
-  const mapStyle = computed(() =>
-    colorMode.value === 'dark' ? darkStyle : lightStyle,
-  );
+  const { mapStyle } = useMapStyle();
 
   const mapOptions = computed(() => ({
     container: 'active-users-map',
@@ -106,8 +97,8 @@
 </script>
 
 <template>
-  <div class="h-full w-full">
-    <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
+  <div class="size-full">
+    <VMap :key="mapStyle" :options="mapOptions" class="size-full">
       <VLayerDeckglScatterplot
         id="active-users-pulse"
         :data="usersData"

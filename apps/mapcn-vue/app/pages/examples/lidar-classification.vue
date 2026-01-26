@@ -12,17 +12,8 @@
       'Filter LiDAR point clouds by ASPRS classification types like ground, buildings, and vegetation.',
   });
 
-  const colorMode = useColorMode();
+  const { mapStyle } = useMapStyle();
   const mapId = useId();
-
-  const lightStyle =
-    'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
-  const darkStyle =
-    'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
-
-  const mapStyle = computed(() =>
-    colorMode.value === 'dark' ? darkStyle : lightStyle,
-  );
 
   const mapOptions = computed(() => ({
     container: `lidar-classification-example-${mapId}`,
@@ -110,14 +101,14 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl py-10 overflow-x-hidden">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
     <div class="mx-auto w-full max-w-300">
       <div class="mb-8">
         <NuxtLink
           to="/examples"
           class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 h-4 w-4"></Icon>
+          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
           Back to Examples
         </NuxtLink>
         <h1 class="mt-4 text-3xl font-bold tracking-tight">
@@ -135,9 +126,9 @@ ${SCRIPT_END}
           class="h-125 min-w-0 overflow-hidden rounded-lg border border-border"
         >
           <ClientOnly>
-            <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
-              <VControlNavigation position="top-left"></VControlNavigation>
-              <VControlScale position="bottom-left"></VControlScale>
+            <VMap :key="mapStyle" :options="mapOptions" class="size-full">
+              <VControlNavigation position="top-left" />
+              <VControlScale position="bottom-left" />
               <VControlLidar
                 position="top-right"
                 :options="{
@@ -150,7 +141,7 @@ ${SCRIPT_END}
                 :default-url="sampleCopcUrl"
                 @load="handleLoad"
                 @loaderror="handleError"
-              ></VControlLidar>
+              />
             </VMap>
           </ClientOnly>
         </div>
@@ -160,7 +151,7 @@ ${SCRIPT_END}
             :code="codeExample"
             lang="vue"
             filename="ClassificationFilter.vue"
-          ></CodeBlock>
+          />
         </div>
       </div>
 
@@ -170,56 +161,56 @@ ${SCRIPT_END}
           <div class="grid gap-2 text-sm text-muted-foreground sm:grid-cols-2">
             <div class="flex items-center gap-2">
               <span
-                class="inline-block h-3 w-3 rounded"
+                class="inline-block size-3 rounded-sm"
                 style="background-color: #a87832"
               ></span>
               <span><strong>2</strong> - Ground</span>
             </div>
             <div class="flex items-center gap-2">
               <span
-                class="inline-block h-3 w-3 rounded"
+                class="inline-block size-3 rounded-sm"
                 style="background-color: #4caf50"
               ></span>
               <span><strong>3</strong> - Low Vegetation</span>
             </div>
             <div class="flex items-center gap-2">
               <span
-                class="inline-block h-3 w-3 rounded"
+                class="inline-block size-3 rounded-sm"
                 style="background-color: #8bc34a"
               ></span>
               <span><strong>4</strong> - Medium Vegetation</span>
             </div>
             <div class="flex items-center gap-2">
               <span
-                class="inline-block h-3 w-3 rounded"
+                class="inline-block size-3 rounded-sm"
                 style="background-color: #2e7d32"
               ></span>
               <span><strong>5</strong> - High Vegetation</span>
             </div>
             <div class="flex items-center gap-2">
               <span
-                class="inline-block h-3 w-3 rounded"
+                class="inline-block size-3 rounded-sm"
                 style="background-color: #f44336"
               ></span>
               <span><strong>6</strong> - Building</span>
             </div>
             <div class="flex items-center gap-2">
               <span
-                class="inline-block h-3 w-3 rounded"
+                class="inline-block size-3 rounded-sm"
                 style="background-color: #ff5722"
               ></span>
               <span><strong>7</strong> - Low Point (Noise)</span>
             </div>
             <div class="flex items-center gap-2">
               <span
-                class="inline-block h-3 w-3 rounded"
+                class="inline-block size-3 rounded-sm"
                 style="background-color: #2196f3"
               ></span>
               <span><strong>9</strong> - Water</span>
             </div>
             <div class="flex items-center gap-2">
               <span
-                class="inline-block h-3 w-3 rounded"
+                class="inline-block size-3 rounded-sm"
                 style="background-color: #9c27b0"
               ></span>
               <span><strong>17</strong> - Bridge Deck</span>

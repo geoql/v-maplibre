@@ -1,15 +1,6 @@
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineNuxtConfig({
-  devtools: { enabled: true },
-
-  nitro: {
-    preset: 'cloudflare-pages',
-    cloudflare: {
-      nodeCompat: true,
-    },
-  },
-
   modules: [
     '@nuxtjs/color-mode',
     '@nuxt/icon',
@@ -26,26 +17,34 @@ export default defineNuxtConfig({
       },
     ],
   ],
+  devtools: { enabled: true },
 
-  vite: {
-    plugins: [tailwindcss()],
-  },
-
-  postcss: {
-    plugins: {
-      '@tailwindcss/postcss': {},
+  app: {
+    head: {
+      title: 'mapcn-vue - Beautiful maps for Vue',
+      meta: [
+        {
+          name: 'description',
+          content:
+            'Beautiful map components for Vue. Built on @geoql/v-maplibre, styled with Tailwind CSS, works with shadcn-vue.',
+        },
+        { name: 'theme-color', content: '#000000' },
+      ],
+      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
     },
   },
+
+  css: [
+    'maplibre-gl/dist/maplibre-gl.css',
+    '@geoql/v-maplibre/dist/v-maplibre.css',
+    'maplibre-gl-lidar/style.css',
+    '~/assets/css/main.css',
+  ],
 
   colorMode: {
     classSuffix: '',
     preference: 'system',
     fallback: 'dark',
-  },
-
-  shadcn: {
-    prefix: '',
-    componentDir: './app/components/ui',
   },
 
   content: {
@@ -63,27 +62,33 @@ export default defineNuxtConfig({
     },
   },
 
-  css: [
-    'maplibre-gl/dist/maplibre-gl.css',
-    '@geoql/v-maplibre/dist/v-maplibre.css',
-    'maplibre-gl-lidar/style.css',
-    '~/assets/css/main.css',
-  ],
-
-  app: {
-    head: {
-      title: 'mapcn-vue - Beautiful maps for Vue',
-      meta: [
-        {
-          name: 'description',
-          content:
-            'Beautiful map components for Vue. Built on @geoql/v-maplibre, styled with Tailwind CSS, works with shadcn-vue.',
-        },
-        { name: 'theme-color', content: '#000000' },
-      ],
-      link: [{ rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' }],
+  runtimeConfig: {
+    public: {
+      mapsguruApiKey: '',
     },
   },
 
   compatibilityDate: '2025-01-06',
+
+  nitro: {
+    preset: 'cloudflare-pages',
+    cloudflare: {
+      nodeCompat: true,
+    },
+  },
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
+
+  postcss: {
+    plugins: {
+      '@tailwindcss/postcss': {},
+    },
+  },
+
+  shadcn: {
+    prefix: '',
+    componentDir: './app/components/ui',
+  },
 });

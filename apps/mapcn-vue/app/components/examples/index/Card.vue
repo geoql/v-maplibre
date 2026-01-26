@@ -30,7 +30,7 @@
 
       <div
         v-if="example.badge"
-        class="absolute right-3 top-3 rounded-full bg-linear-to-r from-primary/90 to-violet-500/90 px-2 py-0.5 text-[10px] font-medium text-white"
+        class="absolute top-3 right-3 rounded-full bg-linear-to-r from-primary/90 to-violet-500/90 px-2 py-0.5 text-[10px] font-medium text-white"
       >
         {{ example.badge }}
       </div>
@@ -49,12 +49,12 @@
       >
         {{ example.title }}
       </h3>
-      <p class="relative flex-1 text-sm leading-relaxed text-muted-foreground">
+      <p class="relative flex-1 text-sm/relaxed text-muted-foreground">
         {{ example.description }}
       </p>
 
       <div
-        class="absolute bottom-4 right-4 -translate-x-2 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+        class="absolute right-4 bottom-4 -translate-x-2 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
       >
         <Icon name="lucide:arrow-right" class="size-4 text-primary" />
       </div>

@@ -113,7 +113,7 @@
           to="/examples"
           class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 h-4 w-4"></Icon>
+          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
           Back to Examples
         </NuxtLink>
         <h1 class="mt-4 text-3xl font-bold tracking-tight">Land Cover COG</h1>
@@ -150,16 +150,16 @@
               <VMap
                 :key="mapStyle"
                 :options="mapOptions"
-                class="h-full w-full"
+                class="size-full"
                 @loaded="onMapLoaded"
               >
-                <VControlNavigation position="top-right"></VControlNavigation>
-                <VControlScale position="bottom-left"></VControlScale>
+                <VControlNavigation position="top-right" />
+                <VControlScale position="bottom-left" />
                 <VLayerDeckglCOG
                   id="landcover-layer"
                   :geotiff="COG_URL"
                   @geotiff-load="handleGeotiffLoad"
-                ></VLayerDeckglCOG>
+                />
               </VMap>
             </ClientOnly>
           </div>
@@ -174,7 +174,7 @@
                 class="flex items-center gap-2"
               >
                 <span
-                  :class="[item.color, 'h-3 w-3 shrink-0 rounded-sm']"
+                  :class="[item.color, 'size-3 shrink-0 rounded-sm']"
                 ></span>
                 <span class="text-muted-foreground">{{ item.label }}</span>
               </div>
@@ -187,7 +187,7 @@
             :code="codeExample"
             lang="vue"
             filename="LandCoverCOG.vue"
-          ></LazyCodeBlock>
+          />
 
           <div class="mt-6 rounded-lg border border-border bg-card p-4">
             <h3 class="mb-3 font-semibold">Features</h3>
@@ -197,29 +197,29 @@
               <li class="flex items-center gap-2">
                 <Icon
                   name="lucide:check"
-                  class="h-4 w-4 shrink-0 text-emerald-500"
-                ></Icon>
+                  class="size-4 shrink-0 text-emerald-500"
+                />
                 Auto colormap
               </li>
               <li class="flex items-center gap-2">
                 <Icon
                   name="lucide:check"
-                  class="h-4 w-4 shrink-0 text-emerald-500"
-                ></Icon>
+                  class="size-4 shrink-0 text-emerald-500"
+                />
                 1.3GB streaming
               </li>
               <li class="flex items-center gap-2">
                 <Icon
                   name="lucide:check"
-                  class="h-4 w-4 shrink-0 text-emerald-500"
-                ></Icon>
+                  class="size-4 shrink-0 text-emerald-500"
+                />
                 Overview selection
               </li>
               <li class="flex items-center gap-2">
                 <Icon
                   name="lucide:check"
-                  class="h-4 w-4 shrink-0 text-emerald-500"
-                ></Icon>
+                  class="size-4 shrink-0 text-emerald-500"
+                />
                 GPU reprojection
               </li>
             </ul>

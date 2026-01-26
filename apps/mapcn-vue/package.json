@@ -10,7 +10,10 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "lint": "oxlint"
+    "lint": "oxlint && eslint .",
+    "lint:fix": "oxlint --fix && eslint . --fix",
+    "format": "oxfmt --write .",
+    "format:check": "oxfmt --check ."
   },
   "dependencies": {
     "@deck.gl/aggregation-layers": "catalog:deckgl",
@@ -70,8 +73,8 @@
     "eslint": "^9.39.2",
     "eslint-plugin-better-tailwindcss": "^4.0.1",
     "eslint-plugin-oxlint": "^1.41.0",
+    "oxfmt": "catalog:",
     "oxlint": "catalog:",
-    "prettier": "catalog:",
     "shadcn-nuxt": "^2.4.3",
     "tailwindcss": "^4.1.18",
     "typescript": "catalog:",

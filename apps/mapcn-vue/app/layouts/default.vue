@@ -38,65 +38,65 @@
 
 <template>
   <div
-    class="flex flex-col font-sans antialiased min-h-dvh bg-background overflow-x-clip"
+    class="flex min-h-dvh flex-col overflow-x-clip bg-background font-sans antialiased"
   >
     <header
-      class="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-backdrop-filter:bg-background/60"
+      class="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur-sm supports-backdrop-filter:bg-background/60"
     >
-      <div class="container flex items-center h-14 max-w-screen-2xl">
-        <div class="flex mr-4">
-          <NuxtLink to="/" class="flex items-center mr-6 space-x-2">
-            <Icon name="lucide:map" class="size-6"></Icon>
+      <div class="container flex h-14 max-w-screen-2xl items-center">
+        <div class="mr-4 flex">
+          <NuxtLink to="/" class="mr-6 flex items-center space-x-2">
+            <Icon name="lucide:map" class="size-6" />
             <span class="font-bold">mapcn-vue</span>
           </NuxtLink>
         </div>
 
         <!-- Desktop Navigation -->
-        <nav class="items-center hidden gap-6 text-sm md:flex">
+        <nav class="hidden items-center gap-6 text-sm md:flex">
           <NuxtLink
             to="/docs/introduction"
-            class="transition-colors text-muted-foreground hover:text-foreground"
+            class="text-muted-foreground transition-colors hover:text-foreground"
           >
             Docs
           </NuxtLink>
           <NuxtLink
             to="/docs/installation"
-            class="transition-colors text-muted-foreground hover:text-foreground"
+            class="text-muted-foreground transition-colors hover:text-foreground"
           >
             Installation
           </NuxtLink>
           <NuxtLink
             to="/docs/components"
-            class="transition-colors text-muted-foreground hover:text-foreground"
+            class="text-muted-foreground transition-colors hover:text-foreground"
           >
             Components
           </NuxtLink>
           <NuxtLink
             to="/examples"
-            class="transition-colors text-muted-foreground hover:text-foreground"
+            class="text-muted-foreground transition-colors hover:text-foreground"
           >
             Examples
           </NuxtLink>
         </nav>
 
-        <div class="flex items-center justify-end flex-1 space-x-2">
+        <div class="flex flex-1 items-center justify-end space-x-2">
           <a
             href="https://github.com/geoql/v-maplibre"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex items-center justify-center text-sm font-medium rounded-md h-9 w-9 hover:bg-accent hover:text-accent-foreground"
+            class="inline-flex size-9 items-center justify-center rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground"
           >
-            <Icon name="simple-icons:github" class="size-5"></Icon>
+            <Icon name="simple-icons:github" class="size-5" />
             <span class="sr-only">GitHub</span>
           </a>
           <button
-            class="inline-flex items-center justify-center text-sm font-medium rounded-md h-9 w-9 hover:bg-accent hover:text-accent-foreground"
+            class="inline-flex size-9 items-center justify-center rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground"
             @click="toggleColorMode"
           >
             <Icon
               :name="colorMode.value === 'dark' ? 'lucide:sun' : 'lucide:moon'"
               class="size-5"
-            ></Icon>
+            />
             <span class="sr-only">Toggle theme</span>
           </button>
 
@@ -104,16 +104,16 @@
           <Sheet v-model:open="mobileNavOpen">
             <SheetTrigger as-child>
               <button
-                class="inline-flex items-center justify-center text-sm font-medium rounded-md h-9 w-9 hover:bg-accent hover:text-accent-foreground md:hidden"
+                class="inline-flex size-9 items-center justify-center rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground md:hidden"
                 aria-label="Open navigation menu"
               >
-                <Icon name="lucide:menu" class="size-5"></Icon>
+                <Icon name="lucide:menu" class="size-5" />
               </button>
             </SheetTrigger>
             <SheetContent side="right" class="w-70 p-0">
-              <SheetHeader class="px-6 py-4 border-b border-border">
+              <SheetHeader class="border-b border-border px-6 py-4">
                 <SheetTitle class="flex items-center gap-2 text-left">
-                  <Icon name="lucide:map" class="size-5"></Icon>
+                  <Icon name="lucide:map" class="size-5" />
                   <span>mapcn-vue</span>
                 </SheetTitle>
               </SheetHeader>
@@ -122,12 +122,15 @@
                   v-for="item in navItems"
                   :key="item.to"
                   :to="item.to"
-                  class="relative flex items-center gap-3 px-6 py-3 text-sm font-medium transition-colors group hover:bg-accent/50"
+                  class="group relative flex items-center gap-3 px-6 py-3 text-sm font-medium transition-colors hover:bg-accent/50"
                   :class="[
                     route.path === item.to ||
                     route.path.startsWith(item.to + '/')
-                      ? 'text-foreground bg-accent/30'
-                      : 'text-muted-foreground hover:text-foreground',
+                      ? 'bg-accent/30 text-foreground'
+                      : `
+                        text-muted-foreground
+                        hover:text-foreground
+                      `,
                   ]"
                 >
                   <!-- Active indicator -->
@@ -136,25 +139,25 @@
                       route.path === item.to ||
                       route.path.startsWith(item.to + '/')
                     "
-                    class="absolute left-0 top-1/2 h-6 w-0.75 -translate-y-1/2 rounded-r-full bg-primary"
+                    class="absolute top-1/2 left-0 h-6 w-0.75 -translate-y-1/2 rounded-r-full bg-primary"
                   ></span>
-                  <Icon :name="item.icon" class="size-4 shrink-0"></Icon>
+                  <Icon :name="item.icon" class="size-4 shrink-0" />
                   <span>{{ item.label }}</span>
                 </NuxtLink>
               </nav>
-              <div class="px-6 py-4 mt-auto border-t border-border">
+              <div class="mt-auto border-t border-border px-6 py-4">
                 <div class="flex items-center gap-2">
                   <a
                     href="https://github.com/geoql/v-maplibre"
                     target="_blank"
                     rel="noopener noreferrer"
-                    class="inline-flex items-center justify-center text-sm font-medium rounded-md h-9 w-9 hover:bg-accent hover:text-accent-foreground"
+                    class="inline-flex size-9 items-center justify-center rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground"
                   >
-                    <Icon name="simple-icons:github" class="size-5"></Icon>
+                    <Icon name="simple-icons:github" class="size-5" />
                     <span class="sr-only">GitHub</span>
                   </a>
                   <button
-                    class="inline-flex items-center justify-center text-sm font-medium rounded-md h-9 w-9 hover:bg-accent hover:text-accent-foreground"
+                    class="inline-flex size-9 items-center justify-center rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground"
                     @click="toggleColorMode"
                   >
                     <Icon
@@ -164,7 +167,7 @@
                           : 'lucide:moon'
                       "
                       class="size-5"
-                    ></Icon>
+                    />
                     <span class="sr-only">Toggle theme</span>
                   </button>
                 </div>
@@ -180,7 +183,7 @@
     </main>
 
     <!-- Footer -->
-    <footer class="py-6 border-t border-border">
+    <footer class="border-t border-border py-6">
       <div
         class="container flex flex-col items-center justify-between gap-4 md:flex-row"
       >
@@ -192,26 +195,26 @@
             href="https://x.com/_vinayak_k"
             target="_blank"
             rel="noopener noreferrer"
-            class="transition-colors text-muted-foreground hover:text-foreground"
+            class="text-muted-foreground transition-colors hover:text-foreground"
           >
-            <Icon name="simple-icons:x" class="size-5"></Icon>
+            <Icon name="simple-icons:x" class="size-5" />
           </a>
           <a
             href="https://github.com/geoql/v-maplibre"
             target="_blank"
             rel="noopener noreferrer"
-            class="transition-colors text-muted-foreground hover:text-foreground"
+            class="text-muted-foreground transition-colors hover:text-foreground"
           >
-            <Icon name="simple-icons:github" class="size-5"></Icon>
+            <Icon name="simple-icons:github" class="size-5" />
           </a>
           <button
-            class="transition-colors text-muted-foreground hover:text-foreground"
+            class="text-muted-foreground transition-colors hover:text-foreground"
             @click="toggleColorMode"
           >
             <Icon
               :name="colorMode.value === 'dark' ? 'lucide:sun' : 'lucide:moon'"
               class="size-5"
-            ></Icon>
+            />
           </button>
         </div>
       </div>

@@ -8,18 +8,9 @@
       'Interactive sliders for adjusting map pitch (tilt) and bearing (rotation).',
   });
 
-  const colorMode = useColorMode();
+  const { mapStyle } = useMapStyle();
   const mapId = useId();
   const mapRef = ref<MaplibreMap | null>(null);
-
-  const lightStyle =
-    'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
-  const darkStyle =
-    'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
-
-  const mapStyle = computed(() =>
-    colorMode.value === 'dark' ? darkStyle : lightStyle,
-  );
 
   const mapOptions = computed(() => ({
     container: `pitch-control-map-${mapId}`,
@@ -198,7 +189,7 @@ ${SCRIPT_END}
       <div class="mb-8">
         <NuxtLink
           to="/examples"
-          class="text-muted-foreground hover:text-foreground inline-flex items-center text-sm"
+          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
         >
           <Icon name="lucide:arrow-left" class="mr-2 size-4" />
           Back to Examples
@@ -206,7 +197,7 @@ ${SCRIPT_END}
         <h1 class="mt-4 text-3xl font-bold tracking-tight">
           Pitch & Bearing Control
         </h1>
-        <p class="text-muted-foreground mt-2 text-lg">
+        <p class="mt-2 text-lg text-muted-foreground">
           Adjust map pitch (tilt angle) and bearing (rotation) with interactive
           sliders. Create stunning 3D perspectives of your maps.
         </p>
@@ -225,10 +216,10 @@ ${SCRIPT_END}
                 <VControlNavigation position="top-right" />
               </VMap>
               <template #fallback>
-                <div class="bg-muted flex h-full items-center justify-center">
+                <div class="flex h-full items-center justify-center bg-muted">
                   <Icon
                     name="lucide:loader-2"
-                    class="text-muted-foreground size-8 animate-spin"
+                    class="size-8 animate-spin text-muted-foreground"
                   />
                 </div>
               </template>
@@ -236,25 +227,25 @@ ${SCRIPT_END}
           </div>
 
           <!-- Controls Panel -->
-          <div class="bg-card mt-4 rounded-lg border p-4">
+          <div class="mt-4 rounded-lg border bg-card p-4">
             <!-- Preset buttons -->
             <div class="mb-4 flex gap-2">
               <button
-                class="border-border hover:bg-muted flex-1 rounded-md border px-3 py-2 text-sm transition-colors"
+                class="flex-1 rounded-md border border-border px-3 py-2 text-sm transition-colors hover:bg-muted"
                 @click="resetView"
               >
                 <Icon name="lucide:compass" class="mr-1 inline-block size-4" />
                 Top View
               </button>
               <button
-                class="border-border hover:bg-muted flex-1 rounded-md border px-3 py-2 text-sm transition-colors"
+                class="flex-1 rounded-md border border-border px-3 py-2 text-sm transition-colors hover:bg-muted"
                 @click="set3DView"
               >
                 <Icon name="lucide:box" class="mr-1 inline-block size-4" />
                 3D View
               </button>
               <button
-                class="border-border hover:bg-muted flex-1 rounded-md border px-3 py-2 text-sm transition-colors"
+                class="flex-1 rounded-md border border-border px-3 py-2 text-sm transition-colors hover:bg-muted"
                 @click="setBirdsEye"
               >
                 <Icon name="lucide:eye" class="mr-1 inline-block size-4" />
@@ -266,7 +257,7 @@ ${SCRIPT_END}
             <div class="mb-4">
               <div class="mb-2 flex items-center justify-between">
                 <label class="text-sm font-medium">Pitch (Tilt)</label>
-                <span class="text-muted-foreground text-sm">{{ pitch }}°</span>
+                <span class="text-sm text-muted-foreground">{{ pitch }}°</span>
               </div>
               <Slider
                 :model-value="[pitch]"
@@ -276,7 +267,7 @@ ${SCRIPT_END}
                 @update:model-value="(val) => updatePitch(val[0])"
               />
               <div
-                class="text-muted-foreground mt-1 flex justify-between text-xs"
+                class="mt-1 flex justify-between text-xs text-muted-foreground"
               >
                 <span>0° (Flat)</span>
                 <span>85° (Max)</span>
@@ -287,7 +278,7 @@ ${SCRIPT_END}
             <div class="mb-4">
               <div class="mb-2 flex items-center justify-between">
                 <label class="text-sm font-medium">Bearing (Rotation)</label>
-                <span class="text-muted-foreground text-sm"
+                <span class="text-sm text-muted-foreground"
                   >{{ bearing }}°</span
                 >
               </div>
@@ -299,7 +290,7 @@ ${SCRIPT_END}
                 @update:model-value="(val) => updateBearing(val[0])"
               />
               <div
-                class="text-muted-foreground mt-1 flex justify-between text-xs"
+                class="mt-1 flex justify-between text-xs text-muted-foreground"
               >
                 <span>-180° (South)</span>
                 <span>0° (North)</span>
@@ -311,7 +302,7 @@ ${SCRIPT_END}
             <div>
               <div class="mb-2 flex items-center justify-between">
                 <label class="text-sm font-medium">Zoom</label>
-                <span class="text-muted-foreground text-sm">{{ zoom }}</span>
+                <span class="text-sm text-muted-foreground">{{ zoom }}</span>
               </div>
               <Slider
                 :model-value="[zoom]"
@@ -321,7 +312,7 @@ ${SCRIPT_END}
                 @update:model-value="(val) => updateZoom(val[0])"
               />
               <div
-                class="text-muted-foreground mt-1 flex justify-between text-xs"
+                class="mt-1 flex justify-between text-xs text-muted-foreground"
               >
                 <span>10 (Far)</span>
                 <span>20 (Close)</span>
@@ -337,9 +328,9 @@ ${SCRIPT_END}
             filename="PitchControl.vue"
           />
 
-          <div class="bg-muted/50 mt-4 rounded-lg border p-4">
+          <div class="mt-4 rounded-lg border bg-muted/50 p-4">
             <h3 class="mb-2 font-medium">Understanding Pitch & Bearing</h3>
-            <ul class="text-muted-foreground space-y-2 text-sm">
+            <ul class="space-y-2 text-sm text-muted-foreground">
               <li>
                 <strong class="text-foreground">Pitch (0-85°):</strong> The
                 angle of the camera looking down at the map. 0° is straight

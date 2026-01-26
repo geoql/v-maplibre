@@ -8,18 +8,9 @@
       'Smooth camera animations with flyTo, easeTo, and jumpTo methods.',
   });
 
-  const colorMode = useColorMode();
+  const { mapStyle } = useMapStyle();
   const mapId = useId();
   const mapRef = ref<MaplibreMap | null>(null);
-
-  const lightStyle =
-    'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
-  const darkStyle =
-    'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
-
-  const mapStyle = computed(() =>
-    colorMode.value === 'dark' ? darkStyle : lightStyle,
-  );
 
   const mapOptions = computed(() => ({
     container: `flyto-map-${mapId}`,
@@ -190,7 +181,7 @@ ${SCRIPT_END}
               <VMap
                 :key="mapStyle"
                 :options="mapOptions"
-                class="h-full w-full"
+                class="size-full"
                 @loaded="handleMapLoad"
               >
                 <VControlNavigation position="top-right" />
@@ -222,7 +213,10 @@ ${SCRIPT_END}
                   :class="[
                     animationType === type
                       ? 'border-primary bg-primary text-primary-foreground'
-                      : 'border-border bg-background hover:bg-muted',
+                      : `
+                        border-border bg-background
+                        hover:bg-muted
+                      `,
                   ]"
                   @click="animationType = type as 'flyTo' | 'easeTo' | 'jumpTo'"
                 >
@@ -255,7 +249,10 @@ ${SCRIPT_END}
                   :class="[
                     currentCity.name === city.name
                       ? 'border-primary bg-primary/10 text-primary'
-                      : 'border-border bg-background hover:bg-muted',
+                      : `
+                        border-border bg-background
+                        hover:bg-muted
+                      `,
                   ]"
                   @click="flyToCity(city)"
                 >

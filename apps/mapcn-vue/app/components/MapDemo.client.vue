@@ -14,16 +14,7 @@
   });
 
   const mapId = useId();
-  const colorMode = useColorMode();
-
-  const lightStyle =
-    'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json';
-  const darkStyle =
-    'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
-
-  const mapStyle = computed(() =>
-    colorMode.value === 'dark' ? darkStyle : lightStyle,
-  );
+  const { mapStyle } = useMapStyle();
 
   const mapOptions = computed(() => ({
     container: `map-demo-${mapId}`,
@@ -34,10 +25,10 @@
 </script>
 
 <template>
-  <div class="map-container h-full w-full">
-    <VMap :key="mapStyle" :options="mapOptions" class="h-full w-full">
-      <VControlNavigation position="top-right"></VControlNavigation>
-      <VControlScale v-if="showScale" position="bottom-left"></VControlScale>
+  <div class="map-container size-full">
+    <VMap :key="mapStyle" :options="mapOptions" class="size-full">
+      <VControlNavigation position="top-right" />
+      <VControlScale v-if="showScale" position="bottom-left" />
       <slot></slot>
     </VMap>
   </div>

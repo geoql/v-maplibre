@@ -26,14 +26,14 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl py-10 overflow-x-hidden">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
     <div class="mx-auto w-full max-w-300">
       <div class="mb-8">
         <NuxtLink
           to="/examples"
           class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 h-4 w-4"></Icon>
+          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
           Back to Examples
         </NuxtLink>
         <h1 class="mt-4 text-3xl font-bold tracking-tight">Basic Map</h1>
@@ -44,19 +44,11 @@ ${SCRIPT_END}
 
       <div class="grid gap-8 lg:grid-cols-2">
         <div class="h-125 min-w-0">
-          <LazyMapDemo
-            :center="[-74.006, 40.7128]"
-            :zoom="11"
-            show-scale
-          ></LazyMapDemo>
+          <LazyMapDemo :center="[-74.006, 40.7128]" :zoom="11" show-scale />
         </div>
 
         <div class="min-w-0">
-          <CodeBlock
-            :code="codeExample"
-            lang="vue"
-            filename="BasicMap.vue"
-          ></CodeBlock>
+          <CodeBlock :code="codeExample" lang="vue" filename="BasicMap.vue" />
         </div>
       </div>
     </div>

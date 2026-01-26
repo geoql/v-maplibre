@@ -36,7 +36,7 @@
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl py-10 overflow-x-hidden">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
     <div class="mx-auto w-full max-w-300">
       <div class="mb-8">
         <NuxtLink
@@ -61,8 +61,8 @@
             Route Planning
             <span
               v-if="isTabActive('planning')"
-              class="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
-            />
+              class="absolute right-0 bottom-0 left-0 h-0.5 bg-foreground"
+            ></span>
           </button>
           <button
             :class="getTabClasses('delivery')"
@@ -71,8 +71,8 @@
             Delivery Tracking
             <span
               v-if="isTabActive('delivery')"
-              class="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
-            />
+              class="absolute right-0 bottom-0 left-0 h-0.5 bg-foreground"
+            ></span>
           </button>
           <button
             :class="getTabClasses('multiStop')"
@@ -81,8 +81,8 @@
             Multi-Stop
             <span
               v-if="isTabActive('multiStop')"
-              class="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
-            />
+              class="absolute right-0 bottom-0 left-0 h-0.5 bg-foreground"
+            ></span>
           </button>
           <button
             :class="getTabClasses('tripPlanner')"
@@ -91,8 +91,8 @@
             Trip Planner
             <span
               v-if="isTabActive('tripPlanner')"
-              class="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
-            />
+              class="absolute right-0 bottom-0 left-0 h-0.5 bg-foreground"
+            ></span>
           </button>
           <button
             :class="getTabClasses('playback')"
@@ -101,8 +101,8 @@
             Route Playback
             <span
               v-if="isTabActive('playback')"
-              class="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
-            />
+              class="absolute right-0 bottom-0 left-0 h-0.5 bg-foreground"
+            ></span>
           </button>
         </div>
       </div>

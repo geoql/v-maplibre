@@ -149,7 +149,7 @@ ${SCRIPT_END}
     <div class="grid gap-8 lg:grid-cols-2">
       <div class="min-w-0 space-y-4">
         <div class="rounded-lg border border-border bg-card p-4">
-          <div class="flex items-center gap-3 mb-4">
+          <div class="mb-4 flex items-center gap-3">
             <div
               class="flex size-10 items-center justify-center rounded-full bg-blue-500/10"
             >
@@ -160,8 +160,8 @@ ${SCRIPT_END}
               <div class="text-sm text-muted-foreground">
                 <span class="inline-flex items-center gap-1">
                   <span
-                    class="size-2 rounded-full bg-green-500 animate-pulse"
-                  />
+                    class="size-2 animate-pulse rounded-full bg-green-500"
+                  ></span>
                   On the way
                 </span>
               </div>
@@ -214,7 +214,7 @@ ${SCRIPT_END}
             />
           </div>
 
-          <div class="ml-4 h-6 border-l-2 border-dashed border-border" />
+          <div class="ml-4 h-6 border-l-2 border-dashed border-border"></div>
 
           <div
             class="flex items-center gap-3 rounded-lg border border-border bg-card p-3"
@@ -240,7 +240,7 @@ ${SCRIPT_END}
           <VMap
             :key="`delivery-${mapStyle}`"
             :options="deliveryMapOptions"
-            class="h-full w-full"
+            class="size-full"
             @loaded="onMapLoaded"
           >
             <VControlNavigation position="top-right" />
@@ -261,7 +261,7 @@ ${SCRIPT_END}
               <template #markers="{ setRef }">
                 <div :ref="wrapMarkerRef(setRef)" class="relative">
                   <div
-                    class="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-zinc-900/80 px-2 py-0.5 text-xs font-medium text-white"
+                    class="absolute -top-7 left-1/2 -translate-x-1/2 rounded-sm bg-zinc-900/80 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-white"
                   >
                     Store
                   </div>
@@ -279,7 +279,7 @@ ${SCRIPT_END}
                 <div :ref="wrapMarkerRef(setRef)" class="relative">
                   <div
                     v-if="deliveryRouteInfo"
-                    class="absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-zinc-900/90 px-2 py-1 text-xs font-medium text-white shadow-lg"
+                    class="absolute -top-9 left-1/2 -translate-x-1/2 rounded-sm bg-zinc-900/90 px-2 py-1 text-xs font-medium whitespace-nowrap text-white shadow-lg"
                   >
                     <span class="text-emerald-400">{{
                       formatDuration(deliveryRouteInfo.duration)
@@ -299,7 +299,7 @@ ${SCRIPT_END}
               <template #markers="{ setRef }">
                 <div :ref="wrapMarkerRef(setRef)" class="relative">
                   <div
-                    class="absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-zinc-900/80 px-2 py-0.5 text-xs font-medium text-white"
+                    class="absolute -top-7 left-1/2 -translate-x-1/2 rounded-sm bg-zinc-900/80 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-white"
                   >
                     Home
                   </div>
