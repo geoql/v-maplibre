@@ -20,5 +20,6 @@
     "pnpm-lock.yaml",
     "bun.lock",
     "apps/docs",
+    "**/CHANGELOG.md",
   ],
 }
