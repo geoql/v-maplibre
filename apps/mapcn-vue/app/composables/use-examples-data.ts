@@ -16,6 +16,26 @@ export function useExamplesData() {
           icon: 'lucide:map',
         },
         {
+          title: 'FlyTo Animation',
+          description:
+            'Smooth camera animations with flyTo, easeTo, and jumpTo.',
+          href: '/examples/maplibre-flyto',
+          icon: 'lucide:navigation-2',
+        },
+        {
+          title: 'Pitch & Bearing',
+          description: 'Interactive sliders for 3D map tilt and rotation.',
+          href: '/examples/maplibre-pitch-control',
+          icon: 'lucide:rotate-3d',
+          badge: '3D',
+        },
+        {
+          title: 'Layer Switcher',
+          description: 'Switch between different basemap styles dynamically.',
+          href: '/examples/maplibre-layer-switcher',
+          icon: 'lucide:layers',
+        },
+        {
           title: 'Markers & Popups',
           description:
             'Interactive markers with customizable popup information.',
@@ -63,11 +83,25 @@ export function useExamplesData() {
           badge: 'IDW',
         },
         {
-          title: 'Delivery Tracking',
+          title: 'Routes',
           description:
-            'Real-time delivery route visualization with labeled markers.',
+            'Route planning, delivery tracking, multi-stop routes, and playback.',
           href: '/examples/maplibre-route',
-          icon: 'lucide:truck',
+          icon: 'lucide:route',
+        },
+        {
+          title: 'Choropleth Map',
+          description:
+            'Color-coded regions with MapLibre GL and deck.gl implementations.',
+          href: '/examples/choropleth',
+          icon: 'lucide:map',
+          badge: 'New',
+        },
+        {
+          title: 'Proximity Map',
+          description: 'Visualize distances and connections between locations.',
+          href: '/examples/maplibre-proximity',
+          icon: 'lucide:link',
           badge: 'New',
         },
       ],

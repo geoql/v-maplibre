@@ -94,6 +94,16 @@
               class="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
             />
           </button>
+          <button
+            :class="getTabClasses('playback')"
+            @click="setActiveTab('playback')"
+          >
+            Route Playback
+            <span
+              v-if="isTabActive('playback')"
+              class="absolute bottom-0 left-0 right-0 h-0.5 bg-foreground"
+            />
+          </button>
         </div>
       </div>
 
@@ -104,6 +114,8 @@
       <ExamplesRouteMultiStopTab v-if="isTabActive('multiStop')" />
 
       <ExamplesRouteTripPlannerTab v-if="isTabActive('tripPlanner')" />
+
+      <ExamplesRoutePlaybackTab v-if="isTabActive('playback')" />
     </div>
   </div>
 </template>
