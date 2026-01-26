@@ -149,11 +149,18 @@
     mapLoaded.value = false;
   });
 
+  // Process features: reverse order and add fillColor with # prefix
   const reversedFeatures = computed(() => {
     if (!isochroneData.value) return null;
     return {
       ...isochroneData.value,
-      features: [...isochroneData.value.features].reverse(),
+      features: [...isochroneData.value.features].reverse().map((f) => ({
+        ...f,
+        properties: {
+          ...f.properties,
+          fillColor: `#${f.properties.color}`,
+        },
+      })),
     };
   });
 
@@ -165,9 +172,8 @@ import { VMap, VMarker, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
 
 const originPoint = ref([-73.985, 40.758]);
 const isochroneData = ref(null);
-const selectedMode = ref('auto'); // 'auto' | 'bicycle' | 'pedestrian'
 
-// Time contours (minutes) - colors without # for Valhalla API
+// Contours - Valhalla expects colors without # prefix
 const contours = [
   { time: 5, color: '2563eb' },
   { time: 10, color: '7c3aed' },
@@ -175,45 +181,44 @@ const contours = [
   { time: 20, color: 'ea580c' },
 ];
 
+// Process data: add # prefix for valid MapLibre colors
+const processedData = computed(() => ({
+  ...isochroneData.value,
+  features: isochroneData.value?.features.map(f => ({
+    ...f,
+    properties: { ...f.properties, fillColor: '#' + f.properties.color }
+  })) ?? []
+}));
+
 async function fetchIsochrone() {
   const params = {
     locations: [{ lat: originPoint.value[1], lon: originPoint.value[0] }],
-    costing: selectedMode.value,
+    costing: 'auto',
     contours,
     polygons: true,
   };
-
-  const url = \`/api/valhalla?endpoint=isochrone&json=\${encodeURIComponent(JSON.stringify(params))}\`;
-  isochroneData.value = await $fetch(url);
+  const response = await $fetch('/api/valhalla?endpoint=isochrone&json=' +
+    encodeURIComponent(JSON.stringify(params)));
+  isochroneData.value = response;
 }
 
-function handleMarkerDrag(event) {
-  const lngLat = event.target.getLngLat();
-  originPoint.value = [lngLat.lng, lngLat.lat];
+function handleMarkerDrag(e) {
+  const { lng, lat } = e.target.getLngLat();
+  originPoint.value = [lng, lat];
   fetchIsochrone();
 }
 ${SCRIPT_END}
 
 <template>
-  <VMap :options="mapOptions" class="h-125 w-full" @loaded="fetchIsochrone">
+  <VMap :options="mapOptions" @loaded="fetchIsochrone">
     <VLayerMaplibreGeojson
-      v-if="isochroneData"
+      v-if="processedData"
       source-id="isochrone"
       layer-id="isochrone-fill"
-      :source="{ type: 'geojson', data: isochroneData }"
-      :layer="{
-        type: 'fill',
-        paint: {
-          'fill-color': ['concat', '#', ['get', 'color']],
-          'fill-opacity': 0.4
-        }
-      }"
+      :source="{ type: 'geojson', data: processedData }"
+      :layer="{ type: 'fill', paint: { 'fill-color': ['get', 'fillColor'], 'fill-opacity': 0.5 } }"
     />
-    <VMarker
-      :coordinates="originPoint"
-      :options="{ draggable: true, color: '#ef4444' }"
-      @dragend="handleMarkerDrag"
-    />
+    <VMarker :coordinates="originPoint" :options="{ draggable: true }" @dragend="handleMarkerDrag" />
   </VMap>
 </template>`;
 </script>
@@ -258,7 +263,7 @@ ${SCRIPT_END}
                     type: 'fill',
                     source: 'isochrone-source',
                     paint: {
-                      'fill-color': ['concat', '#', ['get', 'color']],
+                      'fill-color': ['get', 'fillColor'],
                       'fill-opacity': 0.4,
                     },
                   }"
@@ -274,7 +279,7 @@ ${SCRIPT_END}
                     type: 'line',
                     source: 'isochrone-line-source',
                     paint: {
-                      'line-color': ['concat', '#', ['get', 'color']],
+                      'line-color': ['get', 'fillColor'],
                       'line-width': 2,
                       'line-opacity': 0.8,
                     },
