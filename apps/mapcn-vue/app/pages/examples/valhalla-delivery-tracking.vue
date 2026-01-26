@@ -9,7 +9,7 @@
 <template>
   <div class="container max-w-screen-2xl overflow-x-hidden py-10">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
           class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
@@ -20,7 +20,7 @@
         <h1 class="mt-4 text-3xl font-bold tracking-tight">
           Delivery Tracking
         </h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <p class="text-lg text-muted-foreground">
           Live delivery simulation with ETA updates using Valhalla routing API.
         </p>
       </div>
