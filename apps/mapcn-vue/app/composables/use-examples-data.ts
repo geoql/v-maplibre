@@ -3,9 +3,114 @@ import type { ExampleCategory } from '~/types/examples';
 export function useExamplesData() {
   const categories: ExampleCategory[] = [
     {
-      id: 'core',
-      title: 'MapLibre Core',
-      description: 'Essential map components and interactions',
+      id: 'featured',
+      title: 'Featured Demos',
+      description:
+        'Real-time, animated, and impressive third-party integrations',
+      icon: 'lucide:sparkles',
+      examples: [
+        {
+          title: 'AC Transit Live',
+          description:
+            'Real-time GTFS-RT bus tracking for Oakland/East Bay with historical trails.',
+          href: '/examples/deckgl-actransit',
+          icon: 'lucide:bus',
+          badge: 'Live',
+        },
+        {
+          title: 'Wind Animation',
+          description:
+            'Animated wind particle visualization like Windy.com using GFS data.',
+          href: '/examples/wind',
+          icon: 'lucide:wind',
+          badge: 'Animated',
+        },
+        {
+          title: 'COPC Streaming',
+          description:
+            'Cloud-Optimized Point Cloud with dynamic viewport-based streaming.',
+          href: '/examples/lidar-copc',
+          icon: 'lucide:radar',
+          badge: 'Streaming',
+        },
+        {
+          title: 'NAIP Mosaic',
+          description:
+            'Client-side satellite imagery from STAC API with no server required.',
+          href: '/examples/deckgl-naip-mosaic',
+          icon: 'lucide:satellite-dish',
+          badge: 'STAC',
+        },
+        {
+          title: 'Trips Animation',
+          description:
+            'Animated NYC taxi path visualization for temporal data.',
+          href: '/examples/deckgl-trips',
+          icon: 'lucide:route',
+          badge: 'Animated',
+        },
+        {
+          title: 'Interpolate Heatmap',
+          description:
+            'IDW interpolated temperature heatmap from OpenWeatherMap.',
+          href: '/examples/maplibre-interpolate-heatmap',
+          icon: 'lucide:thermometer',
+          badge: 'IDW',
+        },
+      ],
+    },
+    {
+      id: 'valhalla',
+      title: 'Valhalla Routing',
+      description: 'Turn-by-turn navigation, optimization, and travel analysis',
+      icon: 'lucide:navigation',
+      examples: [
+        {
+          title: 'Route Planning',
+          description: 'A to B routing with turn-by-turn directions.',
+          href: '/examples/maplibre-route?tab=planning',
+          icon: 'lucide:map-pin',
+        },
+        {
+          title: 'Delivery Tracking',
+          description: 'Live delivery simulation with ETA updates.',
+          href: '/examples/maplibre-route?tab=delivery',
+          icon: 'lucide:truck',
+          badge: 'Simulation',
+        },
+        {
+          title: 'Multi-Stop Routes',
+          description: 'Traveling salesman route optimization.',
+          href: '/examples/maplibre-route?tab=multistop',
+          icon: 'lucide:waypoints',
+        },
+        {
+          title: 'Trip Playback',
+          description: 'Animated route replay with timeline scrubbing.',
+          href: '/examples/maplibre-route?tab=playback',
+          icon: 'lucide:play-circle',
+          badge: 'Playback',
+        },
+        {
+          title: 'Trip Planner',
+          description: 'Multi-day itinerary generator with POI suggestions.',
+          href: '/examples/maplibre-route?tab=planner',
+          icon: 'lucide:calendar-days',
+        },
+        {
+          title: 'Isochrone',
+          description:
+            'Travel time accessibility zones showing reachable areas.',
+          href: '/examples/maplibre-isochrone',
+          icon: 'lucide:timer',
+          badge: 'Analysis',
+        },
+      ],
+    },
+    {
+      id: 'essentials',
+      title: 'MapLibre Essentials',
+      description: 'Foundation map components and interactions',
       icon: 'lucide:map',
       examples: [
         {
@@ -14,6 +119,13 @@ export function useExamplesData() {
             'A simple map with navigation controls and dark mode support.',
           href: '/examples/basic',
           icon: 'lucide:map',
+        },
+        {
+          title: 'Markers & Popups',
+          description:
+            'Interactive markers with customizable popup information.',
+          href: '/examples/markers',
+          icon: 'lucide:map-pin',
         },
         {
           title: 'FlyTo Animation',
@@ -35,13 +147,14 @@ export function useExamplesData() {
           href: '/examples/maplibre-layer-switcher',
           icon: 'lucide:layers',
         },
-        {
-          title: 'Markers & Popups',
-          description:
-            'Interactive markers with customizable popup information.',
-          href: '/examples/markers',
-          icon: 'lucide:map-pin',
-        },
+      ],
+    },
+    {
+      id: 'maplibre-layers',
+      title: 'MapLibre Layers',
+      description: 'Native MapLibre data visualization',
+      icon: 'lucide:layers-2',
+      examples: [
         {
           title: 'GeoJSON Layer',
           description: 'Render GeoJSON data with styling and interactivity.',
@@ -75,66 +188,76 @@ export function useExamplesData() {
           badge: 'Media',
         },
         {
-          title: 'Interpolate Heatmap',
-          description:
-            'IDW interpolated heatmap showing weighted averages, not density.',
-          href: '/examples/maplibre-interpolate-heatmap',
-          icon: 'lucide:thermometer',
-          badge: 'IDW',
-        },
-        {
-          title: 'Routes',
-          description:
-            'Route planning, delivery tracking, multi-stop routes, and playback.',
-          href: '/examples/maplibre-route',
-          icon: 'lucide:route',
-        },
-        {
-          title: 'Isochrone',
-          description:
-            'Travel time zones showing areas reachable within specific time limits.',
-          href: '/examples/maplibre-isochrone',
-          icon: 'lucide:timer',
-          badge: 'New',
-        },
-        {
           title: 'Choropleth Map',
-          description:
-            'Color-coded regions with MapLibre GL and deck.gl implementations.',
+          description: 'Color-coded regions for thematic mapping.',
           href: '/examples/choropleth',
           icon: 'lucide:map',
-          badge: 'New',
         },
         {
           title: 'Proximity Map',
           description: 'Visualize distances and connections between locations.',
           href: '/examples/maplibre-proximity',
           icon: 'lucide:link',
-          badge: 'New',
         },
       ],
     },
     {
-      id: 'weather',
-      title: 'Weather & Environmental',
-      description: 'Meteorological and environmental data visualizations',
-      icon: 'lucide:cloud',
+      id: 'satellite',
+      title: 'Satellite & Raster',
+      description: 'Cloud-Optimized GeoTIFF and Earth observation',
+      icon: 'lucide:satellite',
       examples: [
         {
-          title: 'Wind Animation',
+          title: 'COG Layer',
+          description: 'GPU-accelerated Cloud-Optimized GeoTIFF visualization.',
+          href: '/examples/deckgl-cog',
+          icon: 'lucide:satellite',
+          badge: 'Sentinel-2',
+        },
+        {
+          title: 'Land Cover COG',
+          description: 'NLCD land use classification with automatic colormap.',
+          href: '/examples/deckgl-landcover',
+          icon: 'lucide:trees',
+          badge: 'NLCD',
+        },
+      ],
+    },
+    {
+      id: 'lidar',
+      title: 'LiDAR Point Clouds',
+      description: 'LAS/LAZ/COPC/EPT streaming visualization',
+      icon: 'lucide:radar',
+      examples: [
+        {
+          title: 'EPT Streaming',
           description:
-            'Animated wind particle visualization like Windy.com using GFS data.',
-          href: '/examples/wind',
-          icon: 'lucide:wind',
-          badge: 'Animated',
+            'Entwine Point Tile datasets with viewport-based streaming.',
+          href: '/examples/lidar-ept',
+          icon: 'lucide:database',
+          badge: 'EPT',
+        },
+        {
+          title: 'Classification Filter',
+          description:
+            'Filter point clouds by ASPRS classification (ground, buildings).',
+          href: '/examples/lidar-classification',
+          icon: 'lucide:filter',
+          badge: 'Filter',
+        },
+        {
+          title: 'Multiple Sources',
+          description: 'Load and manage multiple point cloud datasets.',
+          href: '/examples/lidar-multiple',
+          icon: 'lucide:layers',
         },
       ],
     },
     {
       id: 'deckgl-core',
-      title: 'deck.gl Core Layers',
+      title: 'deck.gl Core',
       description: 'Fundamental visualization primitives',
-      icon: 'lucide:layers',
+      icon: 'lucide:shapes',
       examples: [
         {
           title: 'Scatterplot',
@@ -196,7 +319,7 @@ export function useExamplesData() {
     {
       id: 'deckgl-aggregation',
       title: 'deck.gl Aggregation',
-      description: 'Aggregate and bin large datasets',
+      description: 'Density and binning for large datasets',
       icon: 'lucide:bar-chart-2',
       examples: [
         {
@@ -241,25 +364,10 @@ export function useExamplesData() {
     },
     {
       id: 'deckgl-geo',
-      title: 'deck.gl Geo Layers',
-      description: 'Geographic and animated visualizations',
+      title: 'deck.gl Geographic',
+      description: 'Geographic and tile-based layers',
       icon: 'lucide:globe',
       examples: [
-        {
-          title: 'AC Transit Live',
-          description:
-            'Real-time bus tracking for Oakland/East Bay with historical trails.',
-          href: '/examples/deckgl-actransit',
-          icon: 'lucide:bus',
-          badge: 'Live',
-        },
-        {
-          title: 'Trips Animation',
-          description: 'Animated path visualization for temporal data.',
-          href: '/examples/deckgl-trips',
-          icon: 'lucide:route',
-          badge: 'Animated',
-        },
         {
           title: 'Great Circle',
           description: "Geodesic arcs following Earth's curvature.",
@@ -300,41 +408,23 @@ export function useExamplesData() {
       ],
     },
     {
-      id: 'deckgl-raster',
-      title: 'deck.gl Raster',
-      description: 'Cloud-Optimized GeoTIFF and satellite imagery',
-      icon: 'lucide:satellite',
-      examples: [
-        {
-          title: 'COG Layer',
-          description: 'GPU-accelerated Cloud-Optimized GeoTIFF visualization.',
-          href: '/examples/deckgl-cog',
-          icon: 'lucide:satellite',
-          badge: 'Sentinel-2',
-        },
-        {
-          title: 'Land Cover COG',
-          description: 'NLCD land use classification with automatic colormap.',
-          href: '/examples/deckgl-landcover',
-          icon: 'lucide:trees',
-          badge: 'NLCD',
-        },
-        {
-          title: 'NAIP Imagery',
-          description:
-            'STAC API integration with dynamic COG loading from Planetary Computer.',
-          href: '/examples/deckgl-naip-mosaic',
-          icon: 'lucide:satellite-dish',
-          badge: 'STAC',
-        },
-      ],
-    },
-    {
-      id: 'deckgl-tiles',
-      title: 'deck.gl Tile Systems',
-      description: 'Spatial indexing with H3, S2, Geohash, and more',
+      id: 'deckgl-spatial',
+      title: 'deck.gl Spatial Indexing',
+      description: 'H3, S2, Geohash, and tile systems',
       icon: 'lucide:grid-3x3',
       examples: [
+        {
+          title: 'H3 Cluster',
+          description: 'Clustered H3 hexagon regions.',
+          href: '/examples/deckgl-h3-cluster',
+          icon: 'lucide:hexagon',
+        },
+        {
+          title: 'S2 Layer',
+          description: 'Google S2 geometry spherical cells.',
+          href: '/examples/deckgl-s2',
+          icon: 'lucide:globe-2',
+        },
         {
           title: 'Geohash Layer',
           description: 'Visualize data using Geohash spatial indexing.',
@@ -348,18 +438,6 @@ export function useExamplesData() {
           icon: 'lucide:square-code',
         },
         {
-          title: 'S2 Layer',
-          description: 'Google S2 geometry spherical cells.',
-          href: '/examples/deckgl-s2',
-          icon: 'lucide:globe-2',
-        },
-        {
-          title: 'H3 Cluster',
-          description: 'Clustered H3 hexagon regions.',
-          href: '/examples/deckgl-h3-cluster',
-          icon: 'lucide:hexagon',
-        },
-        {
           title: 'Grid Cell',
           description: 'Pre-aggregated grid cell visualization.',
           href: '/examples/deckgl-grid-cell',
@@ -369,8 +447,8 @@ export function useExamplesData() {
     },
     {
       id: 'deckgl-3d',
-      title: 'deck.gl 3D Layers',
-      description: '3D models, point clouds, and mesh rendering',
+      title: 'deck.gl 3D',
+      description: '3D models, meshes, and point clouds',
       icon: 'lucide:box',
       examples: [
         {
@@ -394,51 +472,12 @@ export function useExamplesData() {
           icon: 'lucide:cloud',
           badge: '3D',
         },
-
         {
           title: 'Solid Polygon',
           description: '3D extruded solid polygon buildings.',
           href: '/examples/deckgl-solid-polygon',
           icon: 'lucide:building-2',
           badge: '3D',
-        },
-      ],
-    },
-    {
-      id: 'lidar',
-      title: 'LiDAR Point Clouds',
-      description: 'LAS/LAZ/COPC/EPT point cloud visualization with streaming',
-      icon: 'lucide:radar',
-      examples: [
-        {
-          title: 'COPC Streaming',
-          description:
-            'Cloud-Optimized Point Cloud with dynamic viewport-based loading.',
-          href: '/examples/lidar-copc',
-          icon: 'lucide:cloud',
-          badge: 'Streaming',
-        },
-        {
-          title: 'EPT Streaming',
-          description:
-            'Entwine Point Tile datasets with viewport-based streaming.',
-          href: '/examples/lidar-ept',
-          icon: 'lucide:database',
-          badge: 'EPT',
-        },
-        {
-          title: 'Classification Filter',
-          description:
-            'Filter point clouds by ASPRS classification (ground, buildings, vegetation).',
-          href: '/examples/lidar-classification',
-          icon: 'lucide:filter',
-          badge: 'Filter',
-        },
-        {
-          title: 'Multiple Point Clouds',
-          description: 'Load and manage multiple point cloud datasets.',
-          href: '/examples/lidar-multiple',
-          icon: 'lucide:layers',
         },
       ],
     },
