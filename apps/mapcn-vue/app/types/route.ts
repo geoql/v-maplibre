@@ -1,30 +1,6 @@
 /**
- * Route-related types for maplibre-route examples
+ * Route-related types for Valhalla routing examples
  */
-
-// Tab navigation
-export type RouteTabType =
-  | 'delivery'
-  | 'planning'
-  | 'multiStop'
-  | 'tripPlanner'
-  | 'playback';
-
-export const TAB_TO_QUERY: Record<RouteTabType, string> = {
-  planning: 'route-planning',
-  delivery: 'delivery-tracker',
-  multiStop: 'multi-stop',
-  tripPlanner: 'trip-planner',
-  playback: 'playback',
-};
-
-export const QUERY_TO_TAB: Record<string, RouteTabType> = {
-  'route-planning': 'planning',
-  'delivery-tracker': 'delivery',
-  'multi-stop': 'multiStop',
-  'trip-planner': 'tripPlanner',
-  playback: 'playback',
-};
 
 // Route Planning types
 export interface RouteOption {

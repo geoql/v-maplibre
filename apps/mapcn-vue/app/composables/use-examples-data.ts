@@ -68,33 +68,33 @@ export function useExamplesData() {
         {
           title: 'Route Planning',
           description: 'A to B routing with turn-by-turn directions.',
-          href: '/examples/maplibre-route?tab=planning',
+          href: '/examples/valhalla-route-planning',
           icon: 'lucide:map-pin',
         },
         {
           title: 'Delivery Tracking',
           description: 'Live delivery simulation with ETA updates.',
-          href: '/examples/maplibre-route?tab=delivery',
+          href: '/examples/valhalla-delivery-tracking',
           icon: 'lucide:truck',
           badge: 'Simulation',
         },
         {
           title: 'Multi-Stop Routes',
           description: 'Traveling salesman route optimization.',
-          href: '/examples/maplibre-route?tab=multistop',
+          href: '/examples/valhalla-multi-stop',
           icon: 'lucide:waypoints',
         },
         {
           title: 'Trip Playback',
           description: 'Animated route replay with timeline scrubbing.',
-          href: '/examples/maplibre-route?tab=playback',
+          href: '/examples/valhalla-trip-playback',
           icon: 'lucide:play-circle',
           badge: 'Playback',
         },
         {
           title: 'Trip Planner',
           description: 'Multi-day itinerary generator with POI suggestions.',
-          href: '/examples/maplibre-route?tab=planner',
+          href: '/examples/valhalla-trip-planner',
           icon: 'lucide:calendar-days',
         },
         {
