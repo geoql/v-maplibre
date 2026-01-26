@@ -8,16 +8,7 @@ import type {
 } from '~/types/route';
 
 export function useRouteUtils() {
-  const colorMode = useColorMode();
-
-  const lightStyle =
-    'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json';
-  const darkStyle =
-    'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json';
-
-  const mapStyle = computed(() =>
-    colorMode.value === 'dark' ? darkStyle : lightStyle,
-  );
+  const { mapStyle } = useMapStyle();
 
   return {
     mapStyle,
