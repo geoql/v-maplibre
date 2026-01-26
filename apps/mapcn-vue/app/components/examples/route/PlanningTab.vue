@@ -182,6 +182,10 @@ ${SCRIPT_END}
 
 <template>
   <div>
+    <p class="mb-2 text-muted-foreground">
+      Click on a route or use the buttons to switch between alternatives.
+    </p>
+
     <div class="grid gap-8 lg:grid-cols-3">
       <div class="space-y-3">
         <div

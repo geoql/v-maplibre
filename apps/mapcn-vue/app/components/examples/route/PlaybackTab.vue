@@ -308,6 +308,10 @@ ${SCRIPT_END}
 
 <template>
   <div>
+    <p class="mb-2 text-muted-foreground">
+      Perfect for delivery tracking replay or journey visualization.
+    </p>
+
     <div class="grid gap-8 lg:grid-cols-2">
       <div class="min-w-0 space-y-4">
         <div class="relative h-125 overflow-hidden rounded-lg border">

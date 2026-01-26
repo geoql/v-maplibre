@@ -257,6 +257,10 @@ ${SCRIPT_END}
 
 <template>
   <div>
+    <p class="mb-2 text-muted-foreground">
+      <strong>Drag markers</strong> to adjust stops and recalculate the route.
+    </p>
+
     <div class="grid gap-8 lg:grid-cols-3">
       <div class="space-y-4">
         <div class="rounded-xl border border-border bg-card p-4 shadow-sm">
