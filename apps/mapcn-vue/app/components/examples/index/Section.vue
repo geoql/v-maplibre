@@ -16,15 +16,6 @@
 
   // Check if this is the Valhalla section (second one)
   const isValhalla = computed(() => props.categoryIndex === 1);
-
-  // Section-specific accent colors
-  const accentGradient = computed(() => {
-    if (isFeatured.value)
-      return 'from-amber-500/20 via-primary/10 to-violet-500/20';
-    if (isValhalla.value)
-      return 'from-emerald-500/20 via-cyan-500/10 to-primary/20';
-    return 'from-primary/10 via-transparent to-transparent';
-  });
 </script>
 
 <template>
@@ -39,13 +30,6 @@
     }"
     class="relative"
   >
-    <!-- Featured section glow -->
-    <div
-      v-if="isFeatured"
-      class="pointer-events-none absolute -inset-8 -z-10 rounded-3xl bg-linear-to-r opacity-50 blur-3xl"
-      :class="accentGradient"
-    ></div>
-
     <!-- Section header -->
     <div class="mb-8 flex items-center gap-4">
       <!-- Icon container with pulse effect for featured -->
@@ -78,6 +62,12 @@
                 : 'text-primary'
           "
         />
+        <!-- Pulsing ring for featured -->
+        <div
+          v-if="isFeatured"
+          class="absolute inset-0 animate-ping rounded-xl border border-amber-500/30"
+          style="animation-duration: 3s"
+        ></div>
       </motion.div>
 
       <!-- Title and description -->
