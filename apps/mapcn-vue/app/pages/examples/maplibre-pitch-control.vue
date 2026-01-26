@@ -268,16 +268,12 @@ ${SCRIPT_END}
                 <label class="text-sm font-medium">Pitch (Tilt)</label>
                 <span class="text-muted-foreground text-sm">{{ pitch }}°</span>
               </div>
-              <input
-                :value="pitch"
-                type="range"
-                min="0"
-                max="85"
-                step="1"
-                class="w-full"
-                @input="
-                  updatePitch(Number(($event.target as HTMLInputElement).value))
-                "
+              <Slider
+                :model-value="[pitch]"
+                :min="0"
+                :max="85"
+                :step="1"
+                @update:model-value="(val) => updatePitch(val[0])"
               />
               <div
                 class="text-muted-foreground mt-1 flex justify-between text-xs"
@@ -295,18 +291,12 @@ ${SCRIPT_END}
                   >{{ bearing }}°</span
                 >
               </div>
-              <input
-                :value="bearing"
-                type="range"
-                min="-180"
-                max="180"
-                step="1"
-                class="w-full"
-                @input="
-                  updateBearing(
-                    Number(($event.target as HTMLInputElement).value),
-                  )
-                "
+              <Slider
+                :model-value="[bearing]"
+                :min="-180"
+                :max="180"
+                :step="1"
+                @update:model-value="(val) => updateBearing(val[0])"
               />
               <div
                 class="text-muted-foreground mt-1 flex justify-between text-xs"
@@ -323,16 +313,12 @@ ${SCRIPT_END}
                 <label class="text-sm font-medium">Zoom</label>
                 <span class="text-muted-foreground text-sm">{{ zoom }}</span>
               </div>
-              <input
-                :value="zoom"
-                type="range"
-                min="10"
-                max="20"
-                step="0.1"
-                class="w-full"
-                @input="
-                  updateZoom(Number(($event.target as HTMLInputElement).value))
-                "
+              <Slider
+                :model-value="[zoom]"
+                :min="10"
+                :max="20"
+                :step="0.1"
+                @update:model-value="(val) => updateZoom(val[0])"
               />
               <div
                 class="text-muted-foreground mt-1 flex justify-between text-xs"

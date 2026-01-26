@@ -419,17 +419,13 @@ ${SCRIPT_END}
           </div>
 
           <div class="mb-4">
-            <input
-              :value="progress"
-              type="range"
-              min="0"
-              max="100"
-              step="0.1"
-              class="w-full"
+            <Slider
+              :model-value="[progress]"
+              :min="0"
+              :max="100"
+              :step="0.1"
               :disabled="routeCoordinates.length === 0"
-              @input="
-                setProgress(Number(($event.target as HTMLInputElement).value))
-              "
+              @update:model-value="(val) => setProgress(val[0])"
             />
           </div>
 

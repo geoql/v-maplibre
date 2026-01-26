@@ -90,6 +90,14 @@ export function useExamplesData() {
           icon: 'lucide:route',
         },
         {
+          title: 'Isochrone',
+          description:
+            'Travel time zones showing areas reachable within specific time limits.',
+          href: '/examples/maplibre-isochrone',
+          icon: 'lucide:timer',
+          badge: 'New',
+        },
+        {
           title: 'Choropleth Map',
           description:
             'Color-coded regions with MapLibre GL and deck.gl implementations.',
