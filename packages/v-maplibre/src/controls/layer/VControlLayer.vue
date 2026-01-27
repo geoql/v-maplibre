@@ -1,6 +1,5 @@
 <script setup lang="ts">
-  import { ref, onMounted, onUnmounted, watch, computed, inject } from 'vue';
-  import type { Map as MapLibreMap } from 'maplibre-gl';
+  import { ref, watch, inject, onMounted } from 'vue';
   import { MapKey, injectStrict } from '../../utils';
   import { DeckLayersKey } from '../../layers/deckgl/_shared/useDeckOverlay';
   import type { ControlPosition, LayerType } from './types';
@@ -32,11 +31,18 @@
 
   const map = injectStrict(MapKey);
   const deckLayers = inject(DeckLayersKey, null);
-  const container = ref<HTMLElement | null>(null);
   const isVisible = ref(props.visible);
   const currentOpacity = ref(props.opacity);
 
-  const detectedLayerType = computed((): LayerType | null => {
+  const positionClasses: Record<ControlPosition, string> = {
+    'top-left': 'top-2.5 left-2.5',
+    'top-right': 'top-2.5 right-2.5',
+    'bottom-left': 'bottom-7 left-2.5',
+    'bottom-right': 'bottom-7 right-2.5',
+  };
+
+  // Function to detect layer type (called fresh each time, not cached)
+  const getLayerType = (): LayerType | null => {
     if (props.layerType) return props.layerType;
     if (!map.value) return null;
     const maplibreLayer = map.value.getLayer(props.layerId);
@@ -49,16 +55,15 @@
       if (deckLayer) return 'deckgl';
     }
     return null;
-  });
+  };
 
-  const opacityProperty = computed(() => {
-    if (!map.value || detectedLayerType.value !== 'maplibre') return null;
+  const getOpacityProperty = (): string | null => {
+    if (!map.value || getLayerType() !== 'maplibre') return null;
 
     const layer = map.value.getLayer(props.layerId);
     if (!layer) return null;
 
-    const layerType = layer.type;
-    switch (layerType) {
+    switch (layer.type) {
       case 'fill':
         return 'fill-opacity';
       case 'line':
@@ -68,108 +73,12 @@
       case 'symbol':
         return 'icon-opacity';
       default:
-        console.warn(`Unsupported layer type: ${layerType}`);
         return null;
     }
-  });
-
-  class LayerControl implements maplibregl.IControl {
-    private _container?: HTMLElement;
-
-    onAdd(_mapInstance: MapLibreMap): HTMLElement {
-      this._container = document.createElement('div');
-      this._container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
-      this._container.style.cssText = `
-      background: white;
-      padding: 10px;
-      border-radius: 4px;
-      box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
-      min-width: 200px;
-    `;
-
-      const title = document.createElement('div');
-      title.textContent = props.title;
-      title.style.cssText = `
-      font-weight: 600;
-      margin-bottom: 8px;
-      font-size: 12px;
-      color: #333;
-    `;
-      this._container.appendChild(title);
-
-      const toggleContainer = document.createElement('div');
-      toggleContainer.style.cssText = `
-      display: flex;
-      align-items: center;
-      margin-bottom: 8px;
-    `;
-
-      const toggleButton = document.createElement('button');
-      toggleButton.type = 'button';
-      toggleButton.textContent = isVisible.value ? '👁️ Visible' : '👁️‍🗨️ Hidden';
-      toggleButton.style.cssText = `
-      flex: 1;
-      padding: 6px 12px;
-      border: 1px solid #ddd;
-      border-radius: 3px;
-      background: ${isVisible.value ? '#4CAF50' : '#f44336'};
-      color: white;
-      cursor: pointer;
-      font-size: 11px;
-      transition: background 0.2s;
-    `;
-      toggleButton.onclick = () => {
-        isVisible.value = !isVisible.value;
-        toggleButton.textContent = isVisible.value ? '👁️ Visible' : '👁️‍🗨️ Hidden';
-        toggleButton.style.background = isVisible.value ? '#4CAF50' : '#f44336';
-      };
-      toggleContainer.appendChild(toggleButton);
-      this._container.appendChild(toggleContainer);
-
-      const opacityContainer = document.createElement('div');
-      opacityContainer.style.cssText = 'margin-top: 8px;';
-
-      const opacityLabel = document.createElement('label');
-      opacityLabel.textContent = `Opacity: ${Math.round(currentOpacity.value * 100)}%`;
-      opacityLabel.style.cssText = `
-      display: block;
-      font-size: 11px;
-      color: #666;
-      margin-bottom: 4px;
-    `;
-      opacityContainer.appendChild(opacityLabel);
-
-      const opacitySlider = document.createElement('input');
-      opacitySlider.type = 'range';
-      opacitySlider.min = '0';
-      opacitySlider.max = '100';
-      opacitySlider.value = String(Math.round(currentOpacity.value * 100));
-      opacitySlider.style.cssText = `
-      width: 100%;
-      cursor: pointer;
-    `;
-      opacitySlider.oninput = () => {
-        const value = Number(opacitySlider.value) / 100;
-        currentOpacity.value = value;
-        opacityLabel.textContent = `Opacity: ${opacitySlider.value}%`;
-      };
-      opacityContainer.appendChild(opacitySlider);
-      this._container.appendChild(opacityContainer);
-
-      container.value = this._container;
-      return this._container;
-    }
-
-    onRemove(): void {
-      this._container?.parentNode?.removeChild(this._container);
-      container.value = null;
-    }
-  }
-
-  let control: LayerControl | null = null;
+  };
 
   const updateVisibility = (visible: boolean) => {
-    const layerType = detectedLayerType.value;
+    const layerType = getLayerType();
 
     if (layerType === 'maplibre') {
       if (!map.value) return;
@@ -212,16 +121,17 @@
   };
 
   const updateOpacity = (opacity: number) => {
-    const layerType = detectedLayerType.value;
+    const layerType = getLayerType();
 
     if (layerType === 'maplibre') {
-      if (!map.value || !opacityProperty.value) return;
+      const opacityProp = getOpacityProperty();
+      if (!map.value || !opacityProp) return;
       const layer = map.value.getLayer(props.layerId);
       if (!layer) {
         console.warn(`MapLibre layer not found: ${props.layerId}`);
         return;
       }
-      map.value.setPaintProperty(props.layerId, opacityProperty.value, opacity);
+      map.value.setPaintProperty(props.layerId, opacityProp, opacity);
     } else if (layerType === 'deckgl') {
       if (!deckLayers) {
         console.warn(
@@ -250,6 +160,15 @@
     emit('update:opacity', opacity);
   };
 
+  const toggleVisibility = () => {
+    isVisible.value = !isVisible.value;
+  };
+
+  const handleOpacityInput = (event: Event) => {
+    const target = event.target as HTMLInputElement;
+    currentOpacity.value = Number(target.value) / 100;
+  };
+
   watch(isVisible, (newValue) => {
     updateVisibility(newValue);
   });
@@ -272,24 +191,249 @@
     },
   );
 
+  // Wait for layer to be available, then apply initial settings
   onMounted(() => {
-    if (!map.value) return;
+    let applied = false;
 
-    control = new LayerControl();
-    map.value.addControl(control, props.position);
+    const checkAndApply = () => {
+      if (applied) return true;
+      // Use function directly to get fresh result (not cached computed)
+      const layerType = getLayerType();
+      if (layerType) {
+        applied = true;
+        updateVisibility(isVisible.value);
+        updateOpacity(currentOpacity.value);
+        return true;
+      }
+      return false;
+    };
 
-    updateVisibility(isVisible.value);
-    updateOpacity(currentOpacity.value);
-  });
+    // Try immediately
+    if (checkAndApply()) return;
 
-  onUnmounted(() => {
-    if (control && map.value) {
-      map.value.removeControl(control as unknown as maplibregl.IControl);
-      control = null;
-    }
+    // If layer not found, retry with increasing intervals
+    // Total wait: ~10 seconds (enough for data fetching)
+    const delays = [100, 200, 300, 500, 500, 1000, 1000, 1000, 2000, 3000];
+    let index = 0;
+
+    const retry = () => {
+      if (checkAndApply() || index >= delays.length) return;
+      setTimeout(() => {
+        index++;
+        retry();
+      }, delays[index]);
+    };
+
+    retry();
   });
 </script>
 
 <template>
-  <slot></slot>
+  <div class="v-layer-control" :class="positionClasses[position]">
+    <div class="v-layer-control-header">
+      <span class="v-layer-control-title">{{ title }}</span>
+      <button
+        type="button"
+        class="v-layer-control-toggle"
+        :class="{ 'is-hidden': !isVisible }"
+        :aria-pressed="isVisible"
+        :title="isVisible ? 'Hide layer' : 'Show layer'"
+        @click="toggleVisibility"
+      >
+        <svg
+          v-if="isVisible"
+          width="16"
+          height="16"
+          viewBox="0 0 16 16"
+          fill="none"
+        >
+          <path
+            d="M8 3C4.5 3 1.5 5.5 0.5 8C1.5 10.5 4.5 13 8 13C11.5 13 14.5 10.5 15.5 8C14.5 5.5 11.5 3 8 3Z"
+            stroke="currentColor"
+            stroke-width="1.25"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <circle
+            cx="8"
+            cy="8"
+            r="2.5"
+            stroke="currentColor"
+            stroke-width="1.25"
+          />
+        </svg>
+        <svg v-else width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path
+            d="M2 2L14 14M6.5 6.5C5.9 7.1 5.5 7.9 5.5 8.8C5.5 10.4 6.9 11.5 8 11.5C8.9 11.5 9.7 11.1 10.3 10.5M8 3C4.5 3 1.5 5.5 0.5 8C1 9.2 1.8 10.3 2.8 11.2M13.2 11.2C14.2 10.3 15 9.2 15.5 8C14.5 5.5 11.5 3 8 3"
+            stroke="currentColor"
+            stroke-width="1.25"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+    </div>
+
+    <div class="v-layer-control-slider-row">
+      <input
+        type="range"
+        min="0"
+        max="100"
+        :value="Math.round(currentOpacity * 100)"
+        class="v-layer-control-slider"
+        :disabled="!isVisible"
+        @input="handleOpacityInput"
+      />
+      <span class="v-layer-control-value"
+        >{{ Math.round(currentOpacity * 100) }}%</span
+      >
+    </div>
+
+    <slot></slot>
+  </div>
 </template>
+
+<style>
+  .v-layer-control {
+    position: absolute;
+    z-index: 10;
+    min-width: 180px;
+    background: var(--color-card, #fff);
+    border-radius: var(--radius, 0.5rem);
+    border: 1px solid var(--color-border, #e5e7eb);
+    box-shadow:
+      0 1px 3px 0 rgb(0 0 0 / 0.1),
+      0 1px 2px -1px rgb(0 0 0 / 0.1);
+    font-family:
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      sans-serif;
+    font-size: 13px;
+    overflow: hidden;
+    padding: 10px 12px;
+  }
+
+  .v-layer-control.top-2\.5 {
+    top: 10px;
+  }
+  .v-layer-control.right-2\.5 {
+    right: 10px;
+  }
+  .v-layer-control.left-2\.5 {
+    left: 10px;
+  }
+  .v-layer-control.bottom-7 {
+    bottom: 28px;
+  }
+
+  .v-layer-control-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+  }
+
+  .v-layer-control-title {
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--color-card-foreground, #111827);
+    line-height: 1;
+  }
+
+  .v-layer-control-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    border-radius: calc(var(--radius, 0.5rem) - 2px);
+    background: transparent;
+    color: var(--color-foreground, #374151);
+    cursor: pointer;
+    transition:
+      background 0.15s ease,
+      color 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .v-layer-control-toggle:hover {
+    background: var(--color-accent, #f3f4f6);
+  }
+
+  .v-layer-control-toggle.is-hidden {
+    color: var(--color-muted-foreground, #9ca3af);
+  }
+
+  .v-layer-control-slider-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .v-layer-control-slider {
+    flex: 1;
+    height: 4px;
+    border-radius: 2px;
+    background: var(--color-secondary, #e5e7eb);
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .v-layer-control-slider:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .v-layer-control-value {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-muted-foreground, #6b7280);
+    font-variant-numeric: tabular-nums;
+    min-width: 32px;
+    text-align: right;
+  }
+
+  .v-layer-control-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-primary, #3b82f6);
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+  }
+
+  .v-layer-control-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--color-primary, #3b82f6);
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 3px rgb(0 0 0 / 0.2);
+  }
+
+  .v-layer-control-slider:disabled::-webkit-slider-thumb {
+    cursor: not-allowed;
+  }
+
+  .v-layer-control-slider:disabled::-moz-range-thumb {
+    cursor: not-allowed;
+  }
+
+  .v-layer-control-slider:focus {
+    outline: none;
+  }
+
+  .v-layer-control-slider:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 0 3px
+      color-mix(in srgb, var(--color-primary, #3b82f6) 20%, transparent);
+  }
+</style>
