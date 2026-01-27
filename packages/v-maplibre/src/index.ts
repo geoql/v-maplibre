@@ -5,6 +5,9 @@ import {
   VControlNavigation,
   VControlScale,
   VControlLidar,
+  VControlLayer,
+  VControlLayerGroup,
+  VControlLegend,
 } from './controls';
 
 import {
@@ -44,6 +47,9 @@ export {
   VControlNavigation,
   VControlScale,
   VControlLidar,
+  VControlLayer,
+  VControlLayerGroup,
+  VControlLegend,
 };
 
 export type {
@@ -53,6 +59,16 @@ export type {
   PointCloudInfo,
   PointCloudBounds,
   StreamingProgress,
+  LayerControlOptions,
+  LayerType,
+  ControlPosition,
+  LayerConfig,
+  LegendType,
+  CategoryLegendItem,
+  GradientLegendItem,
+  SizeLegendItem,
+  LegendControlOptions,
+  FilterState,
 } from './controls';
 
 export * from './layers/deckgl';
