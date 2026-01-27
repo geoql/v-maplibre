@@ -71,10 +71,6 @@ class MockMap {
     };
   }
 
-  getLayer(_id: string) {
-    return {};
-  }
-
   hasImage(_id: string) {
     return false;
   }
@@ -119,8 +115,40 @@ class MockMap {
     return true;
   }
 
-  setLayoutProperty(_layerId: string, _name: string, _value: unknown) {
+  private _layoutProperties: Map<string, Map<string, unknown>> = new Map();
+  private _paintProperties: Map<string, Map<string, unknown>> = new Map();
+  private _layers: Map<string, { type: string }> = new Map();
+
+  setLayoutProperty(layerId: string, name: string, value: unknown) {
+    if (!this._layoutProperties.has(layerId)) {
+      this._layoutProperties.set(layerId, new Map());
+    }
+    this._layoutProperties.get(layerId)!.set(name, value);
     return this;
+  }
+
+  getLayoutProperty(layerId: string, name: string) {
+    return this._layoutProperties.get(layerId)?.get(name);
+  }
+
+  setPaintProperty(layerId: string, name: string, value: unknown) {
+    if (!this._paintProperties.has(layerId)) {
+      this._paintProperties.set(layerId, new Map());
+    }
+    this._paintProperties.get(layerId)!.set(name, value);
+    return this;
+  }
+
+  getPaintProperty(layerId: string, name: string) {
+    return this._paintProperties.get(layerId)?.get(name);
+  }
+
+  _setLayer(id: string, layer: { type: string }) {
+    this._layers.set(id, layer);
+  }
+
+  getLayer(id: string) {
+    return this._layers.get(id) || null;
   }
 
   remove() {
