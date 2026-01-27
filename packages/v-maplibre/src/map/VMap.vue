@@ -6,6 +6,7 @@
   import type { Ref } from 'vue';
   import { mapEvents } from '../constants/events';
   import { MapKey, PMTileProtocolKey } from '../utils/symbols';
+  import { useDeckOverlay } from '../layers/deckgl/_shared/useDeckOverlay';
 
   const props = withDefaults(
     defineProps<{
@@ -31,6 +32,10 @@
 
   // Provide the map reference immediately
   provide(MapKey, map);
+
+  // Initialize deck.gl overlay at VMap level so all children can access it
+  // This provides DeckOverlayKey and DeckLayersKey to all descendants
+  useDeckOverlay(map);
 
   onMounted(() => {
     map.value = new Map(props.options);
