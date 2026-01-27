@@ -575,7 +575,7 @@ ${SCRIPT_END}
                   class="size-full"
                   @loaded="handleMapLoad"
                 >
-                  <VControlNavigation position="bottom-right" />
+                  <VControlNavigation position="top-right" />
 
                   <VLayerMaplibreGeojson
                     source-id="regions-legend"
@@ -628,7 +628,7 @@ ${SCRIPT_END}
                     property="fill-color"
                     title="US Regions"
                     :interactive="true"
-                    position="top-right"
+                    position="bottom-left"
                     @filter-change="handleFilterChange"
                   />
                 </VMap>
@@ -644,7 +644,7 @@ ${SCRIPT_END}
                   class="size-full"
                   @loaded="handleMapLoad"
                 >
-                  <VControlNavigation position="bottom-right" />
+                  <VControlNavigation position="top-right" />
 
                   <VLayerMaplibreGeojson
                     source-id="density-legend"
@@ -696,7 +696,7 @@ ${SCRIPT_END}
                     :items="[gradientLegendItem]"
                     title="Population Density"
                     :interactive="false"
-                    position="top-right"
+                    position="bottom-left"
                   />
                 </VMap>
               </template>
@@ -709,7 +709,7 @@ ${SCRIPT_END}
                   class="size-full"
                   @loaded="handleMapLoad"
                 >
-                  <VControlNavigation position="bottom-right" />
+                  <VControlNavigation position="top-right" />
 
                   <VLayerMaplibreGeojson
                     source-id="cities-legend"
@@ -745,7 +745,7 @@ ${SCRIPT_END}
                     :items="sizeLegendItems"
                     title="City Population"
                     :interactive="false"
-                    position="top-right"
+                    position="bottom-left"
                   />
                 </VMap>
               </template>
