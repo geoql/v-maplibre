@@ -517,6 +517,7 @@
     justify-content: space-between;
     gap: 12px;
     width: 100%;
+    min-height: 44px;
     padding: 8px 10px;
     border: none;
     border-bottom: 1px solid var(--color-border, #e5e7eb);
@@ -524,6 +525,8 @@
     cursor: pointer;
     text-align: left;
     line-height: 1;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .v-legend-control.is-collapsed .v-legend-control-header {

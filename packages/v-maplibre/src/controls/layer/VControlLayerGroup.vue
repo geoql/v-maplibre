@@ -381,6 +381,7 @@
     justify-content: space-between;
     gap: 12px;
     width: 100%;
+    min-height: 44px;
     padding: 10px 12px;
     border: none;
     border-bottom: 1px solid var(--color-border, #e5e7eb);
@@ -388,6 +389,8 @@
     cursor: pointer;
     text-align: left;
     line-height: 1;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
   }
 
   .v-layer-group-header.is-static {
