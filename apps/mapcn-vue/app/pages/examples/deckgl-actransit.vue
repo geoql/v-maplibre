@@ -144,6 +144,21 @@
     }
   }
 
+  function closeBusPopup() {
+    selectTrip(null);
+  }
+
+  // Get average speed for selected bus
+  const selectedBusAvgSpeed = computed(() => {
+    if (!selectedTripId.value) return null;
+    return tripAverageSpeeds.value[selectedTripId.value] ?? null;
+  });
+
+  // Convert m/s to mph
+  function msToMph(ms: number): number {
+    return Math.round(ms * 2.237);
+  }
+
   // Stop layer accessors
   function getStopPosition(d: unknown): [number, number] {
     return (d as StopFeature).coordinates;
@@ -301,10 +316,49 @@ ${SCRIPT_END}
               />
             </VMap>
 
+            <!-- Bus popup -->
+            <AnimatePresence>
+              <motion.div
+                v-if="selectedBus"
+                :initial="{ opacity: 0, y: 10, scale: 0.95 }"
+                :animate="{ opacity: 1, y: 0, scale: 1 }"
+                :exit="{ opacity: 0, y: 10, scale: 0.95 }"
+                :transition="{ type: 'spring', stiffness: 400, damping: 30 }"
+                class="absolute bottom-4 left-1/2 z-20 w-56 -translate-x-1/2 rounded-lg border bg-background/95 p-4 shadow-lg backdrop-blur-sm"
+              >
+                <button
+                  class="absolute top-2 right-2 flex size-6 items-center justify-center rounded-md hover:bg-muted"
+                  @click="closeBusPopup"
+                >
+                  <Icon name="lucide:x" class="size-4" />
+                </button>
+                <div class="space-y-1.5">
+                  <div class="font-semibold">
+                    Route: {{ selectedBus.routeId }}
+                  </div>
+                  <div class="text-sm text-muted-foreground">
+                    Trip: {{ selectedBus.tripId }}
+                  </div>
+                  <div class="text-sm text-muted-foreground">
+                    Bearing: {{ Math.round(selectedBus.bearing) }}°
+                  </div>
+                  <div class="text-sm text-muted-foreground">
+                    Speed: {{ msToMph(selectedBus.speed) }} mph
+                  </div>
+                  <div
+                    v-if="selectedBusAvgSpeed !== null"
+                    class="text-sm text-muted-foreground"
+                  >
+                    Avg Speed: {{ msToMph(selectedBusAvgSpeed) }} mph
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
+
             <!-- Stop popup -->
             <AnimatePresence>
               <motion.div
-                v-if="selectedStopData"
+                v-if="selectedStopData && !selectedBus"
                 :initial="{ opacity: 0, y: 10, scale: 0.95 }"
                 :animate="{ opacity: 1, y: 0, scale: 1 }"
                 :exit="{ opacity: 0, y: 10, scale: 0.95 }"
