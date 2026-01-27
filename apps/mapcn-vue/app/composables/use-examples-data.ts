@@ -132,6 +132,20 @@ export function useExamplesData() {
           href: '/examples/maplibre-layer-switcher',
           icon: 'lucide:layers',
         },
+        {
+          title: 'Layer Control',
+          description:
+            'Toggle layer visibility and opacity with VControlLayer.',
+          href: '/examples/maplibre-layer-control',
+          icon: 'lucide:sliders-horizontal',
+        },
+        {
+          title: 'Interactive Legend',
+          description: 'Click legend items to filter map features by category.',
+          href: '/examples/maplibre-legend',
+          icon: 'lucide:list',
+          badge: 'New',
+        },
       ],
     },
     {
