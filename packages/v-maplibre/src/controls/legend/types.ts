@@ -61,3 +61,5 @@ export interface LegendFilterChangeEventData {
   filter: FilterState;
   layerIds: string[];
 }
+
+export type ExpressionValue = string | number | boolean | ExpressionValue[];

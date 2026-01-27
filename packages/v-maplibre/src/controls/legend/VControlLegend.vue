@@ -10,6 +10,7 @@
     SizeLegendItem,
     LegendItem,
     FilterState,
+    ExpressionValue,
   } from './types';
 
   const props = withDefaults(
@@ -46,8 +47,6 @@
 
   const categoryItemVisibility = ref<Map<string | number, boolean>>(new Map());
   const generatedItems = ref<LegendItem[]>([]);
-
-  type ExpressionValue = string | number | boolean | ExpressionValue[];
 
   const parseMatchExpression = (
     expression: ExpressionValue[],
