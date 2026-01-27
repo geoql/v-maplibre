@@ -45,21 +45,181 @@
   const isCollapsed = ref(props.collapsed);
 
   const categoryItemVisibility = ref<Map<string | number, boolean>>(new Map());
+  const generatedItems = ref<LegendItem[]>([]);
+
+  type ExpressionValue = string | number | boolean | ExpressionValue[];
+
+  const parseMatchExpression = (
+    expression: ExpressionValue[],
+  ): CategoryLegendItem[] => {
+    const items: CategoryLegendItem[] = [];
+    const defaultColor = expression[expression.length - 1] as string;
+
+    for (let i = 2; i < expression.length - 1; i += 2) {
+      const value = expression[i];
+      const color = expression[i + 1] as string;
+
+      if (Array.isArray(value)) {
+        for (const v of value) {
+          items.push({
+            value: v as string | number,
+            label: String(v),
+            color,
+            visible: true,
+          });
+        }
+      } else {
+        items.push({
+          value: value as string | number,
+          label: String(value),
+          color,
+          visible: true,
+        });
+      }
+    }
+
+    if (items.length > 0 && defaultColor && typeof defaultColor === 'string') {
+      items.push({
+        value: '__default__',
+        label: 'Other',
+        color: defaultColor,
+        visible: true,
+      });
+    }
+
+    return items;
+  };
+
+  const parseStepExpression = (
+    expression: ExpressionValue[],
+  ): GradientLegendItem | null => {
+    const colors: string[] = [];
+    const stops: number[] = [];
+
+    const defaultColor = expression[2] as string;
+    colors.push(defaultColor);
+
+    for (let i = 3; i < expression.length; i += 2) {
+      const stop = expression[i] as number;
+      const color = expression[i + 1] as string;
+      stops.push(stop);
+      colors.push(color);
+    }
+
+    if (stops.length === 0) return null;
+
+    return {
+      min: stops[0],
+      max: stops[stops.length - 1],
+      colors,
+      stops,
+    };
+  };
+
+  const parseInterpolateExpression = (
+    expression: ExpressionValue[],
+  ): GradientLegendItem | null => {
+    const colors: string[] = [];
+    const stops: number[] = [];
+
+    const startIndex = expression[1] && Array.isArray(expression[1]) ? 3 : 3;
+
+    for (let i = startIndex; i < expression.length; i += 2) {
+      const stop = expression[i] as number;
+      const color = expression[i + 1] as string;
+      stops.push(stop);
+      colors.push(color);
+    }
+
+    if (stops.length < 2) return null;
+
+    return {
+      min: stops[0],
+      max: stops[stops.length - 1],
+      colors,
+      stops,
+    };
+  };
+
+  const generateLegendFromPaint = (): LegendItem[] => {
+    if (!props.autoGenerate || !props.property || !map.value) return [];
+
+    const layerId = props.layerIds[0];
+    if (!layerId) return [];
+
+    const layer = map.value.getLayer(layerId);
+    if (!layer) {
+      console.warn(`[VControlLegend] Layer not found: ${layerId}`);
+      return [];
+    }
+
+    const paintValue = map.value.getPaintProperty(layerId, props.property);
+    if (!paintValue || !Array.isArray(paintValue)) {
+      console.warn(
+        `[VControlLegend] Paint property "${props.property}" not found or not an expression`,
+      );
+      return [];
+    }
+
+    const expressionType = paintValue[0];
+
+    if (expressionType === 'match') {
+      return parseMatchExpression(paintValue as ExpressionValue[]);
+    }
+
+    if (expressionType === 'step') {
+      const gradient = parseStepExpression(paintValue as ExpressionValue[]);
+      return gradient ? [gradient] : [];
+    }
+
+    if (
+      expressionType === 'interpolate' ||
+      expressionType === 'interpolate-hcl' ||
+      expressionType === 'interpolate-lab'
+    ) {
+      const gradient = parseInterpolateExpression(
+        paintValue as ExpressionValue[],
+      );
+      return gradient ? [gradient] : [];
+    }
+
+    console.warn(
+      `[VControlLegend] Unsupported expression type: ${expressionType}`,
+    );
+    return [];
+  };
+
+  const effectiveItems = computed((): LegendItem[] => {
+    if (props.items && props.items.length > 0) {
+      return props.items;
+    }
+    return generatedItems.value;
+  });
 
   const categoryItems = computed(() => {
-    if (props.type !== 'category' || !props.items) return [];
-    return props.items as CategoryLegendItem[];
+    if (props.type !== 'category') return [];
+    return effectiveItems.value.filter(
+      (item): item is CategoryLegendItem =>
+        'value' in item && 'color' in item && 'label' in item,
+    );
   });
 
   const gradientItem = computed(() => {
-    if (props.type !== 'gradient' || !props.items || props.items.length === 0)
-      return null;
-    return props.items[0] as GradientLegendItem;
+    if (props.type !== 'gradient') return null;
+    const items = effectiveItems.value;
+    if (items.length === 0) return null;
+    const first = items[0];
+    if ('min' in first && 'max' in first && 'colors' in first) {
+      return first as GradientLegendItem;
+    }
+    return null;
   });
 
   const sizeItems = computed(() => {
-    if (props.type !== 'size' || !props.items) return [];
-    return props.items as SizeLegendItem[];
+    if (props.type !== 'size') return [];
+    return effectiveItems.value.filter(
+      (item): item is SizeLegendItem => 'size' in item && 'value' in item,
+    );
   });
 
   const filterState = computed((): FilterState => {
@@ -70,8 +230,8 @@
   });
 
   const initVisibility = () => {
-    if (props.type === 'category' && props.items) {
-      for (const item of props.items as CategoryLegendItem[]) {
+    if (props.type === 'category') {
+      for (const item of categoryItems.value) {
         categoryItemVisibility.value.set(item.value, item.visible ?? true);
       }
     }
@@ -338,6 +498,10 @@
 
   onMounted(() => {
     if (!map.value) return;
+
+    if (props.autoGenerate) {
+      generatedItems.value = generateLegendFromPaint();
+    }
 
     initVisibility();
     control = new LegendControl();
