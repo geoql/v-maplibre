@@ -70,6 +70,7 @@
         "@nuxt/icon": "^2.2.1",
         "@nuxtjs/color-mode": "^4.0.0",
         "@nuxtjs/tailwindcss": "^6.14.0",
+        "@rollup/plugin-inject": "^5.0.5",
         "@tailwindcss/postcss": "^4.1.18",
         "@tailwindcss/vite": "^4.1.18",
         "better-sqlite3": "^12.6.2",
