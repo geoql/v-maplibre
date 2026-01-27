@@ -490,6 +490,7 @@
   .v-legend-control {
     min-width: 140px;
     max-width: 200px;
+    margin: 10px;
     background: var(--color-card, #fff);
     border-radius: var(--radius, 0.5rem);
     border: 1px solid var(--color-border, #e5e7eb);
