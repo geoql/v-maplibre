@@ -3,9 +3,11 @@
   import {
     VMap,
     VControlNavigation,
+    VControlLegend,
     VMarker,
     VLayerMaplibreGeojson,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import type { FeatureCollection, LineString } from 'geojson';
   import type {
     LocationPoint,
@@ -232,11 +234,18 @@
     }
   }
 
+  // Legend items for distance colors
+  const distanceLegendItems: CategoryLegendItem[] = [
+    { value: '< 5 km', label: '< 5 km', color: '#22c55e' },
+    { value: '5-10 km', label: '5-10 km', color: '#eab308' },
+    { value: '> 10 km', label: '> 10 km', color: '#ef4444' },
+  ];
+
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VMarker, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+import { VMap, VMarker, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
 
 const locations = [
   { id: '1', name: 'Warehouse', coordinates: [-73.95, 40.78] },
@@ -245,6 +254,12 @@ const locations = [
 ];
 
 const connections = ref([]);
+
+const distanceLegendItems = [
+  { value: '< 5 km', label: '< 5 km', color: '#22c55e' },
+  { value: '5-10 km', label: '5-10 km', color: '#eab308' },
+  { value: '> 10 km', label: '> 10 km', color: '#ef4444' },
+];
 
 // Fetch real road distances using Valhalla matrix API
 async function fetchDistances() {
@@ -270,8 +285,8 @@ async function fetchDistances() {
       conns.push({
         from: locations[i],
         to: locations[j],
-        distance: cell.distance, // Road distance in km
-        duration: cell.time,     // Travel time in seconds
+        distance: cell.distance,
+        duration: cell.time,
       });
     }
   }
@@ -294,6 +309,14 @@ ${SCRIPT_END}
       :key="loc.id"
       :coordinates="loc.coordinates"
       :options="{ color: getMarkerColor(loc.type) }"
+    />
+    <VControlLegend
+      :layer-ids="['connection-lines']"
+      type="category"
+      :items="distanceLegendItems"
+      title="Road Distance"
+      position="bottom-left"
+      :interactive="false"
     />
   </VMap>
 </template>`;
@@ -355,6 +378,15 @@ ${SCRIPT_END}
                   :options="{ color: getMarkerColor(loc.type) }"
                   @click="toggleLocation(loc.id)"
                 />
+
+                <VControlLegend
+                  :layer-ids="['connection-lines']"
+                  type="category"
+                  :items="distanceLegendItems"
+                  title="Road Distance"
+                  position="bottom-left"
+                  :interactive="false"
+                />
               </VMap>
               <template #fallback>
                 <div class="flex h-full items-center justify-center bg-muted">
@@ -365,44 +397,6 @@ ${SCRIPT_END}
                 </div>
               </template>
             </ClientOnly>
-
-            <!-- Legend -->
-            <div
-              class="absolute bottom-4 left-4 z-10 rounded-lg border bg-background/95 p-3 shadow-lg backdrop-blur-sm"
-            >
-              <h4 class="mb-2 text-xs font-medium">Road Distance</h4>
-              <div class="space-y-1 text-xs">
-                <div class="flex items-center gap-2">
-                  <div class="h-0.5 w-6 bg-green-500"></div>
-                  <span>&lt; 5 km</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <div class="h-0.5 w-6 bg-yellow-500"></div>
-                  <span>5-10 km</span>
-                </div>
-                <div class="flex items-center gap-2">
-                  <div class="h-0.5 w-6 bg-red-500"></div>
-                  <span>&gt; 10 km</span>
-                </div>
-              </div>
-              <div class="mt-3 border-t pt-2">
-                <h4 class="mb-1 text-xs font-medium">Locations</h4>
-                <div class="space-y-1 text-xs">
-                  <div class="flex items-center gap-2">
-                    <div class="size-3 rounded-full bg-purple-500"></div>
-                    <span>Warehouse</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <div class="size-3 rounded-full bg-blue-500"></div>
-                    <span>Store</span>
-                  </div>
-                  <div class="flex items-center gap-2">
-                    <div class="size-3 rounded-full bg-green-500"></div>
-                    <span>Customer</span>
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
 
           <!-- Controls -->

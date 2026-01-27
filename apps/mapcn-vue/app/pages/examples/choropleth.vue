@@ -4,9 +4,11 @@
   import {
     VMap,
     VControlNavigation,
+    VControlLegend,
     VLayerMaplibreGeojson,
     VLayerDeckglGeojson,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import type {
     Feature,
     FeatureCollection,
@@ -235,11 +237,20 @@
       .sort((a, b) => b.rate - a.rate);
   });
 
+  // Legend items for VControlLegend
+  const legendItems = computed<CategoryLegendItem[]>(() =>
+    colorScale.map((item) => ({
+      value: item.threshold,
+      label: `${item.threshold}%+`,
+      color: item.color,
+    })),
+  );
+
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const maplibreCodeExample = `${SCRIPT_START}
-import { VMap, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+import { VMap, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
 
 const statesGeoJson = ref(null);
 
@@ -259,6 +270,12 @@ const colorScale = [
   { threshold: 6, color: '#4292c6' },
   { threshold: 8, color: '#084594' },
 ];
+
+const legendItems = colorScale.map(item => ({
+  value: item.threshold,
+  label: item.threshold + '%+',
+  color: item.color,
+}));
 
 function getColorForRate(rate) {
   for (let i = colorScale.length - 1; i >= 0; i--) {
@@ -301,14 +318,35 @@ ${SCRIPT_END}
         paint: { 'fill-color': ['get', 'fillColor'], 'fill-opacity': 0.8 }
       }"
     />
+    <VControlLegend
+      :layer-ids="['states-fill']"
+      type="category"
+      :items="legendItems"
+      title="Unemployment Rate (%)"
+      position="bottom-left"
+    />
   </VMap>
 </template>`;
 
   const deckglCodeExample = `${SCRIPT_START}
-import { VMap, VLayerDeckglGeojson } from '@geoql/v-maplibre';
+import { VMap, VControlLegend, VLayerDeckglGeojson } from '@geoql/v-maplibre';
 
 const statesGeoJson = ref(null);
 const hoveredState = ref(null);
+
+const colorScale = [
+  { threshold: 0, color: '#f7fbff' },
+  { threshold: 2, color: '#deebf7' },
+  { threshold: 4, color: '#9ecae1' },
+  { threshold: 6, color: '#4292c6' },
+  { threshold: 8, color: '#084594' },
+];
+
+const legendItems = colorScale.map(item => ({
+  value: item.threshold,
+  label: item.threshold + '%+',
+  color: item.color,
+}));
 
 function hexToRgba(hex, alpha = 200) {
   const result = /^#?([a-f\\d]{2})([a-f\\d]{2})([a-f\\d]{2})$/i.exec(hex);
@@ -346,6 +384,13 @@ ${SCRIPT_END}
       :auto-highlight="true"
       :highlight-color="[255, 200, 0, 128]"
       @hover="handleHover"
+    />
+    <VControlLegend
+      :layer-ids="['states-choropleth']"
+      type="category"
+      :items="legendItems"
+      title="Unemployment Rate (%)"
+      position="bottom-left"
     />
   </VMap>
 </template>`;
@@ -466,6 +511,14 @@ ${SCRIPT_END}
                       },
                     }"
                   />
+
+                  <VControlLegend
+                    :layer-ids="['states-fill']"
+                    type="category"
+                    :items="legendItems"
+                    title="Unemployment Rate (%)"
+                    position="bottom-left"
+                  />
                 </VMap>
 
                 <VMap
@@ -495,6 +548,14 @@ ${SCRIPT_END}
                     :highlight-color="[255, 200, 0, 128]"
                     @hover="handleDeckHover"
                   />
+
+                  <VControlLegend
+                    :layer-ids="['states-choropleth-deck']"
+                    type="category"
+                    :items="legendItems"
+                    title="Unemployment Rate (%)"
+                    position="bottom-left"
+                  />
                 </VMap>
               </template>
 
@@ -507,27 +568,6 @@ ${SCRIPT_END}
                 </div>
               </template>
             </ClientOnly>
-
-            <div
-              class="absolute bottom-4 left-4 z-10 rounded-lg border bg-background/95 p-3 shadow-lg backdrop-blur-sm"
-            >
-              <h4 class="mb-2 text-xs font-medium">Unemployment Rate (%)</h4>
-              <div class="space-y-1">
-                <div
-                  v-for="(item, index) in colorScale"
-                  :key="index"
-                  class="flex items-center gap-2 text-xs"
-                >
-                  <div
-                    class="size-4 rounded-sm"
-                    :style="{ backgroundColor: item.color }"
-                  ></div>
-                  <span class="text-muted-foreground">
-                    {{ item.threshold }}%+
-                  </span>
-                </div>
-              </div>
-            </div>
 
             <div
               v-if="hoveredState && isTabActive('deckgl')"

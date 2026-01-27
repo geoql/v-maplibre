@@ -11,7 +11,7 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VControlNavigation } from '@geoql/v-maplibre';
+import { VMap, VControlNavigation, VControlLegend } from '@geoql/v-maplibre';
 import { MaplibreInterpolateHeatmapLayer } from 'maplibre-gl-interpolate-heatmap';
 import type { Map } from 'maplibre-gl';
 
@@ -19,6 +19,16 @@ const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
   center: [0, 20],
   zoom: 1.5,
+};
+
+// Temperature gradient legend
+const temperatureLegend = {
+  min: -30,
+  max: 40,
+  colors: ['#00008B', '#0000FF', '#00FFFF', '#00FF00', '#FFFF00', '#FF0000'],
+  stops: [-30, -10, 5, 15, 25, 40],
+  minLabel: '-30°C',
+  maxLabel: '40°C',
 };
 
 const generatePoints = () => {
@@ -64,6 +74,14 @@ ${SCRIPT_END}
 <template>
   <VMap :options="mapOptions" class="h-125 w-full" @loaded="onMapLoaded">
     <VControlNavigation position="top-right" />
+    <VControlLegend
+      :layer-ids="['temperature']"
+      type="gradient"
+      :items="[temperatureLegend]"
+      title="Temperature"
+      position="top-left"
+      :interactive="false"
+    />
   </VMap>
 </template>`;
 </script>

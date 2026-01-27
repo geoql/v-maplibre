@@ -3,9 +3,11 @@
   import {
     VMap,
     VControlNavigation,
+    VControlLegend,
     VMarker,
     VLayerMaplibreIsochrone,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import type {
     IsochroneResponse,
     TransportMode,
@@ -62,6 +64,19 @@
 
   const activeContours = computed(() =>
     selectedMetric.value === 'time' ? timeContours : distanceContours,
+  );
+
+  // Legend items for VControlLegend
+  const legendItems = computed<CategoryLegendItem[]>(() =>
+    activeContours.value.map((contour) => ({
+      value: contour.label,
+      label: contour.label,
+      color: contour.color,
+    })),
+  );
+
+  const legendTitle = computed(() =>
+    selectedMetric.value === 'time' ? 'Travel Time' : 'Distance',
   );
 
   // Helper to remove # from hex color for Valhalla API
@@ -144,18 +159,22 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-  import { VMap, VMarker, VLayerMaplibreIsochrone } from '@geoql/v-maplibre';
+  import { VMap, VMarker, VControlLegend, VLayerMaplibreIsochrone } from '@geoql/v-maplibre';
 
   const originPoint = ref([-73.985, 40.758]);
   const isochroneData = ref(null);
 
   // Contours - Valhalla expects colors without # prefix
   const contours = [
-    { time: 5, color: '2563eb' },
-    { time: 10, color: '7c3aed' },
-    { time: 15, color: 'db2777' },
-    { time: 20, color: 'ea580c' },
+    { time: 5, color: '2563eb', label: '5 min' },
+    { time: 10, color: '7c3aed', label: '10 min' },
+    { time: 15, color: 'db2777', label: '15 min' },
+    { time: 20, color: 'ea580c', label: '20 min' },
   ];
+
+  const legendItems = contours.map(c => ({
+    value: c.label, label: c.label, color: '#' + c.color,
+  }));
 
   async function fetchIsochrone() {
     const params = {
@@ -178,7 +197,6 @@
 
   <template>
     <VMap :options="mapOptions" @loaded="fetchIsochrone">
-      <!-- VLayerMaplibreIsochrone handles color formatting, fill & line layers -->
       <VLayerMaplibreIsochrone
         v-if="isochroneData"
         id="isochrone"
@@ -187,6 +205,14 @@
         :line-width="2"
       />
       <VMarker :coordinates="originPoint" :options="{ draggable: true }" @dragend="handleMarkerDrag" />
+      <VControlLegend
+        :layer-ids="['isochrone-fill']"
+        type="category"
+        :items="legendItems"
+        title="Travel Time"
+        position="bottom-left"
+        :interactive="false"
+      />
     </VMap>
   </template>`;
 </script>
@@ -239,6 +265,15 @@
                   :options="{ draggable: true, color: '#ef4444' }"
                   @dragend="handleMarkerDragEnd"
                 />
+
+                <VControlLegend
+                  :layer-ids="['isochrone-fill', 'isochrone-line']"
+                  type="category"
+                  :items="legendItems"
+                  :title="legendTitle"
+                  position="bottom-left"
+                  :interactive="false"
+                />
               </VMap>
               <template #fallback>
                 <div class="flex h-full items-center justify-center bg-muted">
@@ -272,28 +307,6 @@
                 <p class="mt-2 text-sm text-destructive">
                   {{ error }}
                 </p>
-              </div>
-            </div>
-
-            <!-- Legend -->
-            <div
-              class="absolute bottom-4 left-4 z-10 rounded-lg border bg-background/95 p-3 shadow-lg backdrop-blur-sm"
-            >
-              <h4 class="mb-2 text-xs font-medium">
-                {{ selectedMetric === 'time' ? 'Travel Time' : 'Distance' }}
-              </h4>
-              <div class="space-y-1">
-                <div
-                  v-for="contour in activeContours"
-                  :key="contour.label"
-                  class="flex items-center gap-2 text-xs"
-                >
-                  <div
-                    class="size-4 rounded-sm"
-                    :style="{ backgroundColor: contour.color, opacity: 0.6 }"
-                  ></div>
-                  <span class="text-muted-foreground">{{ contour.label }}</span>
-                </div>
               </div>
             </div>
           </div>

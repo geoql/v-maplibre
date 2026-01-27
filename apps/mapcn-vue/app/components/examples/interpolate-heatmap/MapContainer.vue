@@ -1,11 +1,27 @@
 <script setup lang="ts">
   import type { Map } from 'maplibre-gl';
-  import { VMap, VControlNavigation, VControlScale } from '@geoql/v-maplibre';
+  import {
+    VMap,
+    VControlNavigation,
+    VControlScale,
+    VControlLegend,
+  } from '@geoql/v-maplibre';
+  import type { GradientLegendItem } from '@geoql/v-maplibre';
 
   defineProps<{
     isLoading: boolean;
     error: string | null;
   }>();
+
+  // Temperature gradient legend (matches maplibre-gl-interpolate-heatmap default colors)
+  const temperatureLegend: GradientLegendItem = {
+    min: -30,
+    max: 40,
+    colors: ['#00008B', '#0000FF', '#00FFFF', '#00FF00', '#FFFF00', '#FF0000'],
+    stops: [-30, -10, 5, 15, 25, 40],
+    minLabel: '-30°C',
+    maxLabel: '40°C',
+  };
 
   const emit = defineEmits<{
     loaded: [map: Map];
@@ -60,6 +76,14 @@
       >
         <VControlNavigation position="top-right" />
         <VControlScale position="bottom-left" />
+        <VControlLegend
+          :layer-ids="['interpolate-temperature']"
+          type="gradient"
+          :items="[temperatureLegend]"
+          title="Temperature"
+          position="top-left"
+          :interactive="false"
+        />
       </VMap>
     </ClientOnly>
   </div>
