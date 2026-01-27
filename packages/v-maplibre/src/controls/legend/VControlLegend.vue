@@ -2,6 +2,7 @@
   import { ref, watch, computed, inject, onMounted } from 'vue';
   import { MapKey, injectStrict } from '../../utils';
   import { DeckLayersKey } from '../../layers/deckgl/_shared/useDeckOverlay';
+  import { useMapControl } from '../_shared';
   import type {
     ControlPosition,
     LegendType,
@@ -44,16 +45,12 @@
 
   const map = injectStrict(MapKey);
   const deckLayers = inject(DeckLayersKey, null);
+  const containerRef = ref<HTMLElement | null>(null);
   const isCollapsed = ref(props.collapsed);
   const categoryItemVisibility = ref<Map<string | number, boolean>>(new Map());
   const generatedItems = ref<LegendItem[]>([]);
 
-  const positionClasses: Record<ControlPosition, string> = {
-    'top-left': 'top-2.5 left-2.5',
-    'top-right': 'top-2.5 right-2.5',
-    'bottom-left': 'bottom-7 left-2.5',
-    'bottom-right': 'bottom-7 right-2.5',
-  };
+  useMapControl(map, containerRef, props.position);
 
   const parseMatchExpression = (
     expression: ExpressionValue[],
@@ -401,8 +398,9 @@
 
 <template>
   <div
+    ref="containerRef"
     class="v-legend-control"
-    :class="[positionClasses[position], { 'is-collapsed': isCollapsed }]"
+    :class="{ 'is-collapsed': isCollapsed }"
   >
     <button
       type="button"
@@ -490,8 +488,6 @@
 
 <style>
   .v-legend-control {
-    position: absolute;
-    z-index: 10;
     min-width: 140px;
     max-width: 200px;
     background: var(--color-card, #fff);
@@ -507,19 +503,6 @@
       sans-serif;
     font-size: 12px;
     overflow: hidden;
-  }
-
-  .v-legend-control.top-2\.5 {
-    top: 10px;
-  }
-  .v-legend-control.right-2\.5 {
-    right: 10px;
-  }
-  .v-legend-control.left-2\.5 {
-    left: 10px;
-  }
-  .v-legend-control.bottom-7 {
-    bottom: 28px;
   }
 
   .v-legend-control-header {

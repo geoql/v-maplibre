@@ -2,6 +2,7 @@
   import { ref, watch, inject, onMounted } from 'vue';
   import { MapKey, injectStrict } from '../../utils';
   import { DeckLayersKey } from '../../layers/deckgl/_shared/useDeckOverlay';
+  import { useMapControl } from '../_shared';
   import type { ControlPosition, LayerType } from './types';
 
   export interface LayerConfig {
@@ -36,18 +37,14 @@
 
   const map = injectStrict(MapKey);
   const deckLayers = inject(DeckLayersKey, null);
+  const containerRef = ref<HTMLElement | null>(null);
   const isCollapsed = ref(props.collapsed);
 
   const layerStates = ref<Map<string, { visible: boolean; opacity: number }>>(
     new Map(),
   );
 
-  const positionClasses: Record<ControlPosition, string> = {
-    'top-left': 'top-2.5 left-2.5',
-    'top-right': 'top-2.5 right-2.5',
-    'bottom-left': 'bottom-7 left-2.5',
-    'bottom-right': 'bottom-7 right-2.5',
-  };
+  useMapControl(map, containerRef, props.position);
 
   const initLayerStates = () => {
     for (const layer of props.layers) {
@@ -255,8 +252,9 @@
 
 <template>
   <div
+    ref="containerRef"
     class="v-layer-group"
-    :class="[positionClasses[position], { 'is-collapsed': isCollapsed }]"
+    :class="{ 'is-collapsed': isCollapsed }"
   >
     <button
       v-if="collapsible"
@@ -354,8 +352,6 @@
 
 <style>
   .v-layer-group {
-    position: absolute;
-    z-index: 10;
     min-width: 200px;
     max-width: 280px;
     background: var(--color-card, #fff);
@@ -371,19 +367,6 @@
       sans-serif;
     font-size: 13px;
     overflow: hidden;
-  }
-
-  .v-layer-group.top-2\.5 {
-    top: 10px;
-  }
-  .v-layer-group.right-2\.5 {
-    right: 10px;
-  }
-  .v-layer-group.left-2\.5 {
-    left: 10px;
-  }
-  .v-layer-group.bottom-7 {
-    bottom: 28px;
   }
 
   .v-layer-group-header {

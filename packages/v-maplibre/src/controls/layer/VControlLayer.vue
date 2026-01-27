@@ -2,6 +2,7 @@
   import { ref, watch, inject, onMounted } from 'vue';
   import { MapKey, injectStrict } from '../../utils';
   import { DeckLayersKey } from '../../layers/deckgl/_shared/useDeckOverlay';
+  import { useMapControl } from '../_shared';
   import type { ControlPosition, LayerType } from './types';
 
   const props = withDefaults(
@@ -31,15 +32,11 @@
 
   const map = injectStrict(MapKey);
   const deckLayers = inject(DeckLayersKey, null);
+  const containerRef = ref<HTMLElement | null>(null);
   const isVisible = ref(props.visible);
   const currentOpacity = ref(props.opacity);
 
-  const positionClasses: Record<ControlPosition, string> = {
-    'top-left': 'top-2.5 left-2.5',
-    'top-right': 'top-2.5 right-2.5',
-    'bottom-left': 'bottom-7 left-2.5',
-    'bottom-right': 'bottom-7 right-2.5',
-  };
+  useMapControl(map, containerRef, props.position);
 
   // Function to detect layer type (called fresh each time, not cached)
   const getLayerType = (): LayerType | null => {
@@ -229,7 +226,7 @@
 </script>
 
 <template>
-  <div class="v-layer-control" :class="positionClasses[position]">
+  <div ref="containerRef" class="v-layer-control">
     <div class="v-layer-control-header">
       <span class="v-layer-control-title">{{ title }}</span>
       <button
@@ -295,8 +292,6 @@
 
 <style>
   .v-layer-control {
-    position: absolute;
-    z-index: 10;
     min-width: 180px;
     background: var(--color-card, #fff);
     border-radius: var(--radius, 0.5rem);
@@ -312,19 +307,6 @@
     font-size: 13px;
     overflow: hidden;
     padding: 10px 12px;
-  }
-
-  .v-layer-control.top-2\.5 {
-    top: 10px;
-  }
-  .v-layer-control.right-2\.5 {
-    right: 10px;
-  }
-  .v-layer-control.left-2\.5 {
-    left: 10px;
-  }
-  .v-layer-control.bottom-7 {
-    bottom: 28px;
   }
 
   .v-layer-control-header {

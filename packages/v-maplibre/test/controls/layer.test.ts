@@ -12,6 +12,8 @@ interface MockMapInstance {
   getLayoutProperty: ReturnType<typeof vi.fn>;
   setPaintProperty: ReturnType<typeof vi.fn>;
   getPaintProperty: ReturnType<typeof vi.fn>;
+  addControl: ReturnType<typeof vi.fn>;
+  removeControl: ReturnType<typeof vi.fn>;
 }
 
 const createMockMap = (): MockMapInstance => ({
@@ -20,6 +22,8 @@ const createMockMap = (): MockMapInstance => ({
   getLayoutProperty: vi.fn(),
   setPaintProperty: vi.fn(),
   getPaintProperty: vi.fn(),
+  addControl: vi.fn(),
+  removeControl: vi.fn(),
 });
 
 const createMockDeckLayers = () => ({
