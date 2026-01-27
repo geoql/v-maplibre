@@ -19,6 +19,7 @@ export const DeckLayersKey: InjectionKey<{
   addLayer: (layer: unknown) => void;
   removeLayer: (layerId: string) => void;
   updateLayer: (layerId: string, layer: unknown) => void;
+  getLayers: () => unknown[];
 }> = Symbol('DeckLayers');
 
 interface UseDeckOverlayOptions {
@@ -51,7 +52,6 @@ export function useDeckOverlay(
       isInitialized: ref(true),
       layers: ref([]),
       initOverlay: () => Promise.resolve(),
-      getLayers: () => [],
       ...existingLayersRegistry,
     };
   }
@@ -164,6 +164,7 @@ export function useDeckOverlay(
     addLayer,
     removeLayer,
     updateLayer,
+    getLayers,
   });
 
   onUnmounted(() => {

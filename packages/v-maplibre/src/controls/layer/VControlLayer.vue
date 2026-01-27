@@ -1,8 +1,9 @@
 <script setup lang="ts">
-  import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
+  import { ref, onMounted, onUnmounted, watch, computed, inject } from 'vue';
   import type { Map as MapLibreMap } from 'maplibre-gl';
   import { MapKey, injectStrict } from '../../utils';
-  import type { ControlPosition } from './types';
+  import { DeckLayersKey } from '../../layers/deckgl/_shared/useDeckOverlay';
+  import type { ControlPosition, LayerType } from './types';
 
   const props = withDefaults(
     defineProps<{
@@ -11,12 +12,14 @@
       visible?: boolean;
       opacity?: number;
       title?: string;
+      layerType?: LayerType;
     }>(),
     {
       position: 'top-right',
       visible: true,
       opacity: 1,
       title: 'Layer Control',
+      layerType: undefined,
     },
   );
 
@@ -28,12 +31,28 @@
   }>();
 
   const map = injectStrict(MapKey);
+  const deckLayers = inject(DeckLayersKey, null);
   const container = ref<HTMLElement | null>(null);
   const isVisible = ref(props.visible);
   const currentOpacity = ref(props.opacity);
 
-  const opacityProperty = computed(() => {
+  const detectedLayerType = computed((): LayerType | null => {
+    if (props.layerType) return props.layerType;
     if (!map.value) return null;
+    const maplibreLayer = map.value.getLayer(props.layerId);
+    if (maplibreLayer) return 'maplibre';
+    if (deckLayers) {
+      const layers = deckLayers.getLayers();
+      const deckLayer = (layers as Array<{ id: string }>).find(
+        (l) => l.id === props.layerId,
+      );
+      if (deckLayer) return 'deckgl';
+    }
+    return null;
+  });
+
+  const opacityProperty = computed(() => {
+    if (!map.value || detectedLayerType.value !== 'maplibre') return null;
 
     const layer = map.value.getLayer(props.layerId);
     if (!layer) return null;
@@ -150,34 +169,82 @@
   let control: LayerControl | null = null;
 
   const updateVisibility = (visible: boolean) => {
-    if (!map.value) return;
+    const layerType = detectedLayerType.value;
 
-    const layer = map.value.getLayer(props.layerId);
-    if (!layer) {
-      console.warn(`Layer not found: ${props.layerId}`);
+    if (layerType === 'maplibre') {
+      if (!map.value) return;
+      const layer = map.value.getLayer(props.layerId);
+      if (!layer) {
+        console.warn(`MapLibre layer not found: ${props.layerId}`);
+        return;
+      }
+      map.value.setLayoutProperty(
+        props.layerId,
+        'visibility',
+        visible ? 'visible' : 'none',
+      );
+    } else if (layerType === 'deckgl') {
+      if (!deckLayers) {
+        console.warn(
+          `deck.gl overlay not available for layer: ${props.layerId}`,
+        );
+        return;
+      }
+      const layers = deckLayers.getLayers();
+      const existingLayer = (
+        layers as Array<{ id: string; clone?: (props: object) => unknown }>
+      ).find((l) => l.id === props.layerId);
+      if (!existingLayer) {
+        console.warn(`deck.gl layer not found: ${props.layerId}`);
+        return;
+      }
+      if (typeof existingLayer.clone === 'function') {
+        const updatedLayer = existingLayer.clone({ visible });
+        deckLayers.updateLayer(props.layerId, updatedLayer);
+      }
+    } else {
+      console.warn(`Layer not found in MapLibre or deck.gl: ${props.layerId}`);
       return;
     }
-
-    map.value.setLayoutProperty(
-      props.layerId,
-      'visibility',
-      visible ? 'visible' : 'none',
-    );
 
     emit('visibility-change', visible);
     emit('update:visible', visible);
   };
 
   const updateOpacity = (opacity: number) => {
-    if (!map.value || !opacityProperty.value) return;
+    const layerType = detectedLayerType.value;
 
-    const layer = map.value.getLayer(props.layerId);
-    if (!layer) {
-      console.warn(`Layer not found: ${props.layerId}`);
+    if (layerType === 'maplibre') {
+      if (!map.value || !opacityProperty.value) return;
+      const layer = map.value.getLayer(props.layerId);
+      if (!layer) {
+        console.warn(`MapLibre layer not found: ${props.layerId}`);
+        return;
+      }
+      map.value.setPaintProperty(props.layerId, opacityProperty.value, opacity);
+    } else if (layerType === 'deckgl') {
+      if (!deckLayers) {
+        console.warn(
+          `deck.gl overlay not available for layer: ${props.layerId}`,
+        );
+        return;
+      }
+      const layers = deckLayers.getLayers();
+      const existingLayer = (
+        layers as Array<{ id: string; clone?: (props: object) => unknown }>
+      ).find((l) => l.id === props.layerId);
+      if (!existingLayer) {
+        console.warn(`deck.gl layer not found: ${props.layerId}`);
+        return;
+      }
+      if (typeof existingLayer.clone === 'function') {
+        const updatedLayer = existingLayer.clone({ opacity });
+        deckLayers.updateLayer(props.layerId, updatedLayer);
+      }
+    } else {
+      console.warn(`Layer not found in MapLibre or deck.gl: ${props.layerId}`);
       return;
     }
-
-    map.value.setPaintProperty(props.layerId, opacityProperty.value, opacity);
 
     emit('opacity-change', opacity);
     emit('update:opacity', opacity);
