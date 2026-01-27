@@ -1,7 +1,8 @@
 <script setup lang="ts">
-  import { ref, onMounted, onUnmounted, watch, computed } from 'vue';
+  import { ref, onMounted, onUnmounted, watch, computed, inject } from 'vue';
   import type { Map as MapLibreMap } from 'maplibre-gl';
   import { MapKey, injectStrict } from '../../utils';
+  import { DeckLayersKey } from '../../layers/deckgl/_shared/useDeckOverlay';
   import type {
     ControlPosition,
     LegendType,
@@ -11,6 +12,7 @@
     LegendItem,
     FilterState,
     ExpressionValue,
+    DeckLayerWithExtensions,
   } from './types';
 
   const props = withDefaults(
@@ -42,6 +44,7 @@
   }>();
 
   const map = injectStrict(MapKey);
+  const deckLayers = inject(DeckLayersKey, null);
   const container = ref<HTMLElement | null>(null);
   const isCollapsed = ref(props.collapsed);
 
@@ -277,6 +280,66 @@
     }
   };
 
+  const applyFilterToDeckglLayers = () => {
+    if (!deckLayers || props.type !== 'category') return;
+
+    const visibleValues = filterState.value.visibleValues.filter(
+      (v) => v !== '__default__',
+    );
+    const allValues = categoryItems.value
+      .map((item) => item.value)
+      .filter((v) => v !== '__default__');
+    const allVisible = visibleValues.length === allValues.length;
+
+    const layers = deckLayers.getLayers() as DeckLayerWithExtensions[];
+
+    for (const layerId of props.layerIds) {
+      if (map.value?.getLayer(layerId)) continue;
+
+      const deckLayer = layers.find((l) => l.id === layerId);
+      if (!deckLayer) continue;
+
+      const hasDataFilterExtension = deckLayer.props?.extensions?.some(
+        (ext) => ext?.constructor?.name === 'DataFilterExtension',
+      );
+
+      if (!hasDataFilterExtension) {
+        console.warn(
+          `[VControlLegend] deck.gl layer "${layerId}" requires DataFilterExtension for filtering. ` +
+            'Add DataFilterExtension to layer extensions and configure getFilterValue accessor.',
+        );
+        continue;
+      }
+
+      if (typeof deckLayer.clone !== 'function') continue;
+
+      if (allVisible) {
+        const updatedLayer = deckLayer.clone({
+          filterRange: [-Infinity, Infinity],
+        });
+        deckLayers.updateLayer(layerId, updatedLayer);
+      } else if (visibleValues.length === 0) {
+        const updatedLayer = deckLayer.clone({
+          filterRange: [Infinity, Infinity],
+        });
+        deckLayers.updateLayer(layerId, updatedLayer);
+      } else {
+        const valueIndices = visibleValues
+          .map((v) => categoryItems.value.findIndex((item) => item.value === v))
+          .filter((i) => i >= 0);
+
+        if (valueIndices.length > 0) {
+          const minIndex = Math.min(...valueIndices);
+          const maxIndex = Math.max(...valueIndices);
+          const updatedLayer = deckLayer.clone({
+            filterRange: [minIndex - 0.5, maxIndex + 0.5],
+          });
+          deckLayers.updateLayer(layerId, updatedLayer);
+        }
+      }
+    }
+  };
+
   const toggleItem = (item: CategoryLegendItem, index: number) => {
     if (!props.interactive) return;
 
@@ -285,6 +348,7 @@
     categoryItemVisibility.value.set(item.value, newVisible);
 
     applyFilterToMapLibreLayers();
+    applyFilterToDeckglLayers();
 
     emit('item-click', { item, index, visible: newVisible });
     emit('filter-change', {

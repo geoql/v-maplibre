@@ -63,3 +63,12 @@ export interface LegendFilterChangeEventData {
 }
 
 export type ExpressionValue = string | number | boolean | ExpressionValue[];
+
+export interface DeckLayerWithExtensions {
+  id: string;
+  props?: {
+    extensions?: Array<{ constructor?: { name?: string } }>;
+    filterRange?: [number, number];
+  };
+  clone?: (props: object) => unknown;
+}
