@@ -518,6 +518,7 @@ ${SCRIPT_END}
                     :items="legendItems"
                     title="Unemployment Rate (%)"
                     position="bottom-left"
+                    :interactive="false"
                   />
                 </VMap>
 
@@ -555,6 +556,7 @@ ${SCRIPT_END}
                     :items="legendItems"
                     title="Unemployment Rate (%)"
                     position="bottom-left"
+                    :interactive="false"
                   />
                 </VMap>
               </template>
