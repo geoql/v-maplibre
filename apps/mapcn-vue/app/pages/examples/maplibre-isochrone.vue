@@ -202,6 +202,7 @@
         :data="isochroneData"
         :fill-opacity="0.85"
         :line-width="0"
+        :reverse-order="false"
       />
       <VMarker :coordinates="originPoint" :options="{ draggable: true }" @dragend="handleMarkerDrag" />
       <VControlLegend
@@ -258,6 +259,7 @@
                   :fill-opacity="0.85"
                   :line-width="0"
                   :line-opacity="0"
+                  :reverse-order="false"
                 />
 
                 <VMarker
