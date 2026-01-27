@@ -352,8 +352,8 @@
 
 <style>
   .v-layer-group {
-    min-width: 200px;
-    max-width: 280px;
+    min-width: 140px;
+    max-width: 200px;
     margin: 10px;
     background: var(--color-card, #fff);
     border-radius: var(--radius, 0.5rem);
@@ -366,7 +366,7 @@
       system-ui,
       -apple-system,
       sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     overflow: hidden;
     /* Required: MapLibre control containers have pointer-events:none */
     pointer-events: auto;
@@ -376,10 +376,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    gap: 8px;
     width: 100%;
-    min-height: 44px;
-    padding: 10px 12px;
+    min-height: 36px;
+    padding: 8px 10px;
     border: none;
     border-bottom: 1px solid var(--color-border, #e5e7eb);
     background: transparent;
@@ -404,17 +404,21 @@
 
   .v-layer-group-title {
     font-weight: 500;
-    font-size: 13px;
+    font-size: 11px;
     color: var(--color-card-foreground, #111827);
-    line-height: 1;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
   }
 
   .v-layer-group-chevron {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 16px;
-    height: 16px;
+    width: 14px;
+    height: 14px;
     color: var(--color-muted-foreground, #6b7280);
     transition: transform 0.15s ease;
     flex-shrink: 0;
@@ -430,7 +434,7 @@
   }
 
   .v-layer-group-item {
-    padding: 10px 12px;
+    padding: 6px 10px 8px;
     border-bottom: 1px solid var(--color-border, #e5e7eb);
   }
 
@@ -442,26 +446,27 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 8px;
+    gap: 8px;
+    margin-bottom: 6px;
   }
 
   .v-layer-group-item-title {
     font-weight: 500;
-    font-size: 12px;
+    font-size: 11px;
     color: var(--color-foreground, #374151);
-    line-height: 1;
+    line-height: 1.2;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    min-width: 0;
   }
 
   .v-layer-group-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
     padding: 0;
     border: none;
     border-radius: calc(var(--radius, 0.5rem) - 2px);
@@ -472,6 +477,11 @@
       background 0.15s ease,
       color 0.15s ease;
     flex-shrink: 0;
+  }
+
+  .v-layer-group-toggle svg {
+    width: 14px;
+    height: 14px;
   }
 
   .v-layer-group-toggle:hover {
@@ -485,12 +495,12 @@
   .v-layer-group-slider-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
 
   .v-layer-group-slider {
     flex: 1;
-    height: 4px;
+    height: 3px;
     border-radius: 2px;
     background: var(--color-secondary, #e5e7eb);
     cursor: pointer;
@@ -506,8 +516,8 @@
   .v-layer-group-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: var(--color-primary, #3b82f6);
     cursor: pointer;
@@ -516,8 +526,8 @@
   }
 
   .v-layer-group-slider::-moz-range-thumb {
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     border-radius: 50%;
     background: var(--color-primary, #3b82f6);
     cursor: pointer;
@@ -543,11 +553,11 @@
   }
 
   .v-layer-group-value {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 500;
     color: var(--color-muted-foreground, #6b7280);
     font-variant-numeric: tabular-nums;
-    min-width: 32px;
+    min-width: 28px;
     text-align: right;
   }
 </style>

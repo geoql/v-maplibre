@@ -292,7 +292,8 @@
 
 <style>
   .v-layer-control {
-    min-width: 180px;
+    min-width: 140px;
+    max-width: 200px;
     margin: 10px;
     background: var(--color-card, #fff);
     border-radius: var(--radius, 0.5rem);
@@ -305,9 +306,9 @@
       system-ui,
       -apple-system,
       sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     overflow: hidden;
-    padding: 10px 12px;
+    padding: 8px 10px;
     /* Required: MapLibre control containers have pointer-events:none */
     pointer-events: auto;
   }
@@ -316,23 +317,27 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
-    margin-bottom: 10px;
+    gap: 8px;
+    margin-bottom: 8px;
   }
 
   .v-layer-control-title {
     font-weight: 500;
-    font-size: 13px;
+    font-size: 11px;
     color: var(--color-card-foreground, #111827);
-    line-height: 1;
+    line-height: 1.2;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
   }
 
   .v-layer-control-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
+    width: 22px;
+    height: 22px;
     padding: 0;
     border: none;
     border-radius: calc(var(--radius, 0.5rem) - 2px);
@@ -343,6 +348,11 @@
       background 0.15s ease,
       color 0.15s ease;
     flex-shrink: 0;
+  }
+
+  .v-layer-control-toggle svg {
+    width: 14px;
+    height: 14px;
   }
 
   .v-layer-control-toggle:hover {
@@ -356,12 +366,12 @@
   .v-layer-control-slider-row {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
   }
 
   .v-layer-control-slider {
     flex: 1;
-    height: 4px;
+    height: 3px;
     border-radius: 2px;
     background: var(--color-secondary, #e5e7eb);
     cursor: pointer;
@@ -375,19 +385,19 @@
   }
 
   .v-layer-control-value {
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 500;
     color: var(--color-muted-foreground, #6b7280);
     font-variant-numeric: tabular-nums;
-    min-width: 32px;
+    min-width: 28px;
     text-align: right;
   }
 
   .v-layer-control-slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     background: var(--color-primary, #3b82f6);
     cursor: pointer;
@@ -396,8 +406,8 @@
   }
 
   .v-layer-control-slider::-moz-range-thumb {
-    width: 14px;
-    height: 14px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     background: var(--color-primary, #3b82f6);
     cursor: pointer;

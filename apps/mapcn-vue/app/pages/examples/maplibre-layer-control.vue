@@ -3,6 +3,7 @@
   import {
     VMap,
     VControlNavigation,
+    VControlScale,
     VControlLayer,
     VControlLayerGroup,
     VLayerMaplibreGeojson,
@@ -127,7 +128,7 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const maplibreCodeExample = `${SCRIPT_START}
-import { VMap, VControlLayer, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+import { VMap, VControlScale, VControlLayer, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
 
 const statesGeoJson = ref(null);
 // ... fetch GeoJSON data
@@ -135,6 +136,8 @@ ${SCRIPT_END}
 
 <template>
   <VMap :options="mapOptions">
+    <VControlScale position="bottom-left" />
+    
     <!-- Add the GeoJSON layer -->
     <VLayerMaplibreGeojson
       source-id="states"
@@ -152,7 +155,7 @@ ${SCRIPT_END}
     <VControlLayer
       layer-id="states-fill"
       title="US States Layer"
-      position="top-right"
+      position="bottom-left"
       :visible="true"
       :opacity="0.5"
     />
@@ -160,7 +163,7 @@ ${SCRIPT_END}
 </template>`;
 
   const deckglCodeExample = `${SCRIPT_START}
-import { VMap, VControlLayer, VLayerDeckglScatterplot } from '@geoql/v-maplibre';
+import { VMap, VControlScale, VControlLayer, VLayerDeckglScatterplot } from '@geoql/v-maplibre';
 
 const scatterData = [
   { coordinates: [-122.4, 37.8], size: 50000 },
@@ -171,6 +174,8 @@ ${SCRIPT_END}
 
 <template>
   <VMap :options="mapOptions">
+    <VControlScale position="bottom-left" />
+    
     <!-- deck.gl Scatterplot layer -->
     <VLayerDeckglScatterplot
       id="scatter-layer"
@@ -187,7 +192,7 @@ ${SCRIPT_END}
     <VControlLayer
       layer-id="scatter-layer"
       title="Cities Layer"
-      position="top-right"
+      position="bottom-left"
       :visible="true"
       :opacity="1"
     />
@@ -195,7 +200,7 @@ ${SCRIPT_END}
 </template>`;
 
   const groupCodeExample = `${SCRIPT_START}
-import { VMap, VControlLayerGroup, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+import { VMap, VControlScale, VControlLayerGroup, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
 
 const statesGeoJson = ref(null);
 // ... fetch GeoJSON data
@@ -208,6 +213,8 @@ ${SCRIPT_END}
 
 <template>
   <VMap :options="mapOptions">
+    <VControlScale position="bottom-left" />
+    
     <!-- Add multiple layers -->
     <VLayerMaplibreGeojson
       source-id="states"
@@ -236,7 +243,7 @@ ${SCRIPT_END}
     <VControlLayerGroup
       :layers="layerGroupConfig"
       title="Map Layers"
-      position="top-right"
+      position="bottom-left"
       :collapsible="true"
     />
   </VMap>
@@ -325,7 +332,8 @@ ${SCRIPT_END}
                   class="size-full"
                   @loaded="handleMapLoad"
                 >
-                  <VControlNavigation position="bottom-right" />
+                  <VControlNavigation position="top-right" />
+                  <VControlScale position="bottom-left" />
 
                   <VLayerMaplibreGeojson
                     source-id="states-layer-control"
@@ -345,7 +353,7 @@ ${SCRIPT_END}
                   <VControlLayer
                     layer-id="states-fill"
                     title="US States Layer"
-                    position="top-right"
+                    position="bottom-left"
                     :visible="true"
                     :opacity="0.5"
                   />
@@ -359,7 +367,8 @@ ${SCRIPT_END}
                   class="size-full"
                   @loaded="handleMapLoad"
                 >
-                  <VControlNavigation position="bottom-right" />
+                  <VControlNavigation position="top-right" />
+                  <VControlScale position="bottom-left" />
 
                   <VLayerDeckglScatterplot
                     id="scatter-layer"
@@ -375,7 +384,7 @@ ${SCRIPT_END}
                   <VControlLayer
                     layer-id="scatter-layer"
                     title="Cities Layer"
-                    position="top-right"
+                    position="bottom-left"
                     :visible="true"
                     :opacity="1"
                   />
@@ -389,7 +398,8 @@ ${SCRIPT_END}
                   class="size-full"
                   @loaded="handleMapLoad"
                 >
-                  <VControlNavigation position="bottom-right" />
+                  <VControlNavigation position="top-right" />
+                  <VControlScale position="bottom-left" />
 
                   <VLayerMaplibreGeojson
                     source-id="states-layer-group"
@@ -424,7 +434,7 @@ ${SCRIPT_END}
                   <VControlLayerGroup
                     :layers="layerGroupConfig"
                     title="Map Layers"
-                    position="top-right"
+                    position="bottom-left"
                     :collapsible="true"
                   />
                 </VMap>
