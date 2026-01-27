@@ -309,6 +309,12 @@
     padding: 10px 12px;
   }
 
+  /* Ensure proper display when used as MapLibre IControl */
+  .v-layer-control.maplibregl-ctrl {
+    display: block;
+    pointer-events: auto;
+  }
+
   .v-layer-control-header {
     display: flex;
     align-items: center;

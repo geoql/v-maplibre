@@ -505,6 +505,12 @@
     overflow: hidden;
   }
 
+  /* Ensure proper display when used as MapLibre IControl */
+  .v-legend-control.maplibregl-ctrl {
+    display: block;
+    pointer-events: auto;
+  }
+
   .v-legend-control-header {
     display: flex;
     align-items: center;

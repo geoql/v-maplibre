@@ -369,6 +369,12 @@
     overflow: hidden;
   }
 
+  /* Ensure proper display when used as MapLibre IControl */
+  .v-layer-group.maplibregl-ctrl {
+    display: block;
+    pointer-events: auto;
+  }
+
   .v-layer-group-header {
     display: flex;
     align-items: center;
