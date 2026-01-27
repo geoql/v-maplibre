@@ -1,6 +1,5 @@
 <script setup lang="ts">
-  import { ref, onMounted, onUnmounted, watch, computed, inject } from 'vue';
-  import type { Map as MapLibreMap } from 'maplibre-gl';
+  import { ref, watch, computed, inject, onMounted } from 'vue';
   import { MapKey, injectStrict } from '../../utils';
   import { DeckLayersKey } from '../../layers/deckgl/_shared/useDeckOverlay';
   import type {
@@ -45,11 +44,16 @@
 
   const map = injectStrict(MapKey);
   const deckLayers = inject(DeckLayersKey, null);
-  const container = ref<HTMLElement | null>(null);
   const isCollapsed = ref(props.collapsed);
-
   const categoryItemVisibility = ref<Map<string | number, boolean>>(new Map());
   const generatedItems = ref<LegendItem[]>([]);
+
+  const positionClasses: Record<ControlPosition, string> = {
+    'top-left': 'top-2.5 left-2.5',
+    'top-right': 'top-2.5 right-2.5',
+    'bottom-left': 'bottom-7 left-2.5',
+    'bottom-right': 'bottom-7 right-2.5',
+  };
 
   const parseMatchExpression = (
     expression: ExpressionValue[],
@@ -231,6 +235,12 @@
     return { visibleValues };
   });
 
+  const gradientStyle = computed(() => {
+    if (!gradientItem.value) return '';
+    const colorStops = gradientItem.value.colors.join(', ');
+    return `linear-gradient(to right, ${colorStops})`;
+  });
+
   const initVisibility = () => {
     if (props.type === 'category') {
       for (const item of categoryItems.value) {
@@ -358,238 +368,18 @@
     emit('update:filter', filterState.value);
   };
 
-  class LegendControl implements maplibregl.IControl {
-    private _container?: HTMLElement;
+  const isItemVisible = (item: CategoryLegendItem) => {
+    return categoryItemVisibility.value.get(item.value) ?? true;
+  };
 
-    onAdd(_mapInstance: MapLibreMap): HTMLElement {
-      this._container = document.createElement('div');
-      this._container.className = 'maplibregl-ctrl maplibregl-ctrl-group';
-      this._container.style.cssText = `
-        background: white;
-        padding: 10px;
-        border-radius: 4px;
-        box-shadow: 0 0 0 2px rgba(0,0,0,0.1);
-        min-width: 150px;
-        max-width: 250px;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      `;
-
-      this.render();
-      container.value = this._container;
-      return this._container;
-    }
-
-    onRemove(): void {
-      this._container?.parentNode?.removeChild(this._container);
-      container.value = null;
-    }
-
-    render(): void {
-      if (!this._container) return;
-
-      this._container.innerHTML = '';
-
-      const header = document.createElement('div');
-      header.style.cssText = `
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        margin-bottom: 8px;
-        cursor: pointer;
-      `;
-
-      const titleEl = document.createElement('span');
-      titleEl.textContent = props.title;
-      titleEl.style.cssText = `
-        font-weight: 600;
-        font-size: 12px;
-        color: #333;
-      `;
-      header.appendChild(titleEl);
-
-      const toggleBtn = document.createElement('button');
-      toggleBtn.type = 'button';
-      toggleBtn.textContent = isCollapsed.value ? '▶' : '▼';
-      toggleBtn.style.cssText = `
-        background: none;
-        border: none;
-        cursor: pointer;
-        font-size: 10px;
-        color: #666;
-        padding: 2px 4px;
-      `;
-      toggleBtn.onclick = () => {
-        isCollapsed.value = !isCollapsed.value;
-        this.render();
-      };
-      header.appendChild(toggleBtn);
-
-      this._container.appendChild(header);
-
-      if (isCollapsed.value) return;
-
-      const content = document.createElement('div');
-      content.style.cssText = 'margin-top: 4px;';
-
-      if (props.type === 'category') {
-        this.renderCategoryLegend(content);
-      } else if (props.type === 'gradient') {
-        this.renderGradientLegend(content);
-      } else if (props.type === 'size') {
-        this.renderSizeLegend(content);
-      }
-
-      this._container.appendChild(content);
-    }
-
-    renderCategoryLegend(container: HTMLElement): void {
-      for (let i = 0; i < categoryItems.value.length; i++) {
-        const item = categoryItems.value[i];
-        const isVisible = categoryItemVisibility.value.get(item.value) ?? true;
-
-        const row = document.createElement('div');
-        row.style.cssText = `
-          display: flex;
-          align-items: center;
-          padding: 4px 0;
-          cursor: ${props.interactive ? 'pointer' : 'default'};
-          opacity: ${isVisible ? '1' : '0.5'};
-          transition: opacity 0.2s;
-        `;
-
-        if (props.interactive) {
-          row.onclick = () => toggleItem(item, i);
-        }
-
-        const swatch = document.createElement('div');
-        swatch.style.cssText = `
-          width: 16px;
-          height: 16px;
-          background-color: ${item.color};
-          border-radius: 2px;
-          margin-right: 8px;
-          flex-shrink: 0;
-          border: 1px solid rgba(0,0,0,0.1);
-        `;
-        row.appendChild(swatch);
-
-        const label = document.createElement('span');
-        label.textContent = item.label;
-        label.style.cssText = `
-          font-size: 11px;
-          color: #333;
-          text-decoration: ${isVisible ? 'none' : 'line-through'};
-          flex: 1;
-        `;
-        row.appendChild(label);
-
-        if (item.count !== undefined) {
-          const count = document.createElement('span');
-          count.textContent = `(${item.count})`;
-          count.style.cssText = `
-            font-size: 10px;
-            color: #999;
-            margin-left: 4px;
-          `;
-          row.appendChild(count);
-        }
-
-        container.appendChild(row);
-      }
-    }
-
-    renderGradientLegend(container: HTMLElement): void {
-      const item = gradientItem.value;
-      if (!item) return;
-
-      const gradient = document.createElement('div');
-      const colorStops = item.colors.join(', ');
-      gradient.style.cssText = `
-        height: 16px;
-        border-radius: 2px;
-        background: linear-gradient(to right, ${colorStops});
-        margin-bottom: 4px;
-      `;
-      container.appendChild(gradient);
-
-      const labels = document.createElement('div');
-      labels.style.cssText = `
-        display: flex;
-        justify-content: space-between;
-        font-size: 10px;
-        color: #666;
-      `;
-
-      const minLabel = document.createElement('span');
-      minLabel.textContent = item.minLabel ?? String(item.min);
-      labels.appendChild(minLabel);
-
-      const maxLabel = document.createElement('span');
-      maxLabel.textContent = item.maxLabel ?? String(item.max);
-      labels.appendChild(maxLabel);
-
-      container.appendChild(labels);
-    }
-
-    renderSizeLegend(container: HTMLElement): void {
-      for (const item of sizeItems.value) {
-        const row = document.createElement('div');
-        row.style.cssText = `
-          display: flex;
-          align-items: center;
-          padding: 4px 0;
-        `;
-
-        const circleContainer = document.createElement('div');
-        circleContainer.style.cssText = `
-          width: 30px;
-          height: 30px;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-right: 8px;
-        `;
-
-        const circle = document.createElement('div');
-        const size = Math.min(item.size, 24);
-        circle.style.cssText = `
-          width: ${size}px;
-          height: ${size}px;
-          border-radius: 50%;
-          background-color: #007cbf;
-          border: 1px solid rgba(0,0,0,0.1);
-        `;
-        circleContainer.appendChild(circle);
-        row.appendChild(circleContainer);
-
-        const label = document.createElement('span');
-        label.textContent = item.label;
-        label.style.cssText = `
-          font-size: 11px;
-          color: #333;
-        `;
-        row.appendChild(label);
-
-        container.appendChild(row);
-      }
-    }
-  }
-
-  let control: LegendControl | null = null;
-
-  watch(
-    categoryItemVisibility,
-    () => {
-      control?.render();
-    },
-    { deep: true },
-  );
+  const toggleCollapse = () => {
+    isCollapsed.value = !isCollapsed.value;
+  };
 
   watch(
     () => props.items,
     () => {
       initVisibility();
-      control?.render();
     },
     { deep: true },
   );
@@ -598,30 +388,288 @@
     () => props.collapsed,
     (newValue) => {
       isCollapsed.value = newValue;
-      control?.render();
     },
   );
 
   onMounted(() => {
-    if (!map.value) return;
-
     if (props.autoGenerate) {
       generatedItems.value = generateLegendFromPaint();
     }
-
     initVisibility();
-    control = new LegendControl();
-    map.value.addControl(control, props.position);
-  });
-
-  onUnmounted(() => {
-    if (control && map.value) {
-      map.value.removeControl(control as unknown as maplibregl.IControl);
-      control = null;
-    }
   });
 </script>
 
 <template>
-  <slot></slot>
+  <div
+    class="v-legend-control"
+    :class="[positionClasses[position], { 'is-collapsed': isCollapsed }]"
+  >
+    <button
+      type="button"
+      class="v-legend-control-header"
+      @click="toggleCollapse"
+    >
+      <span class="v-legend-control-title">{{ title }}</span>
+      <svg
+        class="v-legend-control-chevron"
+        :class="{ 'is-collapsed': isCollapsed }"
+        width="14"
+        height="14"
+        viewBox="0 0 14 14"
+        fill="none"
+      >
+        <path
+          d="M3 5L7 9L11 5"
+          stroke="currentColor"
+          stroke-width="1.5"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+      </svg>
+    </button>
+
+    <div v-if="!isCollapsed" class="v-legend-control-content">
+      <template v-if="type === 'category'">
+        <button
+          v-for="(item, index) in categoryItems"
+          :key="item.value"
+          type="button"
+          class="v-legend-control-item"
+          :class="{
+            'is-interactive': interactive,
+            'is-hidden': !isItemVisible(item),
+          }"
+          :disabled="!interactive"
+          @click="toggleItem(item, index)"
+        >
+          <span
+            class="v-legend-control-swatch"
+            :style="{ backgroundColor: item.color }"
+          ></span>
+          <span class="v-legend-control-label">{{ item.label }}</span>
+          <span v-if="item.count !== undefined" class="v-legend-control-count">
+            {{ item.count }}
+          </span>
+        </button>
+      </template>
+
+      <template v-else-if="type === 'gradient' && gradientItem">
+        <div
+          class="v-legend-control-gradient"
+          :style="{ background: gradientStyle }"
+        ></div>
+        <div class="v-legend-control-gradient-labels">
+          <span>{{ gradientItem.minLabel ?? gradientItem.min }}</span>
+          <span>{{ gradientItem.maxLabel ?? gradientItem.max }}</span>
+        </div>
+      </template>
+
+      <template v-else-if="type === 'size'">
+        <div
+          v-for="item in sizeItems"
+          :key="item.value"
+          class="v-legend-control-size-item"
+        >
+          <div class="v-legend-control-size-circle-wrap">
+            <div
+              class="v-legend-control-size-circle"
+              :style="{
+                width: `${Math.min(item.size, 20)}px`,
+                height: `${Math.min(item.size, 20)}px`,
+              }"
+            ></div>
+          </div>
+          <span class="v-legend-control-label">{{ item.label }}</span>
+        </div>
+      </template>
+    </div>
+
+    <slot></slot>
+  </div>
 </template>
+
+<style>
+  .v-legend-control {
+    position: absolute;
+    z-index: 10;
+    min-width: 140px;
+    max-width: 200px;
+    background: var(--color-card, #fff);
+    border-radius: var(--radius, 0.5rem);
+    border: 1px solid var(--color-border, #e5e7eb);
+    box-shadow:
+      0 1px 3px 0 rgb(0 0 0 / 0.1),
+      0 1px 2px -1px rgb(0 0 0 / 0.1);
+    font-family:
+      ui-sans-serif,
+      system-ui,
+      -apple-system,
+      sans-serif;
+    font-size: 12px;
+    overflow: hidden;
+  }
+
+  .v-legend-control.top-2\.5 {
+    top: 10px;
+  }
+  .v-legend-control.right-2\.5 {
+    right: 10px;
+  }
+  .v-legend-control.left-2\.5 {
+    left: 10px;
+  }
+  .v-legend-control.bottom-7 {
+    bottom: 28px;
+  }
+
+  .v-legend-control-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+    padding: 8px 10px;
+    border: none;
+    border-bottom: 1px solid var(--color-border, #e5e7eb);
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    line-height: 1;
+  }
+
+  .v-legend-control.is-collapsed .v-legend-control-header {
+    border-bottom: none;
+  }
+
+  .v-legend-control-header:hover {
+    background: var(--color-accent, #f3f4f6);
+  }
+
+  .v-legend-control-title {
+    font-weight: 500;
+    font-size: 13px;
+    color: var(--color-card-foreground, #111827);
+    line-height: 1;
+  }
+
+  .v-legend-control-chevron {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    color: var(--color-muted-foreground, #6b7280);
+    transition: transform 0.15s ease;
+    flex-shrink: 0;
+  }
+
+  .v-legend-control-chevron.is-collapsed {
+    transform: rotate(-90deg);
+  }
+
+  .v-legend-control-content {
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .v-legend-control-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 6px 8px;
+    border: none;
+    border-radius: calc(var(--radius, 0.5rem) - 4px);
+    background: transparent;
+    text-align: left;
+    transition:
+      background 0.1s ease,
+      opacity 0.1s ease;
+  }
+
+  .v-legend-control-item.is-interactive {
+    cursor: pointer;
+  }
+
+  .v-legend-control-item.is-interactive:hover {
+    background: var(--color-accent, #f3f4f6);
+  }
+
+  .v-legend-control-item.is-hidden {
+    opacity: 0.4;
+  }
+
+  .v-legend-control-item.is-hidden .v-legend-control-label {
+    text-decoration: line-through;
+  }
+
+  .v-legend-control-item:disabled {
+    cursor: default;
+  }
+
+  .v-legend-control-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.1);
+  }
+
+  .v-legend-control-label {
+    flex: 1;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-foreground, #374151);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .v-legend-control-count {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--color-muted-foreground, #6b7280);
+    background: var(--color-secondary, #f3f4f6);
+    padding: 1px 5px;
+    border-radius: 8px;
+  }
+
+  .v-legend-control-gradient {
+    height: 12px;
+    border-radius: 3px;
+    margin: 6px 8px 4px;
+  }
+
+  .v-legend-control-gradient-labels {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 8px 6px;
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--color-muted-foreground, #6b7280);
+  }
+
+  .v-legend-control-size-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+  }
+
+  .v-legend-control-size-circle-wrap {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .v-legend-control-size-circle {
+    border-radius: 50%;
+    background: var(--color-primary, #3b82f6);
+    box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.1);
+  }
+</style>
