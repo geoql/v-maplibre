@@ -3,11 +3,13 @@
     VMap,
     VLayerDeckglPath,
     VLayerDeckglIcon,
+    VLayerDeckglScatterplot,
     VControlNavigation,
     VControlScale,
   } from '@geoql/v-maplibre';
+  import type { Map as MapLibreMap } from 'maplibre-gl';
   import type { PickingInfo } from '@deck.gl/core';
-  import type { BusFeature, BusTrail } from '~/types/actransit';
+  import type { BusFeature, BusTrail, StopFeature } from '~/types/actransit';
   import { motion, AnimatePresence } from 'motion-v';
 
   useSeoMeta({
@@ -33,6 +35,7 @@
   const {
     buses,
     trails,
+    stops,
     selectedTrail,
     tripAverageSpeeds,
     totalBuses,
@@ -42,8 +45,26 @@
     selectedTripId,
     fetchData,
     selectTrip,
+    selectStop,
     clearFilters,
   } = useActransitData();
+
+  // Track current zoom level for showing/hiding stops
+  const currentZoom = ref(11);
+  const STOPS_MIN_ZOOM = 12;
+  const showStops = computed(() => currentZoom.value >= STOPS_MIN_ZOOM);
+
+  // Selected stop for popup
+  const selectedStopData = ref<StopFeature | null>(null);
+
+  function handleMapLoad(map: MapLibreMap) {
+    // Set initial zoom
+    currentZoom.value = map.getZoom();
+    // Update on zoom changes
+    map.on('zoom', () => {
+      currentZoom.value = map.getZoom();
+    });
+  }
 
   const selectedBus = computed(() => {
     if (!selectedTripId.value) return null;
@@ -118,7 +139,31 @@
     if (info.object) {
       const bus = info.object as BusFeature;
       selectTrip(bus.tripId);
+      // Clear stop selection when selecting a bus
+      selectedStopData.value = null;
     }
+  }
+
+  // Stop layer accessors
+  function getStopPosition(d: unknown): [number, number] {
+    return (d as StopFeature).coordinates;
+  }
+
+  function getStopColor(): [number, number, number, number] {
+    return [66, 133, 244, 255]; // Google blue
+  }
+
+  function handleStopClick(info: PickingInfo) {
+    if (info.object) {
+      const stop = info.object as StopFeature;
+      selectedStopData.value = stop;
+      selectStop(stop);
+    }
+  }
+
+  function closeStopPopup() {
+    selectedStopData.value = null;
+    selectStop(null);
   }
 
   const SCRIPT_END = '</' + 'script>';
@@ -176,7 +221,7 @@ ${SCRIPT_END}
         </h1>
         <p class="mt-2 text-lg text-muted-foreground">
           Real-time bus tracking for AC Transit (Oakland/East Bay) using deck.gl
-          layers. Click a bus to see its trail.
+          layers. Click a bus to see its trail, or zoom in to see stops.
         </p>
       </div>
 
@@ -185,7 +230,12 @@ ${SCRIPT_END}
           class="relative h-125 min-w-0 overflow-hidden rounded-lg border border-border"
         >
           <ClientOnly>
-            <VMap :key="mapStyle" :options="mapOptions" class="size-full">
+            <VMap
+              :key="mapStyle"
+              :options="mapOptions"
+              class="size-full"
+              @loaded="handleMapLoad"
+            >
               <VControlNavigation position="top-right" />
               <VControlScale position="bottom-left" />
 
@@ -232,7 +282,54 @@ ${SCRIPT_END}
                 :pickable="true"
                 @click="handleBusClick"
               />
+
+              <!-- Bus stops - visible at higher zoom levels -->
+              <VLayerDeckglScatterplot
+                v-if="showStops"
+                id="stops"
+                :data="stops"
+                :get-position="getStopPosition"
+                :get-fill-color="getStopColor"
+                :get-radius="6"
+                :radius-min-pixels="4"
+                :radius-max-pixels="12"
+                :pickable="true"
+                :stroked="true"
+                :get-line-color="() => [255, 255, 255, 255]"
+                :line-width-min-pixels="1"
+                @click="handleStopClick"
+              />
             </VMap>
+
+            <!-- Stop popup -->
+            <AnimatePresence>
+              <motion.div
+                v-if="selectedStopData"
+                :initial="{ opacity: 0, y: 10, scale: 0.95 }"
+                :animate="{ opacity: 1, y: 0, scale: 1 }"
+                :exit="{ opacity: 0, y: 10, scale: 0.95 }"
+                :transition="{ type: 'spring', stiffness: 400, damping: 30 }"
+                class="absolute bottom-4 left-1/2 z-20 w-72 -translate-x-1/2 rounded-lg border bg-background/95 p-4 shadow-lg backdrop-blur-sm"
+              >
+                <button
+                  class="absolute top-2 right-2 flex size-6 items-center justify-center rounded-md hover:bg-muted"
+                  @click="closeStopPopup"
+                >
+                  <Icon name="lucide:x" class="size-4" />
+                </button>
+                <div class="space-y-2">
+                  <div class="font-semibold">
+                    Stop ID: {{ selectedStopData.stpid }}
+                  </div>
+                  <div class="text-sm text-muted-foreground">
+                    Name: {{ selectedStopData.name }}
+                  </div>
+                  <div class="text-sm text-muted-foreground">
+                    Routes: {{ selectedStopData.routeNames.join(', ') }}
+                  </div>
+                </div>
+              </motion.div>
+            </AnimatePresence>
 
             <!-- Toggle button - always visible -->
             <button
@@ -317,6 +414,13 @@ ${SCRIPT_END}
             <span>
               <strong>VLayerDeckglPath</strong> - Historical bus trails showing
               recent movement
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              <strong>VLayerDeckglScatterplot</strong> - Bus stops shown at zoom
+              14+ with click-to-view details
             </span>
           </li>
           <li class="flex items-start gap-2">
