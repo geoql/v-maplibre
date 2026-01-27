@@ -237,12 +237,55 @@
     }
   };
 
+  const applyFilterToMapLibreLayers = () => {
+    if (!map.value || !props.property || props.type !== 'category') return;
+
+    const visibleValues = filterState.value.visibleValues.filter(
+      (v) => v !== '__default__',
+    );
+    const allValues = categoryItems.value
+      .map((item) => item.value)
+      .filter((v) => v !== '__default__');
+    const allVisible = visibleValues.length === allValues.length;
+
+    for (const layerId of props.layerIds) {
+      const layer = map.value.getLayer(layerId);
+      if (!layer) continue;
+
+      if (allVisible) {
+        map.value.setFilter(layerId, null);
+      } else if (visibleValues.length === 0) {
+        map.value.setFilter(layerId, ['==', ['get', '_never_match_'], true]);
+      } else {
+        const paintValue = map.value.getPaintProperty(layerId, props.property);
+        if (!paintValue || !Array.isArray(paintValue)) continue;
+
+        const inputExpr = paintValue[1];
+        let propertyName: string | null = null;
+
+        if (Array.isArray(inputExpr) && inputExpr[0] === 'get') {
+          propertyName = inputExpr[1] as string;
+        }
+
+        if (propertyName) {
+          map.value.setFilter(layerId, [
+            'in',
+            ['get', propertyName],
+            ['literal', visibleValues],
+          ]);
+        }
+      }
+    }
+  };
+
   const toggleItem = (item: CategoryLegendItem, index: number) => {
     if (!props.interactive) return;
 
     const currentVisible = categoryItemVisibility.value.get(item.value) ?? true;
     const newVisible = !currentVisible;
     categoryItemVisibility.value.set(item.value, newVisible);
+
+    applyFilterToMapLibreLayers();
 
     emit('item-click', { item, index, visible: newVisible });
     emit('filter-change', {
