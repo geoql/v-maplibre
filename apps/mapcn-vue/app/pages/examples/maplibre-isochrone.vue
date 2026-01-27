@@ -4,6 +4,7 @@
     VMap,
     VControlNavigation,
     VControlScale,
+    VControlLayer,
     VControlLegend,
     VMarker,
     VLayerMaplibreIsochrone,
@@ -158,7 +159,7 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-  import { VMap, VMarker, VControlScale, VControlLegend, VLayerMaplibreIsochrone } from '@geoql/v-maplibre';
+  import { VMap, VMarker, VControlScale, VControlLayer, VControlLegend, VLayerMaplibreIsochrone } from '@geoql/v-maplibre';
 
   const originPoint = ref([-96.797, 32.777]); // Dallas
   const isochroneData = ref(null);
@@ -205,13 +206,12 @@
         :reverse-order="false"
       />
       <VMarker :coordinates="originPoint" :options="{ draggable: true }" @dragend="handleMarkerDrag" />
-      <VControlLegend
-        :layer-ids="['isochrone-fill']"
-        type="category"
-        :items="legendItems"
-        title="Travel Time"
-        position="bottom-left"
-        :interactive="false"
+      <VControlLegend ... />
+      <VControlLayer
+        layer-id="isochrone-fill"
+        title="Opacity"
+        position="top-left"
+        :opacity="0.85"
       />
     </VMap>
   </template>`;
@@ -275,6 +275,14 @@
                   :title="legendTitle"
                   position="bottom-left"
                   :interactive="false"
+                />
+
+                <VControlLayer
+                  layer-id="isochrone-fill"
+                  title="Isochrone Opacity"
+                  position="top-left"
+                  :visible="true"
+                  :opacity="0.85"
                 />
               </VMap>
               <template #fallback>
