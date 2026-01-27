@@ -3,6 +3,7 @@
   import {
     VMap,
     VControlNavigation,
+    VControlScale,
     VControlLegend,
     VMarker,
     VLayerMaplibreIsochrone,
@@ -30,11 +31,11 @@
   const mapOptions = computed(() => ({
     container: `isochrone-map-${mapId}`,
     style: mapStyle.value,
-    center: [-73.985, 40.758] as [number, number],
-    zoom: 12,
+    center: [-96.797, 32.777] as [number, number],
+    zoom: 10,
   }));
 
-  const originPoint = ref<[number, number]>([-73.985, 40.758]);
+  const originPoint = ref<[number, number]>([-96.797, 32.777]);
   const isochroneData = ref<IsochroneResponse | null>(null);
 
   type MetricType = 'time' | 'distance';
@@ -49,17 +50,15 @@
   const selectedMode = ref<TransportMode>('auto');
 
   const timeContours = [
-    { time: 5, color: '#2563eb', label: '5 min' },
-    { time: 10, color: '#7c3aed', label: '10 min' },
-    { time: 15, color: '#db2777', label: '15 min' },
-    { time: 20, color: '#ea580c', label: '20 min' },
+    { time: 5, color: '#dc2626', label: '5 min' },
+    { time: 10, color: '#2563eb', label: '10 min' },
+    { time: 15, color: '#16a34a', label: '15 min' },
   ];
 
   const distanceContours = [
-    { distance: 2, color: '#2563eb', label: '2 km' },
-    { distance: 5, color: '#7c3aed', label: '5 km' },
-    { distance: 10, color: '#db2777', label: '10 km' },
-    { distance: 15, color: '#ea580c', label: '15 km' },
+    { distance: 2, color: '#dc2626', label: '2 km' },
+    { distance: 5, color: '#2563eb', label: '5 km' },
+    { distance: 10, color: '#16a34a', label: '10 km' },
   ];
 
   const activeContours = computed(() =>
@@ -159,17 +158,16 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-  import { VMap, VMarker, VControlLegend, VLayerMaplibreIsochrone } from '@geoql/v-maplibre';
+  import { VMap, VMarker, VControlScale, VControlLegend, VLayerMaplibreIsochrone } from '@geoql/v-maplibre';
 
-  const originPoint = ref([-73.985, 40.758]);
+  const originPoint = ref([-96.797, 32.777]); // Dallas
   const isochroneData = ref(null);
 
   // Contours - Valhalla expects colors without # prefix
   const contours = [
-    { time: 5, color: '2563eb', label: '5 min' },
-    { time: 10, color: '7c3aed', label: '10 min' },
-    { time: 15, color: 'db2777', label: '15 min' },
-    { time: 20, color: 'ea580c', label: '20 min' },
+    { time: 5, color: 'dc2626', label: '5 min' },   // red
+    { time: 10, color: '2563eb', label: '10 min' }, // blue
+    { time: 15, color: '16a34a', label: '15 min' }, // green
   ];
 
   const legendItems = contours.map(c => ({
@@ -197,12 +195,13 @@
 
   <template>
     <VMap :options="mapOptions" @loaded="fetchIsochrone">
+      <VControlScale position="bottom-left" />
       <VLayerMaplibreIsochrone
         v-if="isochroneData"
         id="isochrone"
         :data="isochroneData"
-        :fill-opacity="0.4"
-        :line-width="2"
+        :fill-opacity="0.85"
+        :line-width="0"
       />
       <VMarker :coordinates="originPoint" :options="{ draggable: true }" @dragend="handleMarkerDrag" />
       <VControlLegend
@@ -246,6 +245,7 @@
                 @loaded="handleMapLoad"
               >
                 <VControlNavigation position="top-right" />
+                <VControlScale position="bottom-left" />
 
                 <!-- VLayerMaplibreIsochrone handles:
                      - Color formatting (adds # prefix if needed)
@@ -255,9 +255,9 @@
                   v-if="mapLoaded && isochroneData"
                   id="isochrone"
                   :data="isochroneData"
-                  :fill-opacity="0.4"
-                  :line-width="2"
-                  :line-opacity="0.8"
+                  :fill-opacity="0.85"
+                  :line-width="0"
+                  :line-opacity="0"
                 />
 
                 <VMarker
