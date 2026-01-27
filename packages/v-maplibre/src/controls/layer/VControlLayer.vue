@@ -307,11 +307,7 @@
     font-size: 13px;
     overflow: hidden;
     padding: 10px 12px;
-  }
-
-  /* Ensure proper display when used as MapLibre IControl */
-  .v-layer-control.maplibregl-ctrl {
-    display: block;
+    /* Required: MapLibre control containers have pointer-events:none */
     pointer-events: auto;
   }
 

@@ -503,11 +503,7 @@
       sans-serif;
     font-size: 12px;
     overflow: hidden;
-  }
-
-  /* Ensure proper display when used as MapLibre IControl */
-  .v-legend-control.maplibregl-ctrl {
-    display: block;
+    /* Required: MapLibre control containers have pointer-events:none */
     pointer-events: auto;
   }
 
