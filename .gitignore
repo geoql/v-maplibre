@@ -40,3 +40,6 @@ coverage
 tmp/
 .sisyphus
 
+# Local notes
+TODO.local.md
+
