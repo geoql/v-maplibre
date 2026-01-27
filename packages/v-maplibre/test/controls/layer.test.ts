@@ -7,8 +7,6 @@ import { DeckLayersKey } from '../../src/layers/deckgl/_shared/useDeckOverlay';
 import '../setup';
 
 interface MockMapInstance {
-  addControl: ReturnType<typeof vi.fn>;
-  removeControl: ReturnType<typeof vi.fn>;
   getLayer: ReturnType<typeof vi.fn>;
   setLayoutProperty: ReturnType<typeof vi.fn>;
   getLayoutProperty: ReturnType<typeof vi.fn>;
@@ -17,8 +15,6 @@ interface MockMapInstance {
 }
 
 const createMockMap = (): MockMapInstance => ({
-  addControl: vi.fn(),
-  removeControl: vi.fn(),
   getLayer: vi.fn(),
   setLayoutProperty: vi.fn(),
   getLayoutProperty: vi.fn(),
@@ -43,14 +39,14 @@ describe('VControlLayer', () => {
     document.body.appendChild(container);
   });
 
-  describe('MapLibre layer support', () => {
-    it('renders control on map', async () => {
+  describe('Component rendering', () => {
+    it('renders control with title', async () => {
       mockMap.getLayer.mockReturnValue({ type: 'fill' });
 
       const wrapper = mount(VControlLayer, {
         props: {
           layerId: 'test-layer',
-          position: 'top-right',
+          title: 'My Layer',
         },
         global: {
           provide: {
@@ -60,10 +56,52 @@ describe('VControlLayer', () => {
       });
 
       await nextTick();
-      expect(mockMap.addControl).toHaveBeenCalled();
-      expect(wrapper.exists()).toBe(true);
+      expect(wrapper.find('.v-layer-control-title').text()).toBe('My Layer');
     });
 
+    it('renders visibility toggle button', async () => {
+      mockMap.getLayer.mockReturnValue({ type: 'fill' });
+
+      const wrapper = mount(VControlLayer, {
+        props: {
+          layerId: 'test-layer',
+          visible: true,
+        },
+        global: {
+          provide: {
+            [MapKey as symbol]: ref(mockMap),
+          },
+        },
+      });
+
+      await nextTick();
+      const toggle = wrapper.find('.v-layer-control-toggle');
+      expect(toggle.exists()).toBe(true);
+    });
+
+    it('renders opacity slider', async () => {
+      mockMap.getLayer.mockReturnValue({ type: 'fill' });
+
+      const wrapper = mount(VControlLayer, {
+        props: {
+          layerId: 'test-layer',
+          opacity: 0.5,
+        },
+        global: {
+          provide: {
+            [MapKey as symbol]: ref(mockMap),
+          },
+        },
+      });
+
+      await nextTick();
+      const slider = wrapper.find('.v-layer-control-slider');
+      expect(slider.exists()).toBe(true);
+      expect(slider.attributes('value')).toBe('50');
+    });
+  });
+
+  describe('MapLibre layer support', () => {
     it('detects MapLibre fill layer and sets visibility', async () => {
       mockMap.getLayer.mockReturnValue({ type: 'fill' });
 
@@ -178,26 +216,6 @@ describe('VControlLayer', () => {
         0.9,
       );
     });
-
-    it('removes control on unmount', async () => {
-      mockMap.getLayer.mockReturnValue({ type: 'fill' });
-
-      const wrapper = mount(VControlLayer, {
-        props: {
-          layerId: 'test-layer',
-        },
-        global: {
-          provide: {
-            [MapKey as symbol]: ref(mockMap),
-          },
-        },
-      });
-
-      await nextTick();
-      wrapper.unmount();
-
-      expect(mockMap.removeControl).toHaveBeenCalled();
-    });
   });
 
   describe('deck.gl layer support', () => {
@@ -258,8 +276,10 @@ describe('VControlLayer', () => {
   });
 
   describe('layer not found handling', () => {
-    it('warns when layer not found in MapLibre or deck.gl', async () => {
-      const consoleWarn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+    it('does not warn immediately when layer not found (polls first)', async () => {
+      const consoleWarn = vi
+        .spyOn(console, 'warn')
+        .mockImplementation(() => {});
       mockMap.getLayer.mockReturnValue(null);
 
       const mockDeckLayers = createMockDeckLayers();
@@ -279,9 +299,7 @@ describe('VControlLayer', () => {
       });
 
       await nextTick();
-      expect(consoleWarn).toHaveBeenCalledWith(
-        expect.stringContaining('nonexistent-layer'),
-      );
+      expect(consoleWarn).not.toHaveBeenCalled();
 
       consoleWarn.mockRestore();
     });

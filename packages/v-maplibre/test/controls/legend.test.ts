@@ -7,16 +7,12 @@ import { DeckLayersKey } from '../../src/layers/deckgl/_shared/useDeckOverlay';
 import '../setup';
 
 interface MockMapInstance {
-  addControl: ReturnType<typeof vi.fn>;
-  removeControl: ReturnType<typeof vi.fn>;
   getLayer: ReturnType<typeof vi.fn>;
   getPaintProperty: ReturnType<typeof vi.fn>;
   setFilter: ReturnType<typeof vi.fn>;
 }
 
 const createMockMap = (): MockMapInstance => ({
-  addControl: vi.fn(),
-  removeControl: vi.fn(),
   getLayer: vi.fn(),
   getPaintProperty: vi.fn(),
   setFilter: vi.fn(),
@@ -39,8 +35,27 @@ describe('VControlLegend', () => {
     document.body.appendChild(container);
   });
 
-  describe('Category legend', () => {
-    it('renders control on map', async () => {
+  describe('Component rendering', () => {
+    it('renders legend with title', async () => {
+      const wrapper = mount(VControlLegend, {
+        props: {
+          layerIds: ['test-layer'],
+          type: 'category',
+          title: 'My Legend',
+          items: [{ value: 'a', label: 'Category A', color: '#ff0000' }],
+        },
+        global: {
+          provide: {
+            [MapKey as symbol]: ref(mockMap),
+          },
+        },
+      });
+
+      await nextTick();
+      expect(wrapper.find('.v-legend-control-title').text()).toBe('My Legend');
+    });
+
+    it('renders category items', async () => {
       const wrapper = mount(VControlLegend, {
         props: {
           layerIds: ['test-layer'],
@@ -58,10 +73,31 @@ describe('VControlLegend', () => {
       });
 
       await nextTick();
-      expect(mockMap.addControl).toHaveBeenCalled();
-      expect(wrapper.exists()).toBe(true);
+      const items = wrapper.findAll('.v-legend-control-item');
+      expect(items.length).toBe(2);
     });
 
+    it('renders collapsed state correctly', async () => {
+      const wrapper = mount(VControlLegend, {
+        props: {
+          layerIds: ['test-layer'],
+          type: 'category',
+          items: [{ value: 'a', label: 'Category A', color: '#ff0000' }],
+          collapsed: true,
+        },
+        global: {
+          provide: {
+            [MapKey as symbol]: ref(mockMap),
+          },
+        },
+      });
+
+      await nextTick();
+      expect(wrapper.find('.v-legend-control-content').exists()).toBe(false);
+    });
+  });
+
+  describe('Category legend', () => {
     it('emits item-click when category is clicked', async () => {
       mockMap.getLayer.mockReturnValue({ type: 'fill' });
       mockMap.getPaintProperty.mockReturnValue([
@@ -80,8 +116,18 @@ describe('VControlLegend', () => {
           type: 'category',
           property: 'fill-color',
           items: [
-            { value: 'a', label: 'Category A', color: '#ff0000', visible: true },
-            { value: 'b', label: 'Category B', color: '#00ff00', visible: true },
+            {
+              value: 'a',
+              label: 'Category A',
+              color: '#ff0000',
+              visible: true,
+            },
+            {
+              value: 'b',
+              label: 'Category B',
+              color: '#00ff00',
+              visible: true,
+            },
           ],
         },
         global: {
@@ -92,26 +138,12 @@ describe('VControlLegend', () => {
       });
 
       await nextTick();
-      expect(wrapper.emitted()).toBeDefined();
-    });
 
-    it('removes control on unmount', async () => {
-      const wrapper = mount(VControlLegend, {
-        props: {
-          layerIds: ['test-layer'],
-          type: 'category',
-          items: [{ value: 'a', label: 'Category A', color: '#ff0000' }],
-        },
-        global: {
-          provide: {
-            [MapKey as symbol]: ref(mockMap),
-          },
-        },
-      });
-
+      const firstItem = wrapper.find('.v-legend-control-item');
+      await firstItem.trigger('click');
       await nextTick();
-      wrapper.unmount();
-      expect(mockMap.removeControl).toHaveBeenCalled();
+
+      expect(wrapper.emitted('item-click')).toBeTruthy();
     });
   });
 
@@ -139,8 +171,10 @@ describe('VControlLegend', () => {
       });
 
       await nextTick();
-      expect(mockMap.addControl).toHaveBeenCalled();
-      expect(wrapper.exists()).toBe(true);
+      expect(wrapper.find('.v-legend-control-gradient').exists()).toBe(true);
+      expect(wrapper.find('.v-legend-control-gradient-labels').exists()).toBe(
+        true,
+      );
     });
   });
 
@@ -164,8 +198,8 @@ describe('VControlLegend', () => {
       });
 
       await nextTick();
-      expect(mockMap.addControl).toHaveBeenCalled();
-      expect(wrapper.exists()).toBe(true);
+      const sizeItems = wrapper.findAll('.v-legend-control-size-item');
+      expect(sizeItems.length).toBe(3);
     });
   });
 
@@ -248,12 +282,19 @@ describe('VControlLegend', () => {
         '#cccccc',
       ]);
 
-      mount(VControlLegend, {
+      const wrapper = mount(VControlLegend, {
         props: {
           layerIds: ['test-layer'],
           type: 'category',
           property: 'fill-color',
-          items: [{ value: 'a', label: 'Category A', color: '#ff0000' }],
+          items: [
+            {
+              value: 'a',
+              label: 'Category A',
+              color: '#ff0000',
+              visible: true,
+            },
+          ],
         },
         global: {
           provide: {
@@ -263,13 +304,20 @@ describe('VControlLegend', () => {
       });
 
       await nextTick();
-      expect(mockMap.addControl).toHaveBeenCalled();
+
+      const item = wrapper.find('.v-legend-control-item');
+      await item.trigger('click');
+      await nextTick();
+
+      expect(mockMap.setFilter).toHaveBeenCalled();
     });
   });
 
   describe('deck.gl filtering', () => {
     it('warns when deck.gl layer lacks DataFilterExtension', async () => {
-      const consoleWarn = vi.spyOn(console, 'warn').mockImplementation(() => {});
+      const consoleWarn = vi
+        .spyOn(console, 'warn')
+        .mockImplementation(() => {});
       mockMap.getLayer.mockReturnValue(null);
 
       const mockDeckLayers = createMockDeckLayers();
@@ -280,11 +328,18 @@ describe('VControlLegend', () => {
       };
       mockDeckLayers.getLayers.mockReturnValue([mockDeckLayer]);
 
-      mount(VControlLegend, {
+      const wrapper = mount(VControlLegend, {
         props: {
           layerIds: ['deck-layer'],
           type: 'category',
-          items: [{ value: 'a', label: 'Category A', color: '#ff0000' }],
+          items: [
+            {
+              value: 'a',
+              label: 'Category A',
+              color: '#ff0000',
+              visible: true,
+            },
+          ],
         },
         global: {
           provide: {
@@ -295,6 +350,15 @@ describe('VControlLegend', () => {
       });
 
       await nextTick();
+
+      const item = wrapper.find('.v-legend-control-item');
+      await item.trigger('click');
+      await nextTick();
+
+      expect(consoleWarn).toHaveBeenCalledWith(
+        expect.stringContaining('DataFilterExtension'),
+      );
+
       consoleWarn.mockRestore();
     });
   });
@@ -302,11 +366,19 @@ describe('VControlLegend', () => {
   describe('v-model bindings', () => {
     it('emits update:filter when filter changes', async () => {
       mockMap.getLayer.mockReturnValue({ type: 'fill' });
+      mockMap.getPaintProperty.mockReturnValue([
+        'match',
+        ['get', 'type'],
+        'a',
+        '#ff0000',
+        '#cccccc',
+      ]);
 
       const wrapper = mount(VControlLegend, {
         props: {
           layerIds: ['test-layer'],
           type: 'category',
+          property: 'fill-color',
           items: [
             { value: 'a', label: 'A', color: '#ff0000', visible: true },
             { value: 'b', label: 'B', color: '#00ff00', visible: true },
@@ -320,18 +392,23 @@ describe('VControlLegend', () => {
       });
 
       await nextTick();
-      expect(wrapper.exists()).toBe(true);
+
+      const firstItem = wrapper.find('.v-legend-control-item');
+      await firstItem.trigger('click');
+      await nextTick();
+
+      expect(wrapper.emitted('update:filter')).toBeTruthy();
     });
   });
 
   describe('Collapsed state', () => {
-    it('supports collapsed prop', async () => {
+    it('toggles collapse on header click', async () => {
       const wrapper = mount(VControlLegend, {
         props: {
           layerIds: ['test-layer'],
           type: 'category',
           items: [{ value: 'a', label: 'A', color: '#ff0000' }],
-          collapsed: true,
+          collapsed: false,
         },
         global: {
           provide: {
@@ -341,7 +418,12 @@ describe('VControlLegend', () => {
       });
 
       await nextTick();
-      expect(wrapper.exists()).toBe(true);
+      expect(wrapper.find('.v-legend-control-content').exists()).toBe(true);
+
+      await wrapper.find('.v-legend-control-header').trigger('click');
+      await nextTick();
+
+      expect(wrapper.find('.v-legend-control-content').exists()).toBe(false);
     });
   });
 });
