@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.6.1](https://github.com/geoql/v-maplibre/compare/v1.6.0...v1.6.1) (2026-02-02)
+
+
+### Bug Fixes
+
+* **v-maplibre:** add missing [@luma](https://github.com/luma).gl imports to jsr.json for JSR publish ([c2cd8ce](https://github.com/geoql/v-maplibre/commit/c2cd8ce9b421ec52bf6a47880bf4eb6fff18a98e))
+
 ## [1.6.0](https://github.com/geoql/v-maplibre/compare/v1.5.0...v1.6.0) (2026-01-27)
 
 
