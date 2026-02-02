@@ -4,4 +4,7 @@ export default {
     'bun run --cwd apps/mapcn-vue lint:fix',
   ],
   '*.{js,jsx,ts,tsx,vue}': ['oxlint --fix', 'oxfmt --write'],
+  '*.{json,md,yml,yaml,css,html}': [
+    'oxfmt --write --no-error-on-unmatched-pattern',
+  ],
 };
