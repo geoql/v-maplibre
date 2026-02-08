@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { VMap, VLayerDeckglTrips } from '@geoql/v-maplibre';
+  import { VMap, VLayerDeckglTrips, VControlScale } from '@geoql/v-maplibre';
 
   const { mapStyle } = useMapStyle();
 
@@ -88,6 +88,7 @@
         :joint-rounded="true"
         :opacity="0.8"
       />
+      <VControlScale position="bottom-left" />
     </VMap>
   </div>
 </template>

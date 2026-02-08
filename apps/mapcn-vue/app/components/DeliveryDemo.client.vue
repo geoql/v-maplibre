@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { ref, shallowRef, onUnmounted, computed } from 'vue';
   import type { Map, MapOptions } from 'maplibre-gl';
-  import { VMap } from '@geoql/v-maplibre';
+  import { VMap, VControlScale } from '@geoql/v-maplibre';
   import { MapboxOverlay } from '@deck.gl/mapbox';
   import { MaplibreStarfieldLayer } from '@geoql/maplibre-gl-starfield';
   import AnimatedArcLayer from '~/utils/animated-arc-layer';
@@ -316,5 +316,7 @@
 </script>
 
 <template>
-  <VMap :options="mapOptions" class="size-full" @loaded="onMapLoaded" />
+  <VMap :options="mapOptions" class="size-full" @loaded="onMapLoaded">
+    <VControlScale position="bottom-left" />
+  </VMap>
 </template>
