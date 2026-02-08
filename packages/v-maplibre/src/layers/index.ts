@@ -11,5 +11,6 @@ export { PmtileLayer as VLayerMaplibrePmtile } from './maplibre/pmtile';
 export { ClusterLayer as VLayerMaplibreCluster } from './maplibre/custom/cluster';
 export { RouteLayer as VLayerMaplibreRoute } from './maplibre/custom/route';
 export { VLayerMaplibreIsochrone } from './maplibre/custom/isochrone';
+export { StarfieldLayer as VLayerMaplibreStarfield } from './maplibre/custom/starfield';
 
 export * from './deckgl';

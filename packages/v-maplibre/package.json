@@ -83,6 +83,7 @@
     "@deck.gl/mesh-layers": "catalog:deckgl",
     "@developmentseed/deck.gl-geotiff": "^0.2.0",
     "@developmentseed/deck.gl-raster": "^0.2.0",
+    "@geoql/maplibre-gl-starfield": "^0.0.1",
     "@luma.gl/core": "catalog:deckgl",
     "@luma.gl/engine": "catalog:deckgl",
     "@luma.gl/shadertools": "catalog:deckgl",
@@ -98,6 +99,7 @@
     "oxfmt": "catalog:",
     "oxlint": "catalog:",
     "proj4": "^2.20.2",
+    "three": "^0.182.0",
     "typescript": "catalog:",
     "vite": "^7.3.1",
     "vitest": "^4.0.17",
@@ -113,11 +115,13 @@
     "@deck.gl/mesh-layers": "^9.2.6",
     "@developmentseed/deck.gl-geotiff": "^0.2.0",
     "@developmentseed/deck.gl-raster": "^0.2.0",
+    "@geoql/maplibre-gl-starfield": "^0.0.1",
     "geotiff": "2.1.3",
     "geotiff-geokeys-to-proj4": "^2024.4.0",
     "maplibre-gl-lidar": "^0.5.0",
     "maplibre-gl-wind": "^0.2.0",
     "proj4": "^2.20.2",
+    "three": ">=0.176.0",
     "vue": "^3.5.0"
   },
   "peerDependenciesMeta": {
@@ -154,10 +158,16 @@
     "proj4": {
       "optional": true
     },
+    "@geoql/maplibre-gl-starfield": {
+      "optional": true
+    },
     "maplibre-gl-lidar": {
       "optional": true
     },
     "maplibre-gl-wind": {
+      "optional": true
+    },
+    "three": {
       "optional": true
     }
   },

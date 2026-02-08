@@ -21,6 +21,7 @@ import {
   VLayerMaplibrePmtile,
   VLayerMaplibreRoute,
   VLayerMaplibreIsochrone,
+  VLayerMaplibreStarfield,
 } from './layers';
 
 import VMap from './map/VMap.vue';
@@ -41,6 +42,7 @@ export {
   VLayerMaplibrePmtile,
   VLayerMaplibreRoute,
   VLayerMaplibreIsochrone,
+  VLayerMaplibreStarfield,
   VControlAttribution,
   VControlFullscreen,
   VControlGeolocate,

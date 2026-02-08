@@ -97,6 +97,7 @@ bun add maplibre-gl-wind
 - **`VLayerMaplibreCluster`** - Clustered point layers
 - **`VLayerMaplibrePmtile`** - PMTiles layers
 - **`VLayerMaplibreRoute`** - Route/delivery tracking visualization
+- **`VLayerMaplibreStarfield`** - Three.js starfield skybox for globe projections (requires `@geoql/maplibre-gl-starfield`, `three`)
 
 ### deck.gl Layer Components
 
