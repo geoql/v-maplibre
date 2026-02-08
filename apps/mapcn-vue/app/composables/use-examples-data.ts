@@ -59,6 +59,22 @@ export function useExamplesData() {
       ],
     },
     {
+      id: 'globe',
+      title: 'Globe',
+      description: 'Globe projection visualizations with starfield backgrounds',
+      icon: 'lucide:globe',
+      examples: [
+        {
+          title: 'Earthquake Globe',
+          description:
+            'Live 3D globe showing worldwide seismic activity from USGS.',
+          href: '/examples/earthquake-globe',
+          icon: 'lucide:activity',
+          badge: 'USGS',
+        },
+      ],
+    },
+    {
       id: 'valhalla',
       title: 'Valhalla Routing',
       description: 'Turn-by-turn navigation, optimization, and travel analysis',
