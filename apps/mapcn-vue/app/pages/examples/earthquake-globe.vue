@@ -2,12 +2,11 @@
   import {
     VMap,
     VLayerDeckglScatterplot,
+    VLayerMaplibreStarfield,
     VControlNavigation,
   } from '@geoql/v-maplibre';
-  import type { Map as MaplibreMap } from 'maplibre-gl';
   import type { PickingInfo } from '@deck.gl/core';
   import type { EarthquakeData } from '~/types/earthquake';
-  import { MaplibreStarfieldLayer } from '@geoql/maplibre-gl-starfield';
 
   useSeoMeta({
     title: 'Earthquake Globe - mapcn-vue Examples',
@@ -59,16 +58,6 @@
     clearSelection,
     getQuakeColor,
   } = useEarthquakeGlobe();
-
-  function onMapLoaded(map: MaplibreMap) {
-    const firstLayerId = map.getStyle().layers?.[0]?.id;
-    const starfield = new MaplibreStarfieldLayer({
-      galaxyTextureUrl: '/milkyway.jpg',
-      starCount: 5000,
-      starSize: 2.5,
-    });
-    map.addLayer(starfield, firstLayerId);
-  }
 
   function getPosition(d: unknown) {
     return (d as EarthquakeData).coordinates;
@@ -179,7 +168,13 @@ ${SCRIPT_END}
         <div class="relative h-125 min-w-0 overflow-hidden rounded-lg bg-black">
           <!-- Map with Three.js starfield custom layer -->
           <ClientOnly>
-            <VMap :options="mapOptions" class="size-full" @loaded="onMapLoaded">
+            <VMap :options="mapOptions" class="size-full">
+              <VLayerMaplibreStarfield
+                galaxy-texture-url="/milkyway.jpg"
+                :star-count="5000"
+                :star-size="2.5"
+                before="satellite"
+              />
               <VControlNavigation position="top-right" />
               <VLayerDeckglScatterplot
                 v-if="!loading && earthquakeData.length"

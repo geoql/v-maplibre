@@ -1,9 +1,12 @@
 <script setup lang="ts">
   import { ref, shallowRef, onUnmounted, computed } from 'vue';
   import type { Map, MapOptions } from 'maplibre-gl';
-  import { VMap, VControlScale } from '@geoql/v-maplibre';
+  import {
+    VMap,
+    VControlScale,
+    VLayerMaplibreStarfield,
+  } from '@geoql/v-maplibre';
   import { MapboxOverlay } from '@deck.gl/mapbox';
-  import { MaplibreStarfieldLayer } from '@geoql/maplibre-gl-starfield';
   import AnimatedArcLayer from '~/utils/animated-arc-layer';
 
   const colorMode = useColorMode();
@@ -283,14 +286,6 @@
   const onMapLoaded = (map: Map) => {
     mapRef.value = map;
 
-    const firstLayerId = map.getStyle().layers?.[0]?.id;
-    const starfield = new MaplibreStarfieldLayer({
-      galaxyTextureUrl: '/milkyway.jpg',
-      starCount: 4000,
-      starSize: 2.0,
-    });
-    map.addLayer(starfield, firstLayerId);
-
     const overlay = new MapboxOverlay({
       interleaved: true,
       layers: createLayers(0),
@@ -317,6 +312,12 @@
 
 <template>
   <VMap :options="mapOptions" class="size-full" @loaded="onMapLoaded">
+    <VLayerMaplibreStarfield
+      galaxy-texture-url="/milkyway.jpg"
+      :star-count="4000"
+      :star-size="2.0"
+      before="satellite"
+    />
     <VControlScale position="bottom-left" />
   </VMap>
 </template>
