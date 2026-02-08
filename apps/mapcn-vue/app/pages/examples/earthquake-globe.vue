@@ -95,7 +95,12 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VLayerDeckglScatterplot, VControlNavigation } from '@geoql/v-maplibre';
+import {
+  VMap,
+  VLayerDeckglScatterplot,
+  VLayerMaplibreStarfield,
+  VControlNavigation,
+} from '@geoql/v-maplibre';
 
 const mapOptions = {
   style: {
@@ -118,6 +123,12 @@ ${SCRIPT_END}
 
 <template>
   <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
+    <VLayerMaplibreStarfield
+      galaxy-texture-url="/milkyway.jpg"
+      :star-count="5000"
+      :star-size="2.5"
+      before="satellite"
+    />
     <VControlNavigation position="top-right" />
     <VLayerDeckglScatterplot
       id="earthquakes"
