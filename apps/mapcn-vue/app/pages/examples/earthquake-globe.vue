@@ -197,7 +197,7 @@ ${SCRIPT_END}
               />
             </VMap>
             <template #fallback>
-              <div class="size-full bg-black" ></div>
+              <div class="size-full bg-black"></div>
             </template>
           </ClientOnly>
 
