@@ -3,6 +3,7 @@
   import type { Map, MapOptions } from 'maplibre-gl';
   import { VMap } from '@geoql/v-maplibre';
   import { MapboxOverlay } from '@deck.gl/mapbox';
+  import { MaplibreStarfieldLayer } from '@geoql/maplibre-gl-starfield';
   import AnimatedArcLayer from '~/utils/animated-arc-layer';
 
   const colorMode = useColorMode();
@@ -281,6 +282,14 @@
 
   const onMapLoaded = (map: Map) => {
     mapRef.value = map;
+
+    const firstLayerId = map.getStyle().layers?.[0]?.id;
+    const starfield = new MaplibreStarfieldLayer({
+      galaxyTextureUrl: '/milkyway.jpg',
+      starCount: 4000,
+      starSize: 2.0,
+    });
+    map.addLayer(starfield, firstLayerId);
 
     const overlay = new MapboxOverlay({
       interleaved: true,
