@@ -1,6 +1,11 @@
 <script setup lang="ts">
   import { ref, onMounted, onBeforeUnmount } from 'vue';
-  import { VMap, VLayerDeckglScatterplot, VPopup } from '@geoql/v-maplibre';
+  import {
+    VMap,
+    VLayerDeckglScatterplot,
+    VPopup,
+    VControlScale,
+  } from '@geoql/v-maplibre';
   import type { PickingInfo } from '@deck.gl/core';
 
   const { mapStyle } = useMapStyle();
@@ -144,18 +149,21 @@
           className: 'active-users-popup',
         }"
       >
-        <div class="px-1 py-0.5 text-center">
-          <div class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">
+        <div class="text-center">
+          <div
+            class="text-[10px] font-medium tracking-wider text-muted-foreground uppercase"
+          >
             {{ hoveredCity.city }}
           </div>
-          <div class="text-lg font-bold text-emerald-500">
+          <div class="text-2xl/tight font-semibold text-emerald-500">
             {{ hoveredCity.weight.toLocaleString() }}
           </div>
-          <div class="text-[11px] text-zinc-500 dark:text-zinc-400">
+          <div class="text-[10px] tracking-wider text-muted-foreground">
             active users
           </div>
         </div>
       </VPopup>
+      <VControlScale position="bottom-left" />
     </VMap>
   </div>
 </template>
@@ -168,30 +176,59 @@
 </style>
 
 <style>
-  .active-users-popup {
+  .maplibregl-popup.active-users-popup {
     z-index: 100 !important;
   }
 
-  .active-users-popup .maplibregl-popup-content {
-    padding: 8px 12px !important;
-    border-radius: 8px !important;
+  .maplibregl-popup.active-users-popup .maplibregl-popup-content {
+    padding: 0.625rem 0.875rem !important;
+    background: var(--color-background) !important;
+    border: none !important;
+    border-radius: var(--radius) !important;
     box-shadow:
-      0 4px 6px -1px rgb(0 0 0 / 0.1),
-      0 2px 4px -2px rgb(0 0 0 / 0.1) !important;
-    border: 1px solid #e4e4e7 !important;
-    background: #ffffff !important;
+      0 10px 15px -3px rgb(0 0 0 / 0.1),
+      0 4px 6px -4px rgb(0 0 0 / 0.1) !important;
+    overflow: visible !important;
   }
 
-  .active-users-popup .maplibregl-popup-tip {
-    border-top-color: #ffffff !important;
+  .active-users-popup.maplibregl-popup-anchor-top-left
+    .maplibregl-popup-content {
+    border-top-left-radius: 0 !important;
   }
 
-  html.dark .active-users-popup .maplibregl-popup-content {
-    background: #18181b !important;
-    border-color: #3f3f46 !important;
+  .active-users-popup.maplibregl-popup-anchor-top-right
+    .maplibregl-popup-content {
+    border-top-right-radius: 0 !important;
   }
 
-  html.dark .active-users-popup .maplibregl-popup-tip {
-    border-top-color: #18181b !important;
+  .active-users-popup.maplibregl-popup-anchor-bottom-left
+    .maplibregl-popup-content {
+    border-bottom-left-radius: 0 !important;
+  }
+
+  .active-users-popup.maplibregl-popup-anchor-bottom-right
+    .maplibregl-popup-content {
+    border-bottom-right-radius: 0 !important;
+  }
+
+  .active-users-popup.maplibregl-popup-anchor-bottom .maplibregl-popup-tip,
+  .active-users-popup.maplibregl-popup-anchor-bottom-left .maplibregl-popup-tip,
+  .active-users-popup.maplibregl-popup-anchor-bottom-right
+    .maplibregl-popup-tip {
+    border-top-color: var(--color-background) !important;
+  }
+
+  .active-users-popup.maplibregl-popup-anchor-top .maplibregl-popup-tip,
+  .active-users-popup.maplibregl-popup-anchor-top-left .maplibregl-popup-tip,
+  .active-users-popup.maplibregl-popup-anchor-top-right .maplibregl-popup-tip {
+    border-bottom-color: var(--color-background) !important;
+  }
+
+  .active-users-popup.maplibregl-popup-anchor-left .maplibregl-popup-tip {
+    border-right-color: var(--color-background) !important;
+  }
+
+  .active-users-popup.maplibregl-popup-anchor-right .maplibregl-popup-tip {
+    border-left-color: var(--color-background) !important;
   }
 </style>
