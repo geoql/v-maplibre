@@ -72,6 +72,21 @@ export function useExamplesData() {
           icon: 'lucide:activity',
           badge: 'USGS',
         },
+        {
+          title: 'Globe Day/Night',
+          description:
+            'Real-time sun tracking based on your location and current time.',
+          href: '/examples/globe-day-night',
+          icon: 'lucide:sun-moon',
+          badge: 'Live',
+        },
+        {
+          title: 'Globe Atmosphere',
+          description:
+            'Interactive dawn, day, dusk, and night atmosphere mode selector.',
+          href: '/examples/globe-atmosphere',
+          icon: 'lucide:sunrise',
+        },
       ],
     },
     {

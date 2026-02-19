@@ -20,6 +20,7 @@
   });
 
   const mapId = useId();
+  const { sunAzimuth, sunAltitude } = useSunPosition();
 
   const mapOptions = computed(() => ({
     container: `earthquake-globe-${mapId}`,
@@ -108,6 +109,9 @@ import {
   VControlNavigation,
 } from '@geoql/v-maplibre';
 
+// Sun position computed from current time + browser geolocation
+const { sunAzimuth, sunAltitude } = useSunPosition();
+
 const mapOptions = {
   style: {
     version: 8,
@@ -133,6 +137,9 @@ ${SCRIPT_END}
       galaxy-texture-url="/milkyway.jpg"
       :star-count="5000"
       :star-size="2.5"
+      :sun-enabled="true"
+      :sun-azimuth="sunAzimuth"
+      :sun-altitude="sunAltitude"
       before="satellite"
     />
     <VControlNavigation position="top-right" />
@@ -190,6 +197,9 @@ ${SCRIPT_END}
                 galaxy-texture-url="/milkyway.jpg"
                 :star-count="5000"
                 :star-size="2.5"
+                :sun-enabled="true"
+                :sun-azimuth="sunAzimuth"
+                :sun-altitude="sunAltitude"
                 before="satellite"
               />
               <VControlNavigation position="top-right" />
