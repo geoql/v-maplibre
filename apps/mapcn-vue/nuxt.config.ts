@@ -86,8 +86,29 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'cloudflare-pages',
+    prerender: {
+      crawlLinks: true,
+      routes: ['/'],
+    },
     cloudflare: {
       nodeCompat: true,
+    },
+    experimental: {
+      wasm: true,
+    },
+    wasm: {
+      esmImport: true,
+      lazy: true,
+    },
+    rollupConfig: {
+      output: {
+        generatedCode: {
+          constBindings: true,
+        },
+      },
+    },
+    replace: {
+      'process.stdout': 'undefined',
     },
   },
 
