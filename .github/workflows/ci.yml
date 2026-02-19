@@ -114,4 +114,4 @@ jobs:
       - name: Build mapcn-vue
         run: bun run build:mapcn
         env:
-          NUXT_PUBLIC_MAPSGURU_API_KEY: ${{ secrets.MAPSGURU_API_KEY }}
+          NUXT_PUBLIC_MAPSGURU_API_KEY: ${{ secrets.NUXT_PUBLIC_MAPSGURU_API_KEY }}
