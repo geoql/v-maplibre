@@ -1,6 +1,6 @@
 {
   "name": "@geoql/v-maplibre",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "private": false,
   "description": "Vue 3 components for MapLibre GL - reactive map components with full TypeScript support",
   "keywords": [
