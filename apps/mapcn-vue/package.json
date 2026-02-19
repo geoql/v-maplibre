@@ -63,7 +63,8 @@
     "tailwindcss-animate": "catalog:app:mapcn-vue",
     "three": "catalog:app:mapcn-vue",
     "tw-animate-css": "catalog:app:mapcn-vue",
-    "vue-sonner": "catalog:app:mapcn-vue"
+    "vue-sonner": "catalog:app:mapcn-vue",
+    "yoga-wasm-web": "catalog:app:mapcn-vue"
   },
   "devDependencies": {
     "@iconify-json/vscode-icons": "catalog:app:mapcn-vue",
