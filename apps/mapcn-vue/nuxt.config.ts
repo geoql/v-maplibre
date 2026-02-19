@@ -8,6 +8,7 @@ export default defineNuxtConfig({
     'shadcn-nuxt',
     '@vueuse/nuxt',
     'motion-v/nuxt',
+    'nuxt-og-image',
     [
       '@nuxtjs/plausible',
       {
@@ -66,6 +67,19 @@ export default defineNuxtConfig({
     public: {
       mapsguruApiKey: '',
     },
+  },
+
+  ogImage: {
+    defaults: {
+      component: 'MapcnDoc',
+    },
+  },
+
+  site: {
+    name: 'mapcn-vue',
+    description:
+      'Beautiful map components for Vue. Built on @geoql/v-maplibre, styled with Tailwind CSS, works with shadcn-vue.',
+    url: 'https://mapcn-vue.geoql.in',
   },
 
   compatibilityDate: '2025-01-06',

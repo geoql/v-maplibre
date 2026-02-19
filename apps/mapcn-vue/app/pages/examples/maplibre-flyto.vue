@@ -8,6 +8,13 @@
       'Smooth camera animations with flyTo, easeTo, and jumpTo methods.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'FlyTo Animation',
+    description:
+      'Smooth camera animations with flyTo, easeTo, and jumpTo methods.',
+    category: 'MapLibre',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
   const mapRef = ref<MaplibreMap | null>(null);

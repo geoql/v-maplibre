@@ -4,6 +4,13 @@
     description:
       'Traveling salesman route optimization with draggable waypoints using Valhalla.',
   });
+
+  defineOgImage('MapcnDoc', {
+    title: 'Multi-Stop Routes',
+    description:
+      'Traveling salesman route optimization with draggable waypoints using Valhalla.',
+    category: 'Valhalla',
+  });
 </script>
 
 <template>

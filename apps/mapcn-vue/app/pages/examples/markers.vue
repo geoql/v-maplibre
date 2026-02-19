@@ -12,6 +12,12 @@
     description: 'Interactive markers with popup information.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Markers & Popups',
+    description: 'Interactive markers with popup information.',
+    category: 'Examples',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

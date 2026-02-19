@@ -4,6 +4,12 @@
     description: 'A simple map with navigation controls.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Basic Map',
+    description: 'A simple map with navigation controls.',
+    category: 'Examples',
+  });
+
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 

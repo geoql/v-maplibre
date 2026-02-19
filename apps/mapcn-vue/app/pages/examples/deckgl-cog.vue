@@ -13,6 +13,13 @@
       'GPU-accelerated Cloud-Optimized GeoTIFF visualization with automatic reprojection.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'COG Layer (deck.gl-raster)',
+    description:
+      'GPU-accelerated Cloud-Optimized GeoTIFF visualization with automatic reprojection.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
   const mapInstance = shallowRef<Map | null>(null);

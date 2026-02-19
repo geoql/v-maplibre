@@ -10,6 +10,13 @@
       'Dynamic basemap/style switching between satellite, terrain, streets, and more.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Layer Switcher',
+    description:
+      'Dynamic basemap/style switching between satellite, terrain, streets, and more.',
+    category: 'MapLibre',
+  });
+
   const config = useRuntimeConfig();
   const mapsguruApiKey = config.public.mapsguruApiKey;
 

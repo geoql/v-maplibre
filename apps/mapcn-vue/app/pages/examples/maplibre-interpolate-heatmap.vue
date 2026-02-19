@@ -5,6 +5,13 @@
       'IDW interpolated heatmap showing real-time temperature data from OpenWeatherMap.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Interpolate Heatmap',
+    description:
+      'IDW interpolated heatmap showing real-time temperature data from OpenWeatherMap.',
+    category: 'MapLibre',
+  });
+
   const { isLoading, error, onMapLoaded } = useInterpolateHeatmap();
 
   const SCRIPT_END = '</' + 'script>';

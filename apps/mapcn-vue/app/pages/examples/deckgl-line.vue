@@ -11,6 +11,12 @@
     description: 'Render line segments between points.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Line Layer (deck.gl)',
+    description: 'Render line segments between points.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

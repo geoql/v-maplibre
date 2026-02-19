@@ -11,6 +11,12 @@
     description: '3D column/bar chart visualization on the map.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Column Layer (deck.gl)',
+    description: '3D column/bar chart visualization on the map.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

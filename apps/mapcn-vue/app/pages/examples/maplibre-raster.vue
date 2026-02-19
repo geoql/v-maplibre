@@ -11,6 +11,12 @@
     description: 'Display raster tile layers on the map.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Raster Layer',
+    description: 'Display raster tile layers on the map.',
+    category: 'MapLibre',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

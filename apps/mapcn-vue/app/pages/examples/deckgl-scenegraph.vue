@@ -16,6 +16,12 @@
     description: 'Render 3D glTF/GLB models on the map.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Scenegraph Layer (deck.gl)',
+    description: 'Render 3D glTF/GLB models on the map.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

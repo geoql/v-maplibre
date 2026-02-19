@@ -11,6 +11,12 @@
     description: '3D hexagonal binning aggregation visualization.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Hexagon Layer (deck.gl)',
+    description: '3D hexagonal binning aggregation visualization.',
+    category: 'deck.gl',
+  });
+
   const mapId = useId();
   const { mapStyle } = useMapStyle();
 

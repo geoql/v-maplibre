@@ -11,6 +11,12 @@
     description: 'Origin-destination arc visualization.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Arc Layer (deck.gl)',
+    description: 'Origin-destination arc visualization.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

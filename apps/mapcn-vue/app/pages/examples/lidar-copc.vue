@@ -12,6 +12,13 @@
       'Cloud-Optimized Point Cloud with dynamic viewport-based loading for large LiDAR datasets.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'COPC Streaming',
+    description:
+      'Cloud-Optimized Point Cloud with dynamic viewport-based loading for large LiDAR datasets.',
+    category: 'LiDAR',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

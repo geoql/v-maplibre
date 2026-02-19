@@ -12,6 +12,13 @@
       'Entwine Point Tile (EPT) streaming for large point cloud datasets with viewport-based loading.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'EPT Streaming',
+    description:
+      'Entwine Point Tile (EPT) streaming for large point cloud datasets with viewport-based loading.',
+    category: 'LiDAR',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

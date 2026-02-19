@@ -4,6 +4,13 @@
     description:
       'Live delivery simulation with ETA updates using Valhalla routing API.',
   });
+
+  defineOgImage('MapcnDoc', {
+    title: 'Delivery Tracking',
+    description:
+      'Live delivery simulation with ETA updates using Valhalla routing API.',
+    category: 'Valhalla',
+  });
 </script>
 
 <template>

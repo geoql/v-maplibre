@@ -11,6 +11,12 @@
     description: 'Render continuous paths with multiple vertices.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Path Layer (deck.gl)',
+    description: 'Render continuous paths with multiple vertices.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

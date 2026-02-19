@@ -8,6 +8,13 @@
       'Interactive sliders for adjusting map pitch (tilt) and bearing (rotation).',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Pitch & Bearing Control',
+    description:
+      'Interactive sliders for adjusting map pitch (tilt) and bearing (rotation).',
+    category: 'MapLibre',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
   const mapRef = ref<MaplibreMap | null>(null);

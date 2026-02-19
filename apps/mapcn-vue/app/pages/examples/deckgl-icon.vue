@@ -11,6 +11,12 @@
     description: 'Render icons/sprites at geographic locations.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Icon Layer (deck.gl)',
+    description: 'Render icons/sprites at geographic locations.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

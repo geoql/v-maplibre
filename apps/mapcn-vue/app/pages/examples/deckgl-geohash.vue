@@ -11,6 +11,12 @@
     description: 'Visualize data using Geohash spatial indexing.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Geohash Layer (deck.gl)',
+    description: 'Visualize data using Geohash spatial indexing.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

@@ -11,6 +11,12 @@
     description: '3D terrain visualization with elevation data.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Terrain Layer (deck.gl)',
+    description: '3D terrain visualization with elevation data.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

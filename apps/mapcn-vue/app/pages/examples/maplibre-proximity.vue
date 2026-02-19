@@ -21,6 +21,13 @@
       'Visualize distances and connections between multiple locations.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Proximity Map',
+    description:
+      'Visualize distances and connections between multiple locations.',
+    category: 'MapLibre',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
   const mapRef = ref<MaplibreMap | null>(null);

@@ -22,6 +22,13 @@
       'Visualize travel time or distance zones showing areas reachable from a point.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Isochrone Map',
+    description:
+      'Visualize travel time or distance zones showing areas reachable from a point.',
+    category: 'MapLibre',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
   const mapRef = ref<MaplibreMap | null>(null);

@@ -12,6 +12,12 @@
     description: 'Generic tile layer for loading raster or vector tiles.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Tile Layer (deck.gl)',
+    description: 'Generic tile layer for loading raster or vector tiles.',
+    category: 'deck.gl',
+  });
+
   const mapId = useId();
   const { mapStyle } = useMapStyle();
 

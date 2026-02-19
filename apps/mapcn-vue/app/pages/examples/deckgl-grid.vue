@@ -11,6 +11,12 @@
     description: '3D grid aggregation visualization.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Grid Layer (deck.gl)',
+    description: '3D grid aggregation visualization.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

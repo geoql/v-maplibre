@@ -11,6 +11,12 @@
     description: 'H3 hexagonal grid visualization.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'H3 Hexagon Layer (deck.gl)',
+    description: 'H3 hexagonal grid visualization.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

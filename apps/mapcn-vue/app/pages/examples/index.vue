@@ -2,6 +2,21 @@
   useSeoMeta({
     title: 'Examples - mapcn-vue',
     description: 'Interactive map examples built with mapcn-vue components.',
+    ogTitle: 'Examples - mapcn-vue',
+    ogDescription: 'Interactive map examples built with mapcn-vue components.',
+    ogType: 'website',
+    ogUrl: 'https://mapcn-vue.geoql.in/examples',
+    ogSiteName: 'mapcn-vue',
+    twitterCard: 'summary_large_image',
+    twitterTitle: 'Examples - mapcn-vue',
+    twitterDescription:
+      'Interactive map examples built with mapcn-vue components.',
+  });
+
+  defineOgImage('MapcnDoc', {
+    title: 'Examples',
+    description: 'Interactive map examples built with mapcn-vue components.',
+    category: 'Examples',
   });
 
   const { categories, totalExamples } = useExamplesData();

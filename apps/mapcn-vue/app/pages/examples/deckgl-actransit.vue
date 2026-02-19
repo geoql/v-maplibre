@@ -17,6 +17,12 @@
     description: 'Real-time AC Transit bus tracking with deck.gl layers.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'AC Transit Live (deck.gl)',
+    description: 'Real-time AC Transit bus tracking with deck.gl layers.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
   const panelOpen = ref(true);

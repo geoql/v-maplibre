@@ -23,6 +23,13 @@
       'Client-side COG mosaic of NAIP imagery from Microsoft Planetary Computer with multiple render modes.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'NAIP Mosaic',
+    description:
+      'Client-side COG mosaic of NAIP imagery from Microsoft Planetary Computer with multiple render modes.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
   const mapInstance = shallowRef<Map | null>(null);

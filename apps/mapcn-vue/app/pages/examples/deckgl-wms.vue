@@ -11,6 +11,12 @@
     description: 'Web Map Service (WMS) integration with deck.gl.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'WMS Layer (deck.gl)',
+    description: 'Web Map Service (WMS) integration with deck.gl.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

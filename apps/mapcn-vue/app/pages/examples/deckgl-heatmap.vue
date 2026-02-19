@@ -11,6 +11,12 @@
     description: 'Density heatmap visualization.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Heatmap (deck.gl)',
+    description: 'Density heatmap visualization.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

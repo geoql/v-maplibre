@@ -11,6 +11,12 @@
     description: 'Overlay images on specific map coordinates.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Image Layer',
+    description: 'Overlay images on specific map coordinates.',
+    category: 'MapLibre',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

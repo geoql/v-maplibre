@@ -11,6 +11,12 @@
     description: 'Render GeoJSON data on the map.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'GeoJSON Layer',
+    description: 'Render GeoJSON data on the map.',
+    category: 'Examples',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

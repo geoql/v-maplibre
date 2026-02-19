@@ -11,6 +11,12 @@
     description: 'Georeferenced image overlay on the map.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Bitmap Layer (deck.gl)',
+    description: 'Georeferenced image overlay on the map.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

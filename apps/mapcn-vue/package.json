@@ -53,6 +53,7 @@
     "maplibre-gl-lidar": "^0.8.0",
     "motion-v": "^1.9.0",
     "nuxt": "^4.2.2",
+    "nuxt-og-image": "^5.1.13",
     "proj4": "^2.20.2",
     "reka-ui": "^2.7.0",
     "shiki": "^3.21.0",

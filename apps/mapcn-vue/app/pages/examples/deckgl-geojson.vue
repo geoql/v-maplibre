@@ -11,6 +11,12 @@
     description: 'Render GeoJSON data with deck.gl for high performance.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'GeoJSON Layer (deck.gl)',
+    description: 'Render GeoJSON data with deck.gl for high performance.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

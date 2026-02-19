@@ -4,6 +4,12 @@
     description: 'Cluster large datasets of points.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Clustered Points',
+    description: 'Cluster large datasets of points.',
+    category: 'Examples',
+  });
+
   const {
     showPopup,
     popupCoordinates,

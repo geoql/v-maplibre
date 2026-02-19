@@ -13,6 +13,12 @@
     description: 'Live 3D globe showing worldwide seismic activity from USGS.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Earthquake Globe',
+    description: 'Live 3D globe showing worldwide seismic activity from USGS.',
+    category: 'Examples',
+  });
+
   const mapId = useId();
 
   const mapOptions = computed(() => ({

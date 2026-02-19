@@ -11,6 +11,12 @@
     description: 'Contour lines for density visualization.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Contour Layer (deck.gl)',
+    description: 'Contour lines for density visualization.',
+    category: 'deck.gl',
+  });
+
   const mapId = useId();
   const { mapStyle } = useMapStyle();
 

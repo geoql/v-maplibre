@@ -11,6 +11,12 @@
     description: '3D grid cell visualization for aggregated data.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Grid Cell Layer (deck.gl)',
+    description: '3D grid cell visualization for aggregated data.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

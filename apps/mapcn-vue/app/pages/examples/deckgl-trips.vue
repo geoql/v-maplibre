@@ -12,6 +12,12 @@
     description: 'Animated path visualization.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Trips Animation (deck.gl)',
+    description: 'Animated path visualization.',
+    category: 'deck.gl',
+  });
+
   const mapId = useId();
   const { mapStyle } = useMapStyle();
 

@@ -11,6 +11,12 @@
     description: 'Render point cloud data on the map.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Point Cloud Layer (deck.gl)',
+    description: 'Render point cloud data on the map.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

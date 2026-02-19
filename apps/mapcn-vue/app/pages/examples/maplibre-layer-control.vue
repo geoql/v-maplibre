@@ -16,6 +16,13 @@
       'Toggle layer visibility and opacity with VControlLayer for both MapLibre and deck.gl layers.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Layer Control',
+    description:
+      'Toggle layer visibility and opacity with VControlLayer for both MapLibre and deck.gl layers.',
+    category: 'MapLibre',
+  });
+
   const route = useRoute();
   const router = useRouter();
   const { mapStyle } = useMapStyle();

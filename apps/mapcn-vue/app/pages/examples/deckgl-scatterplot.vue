@@ -11,6 +11,12 @@
     description: 'High-performance scatterplot visualization.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Scatterplot (deck.gl)',
+    description: 'High-performance scatterplot visualization.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

@@ -13,6 +13,13 @@
       'Render NLCD Land Cover classification data with automatic colormap visualization.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Land Cover COG',
+    description:
+      'Render NLCD Land Cover classification data with automatic colormap visualization.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
   const mapInstance = shallowRef<Map | null>(null);

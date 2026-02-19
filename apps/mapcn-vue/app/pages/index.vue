@@ -3,6 +3,22 @@
     title: 'mapcn-vue - Beautiful maps for Vue',
     description:
       'Beautiful map components for Vue. Built on @geoql/v-maplibre, styled with Tailwind CSS, works with shadcn-vue.',
+    ogTitle: 'mapcn-vue - Beautiful maps for Vue',
+    ogDescription:
+      'Beautiful map components for Vue. Built on @geoql/v-maplibre, styled with Tailwind CSS, works with shadcn-vue.',
+    ogType: 'website',
+    ogUrl: 'https://mapcn-vue.geoql.in',
+    ogSiteName: 'mapcn-vue',
+    twitterCard: 'summary_large_image',
+    twitterTitle: 'mapcn-vue - Beautiful maps for Vue',
+    twitterDescription:
+      'Beautiful map components for Vue. Built on @geoql/v-maplibre, styled with Tailwind CSS, works with shadcn-vue.',
+  });
+
+  defineOgImage('MapcnDoc', {
+    title: 'Beautiful maps, made simple.',
+    description:
+      'Map components for Vue. Built on MapLibre, styled with Tailwind CSS.',
   });
 
   const copied = ref(false);

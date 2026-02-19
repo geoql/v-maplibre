@@ -4,6 +4,13 @@
     description:
       'A to B routing with turn-by-turn directions using Valhalla routing API.',
   });
+
+  defineOgImage('MapcnDoc', {
+    title: 'Route Planning',
+    description:
+      'A to B routing with turn-by-turn directions using Valhalla routing API.',
+    category: 'Valhalla',
+  });
 </script>
 
 <template>

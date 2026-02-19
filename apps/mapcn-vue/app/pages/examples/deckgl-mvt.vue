@@ -11,6 +11,12 @@
     description: 'Mapbox Vector Tiles visualization with deck.gl.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'MVT Layer (deck.gl)',
+    description: 'Mapbox Vector Tiles visualization with deck.gl.',
+    category: 'deck.gl',
+  });
+
   const mapId = useId();
   const { mapStyle } = useMapStyle();
 

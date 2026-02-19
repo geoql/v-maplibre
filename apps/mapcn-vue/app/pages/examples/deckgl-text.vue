@@ -11,6 +11,12 @@
     description: 'Render text labels at geographic locations.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Text Layer (deck.gl)',
+    description: 'Render text labels at geographic locations.',
+    category: 'deck.gl',
+  });
+
   const mapId = useId();
   const { mapStyle } = useMapStyle();
   const colorMode = useColorMode();

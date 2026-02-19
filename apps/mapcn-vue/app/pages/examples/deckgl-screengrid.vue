@@ -11,6 +11,12 @@
     description: 'Screen-space grid aggregation visualization.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Screen Grid Layer (deck.gl)',
+    description: 'Screen-space grid aggregation visualization.',
+    category: 'deck.gl',
+  });
+
   const mapId = useId();
   const { mapStyle } = useMapStyle();
 

@@ -11,6 +11,12 @@
     description: 'Visualize data using Google S2 geometry cells.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'S2 Layer (deck.gl)',
+    description: 'Visualize data using Google S2 geometry cells.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 

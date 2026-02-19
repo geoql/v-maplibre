@@ -11,6 +11,12 @@
     description: 'Render filled and stroked polygons.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Polygon Layer (deck.gl)',
+    description: 'Render filled and stroked polygons.',
+    category: 'deck.gl',
+  });
+
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 
