@@ -5,20 +5,20 @@
   import { injectStrict, MapKey } from '../../../../utils';
 
   interface Props {
-    /** Unique layer ID (default: 'starfield') */
     id?: string;
-    /** Number of individual point stars (default: 4000) */
     starCount?: number;
-    /** Base point size for stars (default: 2.0) */
     starSize?: number;
-    /** Hex color for point stars (default: 0xffffff) */
     starColor?: number;
-    /** URL to a panoramic galaxy/milky-way texture (equirectangular) */
     galaxyTextureUrl?: string;
-    /** Brightness multiplier for the galaxy texture (default: 0.35) */
     galaxyBrightness?: number;
-    /** Render this layer before the specified layer */
     before?: string;
+    sunEnabled?: boolean;
+    sunAzimuth?: number;
+    sunAltitude?: number;
+    sunSize?: number;
+    sunColor?: number;
+    sunIntensity?: number;
+    autoFadeStars?: boolean;
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -27,6 +27,13 @@
     starSize: 2.0,
     starColor: 0xffffff,
     galaxyBrightness: 0.35,
+    sunEnabled: false,
+    sunAzimuth: 180,
+    sunAltitude: 45,
+    sunSize: 100,
+    sunColor: 0xffeeaa,
+    sunIntensity: 1.5,
+    autoFadeStars: true,
   });
 
   const map = injectStrict(MapKey);
@@ -42,7 +49,6 @@
     if (!mapInstance || !mapInstance.isStyleLoaded()) return;
 
     try {
-      // Remove existing layer if present
       if (mapInstance.getLayer(props.id)) {
         mapInstance.removeLayer(props.id);
       }
@@ -54,6 +60,13 @@
         starColor: props.starColor,
         galaxyTextureUrl: props.galaxyTextureUrl,
         galaxyBrightness: props.galaxyBrightness,
+        sunEnabled: props.sunEnabled,
+        sunAzimuth: props.sunAzimuth,
+        sunAltitude: props.sunAltitude,
+        sunSize: props.sunSize,
+        sunColor: props.sunColor,
+        sunIntensity: props.sunIntensity,
+        autoFadeStars: props.autoFadeStars,
       });
 
       mapInstance.addLayer(layerInstance, props.before || undefined);
@@ -78,7 +91,6 @@
     });
   };
 
-  // Watch for map instance changes
   watch(
     map,
     (newMap) => {
@@ -92,14 +104,40 @@
     { immediate: true },
   );
 
-  // Watch loaded state
   watch(loaded, (value) => {
     if (value) {
       addLayer();
     }
   });
 
-  // Lifecycle cleanup
+  watch(
+    () => [props.sunAzimuth, props.sunAltitude],
+    ([az, alt]) => {
+      layerInstance?.setSunPosition(az as number, alt as number);
+    },
+  );
+
+  watch(
+    () => props.sunEnabled,
+    (enabled) => {
+      layerInstance?.setSunEnabled(enabled);
+    },
+  );
+
+  watch(
+    () => props.sunIntensity,
+    (intensity) => {
+      layerInstance?.setSunIntensity(intensity);
+    },
+  );
+
+  watch(
+    () => props.sunSize,
+    (size) => {
+      layerInstance?.setSunSize(size);
+    },
+  );
+
   onBeforeUnmount(() => {
     const mapInstance = getMapInstance();
     if (!mapInstance) return;
