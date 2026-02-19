@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.7.0](https://github.com/geoql/v-maplibre/compare/v1.6.1...v1.7.0) (2026-02-19)
+
+
+### Features
+
+* **v-maplibre:** add VLayerMaplibreStarfield component ([6ec3648](https://github.com/geoql/v-maplibre/commit/6ec364862bb941fa67743c44f4f57189b7a04f1b))
+
+
+### Miscellaneous
+
+* restructure bun workspace catalogs with named prefixes ([8626b1f](https://github.com/geoql/v-maplibre/commit/8626b1f7d7f0789893bc3222e7c5957450650e39))
+
 ## [1.6.1](https://github.com/geoql/v-maplibre/compare/v1.6.0...v1.6.1) (2026-02-02)
 
 
