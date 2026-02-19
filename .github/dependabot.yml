@@ -22,6 +22,15 @@ updates:
           - 'patch'
         patterns:
           - '*'
+      # Group major deck.gl ecosystem updates
+      deckgl-major:
+        update-types:
+          - 'major'
+        patterns:
+          - '@deck.gl/*'
+          - '@luma.gl/*'
+          - '@loaders.gl/*'
+          - '@math.gl/*'
       # Group major Vue ecosystem updates
       vue-major:
         update-types:
@@ -30,6 +39,29 @@ updates:
           - 'vue*'
           - '@vue/*'
           - '@vitejs/*'
+          - '@vueuse/*'
+      # Group major Nuxt ecosystem updates
+      nuxt-major:
+        update-types:
+          - 'major'
+        patterns:
+          - 'nuxt*'
+          - '@nuxt/*'
+          - '@nuxtjs/*'
+      # Group major Tailwind CSS updates
+      tailwind-major:
+        update-types:
+          - 'major'
+        patterns:
+          - 'tailwindcss*'
+          - '@tailwindcss/*'
+          - 'tailwind-merge'
+      # Group major MapLibre updates
+      maplibre-major:
+        update-types:
+          - 'major'
+        patterns:
+          - 'maplibre-gl*'
       # Group major testing updates
       testing-major:
         update-types:
@@ -44,10 +76,11 @@ updates:
         patterns:
           - 'vite'
           - 'typescript'
-          - 'prettier'
           - 'oxlint'
+          - 'oxfmt'
           - 'husky'
           - 'lint-staged'
+          - 'eslint*'
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: 'github-actions'
