@@ -11,6 +11,13 @@
       'Real-time sun tracking based on your location and current time.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Globe Day/Night',
+    description:
+      'Real-time sun tracking based on your location and current time.',
+    category: 'Examples',
+  });
+
   const mapId = useId();
   const { sunAzimuth, sunAltitude, skyMode } = useSunPosition();
 

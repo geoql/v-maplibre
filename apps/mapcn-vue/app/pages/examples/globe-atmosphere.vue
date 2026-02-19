@@ -13,6 +13,13 @@
       'Interactive dawn, day, dusk, and night atmosphere modes on a 3D globe.',
   });
 
+  defineOgImage('MapcnDoc', {
+    title: 'Globe Atmosphere',
+    description:
+      'Interactive dawn, day, dusk, and night atmosphere modes on a 3D globe.',
+    category: 'Examples',
+  });
+
   const mapId = useId();
   const {
     currentMode,
