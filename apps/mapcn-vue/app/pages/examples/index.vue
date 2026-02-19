@@ -5,7 +5,6 @@
     ogTitle: 'Examples - mapcn-vue',
     ogDescription: 'Interactive map examples built with mapcn-vue components.',
     ogType: 'website',
-    ogUrl: 'https://mapcn-vue.geoql.in/examples',
     ogSiteName: 'mapcn-vue',
     twitterCard: 'summary_large_image',
     twitterTitle: 'Examples - mapcn-vue',

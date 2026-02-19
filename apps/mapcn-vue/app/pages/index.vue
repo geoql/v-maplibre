@@ -7,7 +7,6 @@
     ogDescription:
       'Beautiful map components for Vue. Built on @geoql/v-maplibre, styled with Tailwind CSS, works with shadcn-vue.',
     ogType: 'website',
-    ogUrl: 'https://mapcn-vue.geoql.in',
     ogSiteName: 'mapcn-vue',
     twitterCard: 'summary_large_image',
     twitterTitle: 'mapcn-vue - Beautiful maps for Vue',

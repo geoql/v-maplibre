@@ -143,7 +143,6 @@
     ogTitle: page.value.title,
     ogDescription: page.value.description,
     ogType: 'website',
-    ogUrl: `https://mapcn-vue.geoql.in${route.path}`,
     ogSiteName: 'mapcn-vue',
     twitterCard: 'summary_large_image',
     twitterTitle: page.value.title,
