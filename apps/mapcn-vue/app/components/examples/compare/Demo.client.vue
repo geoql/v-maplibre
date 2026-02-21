@@ -1,7 +1,8 @@
 <script setup lang="ts">
-  import maplibregl from 'maplibre-gl';
+  import { VMap } from '@geoql/v-maplibre';
   import { Compare } from '@geoql/maplibre-gl-compare';
   import '@geoql/maplibre-gl-compare/style.css';
+  import type { Map } from 'maplibre-gl';
   import type { Orientation, Theme } from '~/types/compare';
 
   const props = defineProps<{
@@ -12,32 +13,46 @@
   const colorMode = useColorMode();
 
   const containerRef = ref<HTMLDivElement | null>(null);
-  const beforeRef = ref<HTMLDivElement | null>(null);
-  const afterRef = ref<HTMLDivElement | null>(null);
 
-  let beforeMap: maplibregl.Map | null = null;
-  let afterMap: maplibregl.Map | null = null;
+  let beforeMap: Map | null = null;
+  let afterMap: Map | null = null;
   let compare: Compare | null = null;
 
   const compareTheme = computed<Theme>(() =>
     colorMode.value === 'dark' ? 'dark' : 'light',
   );
 
-  function initCompare(): void {
-    if (
-      !containerRef.value ||
-      !beforeRef.value ||
-      !afterRef.value ||
-      !beforeMap ||
-      !afterMap
-    )
-      return;
+  const beforeMapOptions = computed(() => ({
+    container: 'compare-before',
+    style: mapsguruLightStyle.value,
+    center: [-74.006, 40.7128] as [number, number],
+    zoom: 12,
+  }));
 
+  const afterMapOptions = computed(() => ({
+    container: 'compare-after',
+    style: mapsguruDarkStyle.value,
+    center: [-74.006, 40.7128] as [number, number],
+    zoom: 12,
+  }));
+
+  function initCompare(): void {
+    if (!containerRef.value || !beforeMap || !afterMap) return;
     compare?.remove();
     compare = new Compare(beforeMap, afterMap, containerRef.value, {
       orientation: props.orientation,
       theme: compareTheme.value,
     });
+  }
+
+  function onBeforeMapLoaded(map: Map): void {
+    beforeMap = map;
+    if (afterMap) initCompare();
+  }
+
+  function onAfterMapLoaded(map: Map): void {
+    afterMap = map;
+    if (beforeMap) initCompare();
   }
 
   watch(
@@ -51,37 +66,8 @@
     compare?.setTheme(theme);
   });
 
-  onMounted(() => {
-    if (!beforeRef.value || !afterRef.value) return;
-
-    beforeMap = new maplibregl.Map({
-      container: beforeRef.value,
-      style: mapsguruLightStyle.value,
-      center: [-74.006, 40.7128],
-      zoom: 12,
-    });
-
-    afterMap = new maplibregl.Map({
-      container: afterRef.value,
-      style: mapsguruDarkStyle.value,
-      center: [-74.006, 40.7128],
-      zoom: 12,
-    });
-
-    let loadedCount = 0;
-    function onLoad(): void {
-      loadedCount++;
-      if (loadedCount === 2) initCompare();
-    }
-
-    beforeMap.on('load', onLoad);
-    afterMap.on('load', onLoad);
-  });
-
   onUnmounted(() => {
     compare?.remove();
-    beforeMap?.remove();
-    afterMap?.remove();
     compare = null;
     beforeMap = null;
     afterMap = null;
@@ -90,7 +76,15 @@
 
 <template>
   <div ref="containerRef" class="relative size-full overflow-hidden rounded-lg">
-    <div ref="beforeRef" class="absolute inset-0" ></div>
-    <div ref="afterRef" class="absolute inset-0" ></div>
+    <VMap
+      :options="beforeMapOptions"
+      class="absolute inset-0"
+      @loaded="onBeforeMapLoaded"
+    />
+    <VMap
+      :options="afterMapOptions"
+      class="absolute inset-0"
+      @loaded="onAfterMapLoaded"
+    />
   </div>
 </template>
