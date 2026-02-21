@@ -177,6 +177,14 @@ export function useExamplesData() {
           icon: 'lucide:list',
           badge: 'New',
         },
+        {
+          title: 'Map Compare',
+          description:
+            'Swipe-style comparison control to view two map styles side by side.',
+          href: '/examples/maplibre-compare',
+          icon: 'lucide:columns-2',
+          badge: 'New',
+        },
       ],
     },
     {
