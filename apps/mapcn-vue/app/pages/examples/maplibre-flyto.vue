@@ -114,22 +114,22 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { ref } from 'vue';
-import type { Map } from 'maplibre-gl';
-import { VMap, VControlNavigation, VMarker } from '@geoql/v-maplibre';
+  import { ref } from 'vue';
+  import type { Map } from 'maplibre-gl';
+  import { VMap, VControlNavigation, VMarker } from '@geoql/v-maplibre';
 
-const mapRef = ref<Map | null>(null);
-const cities = [
+  const mapRef = ref<Map | null>(null);
+  const cities = [
   { name: 'New York', coordinates: [-74.006, 40.7128], zoom: 12 },
   { name: 'Paris', coordinates: [2.3522, 48.8566], zoom: 13, pitch: 45, bearing: 30 },
   { name: 'Tokyo', coordinates: [139.6917, 35.6895], zoom: 11 },
-];
+  ];
 
-function handleMapLoad(map: Map) {
+  function handleMapLoad(map: Map) {
   mapRef.value = map;
-}
+  }
 
-function flyToCity(city) {
+  function flyToCity(city) {
   if (!mapRef.value) return;
   mapRef.value.flyTo({
     center: city.coordinates,
@@ -138,7 +138,7 @@ function flyToCity(city) {
     bearing: city.bearing ?? 0,
     duration: 2000,
   });
-}
+  }
 ${SCRIPT_END}
 
 <template>
@@ -164,26 +164,28 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-4">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">FlyTo Animation</h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
+          FlyTo Animation
+        </h1>
+        <p class="mt-0.5 text-sm text-muted-foreground">
           Smooth camera animations using flyTo, easeTo, and jumpTo methods.
           Click on cities to animate the camera with 3D perspective.
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
+      <ComponentDemo :code="codeExample" full-width class="h-125">
         <div class="min-w-0">
-          <div class="h-125 overflow-hidden rounded-lg border">
+          <div class="h-125 overflow-hidden">
             <ClientOnly>
               <VMap
                 :key="mapStyle"
@@ -209,7 +211,7 @@ ${SCRIPT_END}
             </ClientOnly>
           </div>
 
-          <div class="mt-4 rounded-lg border bg-card p-4">
+          <div class="mt-4 bg-card p-4">
             <div class="mb-4">
               <h3 class="mb-2 text-sm font-medium">Animation Type</h3>
               <div class="flex gap-2">
@@ -220,10 +222,7 @@ ${SCRIPT_END}
                   :class="[
                     animationType === type
                       ? 'border-primary bg-primary text-primary-foreground'
-                      : `
-                        border-border bg-background
-                        hover:bg-muted
-                      `,
+                      : `border-border bg-background hover:bg-muted`,
                   ]"
                   @click="animationType = type as 'flyTo' | 'easeTo' | 'jumpTo'"
                 >
@@ -256,10 +255,7 @@ ${SCRIPT_END}
                   :class="[
                     currentCity.name === city.name
                       ? 'border-primary bg-primary/10 text-primary'
-                      : `
-                        border-border bg-background
-                        hover:bg-muted
-                      `,
+                      : `border-border bg-background hover:bg-muted`,
                   ]"
                   @click="flyToCity(city)"
                 >
@@ -281,32 +277,24 @@ ${SCRIPT_END}
             </button>
           </div>
         </div>
+      </ComponentDemo>
 
-        <div class="min-w-0">
-          <CodeBlock
-            :code="codeExample"
-            lang="vue"
-            filename="FlyToAnimation.vue"
-          />
-
-          <div class="mt-4 rounded-lg border bg-muted/50 p-4">
-            <h3 class="mb-2 font-medium">Animation Types</h3>
-            <ul class="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <strong class="text-foreground">flyTo:</strong> Smooth curved
-                animation with zoom out/in effect
-              </li>
-              <li>
-                <strong class="text-foreground">easeTo:</strong> Linear
-                transition without zoom curve
-              </li>
-              <li>
-                <strong class="text-foreground">jumpTo:</strong> Instant
-                transition, no animation
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div class="mt-4 rounded-lg border bg-muted/50 p-4">
+        <h3 class="mb-2 font-medium">Animation Types</h3>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li>
+            <strong class="text-foreground">flyTo:</strong> Smooth curved
+            animation with zoom out/in effect
+          </li>
+          <li>
+            <strong class="text-foreground">easeTo:</strong> Linear transition
+            without zoom curve
+          </li>
+          <li>
+            <strong class="text-foreground">jumpTo:</strong> Instant transition,
+            no animation
+          </li>
+        </ul>
       </div>
     </div>
   </div>

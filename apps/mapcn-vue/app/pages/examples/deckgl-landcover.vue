@@ -74,7 +74,7 @@
   ${SCRIPT_END}
 
   <template>
-    <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
+    <VMap :options="mapOptions" class="h-125 w-full">
       <VControlNavigation position="top-right" />
       <VLayerDeckglCOG
         id="landcover-layer"
@@ -106,16 +106,18 @@
 <template>
   <div class="container max-w-screen-2xl py-10">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">Land Cover COG</h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
+          Land Cover COG
+        </h1>
+        <p class="mt-0.5 text-sm text-muted-foreground">
           Visualize NLCD Land Cover classification data with automatic colormap
           rendering. A 1.3GB dataset streamed efficiently via COG tiling.
         </p>
@@ -139,11 +141,9 @@
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
+      <ComponentDemo :code="codeExample" full-width class="h-125">
         <div class="space-y-4">
-          <div
-            class="h-125 min-w-0 overflow-hidden rounded-lg border border-border"
-          >
+          <div class="h-125 min-w-0 overflow-hidden">
             <ClientOnly>
               <VMap
                 :key="mapStyle"
@@ -163,7 +163,7 @@
           </div>
 
           <!-- Legend below the map -->
-          <div class="rounded-lg border border-border bg-card p-4">
+          <div class="bg-card p-4">
             <h3 class="mb-3 font-semibold">Land Cover Classes</h3>
             <div class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm">
               <div
@@ -179,50 +179,42 @@
             </div>
           </div>
         </div>
+      </ComponentDemo>
 
-        <div class="min-w-0">
-          <LazyCodeBlock
-            :code="codeExample"
-            lang="vue"
-            filename="LandCoverCOG.vue"
-          />
-
-          <div class="mt-6 rounded-lg border border-border bg-card p-4">
-            <h3 class="mb-3 font-semibold">Features</h3>
-            <ul
-              class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm text-muted-foreground"
-            >
-              <li class="flex items-center gap-2">
-                <Icon
-                  name="lucide:check"
-                  class="size-4 shrink-0 text-emerald-500"
-                />
-                Auto colormap
-              </li>
-              <li class="flex items-center gap-2">
-                <Icon
-                  name="lucide:check"
-                  class="size-4 shrink-0 text-emerald-500"
-                />
-                1.3GB streaming
-              </li>
-              <li class="flex items-center gap-2">
-                <Icon
-                  name="lucide:check"
-                  class="size-4 shrink-0 text-emerald-500"
-                />
-                Overview selection
-              </li>
-              <li class="flex items-center gap-2">
-                <Icon
-                  name="lucide:check"
-                  class="size-4 shrink-0 text-emerald-500"
-                />
-                GPU reprojection
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div class="mt-6 rounded-lg border border-border bg-card p-4">
+        <h3 class="mb-3 font-semibold">Features</h3>
+        <ul
+          class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm text-muted-foreground"
+        >
+          <li class="flex items-center gap-2">
+            <Icon
+              name="lucide:check"
+              class="size-4 shrink-0 text-emerald-500"
+            />
+            Auto colormap
+          </li>
+          <li class="flex items-center gap-2">
+            <Icon
+              name="lucide:check"
+              class="size-4 shrink-0 text-emerald-500"
+            />
+            1.3GB streaming
+          </li>
+          <li class="flex items-center gap-2">
+            <Icon
+              name="lucide:check"
+              class="size-4 shrink-0 text-emerald-500"
+            />
+            Overview selection
+          </li>
+          <li class="flex items-center gap-2">
+            <Icon
+              name="lucide:check"
+              class="size-4 shrink-0 text-emerald-500"
+            />
+            GPU reprojection
+          </li>
+        </ul>
       </div>
     </div>
   </div>

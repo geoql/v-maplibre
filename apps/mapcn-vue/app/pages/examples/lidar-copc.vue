@@ -46,30 +46,30 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VControlLidar, VControlNavigation } from '@geoql/v-maplibre';
-import 'maplibre-gl-lidar/style.css';
+  import { VMap, VControlLidar, VControlNavigation } from '@geoql/v-maplibre';
+  import 'maplibre-gl-lidar/style.css';
 
-const mapOptions = {
+  const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
   center: [-123.075, 44.05],
   zoom: 14,
   pitch: 60,
   maxPitch: 85,
-};
+  };
 
-const lidarOptions = {
+  const lidarOptions = {
   collapsed: false,
   pointSize: 2,
   colorScheme: 'elevation',
   pickable: true,
   autoZoom: true,
-};
+  };
 
-const copcUrl = 'https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz';
+  const copcUrl = 'https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz';
 ${SCRIPT_END}
 
 <template>
-  <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
+  <VMap :options="mapOptions" class="h-125 w-full">
     <VControlNavigation position="top-left" />
     <VControlLidar
       position="top-right"
@@ -82,28 +82,28 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-4">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">COPC Streaming</h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
+          COPC Streaming
+        </h1>
+        <p class="mt-0.5 text-sm text-muted-foreground">
           Cloud-Optimized Point Cloud (COPC) with dynamic viewport-based
           loading. Only points visible in the current view are loaded,
           dramatically reducing memory usage for large datasets.
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
-        <div
-          class="h-125 min-w-0 overflow-hidden rounded-lg border border-border"
-        >
+      <ComponentDemo :code="codeExample" full-width class="h-125">
+        <div class="h-125 min-w-0 overflow-hidden">
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="size-full">
               <VControlNavigation position="top-left" />
@@ -124,14 +124,52 @@ ${SCRIPT_END}
             </VMap>
           </ClientOnly>
         </div>
+      </ComponentDemo>
 
-        <div class="min-w-0">
-          <CodeBlock
-            :code="codeExample"
-            lang="vue"
-            filename="LidarViewer.vue"
-          />
-        </div>
+      <div class="mt-8 rounded-lg border bg-muted/30 p-6">
+        <h3 class="mb-3 text-lg font-semibold">About This Example</h3>
+        <p class="mb-4 text-muted-foreground">
+          This example uses
+          <a
+            href="https://github.com/opengeos/maplibre-gl-lidar"
+            target="_blank"
+            class="text-primary hover:underline"
+          >
+            maplibre-gl-lidar
+          </a>
+          by
+          <a
+            href="https://github.com/opengeos"
+            target="_blank"
+            class="text-primary hover:underline"
+          >
+            opengeos
+          </a>
+          to visualize Cloud-Optimized Point Cloud (COPC) LiDAR data with
+          dynamic viewport-based streaming.
+        </p>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              <strong>VControlLidar</strong> - Full-featured LiDAR viewer with
+              file upload, URL loading, and interactive controls
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              COPC streaming loads only visible points, reducing memory for
+              large datasets
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              Multiple color schemes: elevation, intensity, classification, RGB
+            </span>
+          </li>
+        </ul>
       </div>
 
       <div class="mt-6 space-y-4">

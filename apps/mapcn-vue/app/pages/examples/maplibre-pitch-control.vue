@@ -140,37 +140,37 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { ref } from 'vue';
-import type { Map } from 'maplibre-gl';
-import { VMap, VControlNavigation } from '@geoql/v-maplibre';
+  import { ref } from 'vue';
+  import type { Map } from 'maplibre-gl';
+  import { VMap, VControlNavigation } from '@geoql/v-maplibre';
 
-const mapRef = ref<Map | null>(null);
-const pitch = ref(45);
-const bearing = ref(0);
+  const mapRef = ref<Map | null>(null);
+  const pitch = ref(45);
+  const bearing = ref(0);
 
-function handleMapLoad(map: Map) {
+  function handleMapLoad(map: Map) {
   mapRef.value = map;
 
   // Sync controls with map gestures
   map.on('pitchend', () => pitch.value = Math.round(map.getPitch()));
   map.on('rotate', () => bearing.value = Math.round(map.getBearing()));
-}
+  }
 
-function updatePitch(value: number) {
+  function updatePitch(value: number) {
   pitch.value = value;
   mapRef.value?.easeTo({ pitch: value, duration: 300 });
-}
+  }
 
-function updateBearing(value: number) {
+  function updateBearing(value: number) {
   bearing.value = value;
   mapRef.value?.easeTo({ bearing: value, duration: 300 });
-}
+  }
 
-function resetView() {
+  function resetView() {
   pitch.value = 0;
   bearing.value = 0;
   mapRef.value?.easeTo({ pitch: 0, bearing: 0, duration: 500 });
-}
+  }
 ${SCRIPT_END}
 
 <template>
@@ -191,28 +191,28 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-4">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
           Pitch & Bearing Control
         </h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <p class="mt-0.5 text-sm text-muted-foreground">
           Adjust map pitch (tilt angle) and bearing (rotation) with interactive
           sliders. Create stunning 3D perspectives of your maps.
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
+      <ComponentDemo :code="codeExample" full-width class="h-125">
         <div class="min-w-0">
-          <div class="relative h-125 overflow-hidden rounded-lg border">
+          <div class="relative h-125 overflow-hidden">
             <ClientOnly>
               <VMap
                 :key="mapStyle"
@@ -234,7 +234,7 @@ ${SCRIPT_END}
           </div>
 
           <!-- Controls Panel -->
-          <div class="mt-4 rounded-lg border bg-card p-4">
+          <div class="mt-4 bg-card p-4">
             <!-- Preset buttons -->
             <div class="mb-4 flex gap-2">
               <button
@@ -327,37 +327,27 @@ ${SCRIPT_END}
             </div>
           </div>
         </div>
+      </ComponentDemo>
 
-        <div class="min-w-0">
-          <CodeBlock
-            :code="codeExample"
-            lang="vue"
-            filename="PitchControl.vue"
-          />
-
-          <div class="mt-4 rounded-lg border bg-muted/50 p-4">
-            <h3 class="mb-2 font-medium">Understanding Pitch & Bearing</h3>
-            <ul class="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <strong class="text-foreground">Pitch (0-85°):</strong> The
-                angle of the camera looking down at the map. 0° is straight
-                down, 85° is nearly horizontal.
-              </li>
-              <li>
-                <strong class="text-foreground"
-                  >Bearing (-180° to 180°):</strong
-                >
-                The rotation of the map around the center. 0° points north, 90°
-                points east.
-              </li>
-              <li>
-                <strong class="text-foreground">Gestures:</strong> The map also
-                responds to touch/mouse gestures - right-click + drag to rotate,
-                ctrl + drag to pitch.
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div class="mt-4 rounded-lg border bg-muted/50 p-4">
+        <h3 class="mb-2 font-medium">Understanding Pitch & Bearing</h3>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li>
+            <strong class="text-foreground">Pitch (0-85°):</strong> The angle of
+            the camera looking down at the map. 0° is straight down, 85° is
+            nearly horizontal.
+          </li>
+          <li>
+            <strong class="text-foreground">Bearing (-180° to 180°):</strong>
+            The rotation of the map around the center. 0° points north, 90°
+            points east.
+          </li>
+          <li>
+            <strong class="text-foreground">Gestures:</strong> The map also
+            responds to touch/mouse gestures - right-click + drag to rotate,
+            ctrl + drag to pitch.
+          </li>
+        </ul>
       </div>
     </div>
   </div>

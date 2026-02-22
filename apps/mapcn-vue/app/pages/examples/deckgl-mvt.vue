@@ -52,29 +52,29 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VLayerDeckglMVT, VControlNavigation } from '@geoql/v-maplibre';
+  import { VMap, VLayerDeckglMVT, VControlNavigation } from '@geoql/v-maplibre';
 
-const mapOptions = {
+  const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
   center: [-74.01, 40.707],
   zoom: 14,
   pitch: 45,
-};
+  };
 
-// CARTO vector tiles
-const MVT_URL = 'https://tiles.basemaps.cartocdn.com/vectortiles/carto.streets/v1/{z}/{x}/{y}.mvt';
+  // CARTO vector tiles
+  const MVT_URL = 'https://tiles.basemaps.cartocdn.com/vectortiles/carto.streets/v1/{z}/{x}/{y}.mvt';
 
-const getFillColor = (f) => {
+  const getFillColor = (f) => {
   const layer = f.properties?.layerName;
   if (layer === 'building') return [74, 80, 87, 200];
   if (layer === 'water') return [64, 164, 223, 200];
   if (layer === 'park') return [76, 175, 80, 200];
   return [200, 200, 200, 100];
-};
+  };
 ${SCRIPT_END}
 
 <template>
-  <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
+  <VMap :options="mapOptions" class="h-125 w-full">
     <VControlNavigation position="top-right" />
     <VLayerDeckglMVT
       id="mvt-layer"
@@ -91,18 +91,18 @@ ${SCRIPT_END}
 <template>
   <div class="container max-w-screen-2xl py-10">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
           MVT Layer (deck.gl)
         </h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <p class="mt-0.5 text-sm text-muted-foreground">
           Render Mapbox Vector Tiles with custom styling using deck.gl.
         </p>
         <p class="mt-2 text-sm text-muted-foreground">
@@ -116,10 +116,8 @@ ${SCRIPT_END}
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
-        <div
-          class="h-125 min-w-0 overflow-hidden rounded-lg border border-border"
-        >
+      <ComponentDemo :code="codeExample" full-width class="h-125">
+        <div class="h-125 min-w-0 overflow-hidden">
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="size-full">
               <VControlNavigation position="top-right" />
@@ -135,11 +133,7 @@ ${SCRIPT_END}
             </VMap>
           </ClientOnly>
         </div>
-
-        <div class="min-w-0">
-          <CodeBlock :code="codeExample" lang="vue" filename="MVTLayer.vue" />
-        </div>
-      </div>
+      </ComponentDemo>
     </div>
   </div>
 </template>

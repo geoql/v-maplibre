@@ -30,24 +30,24 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { ref } from 'vue';
-import { VMap, VLayerMaplibreCluster, VControlNavigation, VPopup } from '@geoql/v-maplibre';
-import type { Map, GeoJSONSource, LngLatLike } from 'maplibre-gl';
+  import { ref } from 'vue';
+  import { VMap, VLayerMaplibreCluster, VControlNavigation, VPopup } from '@geoql/v-maplibre';
+  import type { Map, GeoJSONSource, LngLatLike } from 'maplibre-gl';
 
-const mapOptions = {
+  const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
   center: [-74.006, 40.7128],
   zoom: 10,
-};
+  };
 
-const pointsData = { type: 'FeatureCollection', features: [...] };
+  const pointsData = { type: 'FeatureCollection', features: [...] };
 
-const mapRef = ref<Map | null>(null);
-const showPopup = ref(false);
-const popupCoordinates = ref<LngLatLike>([-74.006, 40.7128]);
-const popupContent = ref<{ id: number } | null>(null);
+  const mapRef = ref<Map | null>(null);
+  const showPopup = ref(false);
+  const popupCoordinates = ref<LngLatLike>([-74.006, 40.7128]);
+  const popupContent = ref<{ id: number } | null>(null);
 
-const handleClusterClick = async (event) => {
+  const handleClusterClick = async (event) => {
   if (!mapRef.value || !event.features[0]) return;
   const feature = event.features[0];
   const clusterId = feature.properties?.cluster_id;
@@ -58,15 +58,15 @@ const handleClusterClick = async (event) => {
     zoom: zoom ?? 14,
     duration: 500,
   });
-};
+  };
 
-const handlePointClick = (event) => {
+  const handlePointClick = (event) => {
   if (!event.features[0]) return;
   const feature = event.features[0];
   popupCoordinates.value = feature.geometry.coordinates;
   popupContent.value = { id: feature.properties?.id ?? 0 };
   showPopup.value = true;
-};
+  };
 ${SCRIPT_END}
 
 <template>
@@ -94,24 +94,26 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-4">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">Clustered Points</h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
+          Clustered Points
+        </h1>
+        <p class="mt-0.5 text-sm text-muted-foreground">
           Cluster large datasets of points for better performance. Click on a
           cluster to expand it, or zoom in to see individual points.
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
+      <ComponentDemo :code="codeExample" full-width class="h-125">
         <ExamplesClusterMapContainer
           :points-data="pointsData"
           :show-popup="showPopup"
@@ -122,11 +124,7 @@ ${SCRIPT_END}
           @point-click="handlePointClick"
           @close-popup="closePopup"
         />
-
-        <div class="min-w-0">
-          <CodeBlock :code="codeExample" lang="vue" filename="ClusterMap.vue" />
-        </div>
-      </div>
+      </ComponentDemo>
     </div>
   </div>
 </template>

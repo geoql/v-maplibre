@@ -225,26 +225,28 @@
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-4">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">Isochrone Map</h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
+          Isochrone Map
+        </h1>
+        <p class="mt-0.5 text-sm text-muted-foreground">
           Visualize travel time or distance zones showing areas reachable from a
           point. Drag the marker to change the origin.
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
+      <ComponentDemo :code="codeExample" full-width class="h-125">
         <div class="min-w-0">
-          <div class="relative h-125 overflow-hidden rounded-lg border">
+          <div class="relative h-125 overflow-hidden">
             <ClientOnly>
               <VMap
                 :key="mapStyle"
@@ -256,9 +258,9 @@
                 <VControlScale position="bottom-left" />
 
                 <!-- VLayerMaplibreIsochrone handles:
-                     - Color formatting (adds # prefix if needed)
-                     - Reversing feature order for proper stacking
-                     - Both fill and line layers -->
+                             - Color formatting (adds # prefix if needed)
+                             - Reversing feature order for proper stacking
+                             - Both fill and line layers -->
                 <VLayerMaplibreIsochrone
                   v-if="mapLoaded && isochroneData"
                   id="isochrone"
@@ -329,19 +331,16 @@
           </div>
 
           <!-- Controls -->
-          <div class="mt-4 rounded-lg border bg-card p-4">
+          <div class="mt-4 bg-card p-4">
             <div class="mb-4">
               <h3 class="mb-3 font-medium">Metric</h3>
               <div class="flex gap-2">
                 <button
-                  class="flex items-center gap-2 rounded-lg border px-4 py-2 text-sm transition-colors"
+                  class="flex items-center gap-2 px-4 py-2 text-sm transition-colors"
                   :class="[
                     selectedMetric === 'time'
                       ? 'border-primary bg-primary text-primary-foreground'
-                      : `
-                        border-border
-                        hover:bg-muted
-                      `,
+                      : `border-border hover:bg-muted`,
                   ]"
                   :disabled="isLoading"
                   @click="handleMetricChange('time')"
@@ -350,14 +349,11 @@
                   Time
                 </button>
                 <button
-                  class="flex items-center gap-2 rounded-lg border px-4 py-2 text-sm transition-colors"
+                  class="flex items-center gap-2 px-4 py-2 text-sm transition-colors"
                   :class="[
                     selectedMetric === 'distance'
                       ? 'border-primary bg-primary text-primary-foreground'
-                      : `
-                        border-border
-                        hover:bg-muted
-                      `,
+                      : `border-border hover:bg-muted`,
                   ]"
                   :disabled="isLoading"
                   @click="handleMetricChange('distance')"
@@ -374,14 +370,11 @@
                 <button
                   v-for="mode in transportModes"
                   :key="mode.value"
-                  class="flex items-center gap-2 rounded-lg border px-4 py-2 text-sm transition-colors"
+                  class="flex items-center gap-2 px-4 py-2 text-sm transition-colors"
                   :class="[
                     selectedMode === mode.value
                       ? 'border-primary bg-primary text-primary-foreground'
-                      : `
-                        border-border
-                        hover:bg-muted
-                      `,
+                      : `border-border hover:bg-muted`,
                   ]"
                   :disabled="isLoading"
                   @click="handleModeChange(mode.value)"
@@ -400,46 +393,38 @@
             </div>
           </div>
         </div>
+      </ComponentDemo>
 
-        <div class="min-w-0">
-          <CodeBlock
-            :code="codeExample"
-            lang="vue"
-            filename="IsochroneMap.vue"
-          />
+      <div class="mt-4 rounded-lg border bg-muted/50 p-4">
+        <h3 class="mb-2 font-medium">What is an Isochrone?</h3>
+        <p class="text-sm text-muted-foreground">
+          An isochrone shows all areas reachable from a point within a specific
+          time or distance. It accounts for actual road networks, one-way
+          streets, and travel mode. Unlike simple radius circles, isochrones
+          follow real roads for accurate coverage estimates.
+        </p>
+      </div>
 
-          <div class="mt-4 rounded-lg border bg-muted/50 p-4">
-            <h3 class="mb-2 font-medium">What is an Isochrone?</h3>
-            <p class="text-sm text-muted-foreground">
-              An isochrone shows all areas reachable from a point within a
-              specific time or distance. It accounts for actual road networks,
-              one-way streets, and travel mode. Unlike simple radius circles,
-              isochrones follow real roads for accurate coverage estimates.
-            </p>
-          </div>
-
-          <div class="mt-4 rounded-lg border bg-muted/50 p-4">
-            <h3 class="mb-2 font-medium">Use Cases</h3>
-            <ul class="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <strong class="text-foreground">Real Estate:</strong> Show
-                commute times to office locations for home buyers.
-              </li>
-              <li>
-                <strong class="text-foreground">Logistics:</strong> Determine
-                delivery coverage areas for warehouses.
-              </li>
-              <li>
-                <strong class="text-foreground">Urban Planning:</strong> Analyze
-                accessibility of public services and transit.
-              </li>
-              <li>
-                <strong class="text-foreground">Emergency Services:</strong>
-                Visualize response time coverage for fire/ambulance stations.
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div class="mt-4 rounded-lg border bg-muted/50 p-4">
+        <h3 class="mb-2 font-medium">Use Cases</h3>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li>
+            <strong class="text-foreground">Real Estate:</strong> Show commute
+            times to office locations for home buyers.
+          </li>
+          <li>
+            <strong class="text-foreground">Logistics:</strong> Determine
+            delivery coverage areas for warehouses.
+          </li>
+          <li>
+            <strong class="text-foreground">Urban Planning:</strong> Analyze
+            accessibility of public services and transit.
+          </li>
+          <li>
+            <strong class="text-foreground">Emergency Services:</strong>
+            Visualize response time coverage for fire/ambulance stations.
+          </li>
+        </ul>
       </div>
     </div>
   </div>

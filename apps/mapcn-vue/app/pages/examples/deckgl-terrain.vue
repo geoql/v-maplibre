@@ -38,24 +38,24 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VLayerDeckglTerrain, VControlNavigation } from '@geoql/v-maplibre';
+  import { VMap, VLayerDeckglTerrain, VControlNavigation } from '@geoql/v-maplibre';
 
-const mapOptions = {
+  const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
   center: [-122.4, 37.75],
   zoom: 11,
   pitch: 60,
   bearing: -17,
-};
+  };
 
-// Terrain elevation tiles (Mapzen Terrarium format)
-const TERRAIN_IMAGE = 'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png';
-// Surface texture tiles
-const SURFACE_IMAGE = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+  // Terrain elevation tiles (Mapzen Terrarium format)
+  const TERRAIN_IMAGE = 'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png';
+  // Surface texture tiles
+  const SURFACE_IMAGE = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
 ${SCRIPT_END}
 
 <template>
-  <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
+  <VMap :options="mapOptions" class="h-125 w-full">
     <VControlNavigation position="top-right" />
     <VLayerDeckglTerrain
       id="terrain-layer"
@@ -75,28 +75,26 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-4">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
           Terrain Layer (deck.gl)
         </h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <p class="mt-0.5 text-sm text-muted-foreground">
           3D terrain visualization using elevation data and surface textures.
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
-        <div
-          class="h-125 min-w-0 overflow-hidden rounded-lg border border-border"
-        >
+      <ComponentDemo :code="codeExample" full-width class="h-125">
+        <div class="h-125 min-w-0 overflow-hidden">
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="size-full">
               <VControlNavigation position="top-right" />
@@ -117,15 +115,7 @@ ${SCRIPT_END}
             </VMap>
           </ClientOnly>
         </div>
-
-        <div class="min-w-0">
-          <CodeBlock
-            :code="codeExample"
-            lang="vue"
-            filename="TerrainLayer.vue"
-          />
-        </div>
-      </div>
+      </ComponentDemo>
     </div>
   </div>
 </template>

@@ -60,14 +60,14 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VLayerMaplibreStarfield, VControlNavigation } from '@geoql/v-maplibre';
+  import { VMap, VLayerMaplibreStarfield, VControlNavigation } from '@geoql/v-maplibre';
 
-// Computes sun azimuth & altitude from current time + browser geolocation
-const { sunAzimuth, sunAltitude, skyMode } = useSunPosition();
+  // Computes sun azimuth & altitude from current time + browser geolocation
+  const { sunAzimuth, sunAltitude, skyMode } = useSunPosition();
 ${SCRIPT_END}
 
 <template>
-  <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
+  <VMap :options="mapOptions" class="h-125 w-full">
     <VLayerMaplibreStarfield
       galaxy-texture-url="/milkyway.jpg"
       :sun-enabled="true"
@@ -82,25 +82,27 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-4">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">Globe Day/Night</h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
+          Globe Day/Night
+        </h1>
+        <p class="mt-0.5 text-sm text-muted-foreground">
           Real-time sun tracking based on your location and current time. Stars
           fade automatically during daytime.
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
-        <div class="relative h-125 min-w-0 overflow-hidden rounded-lg bg-black">
+      <ComponentDemo :code="codeExample" full-width class="h-125">
+        <div class="relative h-125 min-w-0 overflow-hidden bg-black">
           <div
             class="absolute left-3 top-3 z-10 rounded-lg border border-white/10 bg-black/70 px-3 py-2 backdrop-blur-xl"
           >
@@ -131,14 +133,44 @@ ${SCRIPT_END}
             </template>
           </ClientOnly>
         </div>
+      </ComponentDemo>
 
-        <div class="min-w-0">
-          <CodeBlock
-            :code="codeExample"
-            lang="vue"
-            filename="GlobeDayNight.vue"
-          />
-        </div>
+      <div class="mt-8 rounded-lg border bg-muted/30 p-6">
+        <h3 class="mb-3 text-lg font-semibold">About This Example</h3>
+        <p class="mb-4 text-muted-foreground">
+          This example uses
+          <a
+            href="https://github.com/geoql/maplibre-gl-starfield"
+            target="_blank"
+            class="text-primary hover:underline"
+          >
+            @geoql/maplibre-gl-starfield
+          </a>
+          to render a real-time day/night cycle on a 3D globe. The sun position
+          is computed from the user's browser geolocation and current time.
+        </p>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              <strong>VLayerMaplibreStarfield</strong> - Stars and galaxy
+              visible during nighttime, automatically hidden during day
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              Real-time sun tracking using browser geolocation and current time
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              Automatic sky mode detection (dawn, day, dusk, night) based on sun
+              altitude
+            </span>
+          </li>
+        </ul>
       </div>
     </div>
   </div>

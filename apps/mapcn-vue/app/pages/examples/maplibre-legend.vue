@@ -338,16 +338,16 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const categoryCodeExample = `${SCRIPT_START}
-import { VMap, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
-import type { CategoryLegendItem } from '@geoql/v-maplibre';
+  import { VMap, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
-const legendItems: CategoryLegendItem[] = [
+  const legendItems: CategoryLegendItem[] = [
   { value: 'West', label: 'West', color: '#e41a1c', visible: true },
   { value: 'Southwest', label: 'Southwest', color: '#377eb8', visible: true },
   { value: 'Midwest', label: 'Midwest', color: '#4daf4a', visible: true },
   { value: 'Southeast', label: 'Southeast', color: '#984ea3', visible: true },
   { value: 'Northeast', label: 'Northeast', color: '#ff7f00', visible: true },
-];
+  ];
 ${SCRIPT_END}
 
 <template>
@@ -388,17 +388,17 @@ ${SCRIPT_END}
 </template>`;
 
   const gradientCodeExample = `${SCRIPT_START}
-import { VMap, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
-import type { GradientLegendItem } from '@geoql/v-maplibre';
+  import { VMap, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+  import type { GradientLegendItem } from '@geoql/v-maplibre';
 
-const gradientLegend: GradientLegendItem = {
+  const gradientLegend: GradientLegendItem = {
   min: 0,
   max: 500,
   colors: ['#ffffcc', '#a1dab4', '#41b6c4', '#2c7fb8', '#253494'],
   stops: [0, 100, 200, 350, 500],
   minLabel: '0',
   maxLabel: '500+ /mi²',
-};
+  };
 ${SCRIPT_END}
 
 <template>
@@ -436,14 +436,14 @@ ${SCRIPT_END}
 </template>`;
 
   const sizeCodeExample = `${SCRIPT_START}
-import { VMap, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
-import type { SizeLegendItem } from '@geoql/v-maplibre';
+  import { VMap, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+  import type { SizeLegendItem } from '@geoql/v-maplibre';
 
-const sizeLegendItems: SizeLegendItem[] = [
+  const sizeLegendItems: SizeLegendItem[] = [
   { value: 'large', label: '> 2.5M', size: 20 },
   { value: 'medium', label: '1.5M - 2.5M', size: 14 },
   { value: 'small', label: '< 1.5M', size: 8 },
-];
+  ];
 ${SCRIPT_END}
 
 <template>
@@ -492,7 +492,7 @@ ${SCRIPT_END}
     }
   });
 
-  const currentFilename = computed(() => {
+  const _currentFilename = computed(() => {
     switch (activeTab.value) {
       case 'gradient':
         return 'GradientLegend.vue';
@@ -505,20 +505,20 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-4">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
           Interactive Legend
         </h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <p class="mt-0.5 text-sm text-muted-foreground">
           VControlLegend supports category, gradient, and size legend types.
           Category legends support click-to-filter functionality.
         </p>
@@ -556,9 +556,9 @@ ${SCRIPT_END}
         </div>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
+      <ComponentDemo :code="currentCodeExample" full-width class="h-125">
         <div class="min-w-0">
-          <div class="relative h-125 overflow-hidden rounded-lg border">
+          <div class="relative h-125 overflow-hidden">
             <ClientOnly>
               <template v-if="isLoading && !isTabActive('size')">
                 <div class="flex h-full items-center justify-center bg-muted">
@@ -768,7 +768,7 @@ ${SCRIPT_END}
             </ClientOnly>
           </div>
 
-          <div class="mt-4 rounded-lg border bg-muted/50 p-4">
+          <div class="mt-4 bg-muted/50 p-4">
             <h3 class="mb-2 font-medium">
               {{
                 isTabActive('category')
@@ -824,71 +824,60 @@ ${SCRIPT_END}
             </ul>
           </div>
         </div>
+      </ComponentDemo>
 
-        <div class="min-w-0">
-          <CodeBlock
-            :key="activeTab"
-            :code="currentCodeExample"
-            lang="vue"
-            :filename="currentFilename"
-          />
-
-          <div class="mt-4 rounded-lg border bg-muted/50 p-4">
-            <h3 class="mb-2 font-medium">Legend Item Types</h3>
-            <div class="space-y-3 text-sm">
-              <div>
-                <code class="text-primary">CategoryLegendItem</code>
-                <p class="mt-1 text-muted-foreground">
-                  <code>{ value, label, color, visible?, count? }</code>
-                </p>
-              </div>
-              <div>
-                <code class="text-primary">GradientLegendItem</code>
-                <p class="mt-1 text-muted-foreground">
-                  <code>{ min, max, colors, stops, minLabel?, maxLabel? }</code>
-                </p>
-              </div>
-              <div>
-                <code class="text-primary">SizeLegendItem</code>
-                <p class="mt-1 text-muted-foreground">
-                  <code>{ value, label, size }</code>
-                </p>
-              </div>
-            </div>
+      <div class="mt-4 rounded-lg border bg-muted/50 p-4">
+        <h3 class="mb-2 font-medium">Legend Item Types</h3>
+        <div class="space-y-3 text-sm">
+          <div>
+            <code class="text-primary">CategoryLegendItem</code>
+            <p class="mt-1 text-muted-foreground">
+              <code>{ value, label, color, visible?, count? }</code>
+            </p>
           </div>
+          <div>
+            <code class="text-primary">GradientLegendItem</code>
+            <p class="mt-1 text-muted-foreground">
+              <code>{ min, max, colors, stops, minLabel?, maxLabel? }</code>
+            </p>
+          </div>
+          <div>
+            <code class="text-primary">SizeLegendItem</code>
+            <p class="mt-1 text-muted-foreground">
+              <code>{ value, label, size }</code>
+            </p>
+          </div>
+        </div>
+      </div>
 
-          <div class="mt-4 rounded-lg border bg-muted/50 p-4">
-            <h3 class="mb-2 font-medium">Common Props</h3>
-            <div class="space-y-1 text-sm">
-              <div class="flex justify-between">
-                <code class="text-primary">layer-ids</code>
-                <span class="text-muted-foreground">string[] (required)</span>
-              </div>
-              <div class="flex justify-between">
-                <code class="text-primary">type</code>
-                <span class="text-muted-foreground"
-                  >"category" | "gradient" | "size"</span
-                >
-              </div>
-              <div class="flex justify-between">
-                <code class="text-primary">items</code>
-                <span class="text-muted-foreground">LegendItem[]</span>
-              </div>
-              <div class="flex justify-between">
-                <code class="text-primary">title</code>
-                <span class="text-muted-foreground">string</span>
-              </div>
-              <div class="flex justify-between">
-                <code class="text-primary">interactive</code>
-                <span class="text-muted-foreground"
-                  >boolean (category only)</span
-                >
-              </div>
-              <div class="flex justify-between">
-                <code class="text-primary">auto-generate</code>
-                <span class="text-muted-foreground">boolean</span>
-              </div>
-            </div>
+      <div class="mt-4 rounded-lg border bg-muted/50 p-4">
+        <h3 class="mb-2 font-medium">Common Props</h3>
+        <div class="space-y-1 text-sm">
+          <div class="flex justify-between">
+            <code class="text-primary">layer-ids</code>
+            <span class="text-muted-foreground">string[] (required)</span>
+          </div>
+          <div class="flex justify-between">
+            <code class="text-primary">type</code>
+            <span class="text-muted-foreground"
+              >"category" | "gradient" | "size"</span
+            >
+          </div>
+          <div class="flex justify-between">
+            <code class="text-primary">items</code>
+            <span class="text-muted-foreground">LegendItem[]</span>
+          </div>
+          <div class="flex justify-between">
+            <code class="text-primary">title</code>
+            <span class="text-muted-foreground">string</span>
+          </div>
+          <div class="flex justify-between">
+            <code class="text-primary">interactive</code>
+            <span class="text-muted-foreground">boolean (category only)</span>
+          </div>
+          <div class="flex justify-between">
+            <code class="text-primary">auto-generate</code>
+            <span class="text-muted-foreground">boolean</span>
           </div>
         </div>
       </div>

@@ -102,27 +102,27 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { ref, computed } from 'vue';
-import { VMap, VControlNavigation } from '@geoql/v-maplibre';
+  import { ref, computed } from 'vue';
+  import { VMap, VControlNavigation } from '@geoql/v-maplibre';
 
-const mapStyles = [
+  const mapStyles = [
   { id: 'positron', name: 'Light', url: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json' },
   { id: 'dark-matter', name: 'Dark', url: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json' },
   { id: 'voyager', name: 'Voyager', url: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json' },
-];
+  ];
 
-const currentStyleId = ref('positron');
-const currentStyle = computed(() => mapStyles.find(s => s.id === currentStyleId.value));
+  const currentStyleId = ref('positron');
+  const currentStyle = computed(() => mapStyles.find(s => s.id === currentStyleId.value));
 
-const mapOptions = computed(() => ({
+  const mapOptions = computed(() => ({
   style: currentStyle.value.url,
   center: [-74.006, 40.7128],
   zoom: 12,
-}));
+  }));
 
-function selectStyle(style) {
+  function selectStyle(style) {
   currentStyleId.value = style.id;
-}
+  }
 ${SCRIPT_END}
 
 <template>
@@ -150,26 +150,28 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-4">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">Layer Switcher</h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
+          Layer Switcher
+        </h1>
+        <p class="mt-0.5 text-sm text-muted-foreground">
           Switch between different basemap styles dynamically. Includes light,
           dark, voyager, and other free map styles.
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
+      <ComponentDemo :code="codeExample" full-width class="h-125">
         <div class="min-w-0">
-          <div class="relative h-125 overflow-hidden rounded-lg border">
+          <div class="relative h-125 overflow-hidden">
             <ClientOnly>
               <VMap
                 :key="currentStyleId"
@@ -193,7 +195,7 @@ ${SCRIPT_END}
             <!-- Layer Switcher Control -->
             <div ref="dropdownRef" class="absolute bottom-4 left-4 z-10">
               <button
-                class="flex items-center gap-2 rounded-lg border bg-background/95 px-3 py-2 text-sm shadow-lg backdrop-blur-sm transition-colors hover:bg-muted"
+                class="flex items-center gap-2 rounded-lg bg-background/95 px-3 py-2 text-sm shadow-lg backdrop-blur-sm transition-colors hover:bg-muted"
                 @click="toggleDropdown"
               >
                 <Icon :name="currentStyle.icon" class="size-4" />
@@ -207,7 +209,7 @@ ${SCRIPT_END}
 
               <div
                 v-show="isDropdownOpen"
-                class="absolute bottom-full left-0 mb-2 w-48 rounded-lg border bg-background/95 p-1 shadow-lg backdrop-blur-sm"
+                class="absolute bottom-full left-0 mb-2 w-48 rounded-lg bg-background/95 p-1 shadow-lg backdrop-blur-sm"
               >
                 <button
                   v-for="style in mapStyles"
@@ -232,20 +234,17 @@ ${SCRIPT_END}
             </div>
           </div>
 
-          <div class="mt-4 rounded-lg border bg-card p-4">
+          <div class="mt-4 bg-card p-4">
             <h3 class="mb-3 font-medium">Quick Select</h3>
             <div class="grid grid-cols-3 gap-2">
               <button
                 v-for="style in mapStyles"
                 :key="style.id"
-                class="flex flex-col items-center gap-1 rounded-lg border p-3 text-sm transition-colors"
+                class="flex flex-col items-center gap-1 p-3 text-sm transition-colors"
                 :class="[
                   currentStyleId === style.id
                     ? 'border-primary bg-primary/10 text-primary'
-                    : `
-                      border-border
-                      hover:bg-muted
-                    `,
+                    : `border-border hover:bg-muted`,
                 ]"
                 @click="selectStyle(style)"
               >
@@ -255,41 +254,33 @@ ${SCRIPT_END}
             </div>
           </div>
         </div>
+      </ComponentDemo>
 
-        <div class="min-w-0">
-          <CodeBlock
-            :code="codeExample"
-            lang="vue"
-            filename="LayerSwitcher.vue"
-          />
+      <div class="mt-4 rounded-lg border bg-muted/50 p-4">
+        <h3 class="mb-2 font-medium">Available Styles</h3>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li>
+            <strong class="text-foreground">Light & Dark:</strong> Clean themes
+            for day/night modes
+          </li>
 
-          <div class="mt-4 rounded-lg border bg-muted/50 p-4">
-            <h3 class="mb-2 font-medium">Available Styles</h3>
-            <ul class="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <strong class="text-foreground">Light & Dark:</strong> Clean
-                themes for day/night modes
-              </li>
-
-              <li>
-                <strong class="text-foreground">Vintage:</strong> Warm,
-                paper-like aesthetic with muted tones
-              </li>
-              <li>
-                <strong class="text-foreground">Minimal:</strong> Clean, modern
-                with fewer labels
-              </li>
-              <li>
-                <strong class="text-foreground">Grayscale:</strong> Monochrome
-                map with shades of gray
-              </li>
-              <li>
-                <strong class="text-foreground">High Contrast:</strong>
-                Accessibility-focused with strong contrast
-              </li>
-            </ul>
-          </div>
-        </div>
+          <li>
+            <strong class="text-foreground">Vintage:</strong> Warm, paper-like
+            aesthetic with muted tones
+          </li>
+          <li>
+            <strong class="text-foreground">Minimal:</strong> Clean, modern with
+            fewer labels
+          </li>
+          <li>
+            <strong class="text-foreground">Grayscale:</strong> Monochrome map
+            with shades of gray
+          </li>
+          <li>
+            <strong class="text-foreground">High Contrast:</strong>
+            Accessibility-focused with strong contrast
+          </li>
+        </ul>
       </div>
     </div>
   </div>

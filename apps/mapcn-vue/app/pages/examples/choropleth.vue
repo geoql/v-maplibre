@@ -257,47 +257,47 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const maplibreCodeExample = `${SCRIPT_START}
-import { VMap, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+  import { VMap, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
 
-const statesGeoJson = ref(null);
+  const statesGeoJson = ref(null);
 
-// Unemployment rates by state (2024 data)
-const unemploymentByState = {
+  // Unemployment rates by state (2024 data)
+  const unemploymentByState = {
   'California': 5.3,
   'Texas': 4.1,
   'New York': 4.5,
   // ... more states
-};
+  };
 
-// Blues color scale for choropleth
-const colorScale = [
+  // Blues color scale for choropleth
+  const colorScale = [
   { threshold: 0, color: '#f7fbff' },
   { threshold: 2, color: '#deebf7' },
   { threshold: 4, color: '#9ecae1' },
   { threshold: 6, color: '#4292c6' },
   { threshold: 8, color: '#084594' },
-];
+  ];
 
-const legendItems = colorScale.map(item => ({
+  const legendItems = colorScale.map(item => ({
   value: item.threshold,
   label: item.threshold + '%+',
   color: item.color,
-}));
+  }));
 
-function getColorForRate(rate) {
+  function getColorForRate(rate) {
   for (let i = colorScale.length - 1; i >= 0; i--) {
     if (rate >= colorScale[i].threshold) return colorScale[i].color;
   }
   return colorScale[0].color;
-}
+  }
 
-// Fetch real US states GeoJSON and merge with data
-async function fetchStatesData() {
+  // Fetch real US states GeoJSON and merge with data
+  async function fetchStatesData() {
   const response = await fetch(
     'https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json'
   );
   const data = await response.json();
-  
+
   statesGeoJson.value = {
     type: 'FeatureCollection',
     features: data.features.map(feature => ({
@@ -309,7 +309,7 @@ async function fetchStatesData() {
       }
     }))
   };
-}
+  }
 ${SCRIPT_END}
 
 <template>
@@ -336,26 +336,26 @@ ${SCRIPT_END}
 </template>`;
 
   const deckglCodeExample = `${SCRIPT_START}
-import { VMap, VControlLegend, VLayerDeckglGeojson } from '@geoql/v-maplibre';
+  import { VMap, VControlLegend, VLayerDeckglGeojson } from '@geoql/v-maplibre';
 
-const statesGeoJson = ref(null);
-const hoveredState = ref(null);
+  const statesGeoJson = ref(null);
+  const hoveredState = ref(null);
 
-const colorScale = [
+  const colorScale = [
   { threshold: 0, color: '#f7fbff' },
   { threshold: 2, color: '#deebf7' },
   { threshold: 4, color: '#9ecae1' },
   { threshold: 6, color: '#4292c6' },
   { threshold: 8, color: '#084594' },
-];
+  ];
 
-const legendItems = colorScale.map(item => ({
+  const legendItems = colorScale.map(item => ({
   value: item.threshold,
   label: item.threshold + '%+',
   color: item.color,
-}));
+  }));
 
-function hexToRgba(hex, alpha = 200) {
+  function hexToRgba(hex, alpha = 200) {
   const result = /^#?([a-f\\d]{2})([a-f\\d]{2})([a-f\\d]{2})$/i.exec(hex);
   return result ? [
     parseInt(result[1], 16),
@@ -363,18 +363,18 @@ function hexToRgba(hex, alpha = 200) {
     parseInt(result[3], 16),
     alpha,
   ] : [247, 251, 255, alpha];
-}
+  }
 
-function getFillColor(feature) {
+  function getFillColor(feature) {
   const rate = feature.properties.rate;
   const color = getColorForRate(rate);
   const isHovered = hoveredState.value?.name === feature.properties.name;
   return hexToRgba(color, isHovered ? 255 : 200);
-}
+  }
 
-function handleHover(info) {
+  function handleHover(info) {
   hoveredState.value = info.object?.properties ?? null;
-}
+  }
 ${SCRIPT_END}
 
 <template>
@@ -404,18 +404,20 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-4">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">Choropleth Map</h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
+          Choropleth Map
+        </h1>
+        <p class="mt-0.5 text-sm text-muted-foreground">
           US unemployment rates by state. Compare MapLibre GL native and deck.gl
           implementations using real GeoJSON data.
         </p>
@@ -632,16 +634,10 @@ ${SCRIPT_END}
         </div>
 
         <div class="min-w-0">
-          <CodeBlock
+          <ComponentDemo
             :key="activeTab"
             :code="
               isTabActive('maplibre') ? maplibreCodeExample : deckglCodeExample
-            "
-            lang="vue"
-            :filename="
-              isTabActive('maplibre')
-                ? 'ChoroplethMapLibre.vue'
-                : 'ChoroplethDeckGL.vue'
             "
           />
 

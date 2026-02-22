@@ -135,10 +135,10 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const maplibreCodeExample = `${SCRIPT_START}
-import { VMap, VControlScale, VControlLayer, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+  import { VMap, VControlScale, VControlLayer, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
 
-const statesGeoJson = ref(null);
-// ... fetch GeoJSON data
+  const statesGeoJson = ref(null);
+  // ... fetch GeoJSON data
 ${SCRIPT_END}
 
 <template>
@@ -170,13 +170,13 @@ ${SCRIPT_END}
 </template>`;
 
   const deckglCodeExample = `${SCRIPT_START}
-import { VMap, VControlScale, VControlLayer, VLayerDeckglScatterplot } from '@geoql/v-maplibre';
+  import { VMap, VControlScale, VControlLayer, VLayerDeckglScatterplot } from '@geoql/v-maplibre';
 
-const scatterData = [
+  const scatterData = [
   { coordinates: [-122.4, 37.8], size: 50000 },
   { coordinates: [-118.2, 34.0], size: 80000 },
   // ... more points
-];
+  ];
 ${SCRIPT_END}
 
 <template>
@@ -207,15 +207,15 @@ ${SCRIPT_END}
 </template>`;
 
   const groupCodeExample = `${SCRIPT_START}
-import { VMap, VControlScale, VControlLayerGroup, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+  import { VMap, VControlScale, VControlLayerGroup, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
 
-const statesGeoJson = ref(null);
-// ... fetch GeoJSON data
+  const statesGeoJson = ref(null);
+  // ... fetch GeoJSON data
 
-const layerGroupConfig = [
+  const layerGroupConfig = [
   { id: 'states-fill', title: 'US States', visible: true, opacity: 0.5 },
   { id: 'states-outline', title: 'State Borders', visible: true, opacity: 1 },
-];
+  ];
 ${SCRIPT_END}
 
 <template>
@@ -258,18 +258,20 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-4">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">Layer Control</h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
+          Layer Control
+        </h1>
+        <p class="mt-0.5 text-sm text-muted-foreground">
           Toggle layer visibility and adjust opacity with VControlLayer. Works
           with both MapLibre native layers and deck.gl layers.
         </p>
@@ -310,9 +312,19 @@ ${SCRIPT_END}
         </div>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
+      <ComponentDemo
+        :code="
+          isTabActive('maplibre')
+            ? maplibreCodeExample
+            : isTabActive('deckgl')
+              ? deckglCodeExample
+              : groupCodeExample
+        "
+        full-width
+        class="h-125"
+      >
         <div class="min-w-0">
-          <div class="relative h-125 overflow-hidden rounded-lg border">
+          <div class="relative h-125 overflow-hidden">
             <ClientOnly>
               <template
                 v-if="
@@ -458,7 +470,7 @@ ${SCRIPT_END}
             </ClientOnly>
           </div>
 
-          <div class="mt-4 rounded-lg border bg-muted/50 p-4">
+          <div class="mt-4 bg-muted/50 p-4">
             <h3 class="mb-2 font-medium">
               {{
                 isTabActive('group')
@@ -508,97 +520,66 @@ ${SCRIPT_END}
             </ul>
           </div>
         </div>
+      </ComponentDemo>
 
-        <div class="min-w-0">
-          <CodeBlock
-            :key="activeTab"
-            :code="
-              isTabActive('maplibre')
-                ? maplibreCodeExample
-                : isTabActive('deckgl')
-                  ? deckglCodeExample
-                  : groupCodeExample
-            "
-            lang="vue"
-            :filename="
-              isTabActive('maplibre')
-                ? 'LayerControlMapLibre.vue'
-                : isTabActive('deckgl')
-                  ? 'LayerControlDeckGL.vue'
-                  : 'LayerControlGroup.vue'
-            "
-          />
-
-          <div class="mt-4 rounded-lg border bg-muted/50 p-4">
-            <h3 class="mb-2 font-medium">
-              {{
-                isTabActive('group')
-                  ? 'VControlLayerGroup Props'
-                  : 'VControlLayer Props'
-              }}
-            </h3>
-            <div v-if="!isTabActive('group')" class="space-y-1 text-sm">
-              <div class="flex justify-between">
-                <code class="text-primary">layer-id</code>
-                <span class="text-muted-foreground">string (required)</span>
-              </div>
-              <div class="flex justify-between">
-                <code class="text-primary">title</code>
-                <span class="text-muted-foreground"
-                  >string (default: "Layer Control")</span
-                >
-              </div>
-              <div class="flex justify-between">
-                <code class="text-primary">position</code>
-                <span class="text-muted-foreground"
-                  >"top-left" | "top-right" | ...</span
-                >
-              </div>
-              <div class="flex justify-between">
-                <code class="text-primary">visible</code>
-                <span class="text-muted-foreground"
-                  >boolean (default: true)</span
-                >
-              </div>
-              <div class="flex justify-between">
-                <code class="text-primary">opacity</code>
-                <span class="text-muted-foreground"
-                  >number 0-1 (default: 1)</span
-                >
-              </div>
-            </div>
-            <div v-else class="space-y-1 text-sm">
-              <div class="flex justify-between">
-                <code class="text-primary">layers</code>
-                <span class="text-muted-foreground"
-                  >LayerConfig[] (required)</span
-                >
-              </div>
-              <div class="flex justify-between">
-                <code class="text-primary">title</code>
-                <span class="text-muted-foreground"
-                  >string (default: "Layers")</span
-                >
-              </div>
-              <div class="flex justify-between">
-                <code class="text-primary">position</code>
-                <span class="text-muted-foreground"
-                  >"top-left" | "top-right" | ...</span
-                >
-              </div>
-              <div class="flex justify-between">
-                <code class="text-primary">collapsible</code>
-                <span class="text-muted-foreground"
-                  >boolean (default: true)</span
-                >
-              </div>
-              <div class="flex justify-between">
-                <code class="text-primary">collapsed</code>
-                <span class="text-muted-foreground"
-                  >boolean (default: false)</span
-                >
-              </div>
-            </div>
+      <div class="mt-4 rounded-lg border bg-muted/50 p-4">
+        <h3 class="mb-2 font-medium">
+          {{
+            isTabActive('group')
+              ? 'VControlLayerGroup Props'
+              : 'VControlLayer Props'
+          }}
+        </h3>
+        <div v-if="!isTabActive('group')" class="space-y-1 text-sm">
+          <div class="flex justify-between">
+            <code class="text-primary">layer-id</code>
+            <span class="text-muted-foreground">string (required)</span>
+          </div>
+          <div class="flex justify-between">
+            <code class="text-primary">title</code>
+            <span class="text-muted-foreground"
+              >string (default: "Layer Control")</span
+            >
+          </div>
+          <div class="flex justify-between">
+            <code class="text-primary">position</code>
+            <span class="text-muted-foreground"
+              >"top-left" | "top-right" | ...</span
+            >
+          </div>
+          <div class="flex justify-between">
+            <code class="text-primary">visible</code>
+            <span class="text-muted-foreground">boolean (default: true)</span>
+          </div>
+          <div class="flex justify-between">
+            <code class="text-primary">opacity</code>
+            <span class="text-muted-foreground">number 0-1 (default: 1)</span>
+          </div>
+        </div>
+        <div v-else class="space-y-1 text-sm">
+          <div class="flex justify-between">
+            <code class="text-primary">layers</code>
+            <span class="text-muted-foreground">LayerConfig[] (required)</span>
+          </div>
+          <div class="flex justify-between">
+            <code class="text-primary">title</code>
+            <span class="text-muted-foreground"
+              >string (default: "Layers")</span
+            >
+          </div>
+          <div class="flex justify-between">
+            <code class="text-primary">position</code>
+            <span class="text-muted-foreground"
+              >"top-left" | "top-right" | ...</span
+            >
+          </div>
+          <div class="flex justify-between">
+            <code class="text-primary">collapsible</code>
+            <span class="text-muted-foreground">boolean (default: true)</span>
+          </div>
+          <div class="flex justify-between">
+            <code class="text-primary">collapsed</code>
+            <span class="text-muted-foreground">boolean (default: false)</span>
           </div>
         </div>
       </div>

@@ -846,5 +846,76 @@ Before every code change:
 
 ---
 
-**Last Updated:** 2026-01-16
+## Laws of UX
+
+Design principles to follow when building components, pages, and interactions. Reference: [lawsofux.com](https://lawsofux.com/)
+
+| #   | Law                              | Description                                                                        |
+| --- | -------------------------------- | ---------------------------------------------------------------------------------- |
+| 1   | **Aesthetic-Usability Effect**   | Users perceive aesthetically pleasing design as more usable                        |
+| 2   | **Choice Overload**              | People get overwhelmed with too many options                                       |
+| 3   | **Chunking**                     | Break information into meaningful groups                                           |
+| 4   | **Cognitive Bias**               | Systematic errors in thinking influence perception and decisions                   |
+| 5   | **Cognitive Load**               | Minimize mental resources needed to interact with an interface                     |
+| 6   | **Doherty Threshold**            | Keep interactions under 400ms so neither user nor system waits                     |
+| 7   | **Fitts's Law**                  | Time to reach a target depends on distance and size — make targets large and close |
+| 8   | **Flow**                         | Design for full immersion — minimize interruptions                                 |
+| 9   | **Goal-Gradient Effect**         | Motivation increases with proximity to a goal — show progress                      |
+| 10  | **Hick's Law**                   | Decision time increases with number and complexity of choices                      |
+| 11  | **Jakob's Law**                  | Users prefer your site to work like sites they already know                        |
+| 12  | **Law of Common Region**         | Elements sharing a boundary are perceived as grouped                               |
+| 13  | **Law of Proximity**             | Objects near each other are perceived as grouped                                   |
+| 14  | **Law of Prägnanz**              | People interpret complex images as the simplest form possible                      |
+| 15  | **Law of Similarity**            | Similar elements are perceived as a group                                          |
+| 16  | **Law of Uniform Connectedness** | Visually connected elements are perceived as more related                          |
+| 17  | **Mental Model**                 | Users carry expectations about how systems work                                    |
+| 18  | **Miller's Law**                 | Working memory holds 7 (±2) items — chunk information accordingly                  |
+| 19  | **Occam's Razor**                | Prefer the simplest solution with fewest assumptions                               |
+| 20  | **Paradox of the Active User**   | Users never read manuals — they start using immediately                            |
+| 21  | **Pareto Principle**             | 80% of effects come from 20% of causes — focus on high-impact work                 |
+| 22  | **Parkinson's Law**              | Tasks expand to fill available time — set constraints                              |
+| 23  | **Peak-End Rule**                | Experiences are judged by their peak moment and ending                             |
+| 24  | **Postel's Law**                 | Be liberal in what you accept, conservative in what you send                       |
+| 25  | **Selective Attention**          | Users focus on stimuli related to their goals                                      |
+| 26  | **Serial Position Effect**       | First and last items in a series are remembered best                               |
+| 27  | **Tesler's Law**                 | Every system has irreducible complexity — put it in the right place                |
+| 28  | **Von Restorff Effect**          | The item that differs from the rest is most memorable                              |
+| 29  | **Working Memory**               | Cognitive system that temporarily holds info for tasks                             |
+| 30  | **Zeigarnik Effect**             | Incomplete tasks are remembered better than complete ones                          |
+
+---
+
+## Practical Typography
+
+From Butterick's Practical Typography — rules for the showcase site.
+
+### Core Rules
+
+| Rule             | Guideline                                           |
+| ---------------- | --------------------------------------------------- |
+| Body text size   | 19–22px for web, 1.4–1.6 line height                |
+| Line length      | 45–90 characters per line (2–3 lowercase alphabets) |
+| Quotes           | Curly quotes, not straight                          |
+| Sentence spacing | One space between sentences, not two                |
+| Underlining      | Only for links — never for emphasis                 |
+
+### Web Typography
+
+| Rule           | Guideline                                                  |
+| -------------- | ---------------------------------------------------------- |
+| Font families  | Max 2 families (system stack or well-chosen web fonts)     |
+| Minimum size   | Body text never smaller than 16px                          |
+| Alignment      | Left-align body text — avoid centered body text            |
+| Emphasis       | Bold or italic, not ALL CAPS                               |
+| Contrast       | Sufficient contrast between text and background            |
+| Headings       | Visually distinct via size/weight, not just bold           |
+| Paragraphs     | Use either indents OR space between — not both             |
+| Letter-spacing | Don't letterspace lowercase text                           |
+| Tables         | Minimize borders; numbers right-aligned, text left-aligned |
+| Color          | Use sparingly for semantics, not decoration                |
+| Max line width | ~80 characters                                             |
+
+---
+
+**Last Updated:** 2026-02-22
 **Maintainer:** GeoQL Team

@@ -56,6 +56,8 @@
 @layer base {
   * {
     @apply border-border;
+    scrollbar-color: var(--color-border) transparent;
+    scrollbar-width: thin;
   }
 
   body {
@@ -71,15 +73,33 @@ canvas {
 }
 
 .map-container {
-  @apply w-full h-full min-h-100 rounded-lg border border-border overflow-hidden;
+  @apply w-full h-full min-h-100 overflow-hidden;
 }
 
-pre {
-  @apply rounded-lg border border-border bg-card p-4 overflow-x-auto mb-6;
+/* Shiki code block styles */
+.shiki {
+  counter-reset: line;
 }
 
-code {
-  @apply font-mono text-sm;
+.shiki code {
+  display: grid;
+}
+
+.shiki .line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 1.5rem;
+  margin-right: 1.25rem;
+  text-align: right;
+  color: #52525b;
+  user-select: none;
+  font-size: 0.75rem;
+}
+
+.shiki,
+.shiki span {
+  background-color: transparent !important;
 }
 
 .prose {

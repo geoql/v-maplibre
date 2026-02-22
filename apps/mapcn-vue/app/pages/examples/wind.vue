@@ -49,26 +49,26 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { ref, onMounted } from 'vue';
-import {
+  import { ref, onMounted } from 'vue';
+  import {
   VMap,
   VControlNavigation,
   VLayerDeckglWindParticle,
   createWindDataFromOpenWeatherMap,
-} from '@geoql/v-maplibre';
-import type { WindDataPoint, ColorStop } from '@geoql/v-maplibre';
+  } from '@geoql/v-maplibre';
+  import type { WindDataPoint, ColorStop } from '@geoql/v-maplibre';
 
-const windData = ref<WindDataPoint[]>([]);
+  const windData = ref<WindDataPoint[]>([]);
 
-const colorRamp: ColorStop[] = [
+  const colorRamp: ColorStop[] = [
   [0.0, [59, 130, 189, 255]],
   [0.2, [171, 221, 164, 255]],
   [0.4, [254, 224, 139, 255]],
   [0.6, [244, 109, 67, 255]],
   [1.0, [213, 62, 79, 255]],
-];
+  ];
 
-const generateGridPoints = () => {
+  const generateGridPoints = () => {
   const points = [];
   for (let lat = -60; lat <= 60; lat += 20) {
     for (let lon = -180; lon < 180; lon += 30) {
@@ -76,9 +76,9 @@ const generateGridPoints = () => {
     }
   }
   return points;
-};
+  };
 
-const fetchWindData = async () => {
+  const fetchWindData = async () => {
   const gridPoints = generateGridPoints();
   const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY';
 
@@ -90,12 +90,12 @@ const fetchWindData = async () => {
   );
 
   windData.value = createWindDataFromOpenWeatherMap(responses);
-};
+  };
 
-onMounted(() => {
+  onMounted(() => {
   fetchWindData();
   setInterval(fetchWindData, 60 * 60 * 1000);
-});
+  });
 ${SCRIPT_END}
 
 <template>
@@ -116,18 +116,20 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-4">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">Wind Animation</h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
+          Wind Animation
+        </h1>
+        <p class="mt-0.5 text-sm text-muted-foreground">
           Real-time wind particle visualization using live data from
           OpenWeatherMap API. Particles flow based on actual wind speed and
           direction.
@@ -161,12 +163,45 @@ ${SCRIPT_END}
         />
       </div>
 
-      <div class="mt-8">
-        <CodeBlock
-          :code="codeExample"
-          lang="vue"
-          filename="WindAnimation.vue"
-        />
+      <ComponentDemo :code="codeExample" class="mt-8" />
+
+      <div class="mt-8 rounded-lg border bg-muted/30 p-6">
+        <h3 class="mb-3 text-lg font-semibold">About This Example</h3>
+        <p class="mb-4 text-muted-foreground">
+          This example demonstrates real-time wind particle visualization using
+          the wind layer integration in @geoql/v-maplibre. The underlying
+          rendering is powered by
+          <a
+            href="https://github.com/nicholasyager/maplibre-gl-wind"
+            target="_blank"
+            class="text-primary hover:underline"
+          >
+            maplibre-gl-wind
+          </a>
+          with live data from the OpenWeatherMap API.
+        </p>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              <strong>VLayerDeckglWindParticle</strong> - GPU-accelerated wind
+              particle animation with configurable density and speed
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              Live wind data from OpenWeatherMap with hourly auto-refresh
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              Configurable particle count, max age, speed factor, line width,
+              and color ramp
+            </span>
+          </li>
+        </ul>
       </div>
     </div>
   </div>

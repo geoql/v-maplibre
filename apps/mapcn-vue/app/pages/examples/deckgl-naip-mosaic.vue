@@ -173,16 +173,16 @@
 <template>
   <div class="container max-w-screen-2xl py-10">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">NAIP Mosaic</h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">NAIP Mosaic</h1>
+        <p class="mt-0.5 text-sm text-muted-foreground">
           Client-side mosaic of NAIP aerial imagery from Microsoft Planetary
           Computer. All rendering happens in the browser with no server
           required.
@@ -204,11 +204,9 @@
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
+      <ComponentDemo :code="codeExample" full-width class="h-125">
         <div class="space-y-4">
-          <div
-            class="relative h-125 min-w-0 overflow-hidden rounded-lg border border-border"
-          >
+          <div class="relative h-125 min-w-0 overflow-hidden">
             <ClientOnly>
               <VMap
                 :key="mapStyle"
@@ -232,7 +230,7 @@
 
             <!-- Toggle button - always visible -->
             <button
-              class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg border bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
+              class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
               :class="{
                 'bg-primary text-primary-foreground hover:bg-primary/90':
                   !panelOpen,
@@ -257,7 +255,7 @@
                 :animate="{ opacity: 1, x: 0, scale: 1 }"
                 :exit="{ opacity: 0, x: -20, scale: 0.95 }"
                 :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
-                class="absolute top-16 left-4 z-10 w-64 rounded-lg border bg-background/95 p-4 shadow-lg backdrop-blur-sm"
+                class="absolute top-16 left-4 z-10 w-64 rounded-lg bg-background/95 p-4 shadow-lg backdrop-blur-sm"
               >
                 <h3 class="mb-2 text-sm font-semibold">NAIP Mosaic</h3>
                 <p class="mb-3 text-xs text-muted-foreground">
@@ -318,64 +316,56 @@
             </AnimatePresence>
           </div>
         </div>
+      </ComponentDemo>
 
-        <div class="min-w-0">
-          <LazyCodeBlock
-            :code="codeExample"
-            lang="vue"
-            filename="NAIPMosaic.vue"
-          />
-
-          <div class="mt-6 rounded-lg border border-border bg-card p-4">
-            <h3 class="mb-3 font-semibold">Features</h3>
-            <ul
-              class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm text-muted-foreground"
-            >
-              <li class="flex items-center gap-2">
-                <Icon
-                  name="lucide:check"
-                  class="size-4 shrink-0 text-emerald-500"
-                />
-                Client-side mosaic
-              </li>
-              <li class="flex items-center gap-2">
-                <Icon
-                  name="lucide:check"
-                  class="size-4 shrink-0 text-emerald-500"
-                />
-                STAC API integration
-              </li>
-              <li class="flex items-center gap-2">
-                <Icon
-                  name="lucide:check"
-                  class="size-4 shrink-0 text-emerald-500"
-                />
-                4-band imagery (RGBN)
-              </li>
-              <li class="flex items-center gap-2">
-                <Icon
-                  name="lucide:check"
-                  class="size-4 shrink-0 text-emerald-500"
-                />
-                GPU-accelerated
-              </li>
-              <li class="flex items-center gap-2">
-                <Icon
-                  name="lucide:check"
-                  class="size-4 shrink-0 text-emerald-500"
-                />
-                No server required
-              </li>
-              <li class="flex items-center gap-2">
-                <Icon
-                  name="lucide:check"
-                  class="size-4 shrink-0 text-emerald-500"
-                />
-                Multi-render modes
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div class="mt-6 rounded-lg border border-border bg-card p-4">
+        <h3 class="mb-3 font-semibold">Features</h3>
+        <ul
+          class="grid grid-cols-2 gap-x-4 gap-y-1.5 text-sm text-muted-foreground"
+        >
+          <li class="flex items-center gap-2">
+            <Icon
+              name="lucide:check"
+              class="size-4 shrink-0 text-emerald-500"
+            />
+            Client-side mosaic
+          </li>
+          <li class="flex items-center gap-2">
+            <Icon
+              name="lucide:check"
+              class="size-4 shrink-0 text-emerald-500"
+            />
+            STAC API integration
+          </li>
+          <li class="flex items-center gap-2">
+            <Icon
+              name="lucide:check"
+              class="size-4 shrink-0 text-emerald-500"
+            />
+            4-band imagery (RGBN)
+          </li>
+          <li class="flex items-center gap-2">
+            <Icon
+              name="lucide:check"
+              class="size-4 shrink-0 text-emerald-500"
+            />
+            GPU-accelerated
+          </li>
+          <li class="flex items-center gap-2">
+            <Icon
+              name="lucide:check"
+              class="size-4 shrink-0 text-emerald-500"
+            />
+            No server required
+          </li>
+          <li class="flex items-center gap-2">
+            <Icon
+              name="lucide:check"
+              class="size-4 shrink-0 text-emerald-500"
+            />
+            Multi-render modes
+          </li>
+        </ul>
       </div>
     </div>
   </div>

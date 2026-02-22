@@ -191,15 +191,15 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VLayerDeckglPath, VLayerDeckglIcon } from '@geoql/v-maplibre';
+  import { VMap, VLayerDeckglPath, VLayerDeckglIcon } from '@geoql/v-maplibre';
 
-// Fetch real-time AC Transit data
-const { buses, trails } = useActransitData();
+  // Fetch real-time AC Transit data
+  const { buses, trails } = useActransitData();
 
-// Accessor functions for deck.gl layers
-const getBusPosition = (d) => d.coordinates;
-const getBusAngle = (d) => d.bearing; // Rotate icon based on heading
-const getTrailPath = (d) => d.path;
+  // Accessor functions for deck.gl layers
+  const getBusPosition = (d) => d.coordinates;
+  const getBusAngle = (d) => d.bearing; // Rotate icon based on heading
+  const getTrailPath = (d) => d.path;
 ${SCRIPT_END}
 
 <template>
@@ -227,29 +227,27 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-4">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
           AC Transit Live (deck.gl)
         </h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <p class="mt-0.5 text-sm text-muted-foreground">
           Real-time bus tracking for AC Transit (Oakland/East Bay) using deck.gl
           layers. Click a bus to see its trail, or zoom in to see stops.
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
-        <div
-          class="relative h-125 min-w-0 overflow-hidden rounded-lg border border-border"
-        >
+      <ComponentDemo :code="codeExample" full-width class="h-125">
+        <div class="relative h-125 min-w-0 overflow-hidden">
           <ClientOnly>
             <VMap
               :key="mapStyle"
@@ -330,7 +328,7 @@ ${SCRIPT_END}
                 :animate="{ opacity: 1, y: 0, scale: 1 }"
                 :exit="{ opacity: 0, y: 10, scale: 0.95 }"
                 :transition="{ type: 'spring', stiffness: 400, damping: 30 }"
-                class="absolute bottom-4 left-1/2 z-20 w-56 -translate-x-1/2 rounded-lg border bg-background/95 p-4 shadow-lg backdrop-blur-sm"
+                class="absolute bottom-4 left-1/2 z-20 w-56 -translate-x-1/2 rounded-lg bg-background/95 p-4 shadow-lg backdrop-blur-sm"
               >
                 <button
                   class="absolute top-2 right-2 flex size-6 items-center justify-center rounded-md hover:bg-muted"
@@ -369,7 +367,7 @@ ${SCRIPT_END}
                 :animate="{ opacity: 1, y: 0, scale: 1 }"
                 :exit="{ opacity: 0, y: 10, scale: 0.95 }"
                 :transition="{ type: 'spring', stiffness: 400, damping: 30 }"
-                class="absolute bottom-4 left-1/2 z-20 w-72 -translate-x-1/2 rounded-lg border bg-background/95 p-4 shadow-lg backdrop-blur-sm"
+                class="absolute bottom-4 left-1/2 z-20 w-72 -translate-x-1/2 rounded-lg bg-background/95 p-4 shadow-lg backdrop-blur-sm"
               >
                 <button
                   class="absolute top-2 right-2 flex size-6 items-center justify-center rounded-md hover:bg-muted"
@@ -393,7 +391,7 @@ ${SCRIPT_END}
 
             <!-- Toggle button - always visible -->
             <button
-              class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg border bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
+              class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
               :class="{
                 'bg-primary text-primary-foreground hover:bg-primary/90':
                   !panelOpen,
@@ -436,15 +434,7 @@ ${SCRIPT_END}
             </AnimatePresence>
           </ClientOnly>
         </div>
-
-        <div class="min-w-0">
-          <CodeBlock
-            :code="codeExample"
-            lang="vue"
-            filename="ACTransitLive.vue"
-          />
-        </div>
-      </div>
+      </ComponentDemo>
 
       <div class="mt-8 rounded-lg border bg-muted/30 p-6">
         <h3 class="mb-3 text-lg font-semibold">About This Example</h3>

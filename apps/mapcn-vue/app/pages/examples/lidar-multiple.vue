@@ -43,31 +43,31 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { ref } from 'vue';
-import { VMap, VControlLidar, VControlNavigation } from '@geoql/v-maplibre';
-import 'maplibre-gl-lidar/style.css';
+  import { ref } from 'vue';
+  import { VMap, VControlLidar, VControlNavigation } from '@geoql/v-maplibre';
+  import 'maplibre-gl-lidar/style.css';
 
-const lidarRef = ref<InstanceType<typeof VControlLidar> | null>(null);
+  const lidarRef = ref<InstanceType<typeof VControlLidar> | null>(null);
 
-const mapOptions = {
+  const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
   center: [-105.5, 39.75],
   zoom: 10,
   pitch: 45,
   maxPitch: 85,
-};
+  };
 
-const lidarOptions = {
+  const lidarOptions = {
   collapsed: false,
   pointSize: 2,
   colorScheme: 'elevation',
   pickable: true,
   autoZoom: false, // Don't auto-zoom to keep view stable
   pointBudget: 2_000_000,
-};
+  };
 
-// Sample datasets
-const datasets = [
+  // Sample datasets
+  const datasets = [
   {
     name: 'Autzen',
     url: 'https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz'
@@ -76,31 +76,31 @@ const datasets = [
     name: 'Red Rocks',
     url: 'https://na-c.entwine.io/red-rocks/ept.json'
   },
-];
+  ];
 
-// Load multiple datasets programmatically
-const loadDataset = async (url: string) => {
+  // Load multiple datasets programmatically
+  const loadDataset = async (url: string) => {
   await lidarRef.value?.loadPointCloud(url);
-};
+  };
 
-// Get list of loaded point clouds
-const getPointClouds = () => {
+  // Get list of loaded point clouds
+  const getPointClouds = () => {
   return lidarRef.value?.getPointClouds() || [];
-};
+  };
 
-// Unload a specific point cloud
-const unloadPointCloud = (id: string) => {
+  // Unload a specific point cloud
+  const unloadPointCloud = (id: string) => {
   lidarRef.value?.unloadPointCloud(id);
-};
+  };
 
-// Fly to a specific point cloud
-const flyTo = (id: string) => {
+  // Fly to a specific point cloud
+  const flyTo = (id: string) => {
   lidarRef.value?.flyToPointCloud(id);
-};
+  };
 ${SCRIPT_END}
 
 <template>
-  <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
+  <VMap :options="mapOptions" class="h-125 w-full">
     <VControlNavigation position="top-left" />
     <VControlLidar
       ref="lidarRef"
@@ -113,29 +113,27 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-4">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
           Multiple Point Clouds
         </h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <p class="mt-0.5 text-sm text-muted-foreground">
           Load and manage multiple LiDAR datasets in a single viewer. Each point
           cloud can be styled, toggled, and navigated independently.
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
-        <div
-          class="h-125 min-w-0 overflow-hidden rounded-lg border border-border"
-        >
+      <ComponentDemo :code="codeExample" full-width class="h-125">
+        <div class="h-125 min-w-0 overflow-hidden">
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="size-full">
               <VControlNavigation position="top-left" />
@@ -156,14 +154,44 @@ ${SCRIPT_END}
             </VMap>
           </ClientOnly>
         </div>
+      </ComponentDemo>
 
-        <div class="min-w-0">
-          <CodeBlock
-            :code="codeExample"
-            lang="vue"
-            filename="MultiplePointClouds.vue"
-          />
-        </div>
+      <div class="mt-8 rounded-lg border bg-muted/30 p-6">
+        <h3 class="mb-3 text-lg font-semibold">About This Example</h3>
+        <p class="mb-4 text-muted-foreground">
+          This example uses
+          <a
+            href="https://github.com/opengeos/maplibre-gl-lidar"
+            target="_blank"
+            class="text-primary hover:underline"
+          >
+            maplibre-gl-lidar
+          </a>
+          to load and manage multiple LiDAR datasets simultaneously. Each point
+          cloud can be independently styled, toggled, and navigated.
+        </p>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              <strong>VControlLidar</strong> - Multi-dataset management with
+              per-cloud controls
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              Programmatic API: loadPointCloud, unloadPointCloud,
+              flyToPointCloud
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              Supports both COPC (.copc.laz) and EPT (ept.json) formats
+            </span>
+          </li>
+        </ul>
       </div>
 
       <div class="mt-6 space-y-4">

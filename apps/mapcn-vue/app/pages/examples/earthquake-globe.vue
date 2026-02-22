@@ -102,17 +102,17 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import {
+  import {
   VMap,
   VLayerDeckglScatterplot,
   VLayerMaplibreStarfield,
   VControlNavigation,
-} from '@geoql/v-maplibre';
+  } from '@geoql/v-maplibre';
 
-// Sun position computed from current time + browser geolocation
-const { sunAzimuth, sunAltitude } = useSunPosition();
+  // Sun position computed from current time + browser geolocation
+  const { sunAzimuth, sunAltitude } = useSunPosition();
 
-const mapOptions = {
+  const mapOptions = {
   style: {
     version: 8,
     projection: { type: 'globe' },
@@ -128,11 +128,11 @@ const mapOptions = {
   },
   center: [0, 20],
   zoom: 1.5,
-};
+  };
 ${SCRIPT_END}
 
 <template>
-  <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
+  <VMap :options="mapOptions" class="h-125 w-full">
     <VLayerMaplibreStarfield
       galaxy-texture-url="/milkyway.jpg"
       :star-count="5000"
@@ -159,37 +159,27 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-4">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">Earthquake Globe</h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
+          Earthquake Globe
+        </h1>
+        <p class="mt-0.5 text-sm text-muted-foreground">
           Live 3D globe visualization of worldwide seismic activity from USGS.
           Click any point to see earthquake details.
         </p>
-        <p class="mt-2 text-sm text-muted-foreground">
-          <strong>Powered by:</strong>
-          <a
-            href="https://github.com/geoql/maplibre-gl-starfield"
-            class="text-primary hover:underline"
-            target="_blank"
-            >@geoql/maplibre-gl-starfield</a
-          >
-          - Three.js starfield skybox custom layer for MapLibre GL JS globe
-          projections.
-        </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
-        <!-- Globe with starfield -->
-        <div class="relative h-125 min-w-0 overflow-hidden rounded-lg bg-black">
+      <ComponentDemo :code="codeExample" full-width class="h-125">
+        <div class="relative h-125 min-w-0 overflow-hidden bg-black">
           <!-- Map with Three.js starfield custom layer -->
           <ClientOnly>
             <VMap :options="mapOptions" class="size-full">
@@ -299,14 +289,52 @@ ${SCRIPT_END}
             </div>
           </div>
         </div>
+      </ComponentDemo>
 
-        <div class="min-w-0">
-          <CodeBlock
-            :code="codeExample"
-            lang="vue"
-            filename="EarthquakeGlobe.vue"
-          />
-        </div>
+      <div class="mt-8 rounded-lg border bg-muted/30 p-6">
+        <h3 class="mb-3 text-lg font-semibold">About This Example</h3>
+        <p class="mb-4 text-muted-foreground">
+          This example combines
+          <a
+            href="https://github.com/geoql/maplibre-gl-starfield"
+            target="_blank"
+            class="text-primary hover:underline"
+          >
+            @geoql/maplibre-gl-starfield
+          </a>
+          with deck.gl scatterplot layers to visualize live earthquake data from
+          the
+          <a
+            href="https://earthquake.usgs.gov/earthquakes/feed/"
+            target="_blank"
+            class="text-primary hover:underline"
+          >
+            USGS Earthquake Hazards Program
+          </a>
+          on a 3D globe with a day/night cycle.
+        </p>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              <strong>VLayerMaplibreStarfield</strong> - Three.js starfield
+              skybox with real-time sun tracking for day/night cycle
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              <strong>VLayerDeckglScatterplot</strong> - Magnitude-scaled,
+              color-coded earthquake points with click-to-inspect details
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              Live USGS seismic data with magnitude and depth visualization
+            </span>
+          </li>
+        </ul>
       </div>
     </div>
   </div>

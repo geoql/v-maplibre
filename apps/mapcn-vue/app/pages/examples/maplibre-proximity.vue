@@ -252,24 +252,24 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VMarker, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+  import { VMap, VMarker, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
 
-const locations = [
+  const locations = [
   { id: '1', name: 'Warehouse', coordinates: [-73.95, 40.78] },
   { id: '2', name: 'Store A', coordinates: [-73.985, 40.758] },
   { id: '3', name: 'Store B', coordinates: [-73.945, 40.678] },
-];
+  ];
 
-const connections = ref([]);
+  const connections = ref([]);
 
-const distanceLegendItems = [
+  const distanceLegendItems = [
   { value: '< 5 km', label: '< 5 km', color: '#22c55e' },
   { value: '5-10 km', label: '5-10 km', color: '#eab308' },
   { value: '> 10 km', label: '> 10 km', color: '#ef4444' },
-];
+  ];
 
-// Fetch real road distances using Valhalla matrix API
-async function fetchDistances() {
+  // Fetch real road distances using Valhalla matrix API
+  async function fetchDistances() {
   const matrixLocations = locations.map(loc => ({
     lat: loc.coordinates[1],
     lon: loc.coordinates[0],
@@ -298,9 +298,9 @@ async function fetchDistances() {
     }
   }
   connections.value = conns.sort((a, b) => a.distance - b.distance);
-}
+  }
 
-onMounted(() => fetchDistances());
+  onMounted(() => fetchDistances());
 ${SCRIPT_END}
 
 <template>
@@ -330,26 +330,28 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-4">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">Proximity Map</h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
+          Proximity Map
+        </h1>
+        <p class="mt-0.5 text-sm text-muted-foreground">
           Visualize distances and connections between multiple locations. Useful
           for logistics planning, network analysis, and proximity calculations.
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
+      <ComponentDemo :code="codeExample" full-width class="h-125">
         <div class="min-w-0">
-          <div class="relative h-125 overflow-hidden rounded-lg border">
+          <div class="relative h-125 overflow-hidden">
             <ClientOnly>
               <VMap
                 :key="mapStyle"
@@ -407,7 +409,7 @@ ${SCRIPT_END}
           </div>
 
           <!-- Controls -->
-          <div class="mt-4 rounded-lg border bg-card p-4">
+          <div class="mt-4 bg-card p-4">
             <div class="mb-4 flex items-center justify-between">
               <h3 class="font-medium">Connections</h3>
               <label class="flex items-center gap-2 text-sm">
@@ -424,14 +426,11 @@ ${SCRIPT_END}
               <button
                 v-for="loc in locations"
                 :key="loc.id"
-                class="flex w-full items-center gap-3 rounded-lg border px-3 py-2 text-left text-sm transition-colors"
+                class="flex w-full items-center gap-3 px-3 py-2 text-left text-sm transition-colors"
                 :class="[
                   selectedLocation === loc.id
                     ? 'border-primary bg-primary/10'
-                    : `
-                      border-border
-                      hover:bg-muted
-                    `,
+                    : `border-border hover:bg-muted`,
                 ]"
                 @click="toggleLocation(loc.id)"
               >
@@ -450,7 +449,7 @@ ${SCRIPT_END}
           </div>
 
           <!-- Distance table -->
-          <div class="mt-4 rounded-lg border bg-card">
+          <div class="mt-4 bg-card">
             <div class="flex items-center justify-between border-b px-4 py-2">
               <h3 class="font-medium">
                 Road Distances ({{ visibleConnections.length }} connections)
@@ -502,37 +501,29 @@ ${SCRIPT_END}
             </div>
           </div>
         </div>
+      </ComponentDemo>
 
-        <div class="min-w-0">
-          <CodeBlock
-            :code="codeExample"
-            lang="vue"
-            filename="ProximityMap.vue"
-          />
-
-          <div class="mt-4 rounded-lg border bg-muted/50 p-4">
-            <h3 class="mb-2 font-medium">Use Cases</h3>
-            <ul class="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <strong class="text-foreground">Logistics:</strong> Find the
-                nearest warehouse to each customer for optimal delivery routing.
-              </li>
-              <li>
-                <strong class="text-foreground">Network Analysis:</strong>
-                Visualize connections between nodes in a distribution network.
-              </li>
-              <li>
-                <strong class="text-foreground">Site Selection:</strong> Analyze
-                distances when choosing new store or facility locations.
-              </li>
-              <li>
-                <strong class="text-foreground">Service Areas:</strong>
-                Determine which locations can serve which customers based on
-                distance thresholds.
-              </li>
-            </ul>
-          </div>
-        </div>
+      <div class="mt-4 rounded-lg border bg-muted/50 p-4">
+        <h3 class="mb-2 font-medium">Use Cases</h3>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li>
+            <strong class="text-foreground">Logistics:</strong> Find the nearest
+            warehouse to each customer for optimal delivery routing.
+          </li>
+          <li>
+            <strong class="text-foreground">Network Analysis:</strong>
+            Visualize connections between nodes in a distribution network.
+          </li>
+          <li>
+            <strong class="text-foreground">Site Selection:</strong> Analyze
+            distances when choosing new store or facility locations.
+          </li>
+          <li>
+            <strong class="text-foreground">Service Areas:</strong>
+            Determine which locations can serve which customers based on
+            distance thresholds.
+          </li>
+        </ul>
       </div>
     </div>
   </div>

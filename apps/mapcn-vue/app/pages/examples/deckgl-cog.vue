@@ -80,7 +80,7 @@
   ${SCRIPT_END}
 
   <template>
-    <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
+    <VMap :options="mapOptions" class="h-125 w-full">
       <VControlNavigation position="top-right" />
       <VLayerDeckglCOG
         id="cog-layer"
@@ -93,18 +93,18 @@
 <template>
   <div class="container max-w-screen-2xl py-10">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
           COG Layer (deck.gl-raster)
         </h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <p class="mt-0.5 text-sm text-muted-foreground">
           GPU-accelerated Cloud-Optimized GeoTIFF visualization with automatic
           reprojection and intelligent tile streaming.
         </p>
@@ -126,10 +126,8 @@
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
-        <div
-          class="h-125 min-w-0 overflow-hidden rounded-lg border border-border"
-        >
+      <ComponentDemo :code="codeExample" full-width class="h-125">
+        <div class="h-125 min-w-0 overflow-hidden">
           <ClientOnly>
             <VMap
               :key="mapStyle"
@@ -147,15 +145,7 @@
             </VMap>
           </ClientOnly>
         </div>
-
-        <div class="min-w-0">
-          <LazyCodeBlock
-            :code="codeExample"
-            lang="vue"
-            filename="COGLayer.vue"
-          />
-        </div>
-      </div>
+      </ComponentDemo>
 
       <div class="mt-8 rounded-lg border border-border bg-card p-4">
         <h3 class="mb-3 font-semibold">Features</h3>

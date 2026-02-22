@@ -105,23 +105,23 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VLayerDeckglH3Cluster, VControlNavigation } from '@geoql/v-maplibre';
+  import { VMap, VLayerDeckglH3Cluster, VControlNavigation } from '@geoql/v-maplibre';
 
-const mapOptions = {
+  const mapOptions = {
   style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
   center: [-122.4, 37.78],
   zoom: 10,
   pitch: 45,
-};
+  };
 
-interface H3ClusterData {
+  interface H3ClusterData {
   hexagons: string[];  // Array of H3 cell IDs forming a cluster
   value: number;
   name: string;
-}
+  }
 
-// H3 clusters - groups of contiguous hexagons
-const h3ClusterData: H3ClusterData[] = [
+  // H3 clusters - groups of contiguous hexagons
+  const h3ClusterData: H3ClusterData[] = [
   {
     name: 'Downtown Cluster',
     hexagons: [
@@ -132,18 +132,18 @@ const h3ClusterData: H3ClusterData[] = [
     value: 3000,
   },
   // ... more clusters
-];
+  ];
 
-const getHexagons = (d: unknown) => (d as H3ClusterData).hexagons;
-const getElevation = (d: unknown) => (d as H3ClusterData).value;
-const getFillColor = (d: unknown) => {
+  const getHexagons = (d: unknown) => (d as H3ClusterData).hexagons;
+  const getElevation = (d: unknown) => (d as H3ClusterData).value;
+  const getFillColor = (d: unknown) => {
   const t = ((d as H3ClusterData).value - 1000) / 2500;
   return [80 + 175 * t, 200 - 80 * t, 200 - 100 * t, 180];
-};
+  };
 ${SCRIPT_END}
 
 <template>
-  <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
+  <VMap :options="mapOptions" class="h-125 w-full">
     <VControlNavigation position="top-right" />
     <VLayerDeckglH3Cluster
       id="h3-cluster-layer"
@@ -160,29 +160,27 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-4">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
           H3 Cluster Layer (deck.gl)
         </h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <p class="mt-0.5 text-sm text-muted-foreground">
           Render grouped H3 hexagons as merged cluster regions with shared
           properties.
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
-        <div
-          class="h-125 min-w-0 overflow-hidden rounded-lg border border-border"
-        >
+      <ComponentDemo :code="codeExample" full-width class="h-125">
+        <div class="h-125 min-w-0 overflow-hidden">
           <ClientOnly>
             <VMap :key="mapStyle" :options="mapOptions" class="size-full">
               <VControlNavigation position="top-right" />
@@ -200,15 +198,7 @@ ${SCRIPT_END}
             </VMap>
           </ClientOnly>
         </div>
-
-        <div class="min-w-0">
-          <CodeBlock
-            :code="codeExample"
-            lang="vue"
-            filename="H3ClusterLayer.vue"
-          />
-        </div>
-      </div>
+      </ComponentDemo>
 
       <div class="mt-6 rounded-lg border border-border bg-muted/50 p-4">
         <p class="text-sm text-muted-foreground">

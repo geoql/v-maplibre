@@ -81,14 +81,14 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-import { VMap, VLayerMaplibreStarfield, VControlNavigation } from '@geoql/v-maplibre';
+  import { VMap, VLayerMaplibreStarfield, VControlNavigation } from '@geoql/v-maplibre';
 
-const { sunAzimuth, sunAltitude, setMode, modes, currentMode } =
+  const { sunAzimuth, sunAltitude, setMode, modes, currentMode } =
   useGlobeAtmosphere('night');
 ${SCRIPT_END}
 
 <template>
-  <VMap :options="mapOptions" class="h-125 w-full rounded-lg">
+  <VMap :options="mapOptions" class="h-125 w-full">
     <VLayerMaplibreStarfield
       galaxy-texture-url="/milkyway.jpg"
       :sun-enabled="true"
@@ -107,25 +107,27 @@ ${SCRIPT_END}
 </script>
 
 <template>
-  <div class="container max-w-screen-2xl overflow-x-hidden py-10">
+  <div class="container max-w-screen-2xl overflow-x-hidden py-4">
     <div class="mx-auto w-full max-w-300">
-      <div class="mb-8">
+      <div class="mb-4">
         <NuxtLink
           to="/examples"
-          class="inline-flex items-center text-sm text-muted-foreground hover:text-foreground"
+          class="inline-flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground"
         >
-          <Icon name="lucide:arrow-left" class="mr-2 size-4" />
-          Back to Examples
+          <Icon name="lucide:arrow-left" class="size-3.5" />
+          Examples
         </NuxtLink>
-        <h1 class="mt-4 text-3xl font-bold tracking-tight">Globe Atmosphere</h1>
-        <p class="mt-2 text-lg text-muted-foreground">
+        <h1 class="mt-1.5 text-xl font-semibold tracking-tight">
+          Globe Atmosphere
+        </h1>
+        <p class="mt-0.5 text-sm text-muted-foreground">
           Switch between dawn, day, dusk, and night modes with matching
           atmosphere and sun position.
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
-        <div class="relative h-125 min-w-0 overflow-hidden rounded-lg bg-black">
+      <ComponentDemo :code="codeExample" full-width class="h-125">
+        <div class="relative h-125 min-w-0 overflow-hidden bg-black">
           <div
             class="absolute left-3 top-3 z-10 flex gap-1.5 rounded-lg border border-white/10 bg-black/70 p-1.5 backdrop-blur-xl"
           >
@@ -162,14 +164,46 @@ ${SCRIPT_END}
             </template>
           </ClientOnly>
         </div>
+      </ComponentDemo>
 
-        <div class="min-w-0">
-          <CodeBlock
-            :code="codeExample"
-            lang="vue"
-            filename="GlobeAtmosphere.vue"
-          />
-        </div>
+      <div class="mt-8 rounded-lg border bg-muted/30 p-6">
+        <h3 class="mb-3 text-lg font-semibold">About This Example</h3>
+        <p class="mb-4 text-muted-foreground">
+          This example uses
+          <a
+            href="https://github.com/geoql/maplibre-gl-starfield"
+            target="_blank"
+            class="text-primary hover:underline"
+          >
+            @geoql/maplibre-gl-starfield
+          </a>
+          — a Three.js starfield and sun rendering custom layer for MapLibre GL
+          JS globe projections. The atmosphere effect is achieved through
+          MapLibre's built-in sky rendering combined with configurable sun
+          position.
+        </p>
+        <ul class="space-y-2 text-sm text-muted-foreground">
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              <strong>VLayerMaplibreStarfield</strong> - Three.js starfield
+              skybox with galaxy texture and configurable star density
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              Dawn, day, dusk, and night atmosphere presets with smooth
+              transitions
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              Sun position control via azimuth and altitude parameters
+            </span>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
