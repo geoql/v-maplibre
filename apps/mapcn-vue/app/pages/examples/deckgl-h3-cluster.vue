@@ -4,7 +4,9 @@
     VLayerDeckglH3Cluster,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { GradientLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'H3 Cluster Layer (deck.gl) - mapcn-vue Examples',
@@ -101,6 +103,16 @@
     ] as [number, number, number, number];
   };
 
+  const legendItems: GradientLegendItem[] = [
+    {
+      min: 1000,
+      max: 3500,
+      minLabel: 'Low',
+      maxLabel: 'High',
+      colors: ['#50c8c8', '#88b4a0', '#c8946e', '#ff7864'],
+    },
+  ];
+
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
@@ -185,6 +197,14 @@ ${SCRIPT_END}
             <VMap :key="mapStyle" :options="mapOptions" class="size-full">
               <VControlNavigation position="top-right" />
               <VControlScale position="bottom-left" />
+              <VControlLegend
+                :layer-ids="['h3-cluster-layer']"
+                position="bottom-left"
+                type="gradient"
+                title="Cluster Value"
+                :items="legendItems"
+                :interactive="false"
+              />
               <VLayerDeckglH3Cluster
                 id="h3-cluster-layer"
                 :data="h3ClusterData"

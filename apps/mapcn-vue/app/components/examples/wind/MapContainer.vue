@@ -1,10 +1,15 @@
 <script setup lang="ts">
-  import type { WindDataPoint, ColorStop } from '@geoql/v-maplibre';
+  import type {
+    WindDataPoint,
+    ColorStop,
+    GradientLegendItem,
+  } from '@geoql/v-maplibre';
   import type { Map } from 'maplibre-gl';
   import {
     VMap,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
     VLayerDeckglWindParticle,
   } from '@geoql/v-maplibre';
 
@@ -38,6 +43,16 @@
     zoom: 1.5,
     minZoom: 0,
   }));
+
+  const legendItems: GradientLegendItem[] = [
+    {
+      min: 0,
+      max: 30,
+      minLabel: '0 m/s',
+      maxLabel: '30 m/s',
+      colors: ['#3b82bd', '#abdda4', '#fee08b', '#f46d43', '#d53e4f'],
+    },
+  ];
 
   function handleMapLoad(map: Map): void {
     emit('load', map);
@@ -116,6 +131,14 @@
         />
         <VControlNavigation position="top-right" />
         <VControlScale position="bottom-left" />
+        <VControlLegend
+          :layer-ids="['wind-particles']"
+          position="bottom-left"
+          type="gradient"
+          title="Wind Speed"
+          :items="legendItems"
+          :interactive="false"
+        />
       </VMap>
     </ClientOnly>
   </div>

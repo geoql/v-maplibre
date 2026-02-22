@@ -4,7 +4,9 @@
     VLayerMaplibreGeojson,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'GeoJSON Layer - mapcn-vue Examples',
@@ -60,6 +62,11 @@
       },
     ],
   };
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'fill', label: 'Polygon Fill', color: '#10b981' },
+    { value: 'line', label: 'Line Feature', color: '#10b981' },
+  ];
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
@@ -122,6 +129,14 @@ ${SCRIPT_END}
             <VMap :key="mapStyle" :options="mapOptions" class="size-full">
               <VControlNavigation position="top-right" />
               <VControlScale position="bottom-left" />
+              <VControlLegend
+                :layer-ids="['geojson-fill', 'geojson-line']"
+                position="bottom-left"
+                type="category"
+                title="GeoJSON Features"
+                :items="legendItems"
+                :interactive="false"
+              />
               <VLayerMaplibreGeojson
                 source-id="geojson-source"
                 layer-id="geojson-fill"

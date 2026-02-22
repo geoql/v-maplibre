@@ -4,7 +4,9 @@
     VLayerDeckglPointCloud,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { GradientLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Point Cloud Layer (deck.gl) - mapcn-vue Examples',
@@ -77,6 +79,16 @@
 
   const pointCloudData = generatePointCloud();
 
+  const legendItems: GradientLegendItem[] = [
+    {
+      min: 0,
+      max: 70,
+      minLabel: 'Low',
+      maxLabel: 'High',
+      colors: ['#326496', '#beebf5'],
+    },
+  ];
+
   const getPosition = (d: unknown) => (d as PointData).position;
   const getColor = (d: unknown) => (d as PointData).color;
   const getNormal = (d: unknown) => (d as PointData).normal;
@@ -105,6 +117,16 @@
   { position: [-122.4, 37.78, 10], color: [255, 0, 0, 255], normal: [0, 0, 1] },
   { position: [-122.401, 37.781, 15], color: [0, 255, 0, 255], normal: [0, 0, 1] },
   // ... more points
+  ];
+
+  const legendItems: GradientLegendItem[] = [
+    {
+      min: 0,
+      max: 70,
+      minLabel: 'Low',
+      maxLabel: 'High',
+      colors: ['#326496', '#beebf5'],
+    },
   ];
 
   const getPosition = (d: unknown) => (d as PointData).position;
@@ -164,6 +186,13 @@ ${SCRIPT_END}
                 :point-size="3"
                 size-units="pixels"
                 :pickable="true"
+              />
+              <VControlLegend
+                position="bottom-left"
+                type="gradient"
+                title="Elevation"
+                :layer-ids="['point-cloud-layer']"
+                :items="legendItems"
               />
             </VMap>
           </ClientOnly>

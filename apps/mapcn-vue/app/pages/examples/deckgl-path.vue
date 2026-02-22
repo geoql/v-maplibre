@@ -4,7 +4,9 @@
     VLayerDeckglPath,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Path Layer (deck.gl) - mapcn-vue Examples',
@@ -70,6 +72,12 @@
     name: string;
     color: [number, number, number];
   }
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'route-a', label: 'Route A', color: '#ff8c00' },
+    { value: 'route-b', label: 'Route B', color: '#00c896' },
+    { value: 'route-c', label: 'Route C', color: '#8a2be2' },
+  ];
 
   const getPath = (d: unknown) => (d as PathData).path;
   const getColor = (d: unknown) => (d as PathData).color;
@@ -148,6 +156,13 @@ ${SCRIPT_END}
                 :width-min-pixels="2"
                 :pickable="true"
                 :rounded="true"
+              />
+              <VControlLegend
+                position="bottom-left"
+                type="category"
+                title="Routes"
+                :layer-ids="['path-layer']"
+                :items="legendItems"
               />
             </VMap>
           </ClientOnly>

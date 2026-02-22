@@ -4,7 +4,9 @@
     VLayerDeckglScatterplot,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Scatterplot (deck.gl) - mapcn-vue Examples',
@@ -50,6 +52,11 @@
   }
 
   const scatterData = generateData();
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'category-a', label: 'Category A', color: '#ff8c00' },
+    { value: 'category-b', label: 'Category B', color: '#00c896' },
+  ];
 
   const getPosition = (d: unknown) => (d as ScatterPoint).coordinates;
   const getRadius = (d: unknown) => (d as ScatterPoint).size;
@@ -126,6 +133,13 @@ ${SCRIPT_END}
                 :radius-min-pixels="3"
                 :radius-max-pixels="30"
                 :opacity="0.8"
+              />
+              <VControlLegend
+                position="bottom-left"
+                type="category"
+                title="Point Categories"
+                :layer-ids="['scatterplot']"
+                :items="legendItems"
               />
             </VMap>
           </ClientOnly>

@@ -5,7 +5,9 @@
     VMarker,
     VLayerMaplibreRoute,
     VControlNavigation,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import type { ValhallaResponse } from '~/types/route';
   import {
     useRouteUtils,
@@ -216,6 +218,13 @@
     fetchRoute();
   }
 
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'full', label: 'Full Route', color: '#94a3b8' },
+    { value: 'progress', label: 'Traveled Path', color: '#3b82f6' },
+    { value: 'start', label: 'Start', color: '#22c55e' },
+    { value: 'end', label: 'End', color: '#ef4444' },
+  ];
+
   watch(mapStyle, () => {
     mapLoaded.value = false;
   });
@@ -323,6 +332,14 @@ ${SCRIPT_END}
               @loaded="handleMapLoad"
             >
               <VControlNavigation position="top-right" />
+              <VControlLegend
+                :layer-ids="['playback-route-full', 'playback-route-progress']"
+                position="bottom-left"
+                type="category"
+                title="Trip Playback"
+                :items="legendItems"
+                :interactive="false"
+              />
 
               <template v-if="mapLoaded && routeCoordinates.length > 0">
                 <VLayerMaplibreRoute

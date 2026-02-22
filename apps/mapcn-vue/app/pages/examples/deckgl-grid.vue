@@ -4,7 +4,9 @@
     VLayerDeckglGrid,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { GradientLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Grid Layer (deck.gl) - mapcn-vue Examples',
@@ -61,6 +63,23 @@
   const gridData = generateData();
 
   const getPosition = (d: unknown) => (d as GridPoint).position;
+
+  const legendItems: GradientLegendItem[] = [
+    {
+      min: 0,
+      max: 100,
+      minLabel: 'Low',
+      maxLabel: 'High',
+      colors: [
+        '#ffffcc',
+        '#c7e9b4',
+        '#7fcdbb',
+        '#41b6c4',
+        '#2c7fb8',
+        '#253494',
+      ],
+    },
+  ];
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
@@ -150,6 +169,14 @@ ${SCRIPT_END}
                   [44, 127, 184],
                   [37, 52, 148],
                 ]"
+              />
+              <VControlLegend
+                :layer-ids="['grid-layer']"
+                position="bottom-left"
+                type="gradient"
+                title="Point Density"
+                :items="legendItems"
+                :interactive="false"
               />
             </VMap>
           </ClientOnly>

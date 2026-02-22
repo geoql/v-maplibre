@@ -4,8 +4,10 @@
     VLayerDeckglScatterplot,
     VLayerMaplibreStarfield,
     VControlNavigation,
+    VControlLegend,
   } from '@geoql/v-maplibre';
   import type { PickingInfo } from '@deck.gl/core';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import type { EarthquakeData } from '~/types/earthquake';
 
   useSeoMeta({
@@ -97,6 +99,13 @@
       ? `${Math.min((selectedQuake.value.depth / 700) * 100, 100)}%`
       : '0%',
   );
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'minor', label: 'Minor (< 3.0)', color: '#00c864' },
+    { value: 'moderate', label: 'Moderate (3.0–4.9)', color: '#ffc800' },
+    { value: 'strong', label: 'Strong (5.0–5.9)', color: '#ff7800' },
+    { value: 'major', label: 'Major (≥ 6.0)', color: '#ff1e1e' },
+  ];
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
@@ -193,6 +202,14 @@ ${SCRIPT_END}
                 before="satellite"
               />
               <VControlNavigation position="top-right" />
+              <VControlLegend
+                :layer-ids="['earthquakes']"
+                position="bottom-left"
+                type="category"
+                title="Magnitude"
+                :items="legendItems"
+                :interactive="false"
+              />
               <VLayerDeckglScatterplot
                 v-if="!loading && earthquakeData.length"
                 id="earthquakes"

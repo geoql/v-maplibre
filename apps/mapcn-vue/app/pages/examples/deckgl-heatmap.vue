@@ -4,7 +4,9 @@
     VLayerDeckglHeatmap,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { GradientLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Heatmap (deck.gl) - mapcn-vue Examples',
@@ -61,6 +63,23 @@
 
   const getPosition = (d: unknown) => (d as HeatmapPoint).coordinates;
   const getWeight = (d: unknown) => (d as HeatmapPoint).weight;
+
+  const legendItems: GradientLegendItem[] = [
+    {
+      min: 0,
+      max: 100,
+      minLabel: 'Low',
+      maxLabel: 'High',
+      colors: [
+        '#ffffb2',
+        '#fed976',
+        '#feb24c',
+        '#fd8d3c',
+        '#f03b20',
+        '#bd0026',
+      ],
+    },
+  ];
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
@@ -146,6 +165,14 @@ ${SCRIPT_END}
                   [240, 59, 32],
                   [189, 0, 38],
                 ]"
+              />
+              <VControlLegend
+                :layer-ids="['heatmap']"
+                position="bottom-left"
+                type="gradient"
+                title="Point Density"
+                :items="legendItems"
+                :interactive="false"
               />
             </VMap>
           </ClientOnly>

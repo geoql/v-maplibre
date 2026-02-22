@@ -4,7 +4,9 @@
     VLayerDeckglSimpleMesh,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import { CubeGeometry } from '@luma.gl/engine';
 
   useSeoMeta({
@@ -74,6 +76,14 @@
     },
   ];
 
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'cube-1', label: 'Cube 1', color: '#40c0ff' },
+    { value: 'cube-2', label: 'Cube 2', color: '#ff8c40' },
+    { value: 'cube-3', label: 'Cube 3', color: '#80ff80' },
+    { value: 'cube-4', label: 'Cube 4', color: '#ff4080' },
+    { value: 'cube-5', label: 'Cube 5', color: '#c080ff' },
+  ];
+
   const getPosition = (d: unknown) => (d as CubeData).position;
   const getColor = (d: unknown) => (d as CubeData).color;
   const getScale = (d: unknown) => {
@@ -109,6 +119,14 @@
   const cubes: CubeData[] = [
   { position: [-122.405, 37.785, 0], color: [64, 192, 255, 255], scale: 100, orientation: [0, 0, 0] },
   { position: [-122.4, 37.78, 0], color: [255, 140, 64, 255], scale: 150, orientation: [0, 0, 45] },
+  ];
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'cube-1', label: 'Cube 1', color: '#40c0ff' },
+    { value: 'cube-2', label: 'Cube 2', color: '#ff8c40' },
+    { value: 'cube-3', label: 'Cube 3', color: '#80ff80' },
+    { value: 'cube-4', label: 'Cube 4', color: '#ff4080' },
+    { value: 'cube-5', label: 'Cube 5', color: '#c080ff' },
   ];
 
   const getPosition = (d: unknown) => (d as CubeData).position;
@@ -171,6 +189,13 @@ ${SCRIPT_END}
                 :get-scale="getScale"
                 :get-orientation="getOrientation"
                 :pickable="true"
+              />
+              <VControlLegend
+                position="bottom-left"
+                type="category"
+                title="Mesh Instances"
+                :layer-ids="['simple-mesh-layer']"
+                :items="legendItems"
               />
             </VMap>
           </ClientOnly>

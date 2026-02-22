@@ -4,7 +4,9 @@
     VLayerDeckglGeohash,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { GradientLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Geohash Layer (deck.gl) - mapcn-vue Examples',
@@ -63,6 +65,16 @@
       180,
     ] as [number, number, number, number];
   };
+
+  const legendItems: GradientLegendItem[] = [
+    {
+      min: 500,
+      max: 2500,
+      minLabel: 'Low',
+      maxLabel: 'High',
+      colors: ['#64c8ff', '#b464ff', '#ff00c8'],
+    },
+  ];
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
@@ -144,6 +156,14 @@ ${SCRIPT_END}
             <VMap :key="mapStyle" :options="mapOptions" class="size-full">
               <VControlNavigation position="top-right" />
               <VControlScale position="bottom-left" />
+              <VControlLegend
+                :layer-ids="['geohash-layer']"
+                position="bottom-left"
+                type="gradient"
+                title="Cell Value"
+                :items="legendItems"
+                :interactive="false"
+              />
               <VLayerDeckglGeohash
                 id="geohash-layer"
                 :data="geohashData"

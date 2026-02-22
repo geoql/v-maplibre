@@ -4,7 +4,9 @@
     VLayerDeckglArc,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Arc Layer (deck.gl) - mapcn-vue Examples',
@@ -57,6 +59,11 @@
     target: [number, number];
     name: string;
   }
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'origin', label: 'Origin', color: '#00b4d8' },
+    { value: 'destination', label: 'Destination', color: '#72efdd' },
+  ];
 
   const getSourcePosition = (d: unknown) => (d as ArcData).source;
   const getTargetPosition = (d: unknown) => (d as ArcData).target;
@@ -137,6 +144,13 @@ ${SCRIPT_END}
                 :get-target-color="getTargetColor"
                 :get-width="2"
                 :great-circle="true"
+              />
+              <VControlLegend
+                position="bottom-left"
+                type="category"
+                title="Arc Endpoints"
+                :layer-ids="['arcs']"
+                :items="legendItems"
               />
             </VMap>
           </ClientOnly>

@@ -6,7 +6,9 @@
     VLayerDeckglScatterplot,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import type { Map as MapLibreMap } from 'maplibre-gl';
   import type { PickingInfo } from '@deck.gl/core';
   import type { BusFeature, BusTrail, StopFeature } from '~/types/actransit';
@@ -187,6 +189,13 @@
     selectStop(null);
   }
 
+  const transitLegendItems: CategoryLegendItem[] = [
+    { value: 'bus', label: 'Bus', color: '#ff4444' },
+    { value: 'trail', label: 'Bus Trail', color: '#6666ff' },
+    { value: 'selected', label: 'Selected Trail', color: '#ff6666' },
+    { value: 'stop', label: 'Bus Stop', color: '#4285f4' },
+  ];
+
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
@@ -300,6 +309,15 @@ ${SCRIPT_END}
                 :billboard="false"
                 :pickable="true"
                 @click="handleBusClick"
+              />
+
+              <VControlLegend
+                :layer-ids="['buses', 'bus-trails', 'stops']"
+                position="bottom-left"
+                type="category"
+                title="Transit Features"
+                :items="transitLegendItems"
+                :interactive="false"
               />
 
               <!-- Bus stops - visible at higher zoom levels -->

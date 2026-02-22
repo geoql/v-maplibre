@@ -4,7 +4,9 @@
     VLayerDeckglGridCell,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { GradientLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Grid Cell Layer (deck.gl) - mapcn-vue Examples',
@@ -67,6 +69,16 @@
       200,
     ] as [number, number, number, number];
   };
+
+  const legendItems: GradientLegendItem[] = [
+    {
+      min: 500,
+      max: 5500,
+      minLabel: 'Low',
+      maxLabel: 'High',
+      colors: ['#0064ff', '#5f32bf', '#7f3280', '#bf193f', '#ff0000'],
+    },
+  ];
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
@@ -156,6 +168,14 @@ ${SCRIPT_END}
                 :extruded="true"
                 :coverage="0.9"
                 :pickable="true"
+              />
+              <VControlLegend
+                :layer-ids="['grid-cell-layer']"
+                position="bottom-left"
+                type="gradient"
+                title="Cell Value"
+                :items="legendItems"
+                :interactive="false"
               />
             </VMap>
           </ClientOnly>

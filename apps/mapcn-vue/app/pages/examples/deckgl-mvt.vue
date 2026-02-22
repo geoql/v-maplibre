@@ -4,7 +4,9 @@
     VLayerDeckglMVT,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'MVT Layer (deck.gl) - mapcn-vue Examples',
@@ -47,6 +49,13 @@
   };
 
   const getLineColor = (): [number, number, number] => [255, 255, 255];
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'building', label: 'Building', color: '#4a5057' },
+    { value: 'water', label: 'Water', color: '#40a4df' },
+    { value: 'park', label: 'Park', color: '#4caf50' },
+    { value: 'other', label: 'Other', color: '#c8c8c8' },
+  ];
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
@@ -129,6 +138,14 @@ ${SCRIPT_END}
                 :get-line-color="getLineColor"
                 :line-width-min-pixels="1"
                 :pickable="true"
+              />
+              <VControlLegend
+                :layer-ids="['mvt-layer']"
+                position="bottom-left"
+                type="category"
+                title="Feature Type"
+                :items="legendItems"
+                :interactive="false"
               />
             </VMap>
           </ClientOnly>

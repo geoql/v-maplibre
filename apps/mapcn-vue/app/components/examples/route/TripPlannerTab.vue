@@ -7,7 +7,9 @@
     VLayerMaplibreRoute,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import type {
     TripData,
     TripActivityType,
@@ -104,6 +106,11 @@
   function getActivityBadgeClasses(type: TripActivityType) {
     return getActivityBadge(type);
   }
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'route', label: 'Driving Route', color: '#6366f1' },
+    { value: 'waypoint', label: 'Waypoint / Highlight', color: '#6366f1' },
+  ];
 
   tryOnMounted(() => {
     fetchTripPlan();
@@ -237,6 +244,14 @@ ${SCRIPT_END}
           >
             <VControlNavigation position="top-right" />
             <VControlScale position="bottom-left" />
+            <VControlLegend
+              :layer-ids="['trip-route']"
+              position="bottom-left"
+              type="category"
+              title="Trip Planner"
+              :items="legendItems"
+              :interactive="false"
+            />
 
             <VLayerMaplibreRoute
               v-if="tripRouteCoordinates.length > 0"

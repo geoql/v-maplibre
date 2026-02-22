@@ -4,7 +4,9 @@
     VLayerDeckglGreatCircle,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Great Circle Layer (deck.gl) - mapcn-vue Examples',
@@ -79,6 +81,16 @@
     name: string;
     color: [number, number, number];
   }
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'tokyo', label: 'Tokyo', color: '#ff8c00' },
+    { value: 'london', label: 'London', color: '#00c896' },
+    { value: 'paris', label: 'Paris', color: '#8a2be2' },
+    { value: 'beijing', label: 'Beijing', color: '#ff6347' },
+    { value: 'sydney', label: 'Sydney', color: '#1e90ff' },
+    { value: 'rio', label: 'Rio', color: '#ffd700' },
+    { value: 'delhi', label: 'Delhi', color: '#32cd32' },
+  ];
 
   const getSourcePosition = (d: unknown) => (d as GreatCircleData).from;
   const getTargetPosition = (d: unknown) => (d as GreatCircleData).to;
@@ -158,6 +170,13 @@ ${SCRIPT_END}
                 :get-target-color="getTargetColor"
                 :get-stroke-width="3"
                 :pickable="true"
+              />
+              <VControlLegend
+                position="bottom-left"
+                type="category"
+                title="Flight Destinations"
+                :layer-ids="['great-circle-layer']"
+                :items="legendItems"
               />
             </VMap>
           </ClientOnly>

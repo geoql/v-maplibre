@@ -4,7 +4,9 @@
     VLayerDeckglIcon,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Icon Layer (deck.gl) - mapcn-vue Examples',
@@ -49,6 +51,17 @@
     name: string;
     color: [number, number, number];
   }
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'loc-a', label: 'Location A', color: '#ff8c00' },
+    { value: 'loc-b', label: 'Location B', color: '#00c896' },
+    { value: 'loc-c', label: 'Location C', color: '#8a2be2' },
+    { value: 'loc-d', label: 'Location D', color: '#ff6347' },
+    { value: 'loc-e', label: 'Location E', color: '#1e90ff' },
+    { value: 'loc-f', label: 'Location F', color: '#ffd700' },
+    { value: 'loc-g', label: 'Location G', color: '#32cd32' },
+    { value: 'loc-h', label: 'Location H', color: '#ff1493' },
+  ];
 
   const getPosition = (d: unknown) => (d as IconData).position;
   const getColor = (d: unknown) => (d as IconData).color;
@@ -131,6 +144,13 @@ ${SCRIPT_END}
                 icon-atlas="https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png"
                 :icon-mapping="ICON_MAPPING"
                 :pickable="true"
+              />
+              <VControlLegend
+                position="bottom-left"
+                type="category"
+                title="Points of Interest"
+                :layer-ids="['icon-layer']"
+                :items="legendItems"
               />
             </VMap>
           </ClientOnly>

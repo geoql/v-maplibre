@@ -4,7 +4,9 @@
     VLayerDeckglContour,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { GradientLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Contour Layer (deck.gl) - mapcn-vue Examples',
@@ -87,6 +89,16 @@
     },
   ];
 
+  const legendItems: GradientLegendItem[] = [
+    {
+      min: 1,
+      max: 50,
+      minLabel: 'Low',
+      maxLabel: 'High',
+      colors: ['#ffffb2', '#fecc5c', '#fd8d3c', '#f03b20', '#bd0026'],
+    },
+  ];
+
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
@@ -160,6 +172,14 @@ ${SCRIPT_END}
                 :contours="contours"
                 :cell-size="50"
                 :pickable="true"
+              />
+              <VControlLegend
+                :layer-ids="['contour-layer']"
+                position="bottom-left"
+                type="gradient"
+                title="Point Density"
+                :items="legendItems"
+                :interactive="false"
               />
             </VMap>
           </ClientOnly>

@@ -4,7 +4,9 @@
     VLayerDeckglPolygon,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Polygon Layer (deck.gl) - mapcn-vue Examples',
@@ -73,6 +75,12 @@
     fillColor: [number, number, number, number];
     lineColor: [number, number, number];
   }
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'zone-a', label: 'Zone A', color: '#ff8c00' },
+    { value: 'zone-b', label: 'Zone B', color: '#00c896' },
+    { value: 'zone-c', label: 'Zone C', color: '#8a2be2' },
+  ];
 
   const getPolygon = (d: unknown) => (d as PolygonData).polygon;
   const getFillColor = (d: unknown) => (d as PolygonData).fillColor;
@@ -154,6 +162,13 @@ ${SCRIPT_END}
                 :stroked="true"
                 :filled="true"
                 :pickable="true"
+              />
+              <VControlLegend
+                position="bottom-left"
+                type="category"
+                title="Zones"
+                :layer-ids="['polygon-layer']"
+                :items="legendItems"
               />
             </VMap>
           </ClientOnly>

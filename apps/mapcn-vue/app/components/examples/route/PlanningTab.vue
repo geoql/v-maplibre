@@ -7,7 +7,9 @@
     VLayerMaplibreRoute,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import type { RouteOption, ValhallaResponse } from '~/types/route';
   import {
     useRouteUtils,
@@ -121,6 +123,13 @@
   function getRouteOpacity(index: number): number {
     return index === selectedRouteIndex.value ? 0 : 0.5;
   }
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'selected', label: 'Selected Route', color: '#6366f1' },
+    { value: 'alternate', label: 'Alternate Route', color: '#6b7280' },
+    { value: 'start', label: 'Origin (Rotterdam)', color: '#ef4444' },
+    { value: 'end', label: 'Destination (Amsterdam)', color: '#10b981' },
+  ];
 
   tryOnMounted(() => {
     fetchRoutePlanning();
@@ -266,6 +275,14 @@ ${SCRIPT_END}
           >
             <VControlNavigation position="top-right" />
             <VControlScale position="bottom-left" />
+            <VControlLegend
+              :layer-ids="['planning-route-selected']"
+              position="bottom-left"
+              type="category"
+              title="Route Planning"
+              :items="legendItems"
+              :interactive="false"
+            />
 
             <VLayerMaplibreRoute
               v-for="(route, index) in routeOptions"

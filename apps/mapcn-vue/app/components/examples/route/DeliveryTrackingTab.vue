@@ -7,7 +7,9 @@
     VLayerMaplibreRoute,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import type { DeliveryRouteInfo, ValhallaResponse } from '~/types/route';
   import {
     useRouteUtils,
@@ -94,6 +96,13 @@
       deliveryLoading.value = false;
     }
   }
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'route', label: 'Delivery Route', color: '#3b82f6' },
+    { value: 'store', label: 'Store (Pickup)', color: '#10b981' },
+    { value: 'truck', label: 'Delivery Truck', color: '#3b82f6' },
+    { value: 'home', label: 'Home (Dropoff)', color: '#3b82f6' },
+  ];
 
   tryOnMounted(() => {
     fetchDeliveryRoute();
@@ -245,6 +254,14 @@ ${SCRIPT_END}
           >
             <VControlNavigation position="top-right" />
             <VControlScale position="bottom-left" />
+            <VControlLegend
+              :layer-ids="['delivery-route']"
+              position="bottom-left"
+              type="category"
+              title="Delivery Tracking"
+              :items="legendItems"
+              :interactive="false"
+            />
 
             <VLayerMaplibreRoute
               v-if="deliveryRouteCoordinates.length > 0"

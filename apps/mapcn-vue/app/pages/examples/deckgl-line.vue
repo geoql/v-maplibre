@@ -4,7 +4,9 @@
     VLayerDeckglLine,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Line Layer (deck.gl) - mapcn-vue Examples',
@@ -61,6 +63,14 @@
     targetPosition: [number, number];
     color: [number, number, number];
   }
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'line-1', label: 'Segment 1', color: '#ff8c00' },
+    { value: 'line-2', label: 'Segment 2', color: '#00c896' },
+    { value: 'line-3', label: 'Segment 3', color: '#8a2be2' },
+    { value: 'line-4', label: 'Segment 4', color: '#ff6347' },
+    { value: 'line-5', label: 'Segment 5', color: '#1e90ff' },
+  ];
 
   const getSourcePosition = (d: unknown) => (d as LineData).sourcePosition;
   const getTargetPosition = (d: unknown) => (d as LineData).targetPosition;
@@ -133,6 +143,13 @@ ${SCRIPT_END}
                 :get-color="getColor"
                 :get-width="3"
                 :pickable="true"
+              />
+              <VControlLegend
+                position="bottom-left"
+                type="category"
+                title="Line Segments"
+                :layer-ids="['line-layer']"
+                :items="legendItems"
               />
             </VMap>
           </ClientOnly>

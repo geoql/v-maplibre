@@ -4,7 +4,9 @@
     VLayerDeckglColumn,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Column Layer (deck.gl) - mapcn-vue Examples',
@@ -47,6 +49,11 @@
     elevation: number;
     color: [number, number, number, number];
   }
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'category-a', label: 'Category A', color: '#ff8c00' },
+    { value: 'category-b', label: 'Category B', color: '#00c896' },
+  ];
 
   const getPosition = (d: unknown) => (d as ColumnData).position;
   const getElevation = (d: unknown) => (d as ColumnData).elevation;
@@ -126,6 +133,13 @@ ${SCRIPT_END}
                 :radius="50"
                 :extruded="true"
                 :pickable="true"
+              />
+              <VControlLegend
+                position="bottom-left"
+                type="category"
+                title="Column Categories"
+                :layer-ids="['column-layer']"
+                :items="legendItems"
               />
             </VMap>
           </ClientOnly>

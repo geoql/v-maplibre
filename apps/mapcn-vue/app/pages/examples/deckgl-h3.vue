@@ -4,7 +4,9 @@
     VLayerDeckglH3Hexagon,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'H3 Hexagon Layer (deck.gl) - mapcn-vue Examples',
@@ -62,6 +64,12 @@
   const getHexagon = (d: unknown) => (d as H3Data).hex;
   const getFillColor = (d: unknown) => (d as H3Data).color;
   const getElevation = (d: unknown) => (d as H3Data).value;
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'high', label: 'High (700+)', color: '#ff6347' },
+    { value: 'medium', label: 'Medium (400–699)', color: '#ffa500' },
+    { value: 'low', label: 'Low (<400)', color: '#32cd32' },
+  ];
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
@@ -126,6 +134,14 @@ ${SCRIPT_END}
             <VMap :key="mapStyle" :options="mapOptions" class="size-full">
               <VControlNavigation position="top-right" />
               <VControlScale position="bottom-left" />
+              <VControlLegend
+                :layer-ids="['h3-layer']"
+                position="bottom-left"
+                type="category"
+                title="Cell Value"
+                :items="legendItems"
+                :interactive="false"
+              />
               <VLayerDeckglH3Hexagon
                 id="h3-layer"
                 :data="h3Data"

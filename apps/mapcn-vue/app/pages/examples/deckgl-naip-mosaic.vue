@@ -3,9 +3,13 @@
     VMap,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
     VLayerDeckglMosaic,
-    type MosaicSource,
-    type MosaicRenderMode,
+  } from '@geoql/v-maplibre';
+  import type {
+    MosaicSource,
+    MosaicRenderMode,
+    CategoryLegendItem,
   } from '@geoql/v-maplibre';
   import type { Map } from 'maplibre-gl';
   import { motion, AnimatePresence } from 'motion-v';
@@ -117,6 +121,12 @@
     { value: 'ndvi', label: 'NDVI' },
   ];
 
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'true-color', label: 'True Color (RGB)', color: '#4caf50' },
+    { value: 'false-color', label: 'False Color (NIR)', color: '#e91e63' },
+    { value: 'ndvi', label: 'NDVI Vegetation', color: '#8bc34a' },
+  ];
+
   function togglePanel() {
     panelOpen.value = !panelOpen.value;
   }
@@ -216,6 +226,14 @@
               >
                 <VControlNavigation position="top-right" />
                 <VControlScale position="bottom-left" />
+                <VControlLegend
+                  :layer-ids="['naip-mosaic']"
+                  position="bottom-left"
+                  type="category"
+                  title="Render Mode"
+                  :items="legendItems"
+                  :interactive="false"
+                />
 
                 <VLayerDeckglMosaic
                   v-if="stacItems.length > 0"

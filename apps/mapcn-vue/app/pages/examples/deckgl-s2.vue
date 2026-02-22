@@ -4,7 +4,9 @@
     VLayerDeckglS2,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'S2 Layer (deck.gl) - mapcn-vue Examples',
@@ -65,6 +67,12 @@
         return [150, 150, 150, 200] as [number, number, number, number];
     }
   };
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'high', label: 'High Density', color: '#ff5078' },
+    { value: 'medium', label: 'Medium Density', color: '#ffb450' },
+    { value: 'low', label: 'Low Density', color: '#50b4ff' },
+  ];
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
@@ -144,6 +152,14 @@ ${SCRIPT_END}
             <VMap :key="mapStyle" :options="mapOptions" class="size-full">
               <VControlNavigation position="top-right" />
               <VControlScale position="bottom-left" />
+              <VControlLegend
+                :layer-ids="['s2-layer']"
+                position="bottom-left"
+                type="category"
+                title="Density"
+                :items="legendItems"
+                :interactive="false"
+              />
               <VLayerDeckglS2
                 id="s2-layer"
                 :data="s2Data"

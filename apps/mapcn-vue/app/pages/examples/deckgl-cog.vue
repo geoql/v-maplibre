@@ -4,7 +4,9 @@
     VLayerDeckglCOG,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import type { Map } from 'maplibre-gl';
 
   useSeoMeta({
@@ -62,6 +64,13 @@
       { padding: 40, duration: 1000 },
     );
   };
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'vegetation', label: 'Vegetation', color: '#2d7d3e' },
+    { value: 'water', label: 'Water', color: '#1a5fb4' },
+    { value: 'urban', label: 'Urban / Built-up', color: '#9a9996' },
+    { value: 'bare-soil', label: 'Bare Soil', color: '#c8a260' },
+  ];
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
@@ -141,6 +150,14 @@
                 id="cog-layer"
                 :geotiff="COG_URL"
                 @geotiff-load="handleGeotiffLoad"
+              />
+              <VControlLegend
+                :layer-ids="['cog-layer']"
+                position="bottom-left"
+                type="category"
+                title="Sentinel-2 Imagery"
+                :items="legendItems"
+                :interactive="false"
               />
             </VMap>
           </ClientOnly>

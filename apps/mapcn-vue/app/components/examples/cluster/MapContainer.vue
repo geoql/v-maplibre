@@ -5,8 +5,10 @@
     VLayerMaplibreCluster,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
     VPopup,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
   defineProps<{
     pointsData: GeoJSON.FeatureCollection;
@@ -41,6 +43,13 @@
     center: [-74.006, 40.7128] as [number, number],
     zoom: 10,
   }));
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'small', label: '1–10 points', color: '#10b981' },
+    { value: 'medium', label: '11–50 points', color: '#059669' },
+    { value: 'large', label: '50+ points', color: '#047857' },
+    { value: 'single', label: 'Single point', color: '#10b981' },
+  ];
 </script>
 
 <template>
@@ -54,6 +63,14 @@
       >
         <VControlNavigation position="top-right" />
         <VControlScale position="bottom-left" />
+        <VControlLegend
+          :layer-ids="['clusters']"
+          position="bottom-left"
+          type="category"
+          title="Cluster Size"
+          :items="legendItems"
+          :interactive="false"
+        />
         <VLayerMaplibreCluster
           source-id="cluster-source"
           base-layer-id="clusters"

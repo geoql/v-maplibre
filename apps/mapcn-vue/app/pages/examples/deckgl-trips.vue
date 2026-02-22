@@ -5,7 +5,9 @@
     VLayerDeckglTrips,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Trips Animation (deck.gl) - mapcn-vue Examples',
@@ -86,43 +88,48 @@
   const getColor = (d: unknown): [number, number, number] =>
     (d as TripData).vendor === 0 ? [253, 128, 93] : [23, 184, 190];
 
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'vendor-0', label: 'Vendor 0', color: '#fd805d' },
+    { value: 'vendor-1', label: 'Vendor 1', color: '#17b8be' },
+  ];
+
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-  import { VMap, VLayerDeckglTrips, VControlNavigation } from '@geoql/v-maplibre';
+    import { VMap, VLayerDeckglTrips, VControlNavigation } from '@geoql/v-maplibre';
 
-  const mapOptions = {
-  style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-  center: [-74.0, 40.72],
-  zoom: 12,
-  pitch: 45,
-  };
+    const mapOptions = {
+    style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+    center: [-74.0, 40.72],
+    zoom: 12,
+    pitch: 45,
+    };
 
-  // Fetch trip data with path coordinates and timestamps
-  const tripsData = await fetch(DATA_URL).then(r => r.json());
+    // Fetch trip data with path coordinates and timestamps
+    const tripsData = await fetch(DATA_URL).then(r => r.json());
 
-  // Animation loop updates currentTime
-  const currentTime = ref(0);
-${SCRIPT_END}
+    // Animation loop updates currentTime
+    const currentTime = ref(0);
+  ${SCRIPT_END}
 
-<template>
-  <VMap :options="mapOptions" class="h-125 w-full">
-    <VControlNavigation position="top-right" />
-    <VLayerDeckglTrips
-      id="trips"
-      :data="tripsData"
-      :get-path="(d) => d.path"
-      :get-timestamps="(d) => d.timestamps"
-      :get-color="(d) => d.vendor === 0 ? [253, 128, 93] : [23, 184, 190]"
-      :current-time="currentTime"
-      :trail-length="180"
-      :width-min-pixels="3"
-      :cap-rounded="true"
-      :joint-rounded="true"
-    />
-  </VMap>
-</template>`;
+  <template>
+    <VMap :options="mapOptions" class="h-125 w-full">
+      <VControlNavigation position="top-right" />
+      <VLayerDeckglTrips
+        id="trips"
+        :data="tripsData"
+        :get-path="(d) => d.path"
+        :get-timestamps="(d) => d.timestamps"
+        :get-color="(d) => d.vendor === 0 ? [253, 128, 93] : [23, 184, 190]"
+        :current-time="currentTime"
+        :trail-length="180"
+        :width-min-pixels="3"
+        :cap-rounded="true"
+        :joint-rounded="true"
+      />
+    </VMap>
+  </template>`;
 </script>
 
 <template>
@@ -163,6 +170,14 @@ ${SCRIPT_END}
                 :cap-rounded="true"
                 :joint-rounded="true"
                 :opacity="0.8"
+              />
+              <VControlLegend
+                :layer-ids="['trips']"
+                position="bottom-left"
+                type="category"
+                title="Taxi Vendor"
+                :items="legendItems"
+                :interactive="false"
               />
             </VMap>
           </ClientOnly>

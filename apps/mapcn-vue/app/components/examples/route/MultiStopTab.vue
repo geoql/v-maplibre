@@ -7,7 +7,9 @@
     VLayerMaplibreRoute,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import type {
     RouteStop,
     RouteLegInfo,
@@ -190,6 +192,13 @@
   function getArrivalTime(index: number): string {
     return formatArrivalTime(getCumulativeDuration(index, multiStopLegs.value));
   }
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'route', label: 'Optimized Route', color: '#6366f1' },
+    { value: 'start', label: 'Start', color: '#10b981' },
+    { value: 'waypoint', label: 'Waypoint', color: '#3b82f6' },
+    { value: 'end', label: 'End', color: '#ef4444' },
+  ];
 
   tryOnMounted(() => {
     fetchMultiStopRoute();
@@ -398,6 +407,14 @@ ${SCRIPT_END}
           >
             <VControlNavigation position="top-right" />
             <VControlScale position="bottom-left" />
+            <VControlLegend
+              :layer-ids="['multistop-route']"
+              position="bottom-left"
+              type="category"
+              title="Multi-Stop Route"
+              :items="legendItems"
+              :interactive="false"
+            />
 
             <VLayerMaplibreRoute
               v-if="multiStopRouteCoordinates.length > 0"

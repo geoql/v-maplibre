@@ -4,7 +4,9 @@
     VLayerDeckglCOG,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import type { Map } from 'maplibre-gl';
 
   useSeoMeta({
@@ -83,6 +85,33 @@
     </VMap>
   </template>`;
 
+  const mapLegendItems: CategoryLegendItem[] = [
+    { value: 'open-water', label: 'Open Water', color: '#466b9f' },
+    { value: 'ice-snow', label: 'Perennial Ice/Snow', color: '#d1def8' },
+    { value: 'dev-open', label: 'Developed, Open Space', color: '#dec5c5' },
+    { value: 'dev-low', label: 'Developed, Low Intensity', color: '#d99282' },
+    {
+      value: 'dev-med',
+      label: 'Developed, Medium Intensity',
+      color: '#eb0000',
+    },
+    { value: 'dev-high', label: 'Developed, High Intensity', color: '#ab0000' },
+    { value: 'barren', label: 'Barren Land', color: '#b3ac9f' },
+    { value: 'deciduous', label: 'Deciduous Forest', color: '#68ab5f' },
+    { value: 'evergreen', label: 'Evergreen Forest', color: '#1c5f2c' },
+    { value: 'mixed-forest', label: 'Mixed Forest', color: '#b5c58f' },
+    { value: 'shrub', label: 'Shrub/Scrub', color: '#ccb879' },
+    { value: 'grassland', label: 'Grassland/Herbaceous', color: '#dfdfc2' },
+    { value: 'pasture', label: 'Pasture/Hay', color: '#dcd939' },
+    { value: 'crops', label: 'Cultivated Crops', color: '#ab6c28' },
+    { value: 'woody-wetlands', label: 'Woody Wetlands', color: '#b8d9eb' },
+    {
+      value: 'herbaceous-wetlands',
+      label: 'Emergent Herbaceous Wetlands',
+      color: '#6c9fb8',
+    },
+  ];
+
   const legendItems = [
     { color: 'bg-[#466b9f]', label: 'Open Water' },
     { color: 'bg-[#d1def8]', label: 'Perennial Ice/Snow' },
@@ -157,6 +186,14 @@
                   id="landcover-layer"
                   :geotiff="COG_URL"
                   @geotiff-load="handleGeotiffLoad"
+                />
+                <VControlLegend
+                  :layer-ids="['landcover-layer']"
+                  position="bottom-left"
+                  type="category"
+                  title="Land Cover Classes"
+                  :items="mapLegendItems"
+                  :interactive="false"
                 />
               </VMap>
             </ClientOnly>

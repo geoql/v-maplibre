@@ -4,7 +4,9 @@
     VLayerDeckglQuadkey,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Quadkey Layer (deck.gl) - mapcn-vue Examples',
@@ -66,6 +68,12 @@
         return [150, 150, 150, 200] as [number, number, number, number];
     }
   };
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'high', label: 'High', color: '#ff6464' },
+    { value: 'medium', label: 'Medium', color: '#ffc864' },
+    { value: 'low', label: 'Low', color: '#64c864' },
+  ];
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
@@ -145,6 +153,14 @@ ${SCRIPT_END}
             <VMap :key="mapStyle" :options="mapOptions" class="size-full">
               <VControlNavigation position="top-right" />
               <VControlScale position="bottom-left" />
+              <VControlLegend
+                :layer-ids="['quadkey-layer']"
+                position="bottom-left"
+                type="category"
+                title="Category"
+                :items="legendItems"
+                :interactive="false"
+              />
               <VLayerDeckglQuadkey
                 id="quadkey-layer"
                 :data="quadkeyData"

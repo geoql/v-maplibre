@@ -1,9 +1,11 @@
 <script setup lang="ts">
+  import type { GradientLegendItem } from '@geoql/v-maplibre';
   import {
     VMap,
     VControlLidar,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
 
   useSeoMeta({
@@ -21,6 +23,16 @@
 
   const { mapStyle } = useMapStyle();
   const mapId = useId();
+
+  const legendItems: GradientLegendItem[] = [
+    {
+      min: 0,
+      max: 500,
+      minLabel: 'Low',
+      maxLabel: 'High',
+      colors: ['#440154', '#31688e', '#35b779', '#fde725'],
+    },
+  ];
 
   const mapOptions = computed(() => ({
     container: `lidar-example-${mapId}`,
@@ -108,6 +120,14 @@ ${SCRIPT_END}
             <VMap :key="mapStyle" :options="mapOptions" class="size-full">
               <VControlNavigation position="top-left" />
               <VControlScale position="bottom-left" />
+              <VControlLegend
+                :layer-ids="['lidar-points']"
+                position="bottom-left"
+                type="gradient"
+                title="Elevation"
+                :items="legendItems"
+                :interactive="false"
+              />
               <VControlLidar
                 position="top-right"
                 :options="{

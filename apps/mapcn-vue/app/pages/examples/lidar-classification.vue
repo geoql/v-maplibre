@@ -1,9 +1,11 @@
 <script setup lang="ts">
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import {
     VMap,
     VControlLidar,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
 
   useSeoMeta({
@@ -21,6 +23,15 @@
 
   const { mapStyle } = useMapStyle();
   const mapId = useId();
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 2, label: 'Ground', color: '#a87832' },
+    { value: 3, label: 'Low Vegetation', color: '#4caf50' },
+    { value: 4, label: 'Medium Vegetation', color: '#8bc34a' },
+    { value: 5, label: 'High Vegetation', color: '#2e7d32' },
+    { value: 6, label: 'Building', color: '#f44336' },
+    { value: 9, label: 'Water', color: '#2196f3' },
+  ];
 
   const mapOptions = computed(() => ({
     container: `lidar-classification-example-${mapId}`,
@@ -134,6 +145,14 @@ ${SCRIPT_END}
             <VMap :key="mapStyle" :options="mapOptions" class="size-full">
               <VControlNavigation position="top-left" />
               <VControlScale position="bottom-left" />
+              <VControlLegend
+                :layer-ids="['lidar-points']"
+                position="bottom-left"
+                type="category"
+                title="ASPRS Classification"
+                :items="legendItems"
+                :interactive="false"
+              />
               <VControlLidar
                 position="top-right"
                 :options="{

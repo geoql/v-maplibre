@@ -4,7 +4,9 @@
     VLayerDeckglSolidPolygon,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Solid Polygon Layer (deck.gl) - mapcn-vue Examples',
@@ -96,6 +98,14 @@
     },
   ];
 
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'building-a', label: 'Building A', color: '#40c0ff' },
+    { value: 'building-b', label: 'Building B', color: '#ff8c40' },
+    { value: 'building-c', label: 'Building C', color: '#80ff80' },
+    { value: 'building-d', label: 'Building D', color: '#ff4080' },
+    { value: 'building-e', label: 'Building E', color: '#c080ff' },
+  ];
+
   const getPolygon = (d: unknown) => (d as BuildingData).polygon;
   const getFillColor = (d: unknown) => (d as BuildingData).color;
   const getElevation = (d: unknown) => (d as BuildingData).height;
@@ -126,6 +136,14 @@
     color: [64, 192, 255, 200],
   },
   // ... more buildings
+  ];
+
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'building-a', label: 'Building A', color: '#40c0ff' },
+    { value: 'building-b', label: 'Building B', color: '#ff8c40' },
+    { value: 'building-c', label: 'Building C', color: '#80ff80' },
+    { value: 'building-d', label: 'Building D', color: '#ff4080' },
+    { value: 'building-e', label: 'Building E', color: '#c080ff' },
   ];
 
   const getPolygon = (d: unknown) => (d as BuildingData).polygon;
@@ -186,6 +204,13 @@ ${SCRIPT_END}
                 :wireframe="true"
                 :pickable="true"
                 :elevation-scale="1"
+              />
+              <VControlLegend
+                position="bottom-left"
+                type="category"
+                title="Buildings"
+                :layer-ids="['solid-polygon-layer']"
+                :items="legendItems"
               />
             </VMap>
           </ClientOnly>

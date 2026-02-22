@@ -4,7 +4,9 @@
     VLayerDeckglGeojson,
     VControlNavigation,
     VControlScale,
+    VControlLegend,
   } from '@geoql/v-maplibre';
+  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'GeoJSON Layer (deck.gl) - mapcn-vue Examples',
@@ -103,6 +105,13 @@
     };
   }
 
+  const legendItems: CategoryLegendItem[] = [
+    { value: 'zone-a', label: 'Zone A', color: '#ff8c00' },
+    { value: 'zone-b', label: 'Zone B', color: '#00c896' },
+    { value: 'zone-c', label: 'Zone C', color: '#8a2be2' },
+    { value: 'route', label: 'Route', color: '#ffffff' },
+  ];
+
   const getFillColor = (f: unknown) =>
     (f as GeoJSONFeature).properties.color || [200, 200, 200];
   const getLineColor = () => [255, 255, 255];
@@ -190,6 +199,13 @@ ${SCRIPT_END}
                 :filled="true"
                 :line-width-min-pixels="2"
                 :pickable="true"
+              />
+              <VControlLegend
+                position="bottom-left"
+                type="category"
+                title="GeoJSON Features"
+                :layer-ids="['deckgl-geojson-layer']"
+                :items="legendItems"
               />
             </VMap>
           </ClientOnly>
