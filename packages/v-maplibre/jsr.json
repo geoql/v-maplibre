@@ -14,7 +14,7 @@
     "@deck.gl/mesh-layers": "npm:@deck.gl/mesh-layers@^9.2.5",
     "@developmentseed/deck.gl-geotiff": "npm:@developmentseed/deck.gl-geotiff@^0.1.0",
     "geotiff-geokeys-to-proj4": "npm:geotiff-geokeys-to-proj4@^2024.4.0",
-    "maplibre-gl-lidar": "npm:maplibre-gl-lidar@^0.5.0",
+    "maplibre-gl-lidar": "npm:maplibre-gl-lidar@^0.11.1",
     "@luma.gl/core": "npm:@luma.gl/core@^9.2.6",
     "@luma.gl/engine": "npm:@luma.gl/engine@^9.2.6",
     "@geoql/maplibre-gl-wind": "npm:@geoql/maplibre-gl-wind@^0.1.0"

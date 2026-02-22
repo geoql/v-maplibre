@@ -1,7 +1,53 @@
 export type { ControlPosition } from 'maplibre-gl';
 
-export type ColorScheme = 'elevation' | 'intensity' | 'classification' | 'rgb';
+/** Color scheme preset types */
+export type ColorSchemeType =
+  | 'elevation'
+  | 'intensity'
+  | 'classification'
+  | 'rgb';
+
+/** Custom color scheme configuration */
+export interface ColorSchemeConfig {
+  type: 'gradient' | 'categorical';
+  attribute: string;
+  colors?: string[];
+  domain?: [number, number];
+}
+
+/** Color scheme can be a preset string or custom configuration */
+export type ColorScheme = ColorSchemeType | ColorSchemeConfig;
+
+/** COPC loading mode options */
 export type CopcLoadingMode = 'full' | 'dynamic';
+
+/** Available colormap names (matplotlib-style) */
+export type ColormapName =
+  | 'viridis'
+  | 'plasma'
+  | 'inferno'
+  | 'magma'
+  | 'cividis'
+  | 'turbo'
+  | 'jet'
+  | 'rainbow'
+  | 'terrain'
+  | 'coolwarm'
+  | 'gray';
+
+/** Configuration for color range mapping */
+export interface ColorRangeConfig {
+  /** Mode for determining color range bounds */
+  mode: 'percentile' | 'absolute';
+  /** Lower percentile bound (used when mode is 'percentile') */
+  percentileLow: number;
+  /** Upper percentile bound (used when mode is 'percentile') */
+  percentileHigh: number;
+  /** Absolute minimum value (used when mode is 'absolute') */
+  absoluteMin?: number;
+  /** Absolute maximum value (used when mode is 'absolute') */
+  absoluteMax?: number;
+}
 
 export interface PointCloudBounds {
   minX: number;
@@ -31,15 +77,22 @@ export interface StreamingProgress {
   isLoading: boolean;
 }
 
+/** Options for streaming loaders (COPC/EPT) */
+export interface StreamingLoaderOptions {
+  pointBudget?: number;
+  maxConcurrentRequests?: number;
+  viewportDebounceMs?: number;
+}
+
 export interface LidarControlOptions {
   /** Start collapsed (default: true) */
   collapsed?: boolean;
   /** Panel title (default: 'LiDAR Viewer') */
   title?: string;
-  /** Panel width in pixels (default: 365) */
+  /** Panel width in pixels (default: 320) */
   panelWidth?: number;
   /** Panel max height with scrollbar (default: 500) */
-  panelMaxHeight?: number;
+  maxHeight?: number;
   /** Custom CSS class */
   className?: string;
 
@@ -49,8 +102,14 @@ export interface LidarControlOptions {
   opacity?: number;
   /** Color scheme (default: 'elevation') */
   colorScheme?: ColorScheme;
-  /** Use 2-98% percentile for coloring (default: true) */
+  /** Use 2-98% percentile for coloring (default: true) @deprecated Use colorRange instead */
   usePercentile?: boolean;
+  /** Colormap for elevation/intensity coloring (default: 'viridis') */
+  colormap?: ColormapName;
+  /** Color range mapping configuration */
+  colorRange?: ColorRangeConfig;
+  /** Show the colorbar legend (default: true) */
+  showColorbar?: boolean;
   /** Max points to display (default: 1000000) */
   pointBudget?: number;
 
@@ -60,6 +119,8 @@ export interface LidarControlOptions {
   zOffsetEnabled?: boolean;
   /** Z offset in meters (default: 0) */
   zOffset?: number;
+  /** Auto-calculate Z offset from 2% percentile (default: true) */
+  autoZOffset?: boolean;
 
   /** Enable point picking/hover tooltips (default: false) */
   pickable?: boolean;
@@ -69,8 +130,12 @@ export interface LidarControlOptions {
   /** Auto zoom to data after loading (default: true) */
   autoZoom?: boolean;
 
-  /** Loading mode for COPC files (default: 'dynamic') */
+  /** Loading mode for COPC files (default: 'full') */
   copcLoadingMode?: CopcLoadingMode;
+  /** Enable 3D terrain (default: false) */
+  terrainEnabled?: boolean;
+  /** Terrain exaggeration factor (default: 1.0) */
+  terrainExaggeration?: number;
   /** Max points for streaming (default: 5000000) */
   streamingPointBudget?: number;
   /** Concurrent node requests (default: 4) */
