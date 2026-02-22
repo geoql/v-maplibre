@@ -33,7 +33,7 @@
 
   const route = useRoute();
   const router = useRouter();
-  const { mapStyle } = useMapStyle();
+  const { mapStyle, colorMode } = useMapStyle();
   const mapId = useId();
   const mapRef = ref<MaplibreMap | null>(null);
 
