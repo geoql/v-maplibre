@@ -33,6 +33,8 @@
       </div>
 
       <ExamplesRouteDeliveryTrackingTab />
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

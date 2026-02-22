@@ -167,6 +167,8 @@ ${SCRIPT_END}
           (~20m²). Used by Google Maps, Foursquare, and others.
         </p>
       </div>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

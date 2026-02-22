@@ -178,6 +178,8 @@ ${SCRIPT_END}
           of points with WebGL-accelerated rendering.
         </p>
       </div>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

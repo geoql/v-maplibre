@@ -114,6 +114,8 @@ ${SCRIPT_END}
           layers, SRS, and request parameters.
         </p>
       </div>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

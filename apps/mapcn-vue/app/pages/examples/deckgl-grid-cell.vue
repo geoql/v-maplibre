@@ -169,6 +169,8 @@ ${SCRIPT_END}
           instead. Cell size is specified in meters.
         </p>
       </div>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

@@ -34,6 +34,8 @@
       </div>
 
       <ExamplesRoutePlaybackTab />
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

@@ -200,6 +200,8 @@ ${SCRIPT_END}
           extrusions.
         </p>
       </div>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

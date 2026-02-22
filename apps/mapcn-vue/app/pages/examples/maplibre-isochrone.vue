@@ -426,6 +426,8 @@
           </li>
         </ul>
       </div>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

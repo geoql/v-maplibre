@@ -208,6 +208,8 @@ ${SCRIPT_END}
           renders individual cells, clusters share a single color and elevation.
         </p>
       </div>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

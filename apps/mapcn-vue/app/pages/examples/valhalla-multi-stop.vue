@@ -34,6 +34,8 @@
       </div>
 
       <ExamplesRouteMultiStopTab />
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

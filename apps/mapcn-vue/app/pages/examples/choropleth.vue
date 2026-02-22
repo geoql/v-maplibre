@@ -8,7 +8,7 @@
     VLayerMaplibreGeojson,
     VLayerDeckglGeojson,
   } from '@geoql/v-maplibre';
-  import type { CategoryLegendItem } from '@geoql/v-maplibre';
+  import type { TableLegendItem } from '@geoql/v-maplibre';
   import type {
     Feature,
     FeatureCollection,
@@ -237,19 +237,13 @@
     return hexToRgba(color, isHovered ? 255 : 200);
   }
 
-  const sortedStates = computed(() => {
-    if (!statesGeoJson.value) return [];
-    return [...statesGeoJson.value.features]
-      .map((f) => f.properties)
-      .sort((a, b) => b.rate - a.rate);
-  });
-
-  // Legend items for VControlLegend
-  const legendItems = computed<CategoryLegendItem[]>(() =>
-    colorScale.map((item) => ({
-      value: item.threshold,
-      label: `${item.threshold}%+`,
-      color: item.color,
+  // Table legend items — state names with unemployment rates
+  const tableLegendItems = computed<TableLegendItem[]>(() =>
+    Object.entries(unemploymentByState).map(([state, rate]) => ({
+      label: state,
+      value: rate,
+      formattedValue: `${rate.toFixed(1)}%`,
+      color: getColorForRate(rate),
     })),
   );
 
@@ -448,266 +442,245 @@ ${SCRIPT_END}
         </div>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-2">
-        <div class="min-w-0">
-          <div class="relative h-125 overflow-hidden rounded-lg border">
-            <ClientOnly>
-              <template v-if="isLoading">
-                <div class="flex h-full items-center justify-center bg-muted">
-                  <div class="text-center">
-                    <Icon
-                      name="lucide:loader-2"
-                      class="mx-auto size-8 animate-spin text-muted-foreground"
-                    />
-                    <p class="mt-2 text-sm text-muted-foreground">
-                      Loading US states data...
-                    </p>
-                  </div>
-                </div>
-              </template>
-
-              <template v-else-if="error">
-                <div class="flex h-full items-center justify-center bg-muted">
-                  <div class="text-center">
-                    <Icon
-                      name="lucide:alert-circle"
-                      class="mx-auto size-8 text-destructive"
-                    />
-                    <p class="mt-2 text-sm text-destructive">
-                      {{ error }}
-                    </p>
-                  </div>
-                </div>
-              </template>
-
-              <template v-else-if="statesGeoJson">
-                <VMap
-                  v-if="isTabActive('maplibre')"
-                  :key="`maplibre-${mapStyle}`"
-                  :options="mapOptions"
-                  class="size-full"
-                  @loaded="handleMapLoad"
-                >
-                  <VControlNavigation position="top-right" />
-
-                  <VLayerMaplibreGeojson
-                    source-id="states-choropleth"
-                    layer-id="states-fill"
-                    :source="{ type: 'geojson', data: statesGeoJson }"
-                    :layer="{
-                      id: 'states-fill',
-                      type: 'fill',
-                      source: 'states-choropleth',
-                      paint: {
-                        'fill-color': ['get', 'fillColor'],
-                        'fill-opacity': 0.8,
-                      },
-                    }"
-                  />
-
-                  <VLayerMaplibreGeojson
-                    source-id="states-choropleth-line"
-                    layer-id="states-line"
-                    :source="{ type: 'geojson', data: statesGeoJson }"
-                    :layer="{
-                      id: 'states-line',
-                      type: 'line',
-                      source: 'states-choropleth-line',
-                      paint: {
-                        'line-color':
-                          colorMode === 'dark' ? '#6b7280' : '#374151',
-                        'line-width': 0.5,
-                      },
-                    }"
-                  />
-
-                  <VControlLegend
-                    :layer-ids="['states-fill']"
-                    type="category"
-                    :items="legendItems"
-                    title="Unemployment Rate (%)"
-                    position="bottom-left"
-                    :interactive="false"
-                  />
-                </VMap>
-
-                <VMap
-                  v-else
-                  :key="`deckgl-${mapStyle}`"
-                  :options="mapOptions"
-                  class="size-full"
-                  @loaded="handleMapLoad"
-                >
-                  <VControlNavigation position="top-right" />
-
-                  <VLayerDeckglGeojson
-                    id="states-choropleth-deck"
-                    :data="statesGeoJson"
-                    :get-fill-color="getDeckFillColor"
-                    :get-line-color="
-                      colorMode === 'dark'
-                        ? [107, 114, 128, 255]
-                        : [55, 65, 81, 255]
-                    "
-                    :get-line-width="1"
-                    :line-width-min-pixels="0.5"
-                    :filled="true"
-                    :stroked="true"
-                    :pickable="true"
-                    :auto-highlight="true"
-                    :highlight-color="[255, 200, 0, 128]"
-                    @hover="handleDeckHover"
-                  />
-
-                  <VControlLegend
-                    :layer-ids="['states-choropleth-deck']"
-                    type="category"
-                    :items="legendItems"
-                    title="Unemployment Rate (%)"
-                    position="bottom-left"
-                    :interactive="false"
-                  />
-                </VMap>
-              </template>
-
-              <template #fallback>
-                <div class="flex h-full items-center justify-center bg-muted">
+      <ComponentDemo
+        :key="activeTab"
+        :code="
+          isTabActive('maplibre') ? maplibreCodeExample : deckglCodeExample
+        "
+        full-width
+        class="h-125"
+      >
+        <div class="relative h-125 min-w-0">
+          <ClientOnly>
+            <template v-if="isLoading">
+              <div class="flex h-full items-center justify-center bg-muted">
+                <div class="text-center">
                   <Icon
                     name="lucide:loader-2"
-                    class="size-8 animate-spin text-muted-foreground"
+                    class="mx-auto size-8 animate-spin text-muted-foreground"
                   />
+                  <p class="mt-2 text-sm text-muted-foreground">
+                    Loading US states data...
+                  </p>
                 </div>
-              </template>
-            </ClientOnly>
+              </div>
+            </template>
 
-            <div
-              v-if="hoveredState && isTabActive('deckgl')"
-              class="absolute top-4 right-4 z-10 rounded-lg border bg-background/95 px-3 py-2 shadow-lg backdrop-blur-sm"
-            >
-              <p class="text-sm font-medium">
-                {{ hoveredState.name }}
-              </p>
-              <p class="text-xs text-muted-foreground">
-                Unemployment: {{ hoveredState.rate.toFixed(1) }}%
-              </p>
-            </div>
-          </div>
+            <template v-else-if="error">
+              <div class="flex h-full items-center justify-center bg-muted">
+                <div class="text-center">
+                  <Icon
+                    name="lucide:alert-circle"
+                    class="mx-auto size-8 text-destructive"
+                  />
+                  <p class="mt-2 text-sm text-destructive">
+                    {{ error }}
+                  </p>
+                </div>
+              </div>
+            </template>
 
-          <div class="mt-4 rounded-lg border bg-card">
-            <div class="border-b px-4 py-2">
-              <h3 class="font-medium">Top States by Unemployment Rate</h3>
-            </div>
-            <div class="max-h-48 overflow-y-auto">
-              <table class="w-full text-sm">
-                <thead class="sticky top-0 bg-card">
-                  <tr class="border-b">
-                    <th class="px-4 py-2 text-left font-medium">State</th>
-                    <th class="px-4 py-2 text-right font-medium">Rate</th>
-                    <th class="px-4 py-2 text-center font-medium">Color</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="state in sortedStates.slice(0, 15)"
-                    :key="state.name"
-                    class="border-b last:border-0"
-                  >
-                    <td class="px-4 py-2">
-                      {{ state.name }}
-                    </td>
-                    <td class="px-4 py-2 text-right tabular-nums">
-                      {{ state.rate.toFixed(1) }}%
-                    </td>
-                    <td class="px-4 py-2 text-center">
-                      <div
-                        class="mx-auto size-4 rounded-sm"
-                        :style="{
-                          backgroundColor: getColorForRate(state.rate),
-                        }"
-                      ></div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <div class="min-w-0">
-          <ComponentDemo
-            :key="activeTab"
-            :code="
-              isTabActive('maplibre') ? maplibreCodeExample : deckglCodeExample
-            "
-          />
-
-          <div class="mt-4 rounded-lg border bg-muted/50 p-4">
-            <h3 class="mb-2 font-medium">
-              {{
-                isTabActive('maplibre')
-                  ? 'MapLibre GL Approach'
-                  : 'deck.gl Approach'
-              }}
-            </h3>
-            <ul
-              v-if="isTabActive('maplibre')"
-              class="space-y-2 text-sm text-muted-foreground"
-            >
-              <li>
-                <strong class="text-foreground">Data-Driven Styling:</strong>
-                Uses MapLibre expressions like
-                <code>['get', 'fillColor']</code> to style features based on
-                their properties.
-              </li>
-              <li>
-                <strong class="text-foreground">Pre-computed Colors:</strong>
-                Colors are added to feature properties before rendering.
-              </li>
-              <li>
-                <strong class="text-foreground">External Data:</strong>
-                Fetches real US states GeoJSON from a public source.
-              </li>
-              <li>
-                <strong class="text-foreground">GPU Rendering:</strong>
-                MapLibre handles all rendering on the GPU.
-              </li>
-            </ul>
-            <ul v-else class="space-y-2 text-sm text-muted-foreground">
-              <li>
-                <strong class="text-foreground">Accessor Functions:</strong>
-                Use <code>getFillColor</code> to compute colors per-feature
-                dynamically.
-              </li>
-              <li>
-                <strong class="text-foreground">Built-in Highlighting:</strong>
-                <code>autoHighlight</code> provides hover effects automatically.
-              </li>
-              <li>
-                <strong class="text-foreground">Picking Info:</strong>
-                <code>@hover</code> event provides feature data for tooltips.
-              </li>
-              <li>
-                <strong class="text-foreground">WebGL Performance:</strong>
-                deck.gl excels with large datasets (millions of features).
-              </li>
-            </ul>
-          </div>
-
-          <div class="mt-4 rounded-lg border bg-muted/50 p-4">
-            <h3 class="mb-2 font-medium">Data Source</h3>
-            <p class="text-sm text-muted-foreground">
-              US states boundaries from
-              <a
-                href="https://github.com/PublicaMundi/MappingAPI"
-                target="_blank"
-                class="text-primary underline-offset-4 hover:underline"
+            <template v-else-if="statesGeoJson">
+              <VMap
+                v-if="isTabActive('maplibre')"
+                :key="`maplibre-${mapStyle}`"
+                :options="mapOptions"
+                class="size-full"
+                @loaded="handleMapLoad"
               >
-                PublicaMundi/MappingAPI </a
-              >. Unemployment data represents 2024 estimates by state.
+                <VControlNavigation position="top-right" />
+
+                <VLayerMaplibreGeojson
+                  source-id="states-choropleth"
+                  layer-id="states-fill"
+                  :source="{ type: 'geojson', data: statesGeoJson }"
+                  :layer="{
+                    id: 'states-fill',
+                    type: 'fill',
+                    source: 'states-choropleth',
+                    paint: {
+                      'fill-color': ['get', 'fillColor'],
+                      'fill-opacity': 0.8,
+                    },
+                  }"
+                />
+
+                <VLayerMaplibreGeojson
+                  source-id="states-choropleth-line"
+                  layer-id="states-line"
+                  :source="{ type: 'geojson', data: statesGeoJson }"
+                  :layer="{
+                    id: 'states-line',
+                    type: 'line',
+                    source: 'states-choropleth-line',
+                    paint: {
+                      'line-color':
+                        colorMode === 'dark' ? '#6b7280' : '#374151',
+                      'line-width': 0.5,
+                    },
+                  }"
+                />
+
+                <VControlLegend
+                  :layer-ids="['states-fill']"
+                  type="table"
+                  :items="tableLegendItems"
+                  title="Unemployment Rate (%)"
+                  position="bottom-left"
+                  :interactive="false"
+                />
+              </VMap>
+
+              <VMap
+                v-else
+                :key="`deckgl-${mapStyle}`"
+                :options="mapOptions"
+                class="size-full"
+                @loaded="handleMapLoad"
+              >
+                <VControlNavigation position="top-right" />
+
+                <VLayerDeckglGeojson
+                  id="states-choropleth-deck"
+                  :data="statesGeoJson"
+                  :get-fill-color="getDeckFillColor"
+                  :get-line-color="
+                    colorMode === 'dark'
+                      ? [107, 114, 128, 255]
+                      : [55, 65, 81, 255]
+                  "
+                  :get-line-width="1"
+                  :line-width-min-pixels="0.5"
+                  :filled="true"
+                  :stroked="true"
+                  :pickable="true"
+                  :auto-highlight="true"
+                  :highlight-color="[255, 200, 0, 128]"
+                  @hover="handleDeckHover"
+                />
+
+                <VControlLegend
+                  :layer-ids="['states-choropleth-deck']"
+                  type="table"
+                  :items="tableLegendItems"
+                  title="Unemployment Rate (%)"
+                  position="bottom-left"
+                  :interactive="false"
+                />
+              </VMap>
+            </template>
+
+            <template #fallback>
+              <div class="flex h-full items-center justify-center bg-muted">
+                <Icon
+                  name="lucide:loader-2"
+                  class="size-8 animate-spin text-muted-foreground"
+                />
+              </div>
+            </template>
+          </ClientOnly>
+
+          <div
+            v-if="hoveredState && isTabActive('deckgl')"
+            class="absolute top-4 right-4 z-10 rounded-lg border bg-background/95 px-3 py-2 shadow-lg backdrop-blur-sm"
+          >
+            <p class="text-sm font-medium">
+              {{ hoveredState.name }}
+            </p>
+            <p class="text-xs text-muted-foreground">
+              Unemployment: {{ hoveredState.rate.toFixed(1) }}%
             </p>
           </div>
         </div>
+      </ComponentDemo>
+
+      <div class="mt-8 rounded-lg border bg-muted/30 p-6">
+        <h3 class="mb-3 text-lg font-semibold">
+          {{
+            isTabActive('maplibre')
+              ? 'MapLibre GL Approach'
+              : 'deck.gl Approach'
+          }}
+        </h3>
+        <ul
+          v-if="isTabActive('maplibre')"
+          class="space-y-2 text-sm text-muted-foreground"
+        >
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              <strong class="text-foreground">Data-Driven Styling:</strong>
+              Uses MapLibre expressions like
+              <code>['get', 'fillColor']</code> to style features based on their
+              properties.
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              <strong class="text-foreground">Pre-computed Colors:</strong>
+              Colors are added to feature properties before rendering.
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              <strong class="text-foreground">External Data:</strong>
+              Fetches real US states GeoJSON from a public source.
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              <strong class="text-foreground">GPU Rendering:</strong>
+              MapLibre handles all rendering on the GPU.
+            </span>
+          </li>
+        </ul>
+        <ul v-else class="space-y-2 text-sm text-muted-foreground">
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              <strong class="text-foreground">Accessor Functions:</strong>
+              Use <code>getFillColor</code> to compute colors per-feature
+              dynamically.
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              <strong class="text-foreground">Built-in Highlighting:</strong>
+              <code>autoHighlight</code> provides hover effects automatically.
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              <strong class="text-foreground">Picking Info:</strong>
+              <code>@hover</code> event provides feature data for tooltips.
+            </span>
+          </li>
+          <li class="flex items-start gap-2">
+            <Icon name="lucide:check" class="mt-0.5 size-4 text-primary" />
+            <span>
+              <strong class="text-foreground">WebGL Performance:</strong>
+              deck.gl excels with large datasets (millions of features).
+            </span>
+          </li>
+        </ul>
+        <p class="mt-4 text-sm text-muted-foreground">
+          US states boundaries from
+          <a
+            href="https://github.com/PublicaMundi/MappingAPI"
+            target="_blank"
+            class="text-primary hover:underline"
+          >
+            PublicaMundi/MappingAPI</a
+          >. Unemployment data represents 2024 estimates by state.
+        </p>
       </div>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

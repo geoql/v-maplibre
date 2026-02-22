@@ -168,6 +168,8 @@ ${SCRIPT_END}
           pre-aggregated tile-based analytics.
         </p>
       </div>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

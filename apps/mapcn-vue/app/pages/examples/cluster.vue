@@ -125,6 +125,8 @@ ${SCRIPT_END}
           @close-popup="closePopup"
         />
       </ComponentDemo>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

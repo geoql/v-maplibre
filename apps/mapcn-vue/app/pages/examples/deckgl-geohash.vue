@@ -168,6 +168,8 @@ ${SCRIPT_END}
           boundaries.
         </p>
       </div>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

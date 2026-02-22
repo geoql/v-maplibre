@@ -53,9 +53,7 @@
 </script>
 
 <template>
-  <div
-    class="relative h-125 min-w-0 overflow-hidden rounded-lg border border-border lg:col-span-2"
-  >
+  <div class="relative size-full min-w-0 overflow-hidden">
     <ClientOnly>
       <div
         v-if="isLoading && windData.length === 0"

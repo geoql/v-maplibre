@@ -284,6 +284,8 @@ ${SCRIPT_END}
           </p>
         </div>
       </div>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

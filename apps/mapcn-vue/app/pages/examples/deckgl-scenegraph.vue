@@ -156,6 +156,8 @@ ${SCRIPT_END}
           >. Supports glTF 2.0 animations and PBR materials.
         </p>
       </div>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

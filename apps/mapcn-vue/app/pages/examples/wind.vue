@@ -136,34 +136,36 @@ ${SCRIPT_END}
         </p>
       </div>
 
-      <div class="grid gap-8 lg:grid-cols-3">
-        <ExamplesWindMapContainer
-          :wind-data="windData"
-          :is-loading="isLoading"
-          :error="error"
-          :last-updated="lastUpdated"
-          :color-ramp="colorRamp"
-          :num-particles="numParticles[0]"
-          :max-age="maxAge[0]"
-          :speed-factor="speedFactor[0]"
-          :line-width="lineWidth[0]"
-          :speed-range="speedRange"
-          @load="handleMapLoad"
-          @refresh="fetchWindData"
-          @wind-loaded="handleWindLoaded"
-          @wind-error="handleWindError"
-        />
+      <ComponentDemo :code="codeExample" full-width>
+        <div class="grid min-w-0 gap-0 lg:grid-cols-3">
+          <div class="relative h-125 min-w-0 lg:col-span-2">
+            <ExamplesWindMapContainer
+              :wind-data="windData"
+              :is-loading="isLoading"
+              :error="error"
+              :last-updated="lastUpdated"
+              :color-ramp="colorRamp"
+              :num-particles="numParticles[0]"
+              :max-age="maxAge[0]"
+              :speed-factor="speedFactor[0]"
+              :line-width="lineWidth[0]"
+              :speed-range="speedRange"
+              @load="handleMapLoad"
+              @refresh="fetchWindData"
+              @wind-loaded="handleWindLoaded"
+              @wind-error="handleWindError"
+            />
+          </div>
 
-        <ExamplesWindControlPanel
-          v-model:num-particles="numParticles"
-          v-model:max-age="maxAge"
-          v-model:speed-factor="speedFactor"
-          v-model:line-width="lineWidth"
-          :data-point-count="windData.length"
-        />
-      </div>
-
-      <ComponentDemo :code="codeExample" class="mt-8" />
+          <ExamplesWindControlPanel
+            v-model:num-particles="numParticles"
+            v-model:max-age="maxAge"
+            v-model:speed-factor="speedFactor"
+            v-model:line-width="lineWidth"
+            :data-point-count="windData.length"
+          />
+        </div>
+      </ComponentDemo>
 
       <div class="mt-8 rounded-lg border bg-muted/30 p-6">
         <h3 class="mb-3 text-lg font-semibold">About This Example</h3>
@@ -203,6 +205,8 @@ ${SCRIPT_END}
           </li>
         </ul>
       </div>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

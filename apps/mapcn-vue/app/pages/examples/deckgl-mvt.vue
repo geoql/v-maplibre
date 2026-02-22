@@ -134,6 +134,8 @@ ${SCRIPT_END}
           </ClientOnly>
         </div>
       </ComponentDemo>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

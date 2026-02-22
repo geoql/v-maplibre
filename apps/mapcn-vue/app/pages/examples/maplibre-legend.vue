@@ -881,6 +881,8 @@ ${SCRIPT_END}
           </div>
         </div>
       </div>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

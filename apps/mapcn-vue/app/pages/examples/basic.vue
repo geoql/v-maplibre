@@ -53,6 +53,8 @@ ${SCRIPT_END}
           <LazyMapDemo :center="[-74.006, 40.7128]" :zoom="11" show-scale />
         </div>
       </ComponentDemo>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

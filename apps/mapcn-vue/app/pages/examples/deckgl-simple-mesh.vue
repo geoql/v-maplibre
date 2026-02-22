@@ -185,6 +185,8 @@ ${SCRIPT_END}
           Sphere, Cone) and OBJ file URLs.
         </p>
       </div>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>

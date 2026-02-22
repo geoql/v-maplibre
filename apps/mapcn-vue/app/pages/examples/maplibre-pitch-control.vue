@@ -349,6 +349,8 @@ ${SCRIPT_END}
           </li>
         </ul>
       </div>
+
+      <ExampleNavigation />
     </div>
   </div>
 </template>
