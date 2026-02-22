@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { Separator } from '~/components/ui/separator';
+  import type { TocLink } from '~/types/docs';
 
   const route = useRoute();
 
@@ -63,12 +64,7 @@
     'https://github.com/geoql/v-maplibre/issues/new?labels=documentation';
 
   // Use built-in TOC from Nuxt Content
-  interface TocLink {
-    id: string;
-    text: string;
-    depth: number;
-    children?: TocLink[];
-  }
+  // TocLink type imported from ~/types/docs
 
   const toc = computed(() => {
     const tocData = page.value?.body?.toc;
@@ -424,7 +420,7 @@
                   <!-- Active indicator -->
                   <span
                     v-if="activeHeading === heading.id"
-                    class="absolute top-1/2 left-0 h-5 w-0.5 -translate-y-1/2 rounded-full bg-primary shadow-sm shadow-primary/50"
+                    class="absolute top-1/2 left-0 h-5 w-0.5 -translate-y-1/2 rounded-full bg-primary shadow-[0_0_8px] shadow-primary/50"
                   ></span>
                   {{ heading.text }}
                 </a>

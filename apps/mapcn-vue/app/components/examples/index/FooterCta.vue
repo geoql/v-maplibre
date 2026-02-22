@@ -13,7 +13,7 @@
     >
       <!-- Animated background gradient -->
       <div
-        class="pointer-events-none absolute inset-0 -z-10 bg-linear-to-br from-primary/5 via-transparent to-violet-500/5"
+        class="pointer-events-none absolute inset-0 -z-10 bg-linear-to-br from-primary/5 via-transparent to-cyan-500/5"
       ></div>
 
       <!-- Animated corner accents -->
@@ -21,7 +21,7 @@
         class="absolute top-0 left-0 size-20 border-t-2 border-l-2 border-primary/20 transition-all duration-500 hover:border-primary/40"
       ></div>
       <div
-        class="absolute right-0 bottom-0 size-20 border-r-2 border-b-2 border-violet-500/20 transition-all duration-500 hover:border-violet-500/40"
+        class="absolute right-0 bottom-0 size-20 border-r-2 border-b-2 border-cyan-500/20 transition-all duration-500 hover:border-cyan-500/40"
       ></div>
 
       <!-- Glowing orbs -->
@@ -29,7 +29,7 @@
         class="pointer-events-none absolute -top-10 -right-10 size-40 rounded-full bg-primary/10 blur-3xl"
       ></div>
       <div
-        class="pointer-events-none absolute -bottom-10 -left-10 size-40 rounded-full bg-violet-500/10 blur-3xl"
+        class="pointer-events-none absolute -bottom-10 -left-10 size-40 rounded-full bg-cyan-500/10 blur-3xl"
       ></div>
 
       <!-- Icon with animated ring -->

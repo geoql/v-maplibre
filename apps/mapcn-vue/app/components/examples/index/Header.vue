@@ -111,7 +111,7 @@
       <span class="relative inline-block font-medium text-foreground">
         WebGL visualizations
         <span
-          class="absolute -bottom-0.5 left-0 h-px w-full bg-linear-to-r from-primary to-violet-500"
+          class="absolute -bottom-0.5 left-0 h-px w-full bg-linear-to-r from-primary to-cyan-500"
         ></span>
       </span>
       — each example is interactive and ready to use.

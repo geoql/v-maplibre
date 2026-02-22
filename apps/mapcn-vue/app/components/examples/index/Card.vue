@@ -50,7 +50,7 @@
       <!-- Badge -->
       <div
         v-if="example.badge"
-        class="absolute top-3 right-3 z-10 rounded-full bg-linear-to-r from-primary/90 to-violet-500/90 px-2.5 py-0.5 text-[10px] font-semibold tracking-wide text-white shadow-lg shadow-primary/20"
+        class="absolute top-3 right-3 z-10 rounded-full bg-linear-to-r from-primary/90 to-cyan-500/90 px-2.5 py-0.5 text-[10px] font-semibold tracking-wide text-white shadow-lg shadow-primary/20"
       >
         {{ example.badge }}
       </div>
@@ -86,7 +86,7 @@
       >
         {{ example.title }}
         <span
-          class="absolute -bottom-0.5 left-0 h-px w-0 bg-linear-to-r from-primary to-violet-500 transition-all duration-500 group-hover:w-full"
+          class="absolute -bottom-0.5 left-0 h-px w-0 bg-linear-to-r from-primary to-cyan-500 transition-all duration-500 group-hover:w-full"
         ></span>
       </h3>
 
