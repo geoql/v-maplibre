@@ -9,6 +9,7 @@
     CategoryLegendItem,
     GradientLegendItem,
     SizeLegendItem,
+    TableLegendItem,
     LegendItem,
     FilterState,
     ExpressionValue,
@@ -224,6 +225,25 @@
       (item): item is SizeLegendItem => 'size' in item && 'value' in item,
     );
   });
+
+  const tableItems = computed((): TableLegendItem[] => {
+    if (props.type !== 'table') return [];
+    return effectiveItems.value
+      .filter(
+        (item): item is TableLegendItem =>
+          'label' in item &&
+          'color' in item &&
+          'value' in item &&
+          !('size' in item) &&
+          !('visible' in item),
+      )
+      .sort((a, b) => b.value - a.value);
+  });
+
+  const formatTableValue = (item: TableLegendItem): string => {
+    if (item.formattedValue) return item.formattedValue;
+    return `${item.value}${item.unit ?? ''}`;
+  };
 
   const filterState = computed((): FilterState => {
     const visibleValues = Array.from(categoryItemVisibility.value.entries())
@@ -480,6 +500,26 @@
           <span class="v-legend-control-label">{{ item.label }}</span>
         </div>
       </template>
+
+      <template v-else-if="type === 'table'">
+        <div class="v-legend-control-table">
+          <div
+            v-for="item in tableItems"
+            :key="item.label"
+            class="v-legend-control-table-row"
+            :title="item.description"
+          >
+            <span
+              class="v-legend-control-swatch"
+              :style="{ backgroundColor: item.color }"
+            ></span>
+            <span class="v-legend-control-table-label">{{ item.label }}</span>
+            <span class="v-legend-control-table-value">
+              {{ formatTableValue(item) }}
+            </span>
+          </div>
+        </div>
+      </template>
     </div>
 
     <slot></slot>
@@ -660,5 +700,47 @@
     border-radius: 50%;
     background: var(--color-primary, #3b82f6);
     box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.1);
+  }
+
+  .v-legend-control-table {
+    max-height: 300px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .v-legend-control-table-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 8px;
+    border-radius: calc(var(--radius, 0.5rem) - 4px);
+  }
+
+  .v-legend-control-table-row:hover {
+    background: var(--color-accent, #f3f4f6);
+  }
+
+  .v-legend-control-table-label {
+    flex: 1;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-foreground, #374151);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .v-legend-control-table-value {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--color-muted-foreground, #6b7280);
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .v-legend-control:has(.v-legend-control-table) {
+    max-width: 280px;
   }
 </style>

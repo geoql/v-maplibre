@@ -29,6 +29,7 @@ export type {
   CategoryLegendItem,
   GradientLegendItem,
   SizeLegendItem,
+  TableLegendItem,
   LegendControlOptions,
   FilterState,
   ExpressionValue,

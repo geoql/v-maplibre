@@ -1,6 +1,6 @@
 export type { ControlPosition } from 'maplibre-gl';
 
-export type LegendType = 'category' | 'gradient' | 'size';
+export type LegendType = 'category' | 'gradient' | 'size' | 'table';
 
 export type LayerType = 'maplibre' | 'deckgl';
 
@@ -27,10 +27,26 @@ export interface SizeLegendItem {
   size: number;
 }
 
+export interface TableLegendItem {
+  /** Display name — left column (e.g. "Puerto Rico") */
+  label: string;
+  /** Raw numeric value for sorting */
+  value: number;
+  /** Pre-formatted display string (e.g. "6.0%"). Falls back to `${value}${unit}` */
+  formattedValue?: string;
+  /** Unit appended to value when formattedValue is absent (e.g. "%") */
+  unit?: string;
+  /** CSS color string for the swatch */
+  color: string;
+  /** Optional description shown as tooltip */
+  description?: string;
+}
+
 export type LegendItem =
   | CategoryLegendItem
   | GradientLegendItem
-  | SizeLegendItem;
+  | SizeLegendItem
+  | TableLegendItem;
 
 export interface FilterState {
   visibleValues: (string | number)[];

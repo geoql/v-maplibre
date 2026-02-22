@@ -207,6 +207,125 @@ describe('VControlLegend', () => {
     });
   });
 
+  describe('Table legend', () => {
+    it('renders table legend items sorted by value descending', async () => {
+      const wrapper = mount(VControlLegend, {
+        props: {
+          layerIds: ['states-layer'],
+          type: 'table',
+          title: 'States',
+          items: [
+            {
+              label: 'Alabama',
+              value: 2.8,
+              formattedValue: '2.8%',
+              color: '#deebf7',
+            },
+            {
+              label: 'Nevada',
+              value: 5.5,
+              formattedValue: '5.5%',
+              color: '#6baed6',
+            },
+            {
+              label: 'California',
+              value: 5.3,
+              formattedValue: '5.3%',
+              color: '#6baed6',
+            },
+          ],
+        },
+        global: {
+          provide: {
+            [MapKey as symbol]: ref(mockMap),
+          },
+        },
+      });
+
+      await nextTick();
+      const rows = wrapper.findAll('.v-legend-control-table-row');
+      expect(rows.length).toBe(3);
+      // Sorted descending by value: Nevada (5.5), California (5.3), Alabama (2.8)
+      expect(rows[0].find('.v-legend-control-table-label').text()).toBe(
+        'Nevada',
+      );
+      expect(rows[1].find('.v-legend-control-table-label').text()).toBe(
+        'California',
+      );
+      expect(rows[2].find('.v-legend-control-table-label').text()).toBe(
+        'Alabama',
+      );
+    });
+
+    it('renders formatted values when provided', async () => {
+      const wrapper = mount(VControlLegend, {
+        props: {
+          layerIds: ['states-layer'],
+          type: 'table',
+          items: [
+            {
+              label: 'Texas',
+              value: 4.1,
+              formattedValue: '4.1%',
+              color: '#9ecae1',
+            },
+          ],
+        },
+        global: {
+          provide: {
+            [MapKey as symbol]: ref(mockMap),
+          },
+        },
+      });
+
+      await nextTick();
+      expect(wrapper.find('.v-legend-control-table-value').text()).toBe('4.1%');
+    });
+
+    it('falls back to value with unit when formattedValue is absent', async () => {
+      const wrapper = mount(VControlLegend, {
+        props: {
+          layerIds: ['stats-layer'],
+          type: 'table',
+          items: [
+            { label: 'Region A', value: 42, unit: ' km²', color: '#ff0000' },
+          ],
+        },
+        global: {
+          provide: {
+            [MapKey as symbol]: ref(mockMap),
+          },
+        },
+      });
+
+      await nextTick();
+      expect(wrapper.find('.v-legend-control-table-value').text()).toBe(
+        '42 km²',
+      );
+    });
+
+    it('renders scrollable container for table items', async () => {
+      const wrapper = mount(VControlLegend, {
+        props: {
+          layerIds: ['states-layer'],
+          type: 'table',
+          items: [
+            { label: 'State 1', value: 1, color: '#ff0000' },
+            { label: 'State 2', value: 2, color: '#00ff00' },
+          ],
+        },
+        global: {
+          provide: {
+            [MapKey as symbol]: ref(mockMap),
+          },
+        },
+      });
+
+      await nextTick();
+      expect(wrapper.find('.v-legend-control-table').exists()).toBe(true);
+    });
+  });
+
   describe('Auto-generation', () => {
     it('auto-generates legend from match expression', async () => {
       mockMap.getLayer.mockReturnValue({ type: 'fill' });
