@@ -44,7 +44,7 @@
 </script>
 
 <template>
-  <div class="h-125 min-w-0 overflow-hidden rounded-lg border border-border">
+  <div class="h-125 min-w-0 overflow-hidden">
     <ClientOnly>
       <VMap
         :key="mapStyle"

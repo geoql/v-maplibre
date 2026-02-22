@@ -75,7 +75,7 @@
 </script>
 
 <template>
-  <div ref="containerRef" class="relative size-full overflow-hidden rounded-lg">
+  <div ref="containerRef" class="relative size-full overflow-hidden">
     <VMap
       :options="beforeMapOptions"
       class="absolute inset-0"
