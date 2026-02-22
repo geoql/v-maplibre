@@ -1,5 +1,21 @@
 # Changelog
 
+## [1.7.0](https://github.com/geoql/v-maplibre/compare/v1.6.1...v1.7.0) (2026-02-22)
+
+
+### Features
+
+* **v-maplibre:** add sun rendering props to starfield layer ([6700c6b](https://github.com/geoql/v-maplibre/commit/6700c6bf3694997e4fd8d452ec90ed7acec7e767))
+* **v-maplibre:** add table legend type to VControlLegend ([c010df8](https://github.com/geoql/v-maplibre/commit/c010df86d199e00c4ae48ac012c338ab3a7d4df2))
+* **v-maplibre:** add VLayerMaplibreStarfield component ([6ec3648](https://github.com/geoql/v-maplibre/commit/6ec364862bb941fa67743c44f4f57189b7a04f1b))
+* **v-maplibre:** upgrade maplibre-gl-lidar to v0.11.1 ([ce0b1df](https://github.com/geoql/v-maplibre/commit/ce0b1df6eb0f199d39e754f5b242c8902702aae3))
+
+
+### Miscellaneous
+
+* **deps:** bump dependencies and fix resvg-js catalog reference ([98a5693](https://github.com/geoql/v-maplibre/commit/98a5693740bf30add105c5a012d4504eab960534))
+* restructure bun workspace catalogs with named prefixes ([8626b1f](https://github.com/geoql/v-maplibre/commit/8626b1f7d7f0789893bc3222e7c5957450650e39))
+
 ## [1.6.1](https://github.com/geoql/v-maplibre/compare/v1.6.0...v1.6.1) (2026-02-02)
 
 

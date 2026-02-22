@@ -1,6 +1,6 @@
 {
   "name": "@geoql/v-maplibre",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "exports": "./dist/index.js",
   "imports": {
     "vue": "npm:vue@^3.5.0",
