@@ -1,14 +1,14 @@
-import tailwindcss from '@tailwindcss/vite';
-
 export default defineNuxtConfig({
   modules: [
     '@nuxtjs/color-mode',
     '@nuxt/icon',
+    '@nuxt/fonts',
     '@nuxt/content',
     'shadcn-nuxt',
     '@vueuse/nuxt',
     'motion-v/nuxt',
     'nuxt-og-image',
+    '@nuxtjs/tailwindcss',
     [
       '@nuxtjs/plausible',
       {
@@ -84,6 +84,10 @@ export default defineNuxtConfig({
 
   compatibilityDate: '2025-01-06',
 
+  postcss: {
+    plugins: {},
+  },
+
   nitro: {
     preset: 'cloudflare-pages',
     prerender: {
@@ -109,16 +113,6 @@ export default defineNuxtConfig({
     },
     replace: {
       'process.stdout': 'undefined',
-    },
-  },
-
-  vite: {
-    plugins: [tailwindcss()],
-  },
-
-  postcss: {
-    plugins: {
-      '@tailwindcss/postcss': {},
     },
   },
 
