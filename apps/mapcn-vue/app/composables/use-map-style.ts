@@ -13,7 +13,7 @@ export function useMapStyle() {
   );
   const mapsguruDarkStyle = computed(
     () =>
-      `https://maps.guru/api/v1/styles/standard/dark/style.json?key=${mapsguruApiKey}`,
+      `https://maps.guru/api/v1/styles/standard/high_contrast/style.json?key=${mapsguruApiKey}`,
   );
 
   const cartoLightStyle =
