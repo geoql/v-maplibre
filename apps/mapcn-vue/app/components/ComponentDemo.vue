@@ -23,13 +23,14 @@
 </script>
 
 <template>
-  <div class="flex min-h-dvh flex-col lg:flex-row">
-    <!-- Left panel: docs/code (scrollable) -->
+  <div class="flex min-h-dvh flex-col lg:h-dvh lg:flex-row lg:overflow-hidden">
+    <!-- Left panel: docs/code -->
     <div
-      class="relative order-last flex-1 overflow-y-auto lg:order-first lg:w-1/2 lg:max-w-[50%]"
+      class="relative order-last flex flex-1 flex-col lg:order-first lg:w-1/2 lg:max-w-[50%]"
     >
+      <!-- Scrollable content -->
       <div
-        class="gradient-fade-both hide-scrollbar h-full overflow-y-auto p-6 lg:p-10 lg:pt-20"
+        class="gradient-fade-both hide-scrollbar flex-1 overflow-y-auto p-6 lg:p-10 lg:pt-20"
       >
         <!-- Breadcrumb -->
         <NuxtLink
@@ -98,19 +99,19 @@
 
         <!-- Install command -->
         <PackageManagerTabs v-if="registry" :registry="registry" class="mt-8" />
+      </div>
 
-        <!-- Navigation -->
-        <div class="mt-8">
-          <ExampleNavigation />
-        </div>
+      <!-- Sticky footer -->
+      <div class="shrink-0 px-6 pb-4 pt-2 lg:px-10">
+        <ExampleNavigation />
       </div>
     </div>
 
-    <!-- Right panel: live preview (sticky) -->
+    <!-- Right panel: live preview -->
     <div
       :class="
         cn(
-          'relative order-first min-h-[50dvh] overflow-hidden bg-muted/30 dark:bg-background lg:sticky lg:top-0 lg:order-last lg:h-dvh lg:w-1/2',
+          'relative order-first min-h-[50dvh] overflow-hidden bg-muted/30 dark:bg-background lg:order-last lg:h-dvh lg:w-1/2',
           props.class,
         )
       "

@@ -31,7 +31,7 @@
 </script>
 
 <template>
-  <div class="mt-10">
+  <div>
     <!-- Edit & Report Links -->
     <div class="flex items-center justify-center gap-2 text-sm">
       <Separator class="flex-1 bg-border/50" />
@@ -57,7 +57,7 @@
     </div>
 
     <!-- Prev/Next Navigation -->
-    <div class="mt-8 grid grid-cols-2 gap-4">
+    <div class="mt-4 grid grid-cols-2 gap-4">
       <NuxtLink
         v-if="prevExample"
         :to="prevExample.href"
