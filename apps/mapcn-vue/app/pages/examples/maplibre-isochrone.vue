@@ -9,6 +9,7 @@
     VMarker,
     VLayerMaplibreIsochrone,
   } from '@geoql/v-maplibre';
+  import { motion, AnimatePresence } from 'motion-v';
   import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import type {
     IsochroneResponse,
@@ -35,6 +36,7 @@
   const mapLoaded = ref(false);
   const isLoading = ref(false);
   const error = ref<string | null>(null);
+  const panelOpen = ref(true);
 
   const mapOptions = computed(() => ({
     container: `isochrone-map-${mapId}`,
@@ -310,67 +312,90 @@
         </div>
       </div>
 
-      <!-- Controls overlay -->
-      <div
-        class="absolute bottom-4 left-4 z-10 w-64 rounded-xl bg-background/95 p-4 shadow-lg backdrop-blur-sm"
+      <!-- Toggle button - always visible -->
+      <button
+        class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
+        :class="{
+          'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen,
+        }"
+        @click="panelOpen = !panelOpen"
       >
-        <div class="mb-3">
-          <h3 class="mb-2 text-xs font-medium">Metric</h3>
-          <div class="flex gap-1.5">
-            <button
-              class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs transition-colors"
-              :class="[
-                selectedMetric === 'time'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted hover:bg-muted/80',
-              ]"
-              :disabled="isLoading"
-              @click="handleMetricChange('time')"
-            >
-              <Icon name="lucide:clock" class="size-3.5" />
-              Time
-            </button>
-            <button
-              class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs transition-colors"
-              :class="[
-                selectedMetric === 'distance'
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted hover:bg-muted/80',
-              ]"
-              :disabled="isLoading"
-              @click="handleMetricChange('distance')"
-            >
-              <Icon name="lucide:ruler" class="size-3.5" />
-              Distance
-            </button>
-          </div>
-        </div>
+        <Icon
+          :name="
+            panelOpen ? 'lucide:panel-left-close' : 'lucide:panel-left-open'
+          "
+          class="size-4"
+        />
+      </button>
 
-        <div>
-          <h3 class="mb-2 text-xs font-medium">Transport</h3>
-          <div class="flex gap-1.5">
-            <button
-              v-for="mode in transportModes"
-              :key="mode.value"
-              class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs transition-colors"
-              :class="[
-                selectedMode === mode.value
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted hover:bg-muted/80',
-              ]"
-              :disabled="isLoading"
-              @click="handleModeChange(mode.value)"
-            >
-              <Icon :name="mode.icon" class="size-3.5" />
-              {{ mode.label }}
-            </button>
+      <!-- Collapsible panel with motion-v -->
+      <AnimatePresence>
+        <motion.div
+          v-if="panelOpen"
+          :initial="{ opacity: 0, x: -20, scale: 0.95 }"
+          :animate="{ opacity: 1, x: 0, scale: 1 }"
+          :exit="{ opacity: 0, x: -20, scale: 0.95 }"
+          :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
+          class="absolute top-16 left-4 z-10 w-64 rounded-lg bg-background/95 p-4 shadow-lg backdrop-blur-sm"
+        >
+          <div class="mb-3">
+            <h3 class="mb-2 text-xs font-medium">Metric</h3>
+            <div class="flex gap-1.5">
+              <button
+                class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs transition-colors"
+                :class="[
+                  selectedMetric === 'time'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted hover:bg-muted/80',
+                ]"
+                :disabled="isLoading"
+                @click="handleMetricChange('time')"
+              >
+                <Icon name="lucide:clock" class="size-3.5" />
+                Time
+              </button>
+              <button
+                class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs transition-colors"
+                :class="[
+                  selectedMetric === 'distance'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted hover:bg-muted/80',
+                ]"
+                :disabled="isLoading"
+                @click="handleMetricChange('distance')"
+              >
+                <Icon name="lucide:ruler" class="size-3.5" />
+                Distance
+              </button>
+            </div>
           </div>
-        </div>
 
-        <p class="mt-3 text-xs text-muted-foreground">
-          Drag the red marker to change origin.
-        </p>
-      </div>
+          <div>
+            <h3 class="mb-2 text-xs font-medium">Transport</h3>
+            <div class="flex gap-1.5">
+              <button
+                v-for="mode in transportModes"
+                :key="mode.value"
+                class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs transition-colors"
+                :class="[
+                  selectedMode === mode.value
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-muted hover:bg-muted/80',
+                ]"
+                :disabled="isLoading"
+                @click="handleModeChange(mode.value)"
+              >
+                <Icon :name="mode.icon" class="size-3.5" />
+                {{ mode.label }}
+              </button>
+            </div>
+          </div>
+
+          <p class="mt-3 text-xs text-muted-foreground">
+            Drag the red marker to change origin.
+          </p>
+        </motion.div>
+      </AnimatePresence>
     </div>
   </ComponentDemo>
 </template>

@@ -10,6 +10,7 @@
     VControlLegend,
   } from '@geoql/v-maplibre';
   import type { CategoryLegendItem } from '@geoql/v-maplibre';
+  import { motion, AnimatePresence } from 'motion-v';
   import type {
     RouteStop,
     RouteLegInfo,
@@ -39,6 +40,11 @@
   }
 
   const { mapStyle } = useRouteUtils();
+  const panelOpen = ref(true);
+
+  function togglePanel() {
+    panelOpen.value = !panelOpen.value;
+  }
   const mapId = useId();
 
   const multiStopMapOptions = computed(() => ({
@@ -273,136 +279,157 @@
       </VMap>
     </ClientOnly>
 
-    <!-- Trip Summary overlay -->
-    <div
-      class="absolute top-4 left-4 z-10 w-72 max-h-[calc(100%-2rem)] overflow-auto rounded-xl bg-background/95 shadow-lg backdrop-blur-sm"
+    <!-- Toggle button - always visible -->
+    <button
+      class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
+      :class="{
+        'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen,
+      }"
+      @click="togglePanel"
     >
-      <div class="p-4">
-        <div class="mb-3 flex items-center justify-between">
-          <span
-            class="text-xs font-medium tracking-wider text-muted-foreground uppercase"
-            >Trip Summary</span
-          >
-          <span
-            v-if="optimizedOrder.length > 0"
-            class="rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-600 dark:text-emerald-400"
-          >
-            Optimized
-          </span>
-        </div>
+      <Icon
+        :name="panelOpen ? 'lucide:panel-left-close' : 'lucide:panel-left-open'"
+        class="size-4"
+      />
+    </button>
 
-        <div
-          v-if="multiStopLoading"
-          class="flex items-center gap-2 py-4 text-muted-foreground"
-        >
-          <Icon name="lucide:loader-2" class="size-4 animate-spin" />
-          <span>Optimizing route...</span>
-        </div>
-
-        <template v-else-if="multiStopTotalDuration > 0">
-          <div class="mb-1 flex items-baseline gap-2">
-            <span class="text-2xl font-bold">{{
-              formatDuration(multiStopTotalDuration)
-            }}</span>
-            <span class="text-muted-foreground">total</span>
-          </div>
-          <div class="flex items-center gap-4 text-sm text-muted-foreground">
-            <span class="flex items-center gap-1">
-              <Icon name="lucide:route" class="size-3.5" />
-              {{ formatDistanceKm(multiStopTotalDistance) }}
-            </span>
-            <span class="flex items-center gap-1">
-              <Icon name="lucide:map-pin" class="size-3.5" />
-              {{ stops.length }} stops
+    <!-- Trip Summary overlay - collapsible -->
+    <AnimatePresence>
+      <motion.div
+        v-if="panelOpen"
+        :initial="{ opacity: 0, x: -20, scale: 0.95 }"
+        :animate="{ opacity: 1, x: 0, scale: 1 }"
+        :exit="{ opacity: 0, x: -20, scale: 0.95 }"
+        :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
+        class="absolute top-16 left-4 z-10 w-72 max-h-[calc(100%-5rem)] overflow-auto rounded-xl bg-background/95 shadow-lg backdrop-blur-sm"
+      >
+        <div class="p-4">
+          <div class="mb-3 flex items-center justify-between">
+            <span
+              class="text-xs font-medium tracking-wider text-muted-foreground uppercase"
+              >Trip Summary</span
+            >
+            <span
+              v-if="optimizedOrder.length > 0"
+              class="rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-600 dark:text-emerald-400"
+            >
+              Optimized
             </span>
           </div>
-        </template>
-      </div>
 
-      <!-- Journey stops -->
-      <div class="border-t border-border">
-        <div class="border-b border-border bg-muted/30 px-4 py-2">
-          <span
-            class="text-xs font-medium tracking-wider text-muted-foreground uppercase"
-            >Journey</span
+          <div
+            v-if="multiStopLoading"
+            class="flex items-center gap-2 py-4 text-muted-foreground"
           >
+            <Icon name="lucide:loader-2" class="size-4 animate-spin" />
+            <span>Optimizing route...</span>
+          </div>
+
+          <template v-else-if="multiStopTotalDuration > 0">
+            <div class="mb-1 flex items-baseline gap-2">
+              <span class="text-2xl font-bold">{{
+                formatDuration(multiStopTotalDuration)
+              }}</span>
+              <span class="text-muted-foreground">total</span>
+            </div>
+            <div class="flex items-center gap-4 text-sm text-muted-foreground">
+              <span class="flex items-center gap-1">
+                <Icon name="lucide:route" class="size-3.5" />
+                {{ formatDistanceKm(multiStopTotalDistance) }}
+              </span>
+              <span class="flex items-center gap-1">
+                <Icon name="lucide:map-pin" class="size-3.5" />
+                {{ stops.length }} stops
+              </span>
+            </div>
+          </template>
         </div>
 
-        <div class="divide-y divide-border">
-          <div v-for="(stop, index) in stops" :key="index" class="relative">
-            <div
-              v-if="index < stops.length - 1"
-              class="absolute top-10 bottom-0 left-6 w-0.5 bg-linear-to-b from-border to-border/50"
-            ></div>
+        <!-- Journey stops -->
+        <div class="border-t border-border">
+          <div class="border-b border-border bg-muted/30 px-4 py-2">
+            <span
+              class="text-xs font-medium tracking-wider text-muted-foreground uppercase"
+              >Journey</span
+            >
+          </div>
 
-            <div class="flex gap-3 p-3">
+          <div class="divide-y divide-border">
+            <div v-for="(stop, index) in stops" :key="index" class="relative">
               <div
-                :class="[
-                  `
-                    relative z-10 flex size-7 shrink-0 items-center
-                    justify-center rounded-full border-2
-                  `,
-                  getStopBorderClass(stop),
-                ]"
-              >
-                <Icon
-                  :name="stop.icon"
-                  :class="['size-3.5', getStopIconClass(stop)]"
-                />
-              </div>
+                v-if="index < stops.length - 1"
+                class="absolute top-10 bottom-0 left-6 w-0.5 bg-linear-to-b from-border to-border/50"
+              ></div>
 
-              <div class="min-w-0 flex-1">
-                <div class="flex items-center justify-between gap-2">
-                  <span class="truncate text-sm font-medium">{{
-                    stop.name
-                  }}</span>
-                  <span
-                    v-if="index === 0"
-                    class="shrink-0 text-xs text-muted-foreground"
+              <div class="flex gap-3 p-3">
+                <div
+                  :class="[
+                    `
+                      relative z-10 flex size-7 shrink-0 items-center
+                      justify-center rounded-full border-2
+                    `,
+                    getStopBorderClass(stop),
+                  ]"
+                >
+                  <Icon
+                    :name="stop.icon"
+                    :class="['size-3.5', getStopIconClass(stop)]"
+                  />
+                </div>
+
+                <div class="min-w-0 flex-1">
+                  <div class="flex items-center justify-between gap-2">
+                    <span class="truncate text-sm font-medium">{{
+                      stop.name
+                    }}</span>
+                    <span
+                      v-if="index === 0"
+                      class="shrink-0 text-xs text-muted-foreground"
+                    >
+                      Now
+                    </span>
+                    <span
+                      v-else-if="multiStopLegs.length >= index"
+                      class="shrink-0 text-xs font-medium text-foreground"
+                    >
+                      {{ getArrivalTime(index) }}
+                    </span>
+                  </div>
+
+                  <div
+                    v-if="index < multiStopLegs.length"
+                    class="mt-0.5 flex items-center gap-3 text-xs text-muted-foreground"
                   >
-                    Now
-                  </span>
-                  <span
-                    v-else-if="multiStopLegs.length >= index"
-                    class="shrink-0 text-xs font-medium text-foreground"
+                    <span>{{ formatDuration(getLegDuration(index)) }}</span>
+                    <span class="text-border">&bull;</span>
+                    <span>{{ formatDistanceKm(getLegDistance(index)) }}</span>
+                  </div>
+
+                  <div
+                    v-if="stop.type === 'start'"
+                    class="mt-0.5 text-xs text-emerald-600 dark:text-emerald-400"
                   >
-                    {{ getArrivalTime(index) }}
-                  </span>
-                </div>
-
-                <div
-                  v-if="index < multiStopLegs.length"
-                  class="mt-0.5 flex items-center gap-3 text-xs text-muted-foreground"
-                >
-                  <span>{{ formatDuration(getLegDuration(index)) }}</span>
-                  <span class="text-border">&bull;</span>
-                  <span>{{ formatDistanceKm(getLegDistance(index)) }}</span>
-                </div>
-
-                <div
-                  v-if="stop.type === 'start'"
-                  class="mt-0.5 text-xs text-emerald-600 dark:text-emerald-400"
-                >
-                  Starting point
-                </div>
-                <div
-                  v-else-if="stop.type === 'end'"
-                  class="mt-0.5 text-xs text-red-600 dark:text-red-400"
-                >
-                  Final destination
+                    Starting point
+                  </div>
+                  <div
+                    v-else-if="stop.type === 'end'"
+                    class="mt-0.5 text-xs text-red-600 dark:text-red-400"
+                  >
+                    Final destination
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div
-        class="flex items-center gap-2 border-t border-border px-4 py-2 text-xs text-muted-foreground"
-      >
-        <Icon name="lucide:move" class="size-3.5" />
-        <span>Drag markers to adjust stops</span>
-      </div>
-    </div>
+        <div
+          class="flex items-center gap-2 border-t border-border px-4 py-2 text-xs text-muted-foreground"
+        >
+          <Icon name="lucide:move" class="size-3.5" />
+          <span>Drag markers to adjust stops</span>
+        </div>
+      </motion.div>
+    </AnimatePresence>
   </div>
 </template>
