@@ -161,7 +161,7 @@ ${SCRIPT_END}
     <VControlLayer
       layer-id="states-fill"
       title="US States Layer"
-      position="bottom-left"
+      position="bottom-right"
       :visible="true"
       :opacity="0.5"
     />
@@ -198,7 +198,7 @@ ${SCRIPT_END}
     <VControlLayer
       layer-id="scatter-layer"
       title="Cities Layer"
-      position="bottom-left"
+      position="bottom-right"
       :visible="true"
       :opacity="1"
     />
@@ -249,7 +249,7 @@ ${SCRIPT_END}
     <VControlLayerGroup
       :layers="layerGroupConfig"
       title="Map Layers"
-      position="bottom-left"
+      position="bottom-right"
       :collapsible="true"
     />
   </VMap>
@@ -338,7 +338,7 @@ ${SCRIPT_END}
               <VControlLayer
                 layer-id="states-fill"
                 title="US States Layer"
-                position="bottom-left"
+                position="bottom-right"
                 :visible="true"
                 :opacity="0.5"
               />
@@ -369,7 +369,7 @@ ${SCRIPT_END}
               <VControlLayer
                 layer-id="scatter-layer"
                 title="Cities Layer"
-                position="bottom-left"
+                position="bottom-right"
                 :visible="true"
                 :opacity="1"
               />
@@ -419,7 +419,7 @@ ${SCRIPT_END}
               <VControlLayerGroup
                 :layers="layerGroupConfig"
                 title="Map Layers"
-                position="bottom-left"
+                position="bottom-right"
                 :collapsible="true"
               />
             </VMap>

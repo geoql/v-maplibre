@@ -219,7 +219,7 @@
       <VControlLayer
         layer-id="isochrone-fill"
         title="Opacity"
-        position="top-left"
+        position="bottom-right"
         :opacity="0.85"
       />
     </VMap>
@@ -274,7 +274,7 @@
           <VControlLayer
             layer-id="isochrone-fill"
             title="Isochrone Opacity"
-            position="top-right"
+            position="bottom-right"
             :visible="true"
             :opacity="0.85"
           />
