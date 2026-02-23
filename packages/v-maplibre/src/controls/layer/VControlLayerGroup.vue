@@ -398,6 +398,15 @@
     background: var(--color-accent, #f3f4f6);
   }
 
+  .v-layer-group-header:focus {
+    outline: none;
+  }
+
+  .v-layer-group-header:focus-visible {
+    outline: 2px solid var(--color-primary, #3b82f6);
+    outline-offset: -2px;
+  }
+
   .v-layer-group.is-collapsed .v-layer-group-header {
     border-bottom: none;
   }

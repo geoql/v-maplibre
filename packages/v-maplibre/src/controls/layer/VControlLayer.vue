@@ -363,6 +363,15 @@
     color: var(--color-muted-foreground, #9ca3af);
   }
 
+  .v-layer-control-toggle:focus {
+    outline: none;
+  }
+
+  .v-layer-control-toggle:focus-visible {
+    outline: 2px solid var(--color-primary, #3b82f6);
+    outline-offset: -2px;
+  }
+
   .v-layer-control-slider-row {
     display: flex;
     align-items: center;
