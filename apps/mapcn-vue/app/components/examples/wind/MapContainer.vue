@@ -92,7 +92,7 @@
 
       <div
         v-if="lastUpdated"
-        class="absolute top-2 left-2 z-10 rounded-sm bg-background/80 px-2 py-1 text-xs text-muted-foreground backdrop-blur-sm"
+        class="absolute top-2 right-2 z-10 rounded-sm bg-background/80 px-2 py-1 text-xs text-muted-foreground backdrop-blur-sm"
       >
         <div class="flex items-center gap-2">
           <span>Updated: {{ lastUpdated.toLocaleTimeString() }}</span>
