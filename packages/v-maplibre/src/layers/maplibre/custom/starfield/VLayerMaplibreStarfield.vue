@@ -19,6 +19,7 @@
     sunColor?: number;
     sunIntensity?: number;
     autoFadeStars?: boolean;
+    fadeAltitude?: number;
   }
 
   const props = withDefaults(defineProps<Props>(), {
@@ -67,6 +68,7 @@
         sunColor: props.sunColor,
         sunIntensity: props.sunIntensity,
         autoFadeStars: props.autoFadeStars,
+        fadeAltitude: props.fadeAltitude,
       });
 
       mapInstance.addLayer(layerInstance, props.before || undefined);
@@ -111,9 +113,19 @@
   });
 
   watch(
-    () => [props.sunAzimuth, props.sunAltitude],
-    ([az, alt]) => {
-      layerInstance?.setSunPosition(az as number, alt as number);
+    () => [props.sunAzimuth, props.sunAltitude, props.fadeAltitude],
+    ([az, alt, fade]) => {
+      layerInstance?.setSunPosition(
+        az as number,
+        alt as number,
+        fade as number | undefined,
+      );
+    },
+  );
+  watch(
+    () => props.fadeAltitude,
+    (fade) => {
+      layerInstance?.setFadeAltitude(fade);
     },
   );
 
