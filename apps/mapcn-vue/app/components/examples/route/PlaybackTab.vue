@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import type { Map as MaplibreMap } from 'maplibre-gl';
+  import { AttributionControl } from 'maplibre-gl';
   import {
     VMap,
     VMarker,
@@ -30,7 +31,8 @@
     container: `playback-map-${mapId}`,
     style: mapStyle.value,
     center: [-73.93, 40.74] as [number, number],
-    zoom: 11,
+    zoom: 10,
+    attributionControl: false,
   }));
 
   const routeCoordinates = ref<[number, number][]>([]);
@@ -192,7 +194,7 @@
           fitMapToBounds(
             mapRef.value as unknown as Parameters<typeof fitMapToBounds>[0],
             [startLocation.coordinates, endLocation.coordinates],
-            { top: 80, bottom: 80, left: 80, right: 80 },
+            { top: 80, bottom: 200, left: 80, right: 80 },
             14,
           );
         }
@@ -208,10 +210,12 @@
     mapRef.value = map;
     mapLoaded.value = true;
 
+    map.addControl(new AttributionControl({ compact: true }));
+
     fitMapToBounds(
       map as unknown as Parameters<typeof fitMapToBounds>[0],
       [startLocation.coordinates, endLocation.coordinates],
-      { top: 80, bottom: 80, left: 80, right: 80 },
+      { top: 80, bottom: 200, left: 80, right: 80 },
       14,
     );
 
@@ -346,7 +350,7 @@
 
     <!-- Playback controls overlay -->
     <div
-      class="absolute bottom-4 left-4 right-14 z-10 rounded-xl bg-background/95 shadow-lg backdrop-blur-sm"
+      class="absolute bottom-4 left-48 right-14 z-10 rounded-xl bg-background/95 shadow-lg backdrop-blur-sm"
     >
       <div class="p-4">
         <div class="mb-3 flex items-center justify-between">
