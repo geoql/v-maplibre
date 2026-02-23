@@ -8,50 +8,81 @@
   padding-inline: 1rem;
 }
 
+/* ─── Mist-based theme (blue-tinted neutrals, violet primary) ─── */
+
 @theme {
-  --color-background: oklch(1 0 0);
-  --color-foreground: oklch(0.145 0 0);
-  --color-card: oklch(1 0 0);
-  --color-card-foreground: oklch(0.145 0 0);
-  --color-popover: oklch(1 0 0);
-  --color-popover-foreground: oklch(0.145 0 0);
-  --color-primary: oklch(0.55 0.22 275);
-  --color-primary-foreground: oklch(0.985 0 0);
-  --color-secondary: oklch(0.97 0 0);
-  --color-secondary-foreground: oklch(0.205 0 0);
-  --color-muted: oklch(0.97 0 0);
-  --color-muted-foreground: oklch(0.556 0 0);
-  --color-accent: oklch(0.97 0 0);
-  --color-accent-foreground: oklch(0.205 0 0);
+  /* Typography: 4-font stack */
+  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
+  --font-display: 'Syne', ui-sans-serif, system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
+
+  /* Mist palette: blue-tinted neutrals (hue ~214-228) */
+  --color-background: oklch(0.987 0.002 197.1); /* mist-50 */
+  --color-foreground: oklch(0.148 0.004 228.8); /* mist-950 */
+  --color-card: oklch(1 0.001 214);
+  --color-card-foreground: oklch(0.148 0.004 228.8);
+  --color-popover: oklch(1 0.001 214);
+  --color-popover-foreground: oklch(0.148 0.004 228.8);
+  --color-primary: oklch(0.55 0.22 275); /* violet */
+  --color-primary-foreground: oklch(0.987 0.002 197.1);
+  --color-secondary: oklch(0.963 0.002 197.1); /* mist-100 */
+  --color-secondary-foreground: oklch(0.218 0.008 223.9); /* mist-900 */
+  --color-muted: oklch(0.963 0.002 197.1); /* mist-100 */
+  --color-muted-foreground: oklch(0.56 0.021 213.5); /* mist-500 */
+  --color-accent: oklch(0.963 0.002 197.1); /* mist-100 */
+  --color-accent-foreground: oklch(0.218 0.008 223.9); /* mist-900 */
   --color-destructive: oklch(0.577 0.245 27.325);
   --color-destructive-foreground: oklch(0.577 0.245 27.325);
-  --color-border: oklch(0.922 0 0);
-  --color-input: oklch(0.922 0 0);
-  --color-ring: oklch(0.55 0.22 275);
+  --color-border: oklch(0.925 0.005 214.3); /* mist-200 */
+  --color-input: oklch(0.925 0.005 214.3); /* mist-200 */
+  --color-ring: oklch(0.55 0.22 275); /* violet */
   --radius: 0.625rem;
+
+  /* Sidebar: componentry.fun-style navigation panel */
+  --color-sidebar: oklch(0.987 0.002 197.1); /* mist-50 */
+  --color-sidebar-foreground: oklch(0.148 0.004 228.8); /* mist-950 */
+  --color-sidebar-primary: oklch(0.55 0.22 275); /* violet */
+  --color-sidebar-primary-foreground: oklch(0.987 0.002 197.1);
+  --color-sidebar-accent: oklch(0.963 0.002 197.1); /* mist-100 */
+  --color-sidebar-accent-foreground: oklch(0.218 0.008 223.9); /* mist-900 */
+  --color-sidebar-border: oklch(0.925 0.005 214.3); /* mist-200 */
+  --color-sidebar-ring: oklch(0.55 0.22 275); /* violet */
 }
 
 .dark {
-  --color-background: oklch(0.13 0.004 270);
-  --color-foreground: oklch(0.985 0 0);
-  --color-card: oklch(0.155 0.004 270);
-  --color-card-foreground: oklch(0.985 0 0);
-  --color-popover: oklch(0.155 0.006 270);
-  --color-popover-foreground: oklch(0.985 0 0);
-  --color-primary: oklch(0.65 0.22 275);
-  --color-primary-foreground: oklch(0.13 0.004 270);
-  --color-secondary: oklch(0.22 0.005 270);
-  --color-secondary-foreground: oklch(0.985 0 0);
-  --color-muted: oklch(0.22 0.005 270);
-  --color-muted-foreground: oklch(0.65 0.01 270);
-  --color-accent: oklch(0.22 0.005 270);
-  --color-accent-foreground: oklch(0.985 0 0);
+  --color-background: oklch(0.1 0.004 225); /* near-black with blue tint */
+  --color-foreground: oklch(0.987 0.002 197.1); /* mist-50 */
+  --color-card: oklch(0.148 0.006 225); /* mist-950 blue */
+  --color-card-foreground: oklch(0.987 0.002 197.1);
+  --color-popover: oklch(0.155 0.006 225);
+  --color-popover-foreground: oklch(0.987 0.002 197.1);
+  --color-primary: oklch(0.65 0.22 275); /* brighter violet */
+  --color-primary-foreground: oklch(0.1 0.004 225);
+  --color-secondary: oklch(0.218 0.008 223.9); /* mist-900 */
+  --color-secondary-foreground: oklch(0.987 0.002 197.1);
+  --color-muted: oklch(0.218 0.008 223.9); /* mist-900 */
+  --color-muted-foreground: oklch(0.723 0.014 214.4); /* mist-400 */
+  --color-accent: oklch(0.218 0.008 223.9); /* mist-900 */
+  --color-accent-foreground: oklch(0.987 0.002 197.1);
   --color-destructive: oklch(0.396 0.141 25.723);
   --color-destructive-foreground: oklch(0.637 0.237 25.331);
-  --color-border: oklch(0.25 0.006 270);
-  --color-input: oklch(0.25 0.006 270);
-  --color-ring: oklch(0.65 0.22 275);
+  --color-border: oklch(0.275 0.011 216.9); /* mist-800 */
+  --color-input: oklch(0.275 0.011 216.9); /* mist-800 */
+  --color-ring: oklch(0.65 0.22 275); /* brighter violet */
+
+  /* Sidebar (dark) */
+  --color-sidebar: oklch(0.12 0.005 225); /* slightly lighter than background */
+  --color-sidebar-foreground: oklch(0.987 0.002 197.1); /* mist-50 */
+  --color-sidebar-primary: oklch(0.65 0.22 275); /* brighter violet */
+  --color-sidebar-primary-foreground: oklch(0.1 0.004 225);
+  --color-sidebar-accent: oklch(0.218 0.008 223.9); /* mist-900 */
+  --color-sidebar-accent-foreground: oklch(0.987 0.002 197.1);
+  --color-sidebar-border: oklch(0.275 0.011 216.9); /* mist-800 */
+  --color-sidebar-ring: oklch(0.65 0.22 275); /* brighter violet */
 }
+
+/* ─── Base ─── */
 
 @layer base {
   * {
@@ -72,11 +103,95 @@ canvas {
   outline: none !important;
 }
 
+/* ─── Map containers ─── */
+
 .map-container {
   @apply w-full h-full min-h-100 overflow-hidden;
 }
 
-/* Shiki code block styles */
+.demo-map-container {
+  @apply w-full h-full overflow-hidden;
+}
+
+.maplibregl-ctrl-attrib {
+  font-size: 9px !important;
+  opacity: 0.6;
+}
+
+/* Sidebar: always overlay, never push content */
+[data-slot='sidebar'][data-state='expanded'] > div:first-child {
+  width: 0 !important;
+}
+
+/* Sidebar: z-index above backdrop overlay */
+[data-slot='sidebar'] > div:last-child {
+  z-index: 50 !important;
+}
+
+/* Backdrop fade transition */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+/* ─── Componentry.fun-style utilities ─── */
+
+/* Gradient text — use on headings for depth */
+.gradient-text {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(
+    to bottom right,
+    var(--color-foreground),
+    var(--color-muted-foreground),
+    var(--color-foreground)
+  );
+}
+
+.dark .gradient-text {
+  background-image: linear-gradient(
+    to bottom right,
+    oklch(0.987 0.002 197.1),
+    oklch(0.56 0.021 213.5),
+    oklch(0.987 0.002 197.1)
+  );
+}
+
+/* Gradient fade overlays — dissolve content into background */
+.gradient-fade-top {
+  mask-image: linear-gradient(to bottom, transparent 0%, black 15%, black 100%);
+}
+
+.gradient-fade-bottom {
+  mask-image: linear-gradient(to bottom, black 0%, black 85%, transparent 100%);
+}
+
+.gradient-fade-both {
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0%,
+    black 12%,
+    black 88%,
+    transparent 100%
+  );
+}
+
+/* Hidden scrollbar — for immersive scrollable panels */
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ─── Shiki code block styles ─── */
+
 .shiki {
   counter-reset: line;
 }
@@ -92,7 +207,7 @@ canvas {
   width: 1.5rem;
   margin-right: 1.25rem;
   text-align: right;
-  color: #52525b;
+  color: oklch(0.56 0.021 213.5); /* mist-500 */
   user-select: none;
   font-size: 0.75rem;
 }
@@ -101,6 +216,8 @@ canvas {
 .shiki span {
   background-color: transparent !important;
 }
+
+/* ─── Prose typography ─── */
 
 .prose {
   @apply max-w-none;
@@ -204,73 +321,7 @@ canvas {
   @apply font-semibold text-foreground;
 }
 
-.demo-map-container {
-  @apply w-full h-full overflow-hidden;
-}
-
-.maplibregl-ctrl-attrib {
-  font-size: 9px !important;
-  opacity: 0.6;
-}
-
-@keyframes aurora-1 {
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(0deg) scale(1);
-  }
-  33% {
-    transform: translate(5%, 5%) rotate(5deg) scale(1.05);
-  }
-  66% {
-    transform: translate(-3%, 8%) rotate(-3deg) scale(0.98);
-  }
-}
-
-@keyframes aurora-2 {
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(0deg) scale(1);
-  }
-  33% {
-    transform: translate(-8%, 3%) rotate(-5deg) scale(1.02);
-  }
-  66% {
-    transform: translate(5%, -5%) rotate(8deg) scale(1.08);
-  }
-}
-
-@keyframes aurora-3 {
-  0%,
-  100% {
-    transform: translate(0, 0) rotate(0deg) scale(1);
-  }
-  33% {
-    transform: translate(10%, -5%) rotate(8deg) scale(0.95);
-  }
-  66% {
-    transform: translate(-5%, 10%) rotate(-5deg) scale(1.05);
-  }
-}
-
-.animate-aurora-1 {
-  animation: aurora-1 20s ease-in-out infinite;
-}
-
-.animate-aurora-2 {
-  animation: aurora-2 25s ease-in-out infinite;
-}
-
-.animate-aurora-3 {
-  animation: aurora-3 30s ease-in-out infinite;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .animate-aurora-1,
-  .animate-aurora-2,
-  .animate-aurora-3 {
-    animation: none;
-  }
-}
+/* ─── LiDAR control theming ─── */
 
 .lidar-control {
   background: var(--color-card);
