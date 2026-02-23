@@ -56,6 +56,14 @@ export function useExamplesData() {
           icon: 'lucide:thermometer',
           badge: 'IDW',
         },
+        {
+          title: 'NYC Snow Plowing',
+          description:
+            '3D snow accumulation on NYC streets with DSNY data and falling snow.',
+          href: '/examples/nyc-snow-plowing',
+          icon: 'lucide:snowflake',
+          badge: 'NYC',
+        },
       ],
     },
     {
