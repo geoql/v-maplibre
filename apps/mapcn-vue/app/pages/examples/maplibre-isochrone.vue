@@ -274,7 +274,7 @@
           <VControlLayer
             layer-id="isochrone-fill"
             title="Isochrone Opacity"
-            position="top-left"
+            position="top-right"
             :visible="true"
             :opacity="0.85"
           />
