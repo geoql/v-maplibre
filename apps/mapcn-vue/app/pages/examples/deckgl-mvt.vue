@@ -7,6 +7,7 @@
     VControlLegend,
   } from '@geoql/v-maplibre';
   import type { CategoryLegendItem } from '@geoql/v-maplibre';
+  import type { MVTFeature } from '~/types/mvt';
 
   useSeoMeta({
     title: 'MVT Layer (deck.gl) - mapcn-vue Examples',
@@ -30,14 +31,7 @@
     pitch: 45,
   }));
 
-  const MVT_URL =
-    'https://tiles.basemaps.cartocdn.com/vectortiles/carto.streets/v1/{z}/{x}/{y}.mvt';
-
-  interface MVTFeature {
-    properties: {
-      layerName?: string;
-    };
-  }
+  const MVT_URL = 'https://tiles.openfreemap.org/planet/{z}/{x}/{y}.pbf';
 
   const getFillColor = (f: unknown): [number, number, number, number] => {
     const feature = f as MVTFeature;
@@ -70,8 +64,8 @@
   pitch: 45,
   };
 
-  // CARTO vector tiles
-  const MVT_URL = 'https://tiles.basemaps.cartocdn.com/vectortiles/carto.streets/v1/{z}/{x}/{y}.mvt';
+  // OpenFreeMap vector tiles (OpenMapTiles schema)
+  const MVT_URL = 'https://tiles.openfreemap.org/planet/{z}/{x}/{y}.pbf';
 
   const getFillColor = (f) => {
   const layer = f.properties?.layerName;
