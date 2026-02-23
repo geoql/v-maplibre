@@ -10,6 +10,7 @@
     VControlLegend,
   } from '@geoql/v-maplibre';
   import type { CategoryLegendItem } from '@geoql/v-maplibre';
+  import { motion, AnimatePresence } from 'motion-v';
   import type { RouteOption, ValhallaResponse } from '~/types/route';
   import {
     useRouteUtils,
@@ -33,6 +34,7 @@
 
   const { mapStyle } = useRouteUtils();
   const mapId = useId();
+  const panelOpen = ref(true);
 
   const rotterdam = { coordinates: [4.4777, 51.9244] as [number, number] };
   const amsterdam = { coordinates: [4.9041, 52.3676] as [number, number] };
@@ -204,79 +206,100 @@
       </VMap>
     </ClientOnly>
 
-    <!-- Route options overlay -->
-    <div
-      class="absolute top-4 left-4 z-10 w-64 max-h-[calc(100%-2rem)] overflow-auto rounded-xl bg-background/95 shadow-lg backdrop-blur-sm"
+    <!-- Toggle button -->
+    <button
+      class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
+      :class="{
+        'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen,
+      }"
+      @click="panelOpen = !panelOpen"
     >
-      <div class="p-3">
-        <div
-          v-if="planningLoading"
-          class="flex items-center gap-2 py-4 text-muted-foreground"
-        >
-          <Icon name="lucide:loader-2" class="size-4 animate-spin" />
-          <span>Calculating routes...</span>
-        </div>
+      <Icon
+        :name="panelOpen ? 'lucide:panel-left-close' : 'lucide:panel-left-open'"
+        class="size-4"
+      />
+    </button>
 
-        <template v-else>
-          <div class="space-y-2">
-            <button
-              v-for="(route, index) in routeOptions"
-              :key="index"
-              :class="[
-                'w-full rounded-lg border p-3 text-left transition-all',
-                selectedRouteIndex === index
-                  ? 'border-indigo-500 bg-card shadow-sm'
-                  : `
-                    border-border bg-card/50
-                    hover:border-border/80 hover:bg-card
-                  `,
-              ]"
-              @click="selectRoute(index)"
-            >
-              <div class="flex items-center gap-2">
-                <Icon
-                  name="lucide:clock"
-                  class="size-3.5 text-muted-foreground"
-                />
-                <span class="text-sm font-semibold">{{
-                  formatDuration(route.duration)
-                }}</span>
-                <Icon
-                  name="lucide:route"
-                  class="ml-1 size-3.5 text-muted-foreground"
-                />
-                <span class="text-sm text-muted-foreground">{{
-                  formatDistance(route.distance)
-                }}</span>
-                <span
-                  v-if="index === 0"
-                  class="ml-auto rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-600 dark:text-emerald-400"
-                >
-                  Fastest
-                </span>
-              </div>
-            </button>
-          </div>
-
+    <!-- Collapsible route options panel -->
+    <AnimatePresence>
+      <motion.div
+        v-if="panelOpen"
+        :initial="{ opacity: 0, x: -20, scale: 0.95 }"
+        :animate="{ opacity: 1, x: 0, scale: 1 }"
+        :exit="{ opacity: 0, x: -20, scale: 0.95 }"
+        :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
+        class="absolute top-16 left-4 z-10 w-80 max-h-[calc(100%-5rem)] overflow-auto rounded-lg bg-background/95 shadow-lg backdrop-blur-sm"
+      >
+        <div class="p-3">
           <div
-            v-if="routeOptions.length === 0 && !planningLoading"
-            class="rounded-lg border border-border bg-card p-3 text-center text-sm text-muted-foreground"
+            v-if="planningLoading"
+            class="flex items-center gap-2 py-4 text-muted-foreground"
           >
-            No routes available
+            <Icon name="lucide:loader-2" class="size-4 animate-spin" />
+            <span>Calculating routes...</span>
           </div>
-        </template>
 
-        <div class="mt-3 space-y-1.5 border-t border-border pt-3">
-          <div class="flex items-center gap-2 text-sm">
-            <div class="size-2.5 rounded-full bg-red-500"></div>
-            <span class="text-muted-foreground">Rotterdam</span>
-          </div>
-          <div class="flex items-center gap-2 text-sm">
-            <div class="size-2.5 rounded-full bg-emerald-500"></div>
-            <span class="text-muted-foreground">Amsterdam</span>
+          <template v-else>
+            <div class="space-y-2">
+              <button
+                v-for="(route, index) in routeOptions"
+                :key="index"
+                :class="[
+                  'w-full rounded-lg border p-3 text-left transition-all',
+                  selectedRouteIndex === index
+                    ? 'border-indigo-500 bg-card shadow-sm'
+                    : `
+                      border-border bg-card/50
+                      hover:border-border/80 hover:bg-card
+                    `,
+                ]"
+                @click="selectRoute(index)"
+              >
+                <div class="flex items-center gap-2">
+                  <Icon
+                    name="lucide:clock"
+                    class="size-3.5 text-muted-foreground"
+                  />
+                  <span class="text-sm font-semibold">{{
+                    formatDuration(route.duration)
+                  }}</span>
+                  <Icon
+                    name="lucide:route"
+                    class="ml-1 size-3.5 text-muted-foreground"
+                  />
+                  <span class="text-sm text-muted-foreground">{{
+                    formatDistance(route.distance)
+                  }}</span>
+                  <span
+                    v-if="index === 0"
+                    class="ml-auto rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-600 dark:text-emerald-400"
+                  >
+                    Fastest
+                  </span>
+                </div>
+              </button>
+            </div>
+
+            <div
+              v-if="routeOptions.length === 0 && !planningLoading"
+              class="rounded-lg border border-border bg-card p-3 text-center text-sm text-muted-foreground"
+            >
+              No routes available
+            </div>
+          </template>
+
+          <div class="mt-3 space-y-1.5 border-t border-border pt-3">
+            <div class="flex items-center gap-2 text-sm">
+              <div class="size-2.5 rounded-full bg-red-500"></div>
+              <span class="text-muted-foreground">Rotterdam</span>
+            </div>
+            <div class="flex items-center gap-2 text-sm">
+              <div class="size-2.5 rounded-full bg-emerald-500"></div>
+              <span class="text-muted-foreground">Amsterdam</span>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </AnimatePresence>
   </div>
 </template>
