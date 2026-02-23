@@ -293,7 +293,7 @@
 <style>
   .v-layer-control {
     min-width: 140px;
-    max-width: 200px;
+    max-width: 280px;
     margin: 10px;
     background: var(--color-card, #fff);
     border-radius: var(--radius, 0.5rem);
