@@ -19,7 +19,8 @@
   });
 
   const mapId = useId();
-  const { sunAzimuth, sunAltitude, skyMode } = useSunPosition();
+  const { sunAzimuth, sunAltitude, localSunAltitude, skyMode } =
+    useSunPosition();
 
   const mapOptions = computed(() => ({
     container: `globe-day-night-${mapId}`,
@@ -61,18 +62,16 @@
 
   const codeExample = `${SCRIPT_START}
   import { VMap, VLayerMaplibreStarfield, VControlNavigation } from '@geoql/v-maplibre';
-
-  // Computes sun azimuth & altitude from current time + browser geolocation
-  const { sunAzimuth, sunAltitude, skyMode } = useSunPosition();
+  // Geocentric sun position (subsolar lng + declination) + local altitude for fading
+  const { sunAzimuth, sunAltitude, localSunAltitude, skyMode } = useSunPosition();
 ${SCRIPT_END}
-
-<template>
   <VMap :options="mapOptions" class="h-125 w-full">
     <VLayerMaplibreStarfield
       galaxy-texture-url="/milkyway.jpg"
       :sun-enabled="true"
       :sun-azimuth="sunAzimuth"
       :sun-altitude="sunAltitude"
+      :fade-altitude="localSunAltitude"
       before="satellite"
     />
     <VControlNavigation position="top-right" />
@@ -98,7 +97,8 @@ ${SCRIPT_END}
           <span class="mr-1 font-medium text-white capitalize">{{
             skyMode
           }}</span>
-          &middot; Az {{ sunAzimuth }}&deg; &middot; Alt {{ sunAltitude }}&deg;
+          &middot; Lng {{ sunAzimuth }}&deg; &middot; Decl
+          {{ sunAltitude }}&deg; &middot; Local {{ localSunAltitude }}&deg;
         </p>
       </div>
 
@@ -111,6 +111,7 @@ ${SCRIPT_END}
             :sun-enabled="true"
             :sun-azimuth="sunAzimuth"
             :sun-altitude="sunAltitude"
+            :fade-altitude="localSunAltitude"
             before="satellite"
           />
           <VControlNavigation position="top-right" />

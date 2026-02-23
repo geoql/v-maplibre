@@ -22,7 +22,7 @@
   });
 
   const mapId = useId();
-  const { sunAzimuth, sunAltitude } = useSunPosition();
+  const { sunAzimuth, sunAltitude, localSunAltitude } = useSunPosition();
 
   const mapOptions = computed(() => ({
     container: `earthquake-globe-${mapId}`,
@@ -118,8 +118,8 @@
   VControlNavigation,
   } from '@geoql/v-maplibre';
 
-  // Sun position computed from current time + browser geolocation
-  const { sunAzimuth, sunAltitude } = useSunPosition();
+  // Geocentric sun position + local altitude for star fading
+  const { sunAzimuth, sunAltitude, localSunAltitude } = useSunPosition();
 
   const mapOptions = {
   style: {
@@ -149,6 +149,7 @@ ${SCRIPT_END}
       :sun-enabled="true"
       :sun-azimuth="sunAzimuth"
       :sun-altitude="sunAltitude"
+      :fade-altitude="localSunAltitude"
       before="satellite"
     />
     <VControlNavigation position="top-right" />
@@ -186,6 +187,7 @@ ${SCRIPT_END}
             :sun-enabled="true"
             :sun-azimuth="sunAzimuth"
             :sun-altitude="sunAltitude"
+            :fade-altitude="localSunAltitude"
             before="satellite"
           />
           <VControlNavigation position="top-right" />
