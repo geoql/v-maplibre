@@ -9,6 +9,8 @@
 
 <template>
   <main
+    id="main-content"
+    tabindex="-1"
     data-slot="sidebar-inset"
     :class="
       cn(
