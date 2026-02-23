@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import type { Map as MaplibreMap } from 'maplibre-gl';
   import { VMap, VControlNavigation, VMarker } from '@geoql/v-maplibre';
+  import { motion, AnimatePresence } from 'motion-v';
 
   useSeoMeta({
     title: 'FlyTo Animation - mapcn-vue Examples',
@@ -18,6 +19,7 @@
   const { mapStyle } = useMapStyle();
   const mapId = useId();
   const mapRef = ref<MaplibreMap | null>(null);
+  const panelOpen = ref(true);
 
   const mapOptions = computed(() => ({
     container: `flyto-map-${mapId}`,
@@ -172,93 +174,124 @@ ${SCRIPT_END}
     full-width
     class="h-full"
   >
-    <div class="size-full min-w-0">
-      <div class="size-full overflow-hidden">
-        <ClientOnly>
-          <VMap
-            :key="mapStyle"
-            :options="mapOptions"
-            class="size-full"
-            @loaded="handleMapLoad"
-          >
-            <VControlNavigation position="top-right" />
-            <VMarker
-              v-for="city in cities"
-              :key="city.name"
-              :coordinates="city.coordinates"
+    <div class="relative size-full min-w-0">
+      <ClientOnly>
+        <VMap
+          :key="mapStyle"
+          :options="mapOptions"
+          class="size-full"
+          @loaded="handleMapLoad"
+        >
+          <VControlNavigation position="top-right" />
+          <VMarker
+            v-for="city in cities"
+            :key="city.name"
+            :coordinates="city.coordinates"
+          />
+        </VMap>
+        <template #fallback>
+          <div class="flex h-full items-center justify-center bg-muted">
+            <Icon
+              name="lucide:loader-2"
+              class="size-8 animate-spin text-muted-foreground"
             />
-          </VMap>
-          <template #fallback>
-            <div class="flex h-full items-center justify-center bg-muted">
-              <Icon
-                name="lucide:loader-2"
-                class="size-8 animate-spin text-muted-foreground"
+          </div>
+        </template>
+      </ClientOnly>
+
+      <!-- NAIP toggle button -->
+      <button
+        class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg border bg-background/95 shadow-sm backdrop-blur-sm transition-colors hover:bg-muted"
+        :class="{
+          'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen,
+        }"
+        @click="panelOpen = !panelOpen"
+      >
+        <Icon
+          :name="
+            panelOpen ? 'lucide:panel-left-close' : 'lucide:panel-left-open'
+          "
+          class="size-4"
+        />
+      </button>
+
+      <!-- NAIP collapsible panel -->
+      <AnimatePresence>
+        <motion.div
+          v-if="panelOpen"
+          :initial="{ opacity: 0, x: -20, scale: 0.95 }"
+          :animate="{ opacity: 1, x: 0, scale: 1 }"
+          :exit="{ opacity: 0, x: -20, scale: 0.95 }"
+          :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
+          class="absolute top-16 left-4 z-10 w-80 rounded-xl border bg-background/95 shadow-lg backdrop-blur-sm"
+        >
+          <div class="p-4">
+            <div class="mb-4">
+              <h3 class="mb-2 text-sm font-medium">Animation Type</h3>
+              <div class="flex gap-2">
+                <button
+                  v-for="type in ['flyTo', 'easeTo', 'jumpTo']"
+                  :key="type"
+                  class="rounded-md border px-3 py-1.5 text-sm transition-colors"
+                  :class="[
+                    animationType === type
+                      ? 'border-primary bg-primary text-primary-foreground'
+                      : `border-border bg-background hover:bg-muted`,
+                  ]"
+                  @click="animationType = type as 'flyTo' | 'easeTo' | 'jumpTo'"
+                >
+                  {{ type }}
+                </button>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <h3 class="mb-2 text-sm font-medium">
+                Duration: {{ duration }}ms
+              </h3>
+              <input
+                v-model.number="duration"
+                type="range"
+                min="500"
+                max="5000"
+                step="100"
+                class="w-full"
               />
             </div>
-          </template>
-        </ClientOnly>
-      </div>
 
-      <div class="mt-4 bg-card p-4">
-        <div class="mb-4">
-          <h3 class="mb-2 text-sm font-medium">Animation Type</h3>
-          <div class="flex gap-2">
+            <div class="mb-4">
+              <h3 class="mb-2 text-sm font-medium">Cities</h3>
+              <div class="flex flex-wrap gap-2">
+                <button
+                  v-for="city in cities"
+                  :key="city.name"
+                  class="rounded-md border px-3 py-1.5 text-sm transition-colors"
+                  :class="[
+                    currentCity.name === city.name
+                      ? 'border-primary bg-primary/10 text-primary'
+                      : `border-border bg-background hover:bg-muted`,
+                  ]"
+                  @click="flyToCity(city)"
+                >
+                  <Icon
+                    name="lucide:map-pin"
+                    class="mr-1 inline-block size-3"
+                  />
+                  {{ city.name }}
+                </button>
+              </div>
+            </div>
+
             <button
-              v-for="type in ['flyTo', 'easeTo', 'jumpTo']"
-              :key="type"
-              class="rounded-md border px-3 py-1.5 text-sm transition-colors"
-              :class="[
-                animationType === type
-                  ? 'border-primary bg-primary text-primary-foreground'
-                  : `border-border bg-background hover:bg-muted`,
-              ]"
-              @click="animationType = type as 'flyTo' | 'easeTo' | 'jumpTo'"
+              class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:bg-muted"
+              @click="resetView"
             >
-              {{ type }}
+              <Icon name="lucide:globe" class="mr-1 inline-block size-4" />
+              Reset to World View
             </button>
           </div>
-        </div>
-
-        <div class="mb-4">
-          <h3 class="mb-2 text-sm font-medium">Duration: {{ duration }}ms</h3>
-          <input
-            v-model.number="duration"
-            type="range"
-            min="500"
-            max="5000"
-            step="100"
-            class="w-full"
-          />
-        </div>
-
-        <div class="mb-4">
-          <h3 class="mb-2 text-sm font-medium">Cities</h3>
-          <div class="flex flex-wrap gap-2">
-            <button
-              v-for="city in cities"
-              :key="city.name"
-              class="rounded-md border px-3 py-1.5 text-sm transition-colors"
-              :class="[
-                currentCity.name === city.name
-                  ? 'border-primary bg-primary/10 text-primary'
-                  : `border-border bg-background hover:bg-muted`,
-              ]"
-              @click="flyToCity(city)"
-            >
-              <Icon name="lucide:map-pin" class="mr-1 inline-block size-3" />
-              {{ city.name }}
-            </button>
-          </div>
-        </div>
-
-        <button
-          class="w-full rounded-md border border-border bg-background px-3 py-2 text-sm transition-colors hover:bg-muted"
-          @click="resetView"
-        >
-          <Icon name="lucide:globe" class="mr-1 inline-block size-4" />
-          Reset to World View
-        </button>
-      </div>
+        </motion.div>
+      </AnimatePresence>
     </div>
   </ComponentDemo>
 </template>
