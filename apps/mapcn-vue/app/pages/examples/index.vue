@@ -31,10 +31,9 @@
 
         <div class="space-y-20">
           <ExamplesIndexSection
-            v-for="(category, categoryIndex) in categories"
+            v-for="category in categories"
             :key="category.id"
             :category="category"
-            :category-index="categoryIndex"
           />
         </div>
 
