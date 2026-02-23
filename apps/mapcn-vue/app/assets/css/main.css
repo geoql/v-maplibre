@@ -165,7 +165,7 @@ canvas {
 .gradient-text {
   @apply bg-clip-text text-transparent;
   background-image: linear-gradient(
-    to bottom right,
+    to right,
     var(--color-foreground),
     var(--color-muted-foreground),
     var(--color-foreground)
@@ -174,7 +174,7 @@ canvas {
 
 .dark .gradient-text {
   background-image: linear-gradient(
-    to bottom right,
+    to right,
     oklch(0.987 0.002 197.1),
     oklch(0.56 0.021 213.5),
     oklch(0.987 0.002 197.1)

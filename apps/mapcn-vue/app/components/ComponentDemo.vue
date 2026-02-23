@@ -44,7 +44,7 @@
         <!-- Title -->
         <h1
           v-if="title"
-          class="gradient-text mb-2 pb-2 font-display text-2xl font-bold leading-normal tracking-tighter lg:text-3xl"
+          class="gradient-text mb-2 font-display text-2xl font-bold leading-normal tracking-tighter lg:text-3xl"
         >
           {{ title }}
         </h1>
