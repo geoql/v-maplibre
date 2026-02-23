@@ -79,7 +79,7 @@
           type="gradient"
           :items="[temperatureLegend]"
           title="Temperature"
-          position="top-left"
+          position="bottom-left"
           :interactive="false"
         />
       </VMap>
