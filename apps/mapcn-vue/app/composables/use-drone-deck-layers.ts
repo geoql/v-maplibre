@@ -1,10 +1,16 @@
-import type { DronePosition, DroneTrip } from '~/types/drone';
+import type { DronePosition, DroneTrip, DroneIconSpec } from '~/types/drone';
 import type { Map as MaplibreMap } from 'maplibre-gl';
 
-const ICON_ATLAS =
-  'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png';
-const ICON_MAPPING = {
-  marker: { x: 0, y: 0, width: 128, height: 128, mask: true },
+// Inline SVG arrow pointing north — no external asset required, always works
+const DRONE_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><polygon points="64,6 90,122 64,104 38,122" fill="white"/></svg>`;
+const DRONE_ICON_URL = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(DRONE_SVG)}`;
+const DRONE_ICON_SPEC: DroneIconSpec = {
+  url: DRONE_ICON_URL,
+  width: 128,
+  height: 128,
+  anchorX: 64,
+  anchorY: 64,
+  mask: true,
 };
 
 interface DroneDeckLayersOptions {
@@ -39,8 +45,8 @@ function getDroneAngle(d: unknown): number {
   return (d as DronePosition).bearing;
 }
 
-function getDroneIcon(): string {
-  return 'marker';
+function getDroneIcon(): DroneIconSpec {
+  return DRONE_ICON_SPEC;
 }
 
 function getDroneColor(): [number, number, number, number] {
@@ -128,9 +134,7 @@ export function useDroneDeckLayers(options: DroneDeckLayersOptions) {
           getAngle: getDroneAngle,
           getIcon: getDroneIcon,
           getColor: getDroneColor,
-          getSize: 40,
-          iconAtlas: ICON_ATLAS,
-          iconMapping: ICON_MAPPING,
+          getSize: 48,
           sizeUnits: 'pixels' as const,
           billboard: true,
           pickable: false,
