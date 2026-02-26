@@ -211,7 +211,8 @@
     map.on('mousemove', 'hhi-fill', (e) => {
       if (!e.features || e.features.length === 0) return;
       const raw = e.features[0].properties?.[columnName.value];
-      const value = typeof raw === 'number' ? raw : Number.parseFloat(String(raw));
+      const value =
+        typeof raw === 'number' ? raw : Number.parseFloat(String(raw));
       if (!Number.isNaN(value)) {
         popupLngLat.value = [e.lngLat.lng, e.lngLat.lat];
         hoveredHhi.value = value;
