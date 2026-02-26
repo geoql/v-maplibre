@@ -25,6 +25,7 @@
     "@developmentseed/deck.gl-geotiff": "catalog:app:mapcn-vue",
     "@developmentseed/deck.gl-raster": "catalog:app:mapcn-vue",
     "@geoql/maplibre-gl-compare": "catalog:app:mapcn-vue",
+    "@geoql/maplibre-gl-snow": "catalog:app:mapcn-vue",
     "@geoql/maplibre-gl-starfield": "catalog:app:mapcn-vue",
     "@geoql/v-maplibre": "workspace:*",
     "@iconify-json/lucide": "catalog:app:mapcn-vue",

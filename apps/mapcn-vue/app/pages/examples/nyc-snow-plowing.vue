@@ -6,11 +6,11 @@
     VControlScale,
     VControlLegend,
   } from '@geoql/v-maplibre';
+  import { MaplibreSnowLayer } from '@geoql/maplibre-gl-snow';
   import type { Map as MaplibreMap } from 'maplibre-gl';
   import type { NYCBorough } from '~/types/nyc-snow';
   import { PLOW_STATUS_LEGEND, SNOW_PRIORITY_LEGEND } from '~/types/nyc-snow';
   import { motion, AnimatePresence } from 'motion-v';
-  // TODO: re-enable @geoql/maplibre-gl-snow once particle sizing is tuned
 
   useSeoMeta({
     title: 'NYC Snow Plowing - mapcn-vue Examples',
@@ -52,10 +52,30 @@
   }));
 
   const mapRef = ref<MaplibreMap | null>(null);
-
+  const snowLayer = ref<MaplibreSnowLayer | null>(null);
+  const { start: startSnowSync, stop: stopSnowSync } = useSnowLayerSync(
+    mapRef,
+    snowLayer,
+  );
   function handleMapLoad(map: MaplibreMap): void {
     mapRef.value = map;
+    const layer = new MaplibreSnowLayer({
+      intensity: snowfallRate.value / 4,
+      opacity: 0.75,
+      direction: [0, 30],
+      fog: true,
+      fogOpacity: 0.04,
+    });
+    snowLayer.value = layer;
+    map.addLayer(layer);
+    startSnowSync();
   }
+  onUnmounted(() => {
+    stopSnowSync();
+    if (mapRef.value && snowLayer.value) {
+      mapRef.value.removeLayer(snowLayer.value.id);
+    }
+  });
 
   function handleBoroughUpdate(newBorough: NYCBorough): void {
     changeBorough(newBorough);
@@ -71,6 +91,7 @@
 
   function handleSnowfallUpdate(rate: number): void {
     snowfallRate.value = rate;
+    snowLayer.value?.setIntensity(rate / 4);
   }
 
   function togglePanel(): void {
@@ -103,8 +124,8 @@
 
   const codeExample = `${SCRIPT_START}
   import { VMap, VLayerMaplibreGeojson, VControlNavigation } from '@geoql/v-maplibre';
-  // Fetch DSNY Snow Priority streets from NYC Open Data
-  const { snowGeoJson, snowfallRate, borough } = useNYCSnow();
+  import { MaplibreSnowLayer } from '@geoql/maplibre-gl-snow';
+  const { snowGeoJson, snowfallRate } = useNYCSnow();
   const mapOptions = {
     style: '${cartoStyle.value}',
     center: [-73.98, 40.758],
@@ -112,10 +133,16 @@
     pitch: 55,
     bearing: -17,
   };
+  function onMapLoad(map) {
+    map.addLayer(new MaplibreSnowLayer({
+      intensity: snowfallRate.value / 4,
+      fog: true,
+    }));
+  }
 ${SCRIPT_END}
 
 <template>
-  <VMap :options="mapOptions" class="h-full w-full">
+  <VMap :options="mapOptions" class="h-full w-full" @loaded="onMapLoad">
     <VControlNavigation position="top-right" />
     <VLayerMaplibreGeojson
       source-id="snow-streets"
@@ -184,7 +211,7 @@ ${SCRIPT_END}
           <div class="size-full bg-black"></div>
         </template>
       </ClientOnly>
-      <!-- Toggle button -->
+
       <button
         class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
         :class="{
@@ -200,7 +227,6 @@ ${SCRIPT_END}
         />
       </button>
 
-      <!-- Collapsible panel -->
       <AnimatePresence>
         <motion.div
           v-if="panelOpen"
