@@ -80,6 +80,14 @@ export function useExamplesData() {
           icon: 'lucide:plane',
           badge: 'Animated',
         },
+        {
+          title: 'HHI Map',
+          description:
+            'US Vehicle Market Concentration (HHI) - Herfindahl-Hirschman Index census tract map.',
+          href: '/examples/hhi-map',
+          icon: 'lucide:car',
+          badge: 'HHI',
+        },
       ],
     },
     {
