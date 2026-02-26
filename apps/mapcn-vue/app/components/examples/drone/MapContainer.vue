@@ -33,20 +33,17 @@
     bearing: -20,
   }));
 
-  const tripDataRef = computed(() => props.tripData);
-  const currentTimeRef = computed(() => props.currentTime);
-  const dronePositionRef = computed(() => props.dronePosition);
-
-  useDroneDeckLayers({
-    map: mapRef,
-    tripData: tripDataRef,
-    currentTime: currentTimeRef,
-    dronePosition: dronePositionRef,
-  });
-
   function handleMapLoad(map: MaplibreMap): void {
     mapRef.value = map;
   }
+
+  // Track map bearing so Layers can compute correct screen-space icon angle.
+  // jumpTo({ bearing: pos.bearing }) keeps map bearing ≈ drone bearing while playing.
+  const mapBearing = computed(() =>
+    props.isPlaying && props.dronePosition
+      ? props.dronePosition.bearing
+      : (mapRef.value?.getBearing() ?? 0),
+  );
 
   watch(
     () => props.dronePosition,
@@ -95,6 +92,12 @@
       >
         <VControlNavigation position="top-right" />
         <VControlScale position="bottom-left" />
+        <ExamplesDroneLayers
+          :trip-data="tripData"
+          :current-time="currentTime"
+          :drone-position="dronePosition"
+          :map-bearing="mapBearing"
+        />
       </VMap>
       <template #fallback>
         <div class="size-full bg-muted animate-pulse"></div>

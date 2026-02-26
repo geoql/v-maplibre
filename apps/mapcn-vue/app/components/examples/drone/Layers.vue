@@ -6,13 +6,23 @@
     tripData: DroneTrip[];
     currentTime: number;
     dronePosition: DronePosition | null;
+    mapBearing: number;
   }>();
 
-  const ICON_ATLAS =
-    'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png';
-  const ICON_MAPPING = {
-    marker: { x: 0, y: 0, width: 128, height: 128, mask: true },
-  };
+  // Top-down quadcopter silhouette: X arms, 4 motor rings, center hub, forward arrow.
+  // White fill — visible against the dark 3D basemap without masking.
+  const DRONE_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128">
+  <line x1="26" y1="26" x2="102" y2="102" stroke="white" stroke-width="7" stroke-linecap="round"/>
+  <line x1="102" y1="26" x2="26" y2="102" stroke="white" stroke-width="7" stroke-linecap="round"/>
+  <circle cx="23" cy="23" r="17" fill="rgba(255,255,255,0.18)" stroke="white" stroke-width="5"/>
+  <circle cx="105" cy="23" r="17" fill="rgba(255,255,255,0.18)" stroke="white" stroke-width="5"/>
+  <circle cx="23" cy="105" r="17" fill="rgba(255,255,255,0.18)" stroke="white" stroke-width="5"/>
+  <circle cx="105" cy="105" r="17" fill="rgba(255,255,255,0.18)" stroke="white" stroke-width="5"/>
+  <circle cx="64" cy="64" r="11" fill="white"/>
+  <polygon points="64,5 74,20 54,20" fill="white"/>
+</svg>`;
+
+  const DRONE_ICON_URL = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(DRONE_SVG)}`;
 
   function getPath(d: unknown): [number, number][] {
     return (d as DroneTrip).path;
@@ -35,16 +45,24 @@
     return [p.lng, p.lat];
   }
 
+  // With billboard:true, getAngle is clockwise degrees from screen-up.
+  // MapContainer.jumpTo({ bearing: pos.bearing }) keeps map.bearing ≈ drone.bearing,
+  // so the drone moves screen-upward. Correct angle = drone.bearing - map.bearing ≈ 0,
+  // but we use the actual values for accuracy when map hasn't caught up yet.
   function getDroneAngle(d: unknown): number {
-    return (d as DronePosition).bearing;
+    const bearing = (d as DronePosition).bearing;
+    return bearing - props.mapBearing;
   }
 
-  function getDroneIcon(): string {
-    return 'marker';
-  }
-
-  function getDroneColor(): [number, number, number, number] {
-    return [140, 92, 246, 255];
+  function getDroneIcon() {
+    return {
+      url: DRONE_ICON_URL,
+      width: 128,
+      height: 128,
+      anchorX: 64,
+      anchorY: 64,
+      mask: false, // use SVG colours directly (white drone)
+    };
   }
 
   let TripsLayerClass: typeof import('@deck.gl/geo-layers').TripsLayer | null =
@@ -107,15 +125,12 @@
       const iconLayer = new IconLayerClass({
         id: 'drone-icon',
         data: [pos],
-        iconAtlas: ICON_ATLAS,
-        iconMapping: ICON_MAPPING,
+        getIcon: getDroneIcon,
         getPosition: getDronePosition,
         getAngle: getDroneAngle,
-        getIcon: getDroneIcon,
-        getColor: getDroneColor,
-        getSize: 96,
+        getSize: 72,
         sizeUnits: 'pixels' as const,
-        billboard: false,
+        billboard: true, // always face the camera — visible at any pitch
         pickable: false,
       });
       updateLayer('drone-icon', iconLayer);
@@ -125,7 +140,12 @@
   }
 
   watch(
-    () => [props.tripData, props.currentTime, props.dronePosition],
+    () => [
+      props.tripData,
+      props.currentTime,
+      props.dronePosition,
+      props.mapBearing,
+    ],
     () => syncLayers(),
     { deep: true },
   );

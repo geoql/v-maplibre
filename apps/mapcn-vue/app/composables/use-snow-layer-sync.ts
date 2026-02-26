@@ -13,7 +13,7 @@ export function useSnowLayerSync(
     if (!map || !layer) return;
     const zoom = map.getZoom();
     const zoomFactor = Math.max(0, Math.min(1, (zoom - 8) / 7));
-    layer.setFlakeSize(0.8 + zoomFactor * 0.7);
+    layer.setFlakeSize(1.5 + zoomFactor * 1.5); // 1.5px at z8, 3px at z15
   }
 
   // On animation end: update density (triggers particle rebuild) + size
@@ -25,8 +25,8 @@ export function useSnowLayerSync(
     const pitch = map.getPitch();
     const zoomFactor = Math.max(0, Math.min(1, (zoom - 8) / 7));
     const pitchFactor = Math.max(0, Math.min(1, pitch / 70));
-    layer.setDensity(0.02 + zoomFactor * 0.06 * (0.5 + 0.5 * pitchFactor));
-    layer.setFlakeSize(0.8 + zoomFactor * 0.7);
+    layer.setDensity(0.25 + zoomFactor * 0.25); // 0.25 at z8, 0.5 at z15
+    layer.setFlakeSize(1.5 + zoomFactor * 1.5);
   }
 
   function start(): void {

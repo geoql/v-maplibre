@@ -213,7 +213,12 @@ export function useDroneAnimation() {
         throw new Error('Invalid GeoJSON: no LineString coordinates found');
       }
 
-      const coordinates: [number, number][] = feature.geometry.coordinates;
+      // Strip optional Z/altitude so deck.gl TripsLayer stays ground-level.
+      const rawCoords = feature.geometry.coordinates as number[][];
+      const coordinates: [number, number][] = rawCoords.map((c) => [
+        c[0]!,
+        c[1]!,
+      ]);
       processCoordinates(coordinates);
       isLoading.value = false;
     } catch (err) {
@@ -229,8 +234,9 @@ export function useDroneAnimation() {
       try {
         const geojson = JSON.parse(event.target?.result as string);
         const feature = geojson.features?.[0] ?? geojson;
-        const coordinates: [number, number][] =
-          feature.geometry?.coordinates ?? feature.coordinates;
+        const raw = (feature.geometry?.coordinates ??
+          feature.coordinates) as number[][];
+        const coordinates: [number, number][] = raw.map((c) => [c[0]!, c[1]!]);
 
         if (!coordinates || coordinates.length < 2) {
           error.value = 'Invalid GeoJSON: need at least 2 coordinates';

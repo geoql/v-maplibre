@@ -29,12 +29,3 @@ export interface DroneTrip {
   path: [number, number][];
   timestamps: number[];
 }
-
-export interface DroneIconSpec {
-  url: string;
-  width: number;
-  height: number;
-  anchorX: number;
-  anchorY: number;
-  mask: boolean;
-}
