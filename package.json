@@ -69,7 +69,7 @@
         "@developmentseed/deck.gl-geotiff": "^0.2.0",
         "@developmentseed/deck.gl-raster": "^0.2.0",
         "@geoql/maplibre-gl-starfield": "^0.1.1",
-        "@geoql/maplibre-gl-snow": "^0.0.8",
+        "@geoql/maplibre-gl-snow": "^0.0.9",
         "@geoql/maplibre-gl-compare": "^0.0.3",
         "@iconify-json/lucide": "^1.2.93",
         "@iconify-json/simple-icons": "^1.2.71",

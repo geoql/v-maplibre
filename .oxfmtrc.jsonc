@@ -22,5 +22,6 @@
     "apps/docs",
     "**/CHANGELOG.md",
     "**/jsr.json",
+    "**/package.json",
   ],
 }

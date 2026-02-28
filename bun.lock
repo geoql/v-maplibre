@@ -199,7 +199,7 @@
       "@developmentseed/deck.gl-geotiff": "^0.2.0",
       "@developmentseed/deck.gl-raster": "^0.2.0",
       "@geoql/maplibre-gl-compare": "^0.0.3",
-      "@geoql/maplibre-gl-snow": "^0.0.8",
+      "@geoql/maplibre-gl-snow": "^0.0.9",
       "@geoql/maplibre-gl-starfield": "^0.1.1",
       "@iconify-json/lucide": "^1.2.93",
       "@iconify-json/simple-icons": "^1.2.71",
@@ -566,7 +566,7 @@
 
     "@geoql/maplibre-gl-compare": ["@geoql/maplibre-gl-compare@0.0.3", "", { "peerDependencies": { "maplibre-gl": ">=2.0.0" } }, "sha512-V86AlBJd98r1X+Snwym2/ntQ401FzhUPqtCllIMoBIefH4OBU7ZvlyzQfr5M1vc1EK+MwtMqXVfEQBDEDhhZ5g=="],
 
-    "@geoql/maplibre-gl-snow": ["@geoql/maplibre-gl-snow@0.0.8", "", { "peerDependencies": { "maplibre-gl": ">=3.0.0", "three": ">=0.183.0" } }, "sha512-Bw5GyKNHScxMO27Uk2TB+V/kQ2Fo8+bMZ0VX/7zIO3NO0wvQa0kUtP3otQJObbvC1gDmQZ+rCfX0bbOpURFNCw=="],
+    "@geoql/maplibre-gl-snow": ["@geoql/maplibre-gl-snow@0.0.9", "", { "peerDependencies": { "maplibre-gl": ">=3.0.0", "three": ">=0.183.0" } }, "sha512-9xuzVxBXwNz//xNXa+M7pHraKOdHwjqKcQkgyII+8RB+VN6ITy0vL3zTinXf7vfJcn7qqPKnJ87cWLIJKhHARw=="],
 
     "@geoql/maplibre-gl-starfield": ["@geoql/maplibre-gl-starfield@0.1.1", "", { "peerDependencies": { "maplibre-gl": ">=3.0.0", "three": ">=0.135.0" } }, "sha512-JnI6Br6V4MOm8uLsms+AYyRQiLZmvI3nno0OZh+XjWZAg83jKDKFVE4faTPMvvx43/smFm0QM+301DVtgZs8OQ=="],
 
