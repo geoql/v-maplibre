@@ -18,7 +18,7 @@
   "devDependencies": {
     "@nuxt/eslint": "^1.15.1",
     "@nuxtjs/plausible": "^3.0.1",
-    "agents": "^0.5.0",
+    "agents": "^0.6.0",
     "eslint": "^10.0.0",
     "eslint-plugin-oxlint": "^1.48.0",
     "oxlint": "^1.48.0",
