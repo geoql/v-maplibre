@@ -88,6 +88,14 @@ export function useExamplesData() {
           icon: 'lucide:car',
           badge: 'HHI',
         },
+        {
+          title: 'Home Price Explorer',
+          description:
+            'Interactive US home price bubble map at the ZIP code level with LocalView viewport-based re-bucketing.',
+          href: '/examples/promap',
+          icon: 'lucide:home',
+          badge: 'ProMap',
+        },
       ],
     },
     {

@@ -43,3 +43,5 @@ tmp/
 # Local notes
 TODO.local.md
 
+# Generated data (regenerate with: bun run apps/mapcn-vue/scripts/prepare-promap-data.ts)
+apps/mapcn-vue/public/data/promap-data.json
