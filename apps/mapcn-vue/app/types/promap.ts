@@ -36,7 +36,7 @@ export interface ZipDataPoint {
   /** ZIP code string (e.g., "10001") */
   zip: string;
   /** [longitude, latitude] */
-  coordinates: [number, number];
+  coordinates: readonly [number, number];
   /** Estimated population */
   population: number;
   /** Median home value in USD */
@@ -53,7 +53,7 @@ export interface ZipDataPoint {
 
 /** Computed per-point rendering data (color + radius based on current mode/viewport) */
 export interface ZipRenderPoint {
-  coordinates: [number, number];
+  coordinates: readonly [number, number];
   radius: number;
   fillColor: [number, number, number, number];
   /** Reference to the source data point */
@@ -93,7 +93,7 @@ export interface PromapSearchResult {
   zip: string;
   city: string;
   state: string;
-  coordinates: [number, number];
+  coordinates: readonly [number, number];
   price: number;
   priceChange: number;
 }

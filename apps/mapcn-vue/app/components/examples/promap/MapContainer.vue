@@ -33,9 +33,9 @@
   }>();
 
   const emit = defineEmits<{
-    viewportChange: [bounds: ReturnType<typeof boundsToViewport>];
-    hoverZip: [zip: ZipDataPoint | null];
-    mapLoad: [map: MaplibreMap];
+    'viewport-change': [bounds: ReturnType<typeof boundsToViewport>];
+    'hover-zip': [zip: ZipDataPoint | null];
+    'map-load': [map: MaplibreMap];
   }>();
 
   const mapId = useId();
@@ -64,7 +64,7 @@
     })),
   );
 
-  function getPosition(d: unknown): [number, number] {
+  function getPosition(d: unknown): readonly [number, number] {
     return (d as ZipRenderPoint).coordinates;
   }
 
@@ -78,29 +78,29 @@
 
   function handleMapLoad(map: MaplibreMap): void {
     mapRef.value = map;
-    emit('mapLoad', map);
+    emit('map-load', map);
 
     // Emit initial viewport
     const bounds = map.getBounds();
-    emit('viewportChange', boundsToViewport(bounds));
+    emit('viewport-change', boundsToViewport(bounds));
 
     // Track viewport changes
     map.on('moveend', () => {
       const b = map.getBounds();
-      emit('viewportChange', boundsToViewport(b));
+      emit('viewport-change', boundsToViewport(b));
     });
   }
 
   function handleHover(info: PickingInfo): void {
     if (info.object) {
-      emit('hoverZip', (info.object as ZipRenderPoint).data);
+      emit('hover-zip', (info.object as ZipRenderPoint).data);
     } else {
-      emit('hoverZip', null);
+      emit('hover-zip', null);
     }
   }
 
   /** Fly to coordinates (used by search) */
-  function flyTo(coords: [number, number], zoom = 10): void {
+  function flyTo(coords: readonly [number, number], zoom = 10): void {
     mapRef.value?.flyTo({
       center: coords,
       zoom,
@@ -158,24 +158,21 @@
           className: 'promap-hover-popup',
         }"
       >
-        <div class="promap-popup-content">
-          <p class="promap-popup-location">
-            {{ hoveredZip.city }}, {{ hoveredZip.state }}
-            {{ hoveredZip.zip }}
-          </p>
-          <p v-if="viewMode === 'levels'" class="promap-popup-value">
-            {{ formatPrice(hoveredZip.price) }}
-          </p>
-          <p v-else class="promap-popup-value">
-            {{ formatChange(hoveredZip.priceChange) }}
-          </p>
-          <p v-if="hoveredZip.metro" class="promap-popup-detail">
-            {{ hoveredZip.metro }}
-          </p>
-          <p class="promap-popup-detail">
-            Pop: {{ formatPopulation(hoveredZip.population) }}
-          </p>
-        </div>
+        <span class="promap-popup-label">
+          {{ hoveredZip.city }}, {{ hoveredZip.state }} {{ hoveredZip.zip }}
+        </span>
+        <span v-if="viewMode === 'levels'" class="promap-popup-value">
+          {{ formatPrice(hoveredZip.price) }}
+        </span>
+        <span v-else class="promap-popup-value">
+          {{ formatChange(hoveredZip.priceChange) }}
+        </span>
+        <span v-if="hoveredZip.metro" class="promap-popup-detail">
+          {{ hoveredZip.metro }}
+        </span>
+        <span class="promap-popup-detail">
+          Pop: {{ formatPopulation(hoveredZip.population) }}
+        </span>
       </VPopup>
     </VMap>
     <template #fallback>
@@ -185,50 +182,51 @@
 </template>
 
 <style>
+  .promap-hover-popup {
+    z-index: 10;
+  }
+
   .promap-hover-popup .maplibregl-popup-content {
-    background: hsl(var(--popover));
-    color: hsl(var(--popover-foreground));
+    background: var(--color-popover);
+    color: var(--color-popover-foreground);
     border-radius: 8px;
     padding: 8px 12px;
     box-shadow: 0 4px 12px rgb(0 0 0 / 0.2);
-    border: 1px solid hsl(var(--border));
+    border: 1px solid var(--color-border);
   }
 
   .promap-hover-popup.maplibregl-popup-anchor-bottom .maplibregl-popup-tip {
-    border-top-color: hsl(var(--popover));
+    border-top-color: var(--color-popover);
   }
 
   .promap-hover-popup.maplibregl-popup-anchor-top .maplibregl-popup-tip {
-    border-bottom-color: hsl(var(--popover));
+    border-bottom-color: var(--color-popover);
   }
 
   .promap-hover-popup.maplibregl-popup-anchor-left .maplibregl-popup-tip {
-    border-right-color: hsl(var(--popover));
+    border-right-color: var(--color-popover);
   }
 
   .promap-hover-popup.maplibregl-popup-anchor-right .maplibregl-popup-tip {
-    border-left-color: hsl(var(--popover));
+    border-left-color: var(--color-popover);
   }
 
-  .promap-popup-content {
-    font-family: inherit;
-  }
-
-  .promap-popup-location {
+  .promap-popup-label {
+    display: block;
     font-size: 12px;
     font-weight: 600;
     white-space: nowrap;
   }
 
   .promap-popup-value {
+    display: block;
     font-size: 16px;
     font-weight: 700;
-    margin-top: 2px;
   }
 
   .promap-popup-detail {
+    display: block;
     font-size: 11px;
     opacity: 0.7;
-    margin-top: 2px;
   }
 </style>

@@ -89,7 +89,7 @@ export function usePromapData() {
   const loadError = ref<string | null>(null);
 
   const viewMode = ref<ViewMode>('levels');
-  const localView = ref(false);
+  const localView = ref(true);
   const viewportBounds = ref<ViewportBounds | null>(null);
   const hoveredZip = ref<ZipDataPoint | null>(null);
   const searchQuery = ref('');
