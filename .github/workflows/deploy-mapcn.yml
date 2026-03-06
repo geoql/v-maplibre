@@ -32,6 +32,9 @@ jobs:
       - name: Build library
         run: bun run --cwd packages/v-maplibre build
 
+      - name: Generate ProMap data
+        run: bun run apps/mapcn-vue/scripts/prepare-promap-data.ts
+
       - name: Build mapcn-vue
         run: bun run build:mapcn
         env:
