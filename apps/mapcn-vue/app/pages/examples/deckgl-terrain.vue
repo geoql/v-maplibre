@@ -38,40 +38,40 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglTerrain, VControlNavigation } from '@geoql/v-maplibre';
+                    import { VMap, VLayerDeckglTerrain, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-122.4, 37.75],
-            zoom: 11,
-            pitch: 60,
-            bearing: -17,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                    center: [-122.4, 37.75],
+                    zoom: 11,
+                    pitch: 60,
+                    bearing: -17,
+                    };
 
-            // Terrain elevation tiles (Mapzen Terrarium format)
-            const TERRAIN_IMAGE = 'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png';
-            // Surface texture tiles
-            const SURFACE_IMAGE = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
-          ${SCRIPT_END}
+                    // Terrain elevation tiles (Mapzen Terrarium format)
+                    const TERRAIN_IMAGE = 'https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png';
+                    // Surface texture tiles
+                    const SURFACE_IMAGE = 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglTerrain
-                id="terrain-layer"
-                :elevation-data="TERRAIN_IMAGE"
-                :texture="SURFACE_IMAGE"
-                :elevation-decoder="{
-                  rScaler: 256,
-                  gScaler: 1,
-                  bScaler: 1/256,
-                  offset: -32768,
-                }"
-                :bounds="[-122.5, 37.6, -122.2, 37.9]"
-                :pickable="true"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VLayerDeckglTerrain
+                        id="terrain-layer"
+                        :elevation-data="TERRAIN_IMAGE"
+                        :texture="SURFACE_IMAGE"
+                        :elevation-decoder="{
+                          rScaler: 256,
+                          gScaler: 1,
+                          bScaler: 1/256,
+                          offset: -32768,
+                        }"
+                        :bounds="[-122.5, 37.6, -122.2, 37.9]"
+                        :pickable="true"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

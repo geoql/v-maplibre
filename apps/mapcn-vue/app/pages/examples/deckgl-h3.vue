@@ -75,38 +75,38 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglH3Hexagon, VControlNavigation } from '@geoql/v-maplibre';
+                    import { VMap, VLayerDeckglH3Hexagon, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-122.4, 37.78],
-            zoom: 11,
-            pitch: 45,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                    center: [-122.4, 37.78],
+                    zoom: 11,
+                    pitch: 45,
+                    };
 
-            // H3 hexagon data (resolution 8)
-            const h3Data = [
-            { hex: '882830829bfffff', value: 500, color: [255, 165, 0, 180] },
-            { hex: '8828308299fffff', value: 800, color: [255, 99, 71, 200] },
-            // ... more H3 cells
-            ];
-          ${SCRIPT_END}
+                    // H3 hexagon data (resolution 8)
+                    const h3Data = [
+                    { hex: '882830829bfffff', value: 500, color: [255, 165, 0, 180] },
+                    { hex: '8828308299fffff', value: 800, color: [255, 99, 71, 200] },
+                    // ... more H3 cells
+                    ];
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglH3Hexagon
-                id="h3-layer"
-                :data="h3Data"
-                :get-hexagon="(d) => d.hex"
-                :get-fill-color="(d) => d.color"
-                :get-elevation="(d) => d.value"
-                :elevation-scale="20"
-                :extruded="true"
-                :pickable="true"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VLayerDeckglH3Hexagon
+                        id="h3-layer"
+                        :data="h3Data"
+                        :get-hexagon="(d) => d.hex"
+                        :get-fill-color="(d) => d.color"
+                        :get-elevation="(d) => d.value"
+                        :elevation-scale="20"
+                        :extruded="true"
+                        :pickable="true"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

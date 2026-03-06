@@ -66,37 +66,37 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglScatterplot, VControlNavigation } from '@geoql/v-maplibre';
+                    import { VMap, VLayerDeckglScatterplot, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-122.4, 37.8],
-            zoom: 11,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                    center: [-122.4, 37.8],
+                    zoom: 11,
+                    };
 
-            const data = [
-            { coordinates: [-122.4, 37.8], size: 100, color: [255, 140, 0] },
-            { coordinates: [-122.5, 37.7], size: 200, color: [0, 200, 150] },
-            // ... more points
-            ];
-          ${SCRIPT_END}
+                    const data = [
+                    { coordinates: [-122.4, 37.8], size: 100, color: [255, 140, 0] },
+                    { coordinates: [-122.5, 37.7], size: 200, color: [0, 200, 150] },
+                    // ... more points
+                    ];
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglScatterplot
-                id="scatterplot"
-                :data="data"
-                :get-position="(d) => d.coordinates"
-                :get-radius="(d) => d.size"
-                :get-fill-color="(d) => d.color"
-                :radius-min-pixels="3"
-                :radius-max-pixels="30"
-                :opacity="0.8"
-                :pickable="true"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VLayerDeckglScatterplot
+                        id="scatterplot"
+                        :data="data"
+                        :get-position="(d) => d.coordinates"
+                        :get-radius="(d) => d.size"
+                        :get-fill-color="(d) => d.color"
+                        :radius-min-pixels="3"
+                        :radius-max-pixels="30"
+                        :opacity="0.8"
+                        :pickable="true"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

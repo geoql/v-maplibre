@@ -168,62 +168,62 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { VMap, VMarker, VControlScale, VControlLayer, VControlLegend, VLayerMaplibreIsochrone } from '@geoql/v-maplibre';
+                  import { VMap, VMarker, VControlScale, VControlLayer, VControlLegend, VLayerMaplibreIsochrone } from '@geoql/v-maplibre';
 
-          const originPoint = ref([-96.797, 32.777]); // Dallas
-          const isochroneData = ref(null);
+                  const originPoint = ref([-96.797, 32.777]); // Dallas
+                  const isochroneData = ref(null);
 
-          // Contours - Valhalla expects colors without # prefix
-          const contours = [
-            { time: 5, color: 'dc2626', label: '5 min' },   // red
-            { time: 10, color: '2563eb', label: '10 min' }, // blue
-            { time: 15, color: '16a34a', label: '15 min' }, // green
-          ];
+                  // Contours - Valhalla expects colors without # prefix
+                  const contours = [
+                    { time: 5, color: 'dc2626', label: '5 min' },   // red
+                    { time: 10, color: '2563eb', label: '10 min' }, // blue
+                    { time: 15, color: '16a34a', label: '15 min' }, // green
+                  ];
 
-          const legendItems = contours.map(c => ({
-            value: c.label, label: c.label, color: '#' + c.color,
-          }));
+                  const legendItems = contours.map(c => ({
+                    value: c.label, label: c.label, color: '#' + c.color,
+                  }));
 
-          async function fetchIsochrone() {
-            const params = {
-              locations: [{ lat: originPoint.value[1], lon: originPoint.value[0] }],
-              costing: 'auto',
-              contours,
-              polygons: true,
-            };
-            const response = await $fetch('/api/valhalla?endpoint=isochrone&json=' +
-              encodeURIComponent(JSON.stringify(params)));
-            isochroneData.value = response;
-          }
+                  async function fetchIsochrone() {
+                    const params = {
+                      locations: [{ lat: originPoint.value[1], lon: originPoint.value[0] }],
+                      costing: 'auto',
+                      contours,
+                      polygons: true,
+                    };
+                    const response = await $fetch('/api/valhalla?endpoint=isochrone&json=' +
+                      encodeURIComponent(JSON.stringify(params)));
+                    isochroneData.value = response;
+                  }
 
-          function handleMarkerDrag(e) {
-            const { lng, lat } = e.target.getLngLat();
-            originPoint.value = [lng, lat];
-            fetchIsochrone();
-          }
-          ${SCRIPT_END}
+                  function handleMarkerDrag(e) {
+                    const { lng, lat } = e.target.getLngLat();
+                    originPoint.value = [lng, lat];
+                    fetchIsochrone();
+                  }
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" @loaded="fetchIsochrone">
-              <VControlScale position="bottom-left" />
-              <VLayerMaplibreIsochrone
-                v-if="isochroneData"
-                id="isochrone"
-                :data="isochroneData"
-                :fill-opacity="0.85"
-                :line-width="0"
-                :reverse-order="false"
-              />
-              <VMarker :coordinates="originPoint" :options="{ draggable: true }" @dragend="handleMarkerDrag" />
-              <VControlLegend ... />
-              <VControlLayer
-                layer-id="isochrone-fill"
-                title="Opacity"
-                position="bottom-right"
-                :opacity="0.85"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" @loaded="fetchIsochrone">
+                      <VControlScale position="bottom-left" />
+                      <VLayerMaplibreIsochrone
+                        v-if="isochroneData"
+                        id="isochrone"
+                        :data="isochroneData"
+                        :fill-opacity="0.85"
+                        :line-width="0"
+                        :reverse-order="false"
+                      />
+                      <VMarker :coordinates="originPoint" :options="{ draggable: true }" @dragend="handleMarkerDrag" />
+                      <VControlLegend ... />
+                      <VControlLayer
+                        layer-id="isochrone-fill"
+                        title="Opacity"
+                        position="bottom-right"
+                        :opacity="0.85"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

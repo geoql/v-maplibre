@@ -138,45 +138,45 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import {
-              VMap,
-              VLayerDeckglMosaic,
-              type MosaicSource,
-              type MosaicRenderMode,
-            } from '@geoql/v-maplibre';
+                  import {
+                    VMap,
+                    VLayerDeckglMosaic,
+                    type MosaicSource,
+                    type MosaicRenderMode,
+                  } from '@geoql/v-maplibre';
 
-            const renderMode = ref<MosaicRenderMode>('trueColor');
-            const stacItems = ref<MosaicSource[]>([]);
+                  const renderMode = ref<MosaicRenderMode>('trueColor');
+                  const stacItems = ref<MosaicSource[]>([]);
 
-            // Fetch STAC items from Microsoft Planetary Computer
-            async function fetchSTACItems() {
-              const params = {
-                collections: 'naip',
-                bbox: '-106.6,38.7,-104.6,40.4',
-                datetime: '2023-01-01/2023-12-31',
-                limit: '1000',
-              };
+                  // Fetch STAC items from Microsoft Planetary Computer
+                  async function fetchSTACItems() {
+                    const params = {
+                      collections: 'naip',
+                      bbox: '-106.6,38.7,-104.6,40.4',
+                      datetime: '2023-01-01/2023-12-31',
+                      limit: '1000',
+                    };
 
-              const response = await fetch(
-                'https://planetarycomputer.microsoft.com/api/stac/v1/search?' +
-                new URLSearchParams(params)
-              );
-              const { features } = await response.json();
-              stacItems.value = features;
-            }
+                    const response = await fetch(
+                      'https://planetarycomputer.microsoft.com/api/stac/v1/search?' +
+                      new URLSearchParams(params)
+                    );
+                    const { features } = await response.json();
+                    stacItems.value = features;
+                  }
 
-            onMounted(fetchSTACItems);
-            ${SCRIPT_END}
+                  onMounted(fetchSTACItems);
+                  ${SCRIPT_END}
 
-            <template>
-              <VMap :options="mapOptions">
-                <VLayerDeckglMosaic
-                  id="naip-mosaic"
-                  :sources="stacItems"
-                  :render-mode="renderMode"
-                />
-              </VMap>
-            </template>`;
+                  <template>
+                    <VMap :options="mapOptions">
+                      <VLayerDeckglMosaic
+                        id="naip-mosaic"
+                        :sources="stacItems"
+                        :render-mode="renderMode"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

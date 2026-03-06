@@ -114,59 +114,59 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglSolidPolygon, VControlNavigation } from '@geoql/v-maplibre';
+                    import { VMap, VLayerDeckglSolidPolygon, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-122.4, 37.78],
-            zoom: 13,
-            pitch: 45,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                    center: [-122.4, 37.78],
+                    zoom: 13,
+                    pitch: 45,
+                    };
 
-            interface BuildingData {
-            polygon: [number, number][];
-            height: number;
-            color: [number, number, number, number];
-            }
+                    interface BuildingData {
+                    polygon: [number, number][];
+                    height: number;
+                    color: [number, number, number, number];
+                    }
 
-            const buildings: BuildingData[] = [
-            {
-              polygon: [[-122.405, 37.785], [-122.403, 37.785], [-122.403, 37.783], [-122.405, 37.783]],
-              height: 150,
-              color: [64, 192, 255, 200],
-            },
-            // ... more buildings
-            ];
+                    const buildings: BuildingData[] = [
+                    {
+                      polygon: [[-122.405, 37.785], [-122.403, 37.785], [-122.403, 37.783], [-122.405, 37.783]],
+                      height: 150,
+                      color: [64, 192, 255, 200],
+                    },
+                    // ... more buildings
+                    ];
 
-            const legendItems: CategoryLegendItem[] = [
-              { value: 'building-a', label: 'Building A', color: '#40c0ff' },
-              { value: 'building-b', label: 'Building B', color: '#ff8c40' },
-              { value: 'building-c', label: 'Building C', color: '#80ff80' },
-              { value: 'building-d', label: 'Building D', color: '#ff4080' },
-              { value: 'building-e', label: 'Building E', color: '#c080ff' },
-            ];
+                    const legendItems: CategoryLegendItem[] = [
+                      { value: 'building-a', label: 'Building A', color: '#40c0ff' },
+                      { value: 'building-b', label: 'Building B', color: '#ff8c40' },
+                      { value: 'building-c', label: 'Building C', color: '#80ff80' },
+                      { value: 'building-d', label: 'Building D', color: '#ff4080' },
+                      { value: 'building-e', label: 'Building E', color: '#c080ff' },
+                    ];
 
-            const getPolygon = (d: unknown) => (d as BuildingData).polygon;
-            const getFillColor = (d: unknown) => (d as BuildingData).color;
-            const getElevation = (d: unknown) => (d as BuildingData).height;
-          ${SCRIPT_END}
+                    const getPolygon = (d: unknown) => (d as BuildingData).polygon;
+                    const getFillColor = (d: unknown) => (d as BuildingData).color;
+                    const getElevation = (d: unknown) => (d as BuildingData).height;
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglSolidPolygon
-                id="solid-polygon-layer"
-                :data="buildings"
-                :get-polygon="getPolygon"
-                :get-fill-color="getFillColor"
-                :get-elevation="getElevation"
-                :extruded="true"
-                :wireframe="true"
-                :pickable="true"
-                :elevation-scale="1"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VLayerDeckglSolidPolygon
+                        id="solid-polygon-layer"
+                        :data="buildings"
+                        :get-polygon="getPolygon"
+                        :get-fill-color="getFillColor"
+                        :get-elevation="getElevation"
+                        :extruded="true"
+                        :wireframe="true"
+                        :pickable="true"
+                        :elevation-scale="1"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

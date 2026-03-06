@@ -57,36 +57,36 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { VMap, VLayerDeckglText, VControlNavigation } from '@geoql/v-maplibre';
+                import { VMap, VLayerDeckglText, VControlNavigation } from '@geoql/v-maplibre';
 
-          const mapOptions = {
-          style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-          center: [-122.4, 37.78],
-          zoom: 12,
-          };
+                const mapOptions = {
+                style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+                center: [-122.4, 37.78],
+                zoom: 12,
+                };
 
-          const textData = [
-          { coordinates: [-122.42, 37.78], name: 'Downtown' },
-          { coordinates: [-122.38, 37.79], name: 'Marina District' },
-          // ... more labels
-          ];
-        ${SCRIPT_END}
+                const textData = [
+                { coordinates: [-122.42, 37.78], name: 'Downtown' },
+                { coordinates: [-122.38, 37.79], name: 'Marina District' },
+                // ... more labels
+                ];
+              ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions" class="h-125 w-full">
-            <VControlNavigation position="top-right" />
-            <VLayerDeckglText
-              id="text-layer"
-              :data="textData"
-              :get-position="(d) => d.coordinates"
-              :get-text="(d) => d.name"
-              :get-size="20"
-              :get-color="[255, 255, 255, 255]"
-              font-family="Arial"
-              :pickable="true"
-            />
-          </VMap>
-        </template>`;
+              <template>
+                <VMap :options="mapOptions" class="h-125 w-full">
+                  <VControlNavigation position="top-right" />
+                  <VLayerDeckglText
+                    id="text-layer"
+                    :data="textData"
+                    :get-position="(d) => d.coordinates"
+                    :get-text="(d) => d.name"
+                    :get-size="20"
+                    :get-color="[255, 255, 255, 255]"
+                    font-family="Arial"
+                    :pickable="true"
+                  />
+                </VMap>
+              </template>`;
 </script>
 
 <template>

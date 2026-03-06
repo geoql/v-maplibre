@@ -252,81 +252,81 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { VMap, VMarker, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+                import { VMap, VMarker, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
 
-          const locations = [
-          { id: '1', name: 'Warehouse', coordinates: [-73.95, 40.78] },
-          { id: '2', name: 'Store A', coordinates: [-73.985, 40.758] },
-          { id: '3', name: 'Store B', coordinates: [-73.945, 40.678] },
-          ];
+                const locations = [
+                { id: '1', name: 'Warehouse', coordinates: [-73.95, 40.78] },
+                { id: '2', name: 'Store A', coordinates: [-73.985, 40.758] },
+                { id: '3', name: 'Store B', coordinates: [-73.945, 40.678] },
+                ];
 
-          const connections = ref([]);
+                const connections = ref([]);
 
-          const distanceLegendItems = [
-          { value: '< 5 km', label: '< 5 km', color: '#22c55e' },
-          { value: '5-10 km', label: '5-10 km', color: '#eab308' },
-          { value: '> 10 km', label: '> 10 km', color: '#ef4444' },
-          ];
+                const distanceLegendItems = [
+                { value: '< 5 km', label: '< 5 km', color: '#22c55e' },
+                { value: '5-10 km', label: '5-10 km', color: '#eab308' },
+                { value: '> 10 km', label: '> 10 km', color: '#ef4444' },
+                ];
 
-          // Fetch real road distances using Valhalla matrix API
-          async function fetchDistances() {
-          const matrixLocations = locations.map(loc => ({
-            lat: loc.coordinates[1],
-            lon: loc.coordinates[0],
-          }));
+                // Fetch real road distances using Valhalla matrix API
+                async function fetchDistances() {
+                const matrixLocations = locations.map(loc => ({
+                  lat: loc.coordinates[1],
+                  lon: loc.coordinates[0],
+                }));
 
-          const params = {
-            sources: matrixLocations,
-            targets: matrixLocations,
-            costing: 'auto',
-            units: 'kilometers',
-          };
+                const params = {
+                  sources: matrixLocations,
+                  targets: matrixLocations,
+                  costing: 'auto',
+                  units: 'kilometers',
+                };
 
-          const url = \`/api/valhalla?endpoint=sources_to_targets&json=\${encodeURIComponent(JSON.stringify(params))}\`;
-          const data = await $fetch(url);
+                const url = \`/api/valhalla?endpoint=sources_to_targets&json=\${encodeURIComponent(JSON.stringify(params))}\`;
+                const data = await $fetch(url);
 
-          const conns = [];
-          for (let i = 0; i < locations.length; i++) {
-            for (let j = i + 1; j < locations.length; j++) {
-              const cell = data.sources_to_targets[i][j];
-              conns.push({
-                from: locations[i],
-                to: locations[j],
-                distance: cell.distance,
-                duration: cell.time,
-              });
-            }
-          }
-          connections.value = conns.sort((a, b) => a.distance - b.distance);
-          }
+                const conns = [];
+                for (let i = 0; i < locations.length; i++) {
+                  for (let j = i + 1; j < locations.length; j++) {
+                    const cell = data.sources_to_targets[i][j];
+                    conns.push({
+                      from: locations[i],
+                      to: locations[j],
+                      distance: cell.distance,
+                      duration: cell.time,
+                    });
+                  }
+                }
+                connections.value = conns.sort((a, b) => a.distance - b.distance);
+                }
 
-          onMounted(() => fetchDistances());
-        ${SCRIPT_END}
+                onMounted(() => fetchDistances());
+              ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions" class="h-125 w-full">
-            <VLayerMaplibreGeojson
-              source-id="connections"
-              layer-id="connection-lines"
-              :source="{ type: 'geojson', data: linesGeoJson }"
-              :layer="{ type: 'line', paint: { 'line-color': ['get', 'lineColor'], 'line-width': 2 } }"
-            />
-            <VMarker
-              v-for="loc in locations"
-              :key="loc.id"
-              :coordinates="loc.coordinates"
-              :options="{ color: getMarkerColor(loc.type) }"
-            />
-            <VControlLegend
-              :layer-ids="['connection-lines']"
-              type="category"
-              :items="distanceLegendItems"
-              title="Road Distance"
-              position="bottom-left"
-              :interactive="false"
-            />
-          </VMap>
-        </template>`;
+              <template>
+                <VMap :options="mapOptions" class="h-125 w-full">
+                  <VLayerMaplibreGeojson
+                    source-id="connections"
+                    layer-id="connection-lines"
+                    :source="{ type: 'geojson', data: linesGeoJson }"
+                    :layer="{ type: 'line', paint: { 'line-color': ['get', 'lineColor'], 'line-width': 2 } }"
+                  />
+                  <VMarker
+                    v-for="loc in locations"
+                    :key="loc.id"
+                    :coordinates="loc.coordinates"
+                    :options="{ color: getMarkerColor(loc.type) }"
+                  />
+                  <VControlLegend
+                    :layer-ids="['connection-lines']"
+                    type="category"
+                    :items="distanceLegendItems"
+                    title="Road Distance"
+                    position="bottom-left"
+                    :interactive="false"
+                  />
+                </VMap>
+              </template>`;
 </script>
 
 <template>

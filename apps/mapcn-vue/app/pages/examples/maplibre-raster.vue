@@ -49,42 +49,42 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerMaplibreRaster, VControlNavigation } from '@geoql/v-maplibre';
+                    import { VMap, VLayerMaplibreRaster, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [0, 20],
-            zoom: 2,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                    center: [0, 20],
+                    zoom: 2,
+                    };
 
-            const rasterSource = {
-            type: 'raster',
-            tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-            tileSize: 256,
-            attribution: '© OpenStreetMap contributors',
-            };
+                    const rasterSource = {
+                    type: 'raster',
+                    tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
+                    tileSize: 256,
+                    attribution: '© OpenStreetMap contributors',
+                    };
 
-            const rasterLayer = {
-            id: 'osm-raster',
-            type: 'raster',
-            source: 'osm-source',
-            paint: {
-              'raster-opacity': 0.7,
-            },
-            };
-          ${SCRIPT_END}
+                    const rasterLayer = {
+                    id: 'osm-raster',
+                    type: 'raster',
+                    source: 'osm-source',
+                    paint: {
+                      'raster-opacity': 0.7,
+                    },
+                    };
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerMaplibreRaster
-                source-id="osm-source"
-                layer-id="osm-raster"
-                :source="rasterSource"
-                :layer="rasterLayer"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VLayerMaplibreRaster
+                        source-id="osm-source"
+                        layer-id="osm-raster"
+                        :source="rasterSource"
+                        :layer="rasterLayer"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

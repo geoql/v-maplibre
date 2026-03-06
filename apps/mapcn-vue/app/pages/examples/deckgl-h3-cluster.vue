@@ -117,58 +117,58 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglH3Cluster, VControlNavigation } from '@geoql/v-maplibre';
+                    import { VMap, VLayerDeckglH3Cluster, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-122.4, 37.78],
-            zoom: 10,
-            pitch: 45,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                    center: [-122.4, 37.78],
+                    zoom: 10,
+                    pitch: 45,
+                    };
 
-            interface H3ClusterData {
-            hexagons: string[];  // Array of H3 cell IDs forming a cluster
-            value: number;
-            name: string;
-            }
+                    interface H3ClusterData {
+                    hexagons: string[];  // Array of H3 cell IDs forming a cluster
+                    value: number;
+                    name: string;
+                    }
 
-            // H3 clusters - groups of contiguous hexagons
-            const h3ClusterData: H3ClusterData[] = [
-            {
-              name: 'Downtown Cluster',
-              hexagons: [
-                '882830829bfffff',
-                '88283082d7fffff',
-                '88283082d3fffff',
-              ],
-              value: 3000,
-            },
-            // ... more clusters
-            ];
+                    // H3 clusters - groups of contiguous hexagons
+                    const h3ClusterData: H3ClusterData[] = [
+                    {
+                      name: 'Downtown Cluster',
+                      hexagons: [
+                        '882830829bfffff',
+                        '88283082d7fffff',
+                        '88283082d3fffff',
+                      ],
+                      value: 3000,
+                    },
+                    // ... more clusters
+                    ];
 
-            const getHexagons = (d: unknown) => (d as H3ClusterData).hexagons;
-            const getElevation = (d: unknown) => (d as H3ClusterData).value;
-            const getFillColor = (d: unknown) => {
-            const t = ((d as H3ClusterData).value - 1000) / 2500;
-            return [80 + 175 * t, 200 - 80 * t, 200 - 100 * t, 180];
-            };
-          ${SCRIPT_END}
+                    const getHexagons = (d: unknown) => (d as H3ClusterData).hexagons;
+                    const getElevation = (d: unknown) => (d as H3ClusterData).value;
+                    const getFillColor = (d: unknown) => {
+                    const t = ((d as H3ClusterData).value - 1000) / 2500;
+                    return [80 + 175 * t, 200 - 80 * t, 200 - 100 * t, 180];
+                    };
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglH3Cluster
-                id="h3-cluster-layer"
-                :data="h3ClusterData"
-                :get-hexagons="getHexagons"
-                :get-fill-color="getFillColor"
-                :get-elevation="getElevation"
-                :extruded="true"
-                :pickable="true"
-                :auto-highlight="true"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VLayerDeckglH3Cluster
+                        id="h3-cluster-layer"
+                        :data="h3ClusterData"
+                        :get-hexagons="getHexagons"
+                        :get-fill-color="getFillColor"
+                        :get-elevation="getElevation"
+                        :extruded="true"
+                        :pickable="true"
+                        :auto-highlight="true"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

@@ -200,39 +200,39 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { VMap, VLayerDeckglPath, VLayerDeckglIcon } from '@geoql/v-maplibre';
+                import { VMap, VLayerDeckglPath, VLayerDeckglIcon } from '@geoql/v-maplibre';
 
-          // Fetch real-time AC Transit data
-          const { buses, trails } = useActransitData();
+                // Fetch real-time AC Transit data
+                const { buses, trails } = useActransitData();
 
-          // Accessor functions for deck.gl layers
-          const getBusPosition = (d) => d.coordinates;
-          const getBusAngle = (d) => d.bearing; // Rotate icon based on heading
-          const getTrailPath = (d) => d.path;
-        ${SCRIPT_END}
+                // Accessor functions for deck.gl layers
+                const getBusPosition = (d) => d.coordinates;
+                const getBusAngle = (d) => d.bearing; // Rotate icon based on heading
+                const getTrailPath = (d) => d.path;
+              ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions" class="h-full w-full">
-            <!-- Bus history trails -->
-            <VLayerDeckglPath
-              id="bus-trails"
-              :data="trails"
-              :get-path="getTrailPath"
-              :get-color="getTrailColor"
-            />
-            <!-- Bus icons with bearing rotation -->
-            <VLayerDeckglIcon
-              id="buses"
-              :data="buses"
-              :get-position="getBusPosition"
-              :get-angle="getBusAngle"
-              :icon-atlas="busIconAtlas"
-              :billboard="false"
-              :pickable="true"
-              @click="handleBusClick"
-            />
-          </VMap>
-        </template>`;
+              <template>
+                <VMap :options="mapOptions" class="h-full w-full">
+                  <!-- Bus history trails -->
+                  <VLayerDeckglPath
+                    id="bus-trails"
+                    :data="trails"
+                    :get-path="getTrailPath"
+                    :get-color="getTrailColor"
+                  />
+                  <!-- Bus icons with bearing rotation -->
+                  <VLayerDeckglIcon
+                    id="buses"
+                    :data="buses"
+                    :get-position="getBusPosition"
+                    :get-angle="getBusAngle"
+                    :icon-atlas="busIconAtlas"
+                    :billboard="false"
+                    :pickable="true"
+                    @click="handleBusClick"
+                  />
+                </VMap>
+              </template>`;
 </script>
 
 <template>

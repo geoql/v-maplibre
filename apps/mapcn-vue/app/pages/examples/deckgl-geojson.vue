@@ -122,45 +122,45 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglGeojson, VControlNavigation } from '@geoql/v-maplibre';
+                    import { VMap, VLayerDeckglGeojson, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-122.4, 37.78],
-            zoom: 11,
-            pitch: 45,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                    center: [-122.4, 37.78],
+                    zoom: 11,
+                    pitch: 45,
+                    };
 
-            const geojsonData = {
-            type: 'FeatureCollection',
-            features: [
-              {
-                type: 'Feature',
-                properties: { name: 'Zone A', height: 500, color: [255, 140, 0] },
-                geometry: { type: 'Polygon', coordinates: [...] },
-              },
-              // ... more features
-            ],
-            };
-          ${SCRIPT_END}
+                    const geojsonData = {
+                    type: 'FeatureCollection',
+                    features: [
+                      {
+                        type: 'Feature',
+                        properties: { name: 'Zone A', height: 500, color: [255, 140, 0] },
+                        geometry: { type: 'Polygon', coordinates: [...] },
+                      },
+                      // ... more features
+                    ],
+                    };
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglGeojson
-                id="deckgl-geojson-layer"
-                :data="geojsonData"
-                :get-fill-color="(f) => f.properties.color"
-                :get-line-color="[255, 255, 255]"
-                :get-elevation="(f) => f.properties.height || 0"
-                :extruded="true"
-                :stroked="true"
-                :filled="true"
-                :line-width-min-pixels="2"
-                :pickable="true"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VLayerDeckglGeojson
+                        id="deckgl-geojson-layer"
+                        :data="geojsonData"
+                        :get-fill-color="(f) => f.properties.color"
+                        :get-line-color="[255, 255, 255]"
+                        :get-elevation="(f) => f.properties.height || 0"
+                        :extruded="true"
+                        :stroked="true"
+                        :filled="true"
+                        :line-width-min-pixels="2"
+                        :pickable="true"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

@@ -80,34 +80,34 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglLine, VControlNavigation } from '@geoql/v-maplibre';
+                  import { VMap, VLayerDeckglLine, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-122.4, 37.8],
-            zoom: 11,
-            };
+                  const mapOptions = {
+                  style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                  center: [-122.4, 37.8],
+                  zoom: 11,
+                  };
 
-            const lineData = [
-            { sourcePosition: [-122.45, 37.78], targetPosition: [-122.35, 37.82], color: [255, 140, 0] },
-            { sourcePosition: [-122.42, 37.75], targetPosition: [-122.38, 37.85], color: [0, 200, 150] },
-            ];
-          ${SCRIPT_END}
+                  const lineData = [
+                  { sourcePosition: [-122.45, 37.78], targetPosition: [-122.35, 37.82], color: [255, 140, 0] },
+                  { sourcePosition: [-122.42, 37.75], targetPosition: [-122.38, 37.85], color: [0, 200, 150] },
+                  ];
+                ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglLine
-                id="line-layer"
-                :data="lineData"
-                :get-source-position="(d) => d.sourcePosition"
-                :get-target-position="(d) => d.targetPosition"
-                :get-color="(d) => d.color"
-                :get-width="3"
-                :pickable="true"
-              />
-            </VMap>
-          </template>`;
+                <template>
+                  <VMap :options="mapOptions" class="h-125 w-full">
+                    <VControlNavigation position="top-right" />
+                    <VLayerDeckglLine
+                      id="line-layer"
+                      :data="lineData"
+                      :get-source-position="(d) => d.sourcePosition"
+                      :get-target-position="(d) => d.targetPosition"
+                      :get-color="(d) => d.color"
+                      :get-width="3"
+                      :pickable="true"
+                    />
+                  </VMap>
+                </template>`;
 </script>
 
 <template>

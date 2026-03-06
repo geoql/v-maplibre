@@ -90,41 +90,41 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglPolygon, VControlNavigation } from '@geoql/v-maplibre';
+                    import { VMap, VLayerDeckglPolygon, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-122.4, 37.78],
-            zoom: 12,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                    center: [-122.4, 37.78],
+                    zoom: 12,
+                    };
 
-            const polygonData = [
-            {
-              polygon: [[-122.45, 37.78], [-122.43, 37.8], [-122.41, 37.79], [-122.42, 37.77], [-122.45, 37.78]],
-              name: 'Zone A',
-              fillColor: [255, 140, 0, 150],
-              lineColor: [255, 140, 0],
-            },
-            // ... more polygons
-            ];
-          ${SCRIPT_END}
+                    const polygonData = [
+                    {
+                      polygon: [[-122.45, 37.78], [-122.43, 37.8], [-122.41, 37.79], [-122.42, 37.77], [-122.45, 37.78]],
+                      name: 'Zone A',
+                      fillColor: [255, 140, 0, 150],
+                      lineColor: [255, 140, 0],
+                    },
+                    // ... more polygons
+                    ];
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglPolygon
-                id="polygon-layer"
-                :data="polygonData"
-                :get-polygon="(d) => d.polygon"
-                :get-fill-color="(d) => d.fillColor"
-                :get-line-color="(d) => d.lineColor"
-                :get-line-width="2"
-                :stroked="true"
-                :filled="true"
-                :pickable="true"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VLayerDeckglPolygon
+                        id="polygon-layer"
+                        :data="polygonData"
+                        :get-polygon="(d) => d.polygon"
+                        :get-fill-color="(d) => d.fillColor"
+                        :get-line-color="(d) => d.lineColor"
+                        :get-line-width="2"
+                        :stroked="true"
+                        :filled="true"
+                        :pickable="true"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

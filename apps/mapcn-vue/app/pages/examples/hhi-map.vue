@@ -256,20 +256,20 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { VMap, VControlNavigation } from '@geoql/v-maplibre';
+                import { VMap, VControlNavigation } from '@geoql/v-maplibre';
 
-          const mapOptions = {
-            style: 'https://maps.guru/api/v1/styles/standard/light/style.json?key=...',
-            center: [-98.5, 39.8],
-            zoom: 3.5,
-          };
-          ${SCRIPT_END}
+                const mapOptions = {
+                  style: 'https://maps.guru/api/v1/styles/standard/light/style.json?key=...',
+                  center: [-98.5, 39.8],
+                  zoom: 3.5,
+                };
+                ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions">
-              <VControlNavigation position="top-right" />
-            </VMap>
-          </template>`;
+                <template>
+                  <VMap :options="mapOptions">
+                    <VControlNavigation position="top-right" />
+                  </VMap>
+                </template>`;
 </script>
 
 <template>

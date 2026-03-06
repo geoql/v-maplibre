@@ -38,31 +38,31 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglBitmap, VControlNavigation } from '@geoql/v-maplibre';
+                    import { VMap, VLayerDeckglBitmap, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-122.4, 37.75],
-            zoom: 11,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                    center: [-122.4, 37.75],
+                    zoom: 11,
+                    };
 
-            // Image URL and geographic bounds [west, south, east, north]
-            const IMAGE_URL = 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/sf-districts.png';
-            const BOUNDS = [-122.519, 37.7045, -122.355, 37.829];
-          ${SCRIPT_END}
+                    // Image URL and geographic bounds [west, south, east, north]
+                    const IMAGE_URL = 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/sf-districts.png';
+                    const BOUNDS = [-122.519, 37.7045, -122.355, 37.829];
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglBitmap
-                id="bitmap-layer"
-                :image="IMAGE_URL"
-                :bounds="BOUNDS"
-                :opacity="0.8"
-                :pickable="true"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VLayerDeckglBitmap
+                        id="bitmap-layer"
+                        :image="IMAGE_URL"
+                        :bounds="BOUNDS"
+                        :opacity="0.8"
+                        :pickable="true"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

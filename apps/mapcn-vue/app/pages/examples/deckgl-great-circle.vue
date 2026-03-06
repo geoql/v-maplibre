@@ -98,36 +98,36 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglGreatCircle, VControlNavigation } from '@geoql/v-maplibre';
+                    import { VMap, VLayerDeckglGreatCircle, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [0, 30],
-            zoom: 1.5,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                    center: [0, 30],
+                    zoom: 1.5,
+                    };
 
-            const flightData = [
-            { from: [-122.4, 37.8], to: [139.7, 35.7], name: 'SF → Tokyo', color: [255, 140, 0] },
-            { from: [-122.4, 37.8], to: [-0.12, 51.5], name: 'SF → London', color: [0, 200, 150] },
-            // ... more routes
-            ];
-          ${SCRIPT_END}
+                    const flightData = [
+                    { from: [-122.4, 37.8], to: [139.7, 35.7], name: 'SF → Tokyo', color: [255, 140, 0] },
+                    { from: [-122.4, 37.8], to: [-0.12, 51.5], name: 'SF → London', color: [0, 200, 150] },
+                    // ... more routes
+                    ];
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglGreatCircle
-                id="great-circle-layer"
-                :data="flightData"
-                :get-source-position="(d) => d.from"
-                :get-target-position="(d) => d.to"
-                :get-source-color="(d) => d.color"
-                :get-target-color="(d) => [...d.color, 100]"
-                :get-stroke-width="3"
-                :pickable="true"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VLayerDeckglGreatCircle
+                        id="great-circle-layer"
+                        :data="flightData"
+                        :get-source-position="(d) => d.from"
+                        :get-target-position="(d) => d.to"
+                        :get-source-color="(d) => d.color"
+                        :get-target-color="(d) => [...d.color, 100]"
+                        :get-stroke-width="3"
+                        :pickable="true"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

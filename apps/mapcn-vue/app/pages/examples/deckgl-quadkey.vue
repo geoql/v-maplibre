@@ -79,53 +79,53 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglQuadkey, VControlNavigation } from '@geoql/v-maplibre';
+                  import { VMap, VLayerDeckglQuadkey, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-121.5, 38.56], // Sacramento area where quadkey data is located
-            zoom: 11,
-            pitch: 45,
-            };
+                  const mapOptions = {
+                  style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                  center: [-121.5, 38.56], // Sacramento area where quadkey data is located
+                  zoom: 11,
+                  pitch: 45,
+                  };
 
-            interface QuadkeyData {
-            quadkey: string;
-            value: number;
-            category: 'High' | 'Medium' | 'Low';
-            }
+                  interface QuadkeyData {
+                  quadkey: string;
+                  value: number;
+                  category: 'High' | 'Medium' | 'Low';
+                  }
 
-            // Quadkey tiles (Bing Maps tile system)
-            // Length determines zoom level: 12 chars = zoom 12
-            const quadkeyData: QuadkeyData[] = [
-            { quadkey: '023010211030', value: 2500, category: 'High' },
-            { quadkey: '023010211031', value: 1800, category: 'Medium' },
-            { quadkey: '023010211032', value: 1200, category: 'Medium' },
-            ];
+                  // Quadkey tiles (Bing Maps tile system)
+                  // Length determines zoom level: 12 chars = zoom 12
+                  const quadkeyData: QuadkeyData[] = [
+                  { quadkey: '023010211030', value: 2500, category: 'High' },
+                  { quadkey: '023010211031', value: 1800, category: 'Medium' },
+                  { quadkey: '023010211032', value: 1200, category: 'Medium' },
+                  ];
 
-            const getQuadkey = (d: unknown) => (d as QuadkeyData).quadkey;
-            const getElevation = (d: unknown) => (d as QuadkeyData).value;
-            const getFillColor = (d: unknown) => {
-            const category = (d as QuadkeyData).category;
-            const colors = { High: [255, 100, 100], Medium: [255, 200, 100], Low: [100, 200, 100] };
-            return [...colors[category], 200];
-            };
-          ${SCRIPT_END}
+                  const getQuadkey = (d: unknown) => (d as QuadkeyData).quadkey;
+                  const getElevation = (d: unknown) => (d as QuadkeyData).value;
+                  const getFillColor = (d: unknown) => {
+                  const category = (d as QuadkeyData).category;
+                  const colors = { High: [255, 100, 100], Medium: [255, 200, 100], Low: [100, 200, 100] };
+                  return [...colors[category], 200];
+                  };
+                ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglQuadkey
-                id="quadkey-layer"
-                :data="quadkeyData"
-                :get-quadkey="getQuadkey"
-                :get-fill-color="getFillColor"
-                :get-elevation="getElevation"
-                :extruded="true"
-                :pickable="true"
-                :auto-highlight="true"
-              />
-            </VMap>
-          </template>`;
+                <template>
+                  <VMap :options="mapOptions" class="h-125 w-full">
+                    <VControlNavigation position="top-right" />
+                    <VLayerDeckglQuadkey
+                      id="quadkey-layer"
+                      :data="quadkeyData"
+                      :get-quadkey="getQuadkey"
+                      :get-fill-color="getFillColor"
+                      :get-elevation="getElevation"
+                      :extruded="true"
+                      :pickable="true"
+                      :auto-highlight="true"
+                    />
+                  </VMap>
+                </template>`;
 </script>
 
 <template>

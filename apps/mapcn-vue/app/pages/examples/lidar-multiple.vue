@@ -55,73 +55,73 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { ref } from 'vue';
-            import { VMap, VControlLidar, VControlNavigation } from '@geoql/v-maplibre';
-            import 'maplibre-gl-lidar/style.css';
+                  import { ref } from 'vue';
+                  import { VMap, VControlLidar, VControlNavigation } from '@geoql/v-maplibre';
+                  import 'maplibre-gl-lidar/style.css';
 
-            const lidarRef = ref<InstanceType<typeof VControlLidar> | null>(null);
+                  const lidarRef = ref<InstanceType<typeof VControlLidar> | null>(null);
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-105.5, 39.75],
-            zoom: 10,
-            pitch: 45,
-            maxPitch: 85,
-            };
+                  const mapOptions = {
+                  style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                  center: [-105.5, 39.75],
+                  zoom: 10,
+                  pitch: 45,
+                  maxPitch: 85,
+                  };
 
-            const lidarOptions = {
-            collapsed: false,
-            pointSize: 2,
-            colorScheme: 'elevation',
-            pickable: true,
-            autoZoom: false, // Don't auto-zoom to keep view stable
-            pointBudget: 2_000_000,
-            };
+                  const lidarOptions = {
+                  collapsed: false,
+                  pointSize: 2,
+                  colorScheme: 'elevation',
+                  pickable: true,
+                  autoZoom: false, // Don't auto-zoom to keep view stable
+                  pointBudget: 2_000_000,
+                  };
 
-            // Sample datasets
-            const datasets = [
-            {
-              name: 'Autzen',
-              url: 'https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz'
-            },
-            {
-              name: 'Red Rocks',
-              url: 'https://na-c.entwine.io/red-rocks/ept.json'
-            },
-            ];
+                  // Sample datasets
+                  const datasets = [
+                  {
+                    name: 'Autzen',
+                    url: 'https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz'
+                  },
+                  {
+                    name: 'Red Rocks',
+                    url: 'https://na-c.entwine.io/red-rocks/ept.json'
+                  },
+                  ];
 
-            // Load multiple datasets programmatically
-            const loadDataset = async (url: string) => {
-            await lidarRef.value?.loadPointCloud(url);
-            };
+                  // Load multiple datasets programmatically
+                  const loadDataset = async (url: string) => {
+                  await lidarRef.value?.loadPointCloud(url);
+                  };
 
-            // Get list of loaded point clouds
-            const getPointClouds = () => {
-            return lidarRef.value?.getPointClouds() || [];
-            };
+                  // Get list of loaded point clouds
+                  const getPointClouds = () => {
+                  return lidarRef.value?.getPointClouds() || [];
+                  };
 
-            // Unload a specific point cloud
-            const unloadPointCloud = (id: string) => {
-            lidarRef.value?.unloadPointCloud(id);
-            };
+                  // Unload a specific point cloud
+                  const unloadPointCloud = (id: string) => {
+                  lidarRef.value?.unloadPointCloud(id);
+                  };
 
-            // Fly to a specific point cloud
-            const flyTo = (id: string) => {
-            lidarRef.value?.flyToPointCloud(id);
-            };
-          ${SCRIPT_END}
+                  // Fly to a specific point cloud
+                  const flyTo = (id: string) => {
+                  lidarRef.value?.flyToPointCloud(id);
+                  };
+                ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VControlLidar
-                ref="lidarRef"
-                position="top-right"
-                :options="lidarOptions"
-                @load="(info) => console.log('Loaded:', info.pointCloud.name)"
-              />
-            </VMap>
-          </template>`;
+                <template>
+                  <VMap :options="mapOptions" class="h-125 w-full">
+                    <VControlNavigation position="top-right" />
+                    <VControlLidar
+                      ref="lidarRef"
+                      position="top-right"
+                      :options="lidarOptions"
+                      @load="(info) => console.log('Loaded:', info.pointCloud.name)"
+                    />
+                  </VMap>
+                </template>`;
 </script>
 
 <template>

@@ -86,39 +86,39 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { VMap, VLayerDeckglPath, VControlNavigation } from '@geoql/v-maplibre';
+                import { VMap, VLayerDeckglPath, VControlNavigation } from '@geoql/v-maplibre';
 
-          const mapOptions = {
-          style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-          center: [-122.4, 37.8],
-          zoom: 11,
-          };
+                const mapOptions = {
+                style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                center: [-122.4, 37.8],
+                zoom: 11,
+                };
 
-          const pathData = [
-          {
-            path: [[-122.45, 37.78], [-122.43, 37.79], [-122.41, 37.78], [-122.39, 37.8]],
-            name: 'Route A',
-            color: [255, 140, 0],
-          },
-          // ... more paths
-          ];
-        ${SCRIPT_END}
+                const pathData = [
+                {
+                  path: [[-122.45, 37.78], [-122.43, 37.79], [-122.41, 37.78], [-122.39, 37.8]],
+                  name: 'Route A',
+                  color: [255, 140, 0],
+                },
+                // ... more paths
+                ];
+              ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions" class="h-125 w-full">
-            <VControlNavigation position="top-right" />
-            <VLayerDeckglPath
-              id="path-layer"
-              :data="pathData"
-              :get-path="(d) => d.path"
-              :get-color="(d) => d.color"
-              :get-width="4"
-              :width-min-pixels="2"
-              :pickable="true"
-              :rounded="true"
-            />
-          </VMap>
-        </template>`;
+              <template>
+                <VMap :options="mapOptions" class="h-125 w-full">
+                  <VControlNavigation position="top-right" />
+                  <VLayerDeckglPath
+                    id="path-layer"
+                    :data="pathData"
+                    :get-path="(d) => d.path"
+                    :get-color="(d) => d.color"
+                    :get-width="4"
+                    :width-min-pixels="2"
+                    :pickable="true"
+                    :rounded="true"
+                  />
+                </VMap>
+              </template>`;
 </script>
 
 <template>

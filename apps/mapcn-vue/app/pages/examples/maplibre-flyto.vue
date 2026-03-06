@@ -116,53 +116,53 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { ref } from 'vue';
-            import type { Map } from 'maplibre-gl';
-            import { VMap, VControlNavigation, VMarker } from '@geoql/v-maplibre';
+                    import { ref } from 'vue';
+                    import type { Map } from 'maplibre-gl';
+                    import { VMap, VControlNavigation, VMarker } from '@geoql/v-maplibre';
 
-            const mapRef = ref<Map | null>(null);
-            const cities = [
-            { name: 'New York', coordinates: [-74.006, 40.7128], zoom: 12 },
-            { name: 'Paris', coordinates: [2.3522, 48.8566], zoom: 13, pitch: 45, bearing: 30 },
-            { name: 'Tokyo', coordinates: [139.6917, 35.6895], zoom: 11 },
-            ];
+                    const mapRef = ref<Map | null>(null);
+                    const cities = [
+                    { name: 'New York', coordinates: [-74.006, 40.7128], zoom: 12 },
+                    { name: 'Paris', coordinates: [2.3522, 48.8566], zoom: 13, pitch: 45, bearing: 30 },
+                    { name: 'Tokyo', coordinates: [139.6917, 35.6895], zoom: 11 },
+                    ];
 
-            function handleMapLoad(map: Map) {
-            mapRef.value = map;
-            }
+                    function handleMapLoad(map: Map) {
+                    mapRef.value = map;
+                    }
 
-            function flyToCity(city) {
-            if (!mapRef.value) return;
-            mapRef.value.flyTo({
-              center: city.coordinates,
-              zoom: city.zoom,
-              pitch: city.pitch ?? 0,
-              bearing: city.bearing ?? 0,
-              duration: 2000,
-            });
-            }
-          ${SCRIPT_END}
+                    function flyToCity(city) {
+                    if (!mapRef.value) return;
+                    mapRef.value.flyTo({
+                      center: city.coordinates,
+                      zoom: city.zoom,
+                      pitch: city.pitch ?? 0,
+                      bearing: city.bearing ?? 0,
+                      duration: 2000,
+                    });
+                    }
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full" @loaded="handleMapLoad">
-              <VControlNavigation position="top-right" />
-              <VMarker
-                v-for="city in cities"
-                :key="city.name"
-                :coordinates="city.coordinates"
-              />
-            </VMap>
-            <div class="flex gap-2 mt-4">
-              <button
-                v-for="city in cities"
-                :key="city.name"
-                class="btn"
-                @click="flyToCity(city)"
-              >
-                {{ city.name }}
-              </button>
-            </div>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full" @loaded="handleMapLoad">
+                      <VControlNavigation position="top-right" />
+                      <VMarker
+                        v-for="city in cities"
+                        :key="city.name"
+                        :coordinates="city.coordinates"
+                      />
+                    </VMap>
+                    <div class="flex gap-2 mt-4">
+                      <button
+                        v-for="city in cities"
+                        :key="city.name"
+                        class="btn"
+                        @click="flyToCity(city)"
+                      >
+                        {{ city.name }}
+                      </button>
+                    </div>
+                  </template>`;
 </script>
 
 <template>

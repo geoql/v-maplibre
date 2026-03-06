@@ -78,46 +78,46 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglHexagon, VControlNavigation } from '@geoql/v-maplibre';
+                    import { VMap, VLayerDeckglHexagon, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-            center: [-122.4, 37.78],
-            zoom: 11,
-            pitch: 45,
-            bearing: -17,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+                    center: [-122.4, 37.78],
+                    zoom: 11,
+                    pitch: 45,
+                    bearing: -17,
+                    };
 
-            const hexagonData = [
-            { position: [-122.42, 37.78] },
-            { position: [-122.38, 37.79] },
-            // ... many more points for aggregation
-            ];
-          ${SCRIPT_END}
+                    const hexagonData = [
+                    { position: [-122.42, 37.78] },
+                    { position: [-122.38, 37.79] },
+                    // ... many more points for aggregation
+                    ];
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglHexagon
-                id="hexagon-layer"
-                :data="hexagonData"
-                :get-position="(d) => d.position"
-                :radius="200"
-                :elevation-scale="50"
-                :elevation-range="[0, 1000]"
-                :extruded="true"
-                :pickable="true"
-                :color-range="[
-                  [255, 255, 178],
-                  [254, 217, 118],
-                  [254, 178, 76],
-                  [253, 141, 60],
-                  [240, 59, 32],
-                  [189, 0, 38],
-                ]"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VLayerDeckglHexagon
+                        id="hexagon-layer"
+                        :data="hexagonData"
+                        :get-position="(d) => d.position"
+                        :radius="200"
+                        :elevation-scale="50"
+                        :elevation-range="[0, 1000]"
+                        :extruded="true"
+                        :pickable="true"
+                        :color-range="[
+                          [255, 255, 178],
+                          [254, 217, 118],
+                          [254, 178, 76],
+                          [253, 141, 60],
+                          [240, 59, 32],
+                          [189, 0, 38],
+                        ]"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

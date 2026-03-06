@@ -123,45 +123,45 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { VMap, VLayerMaplibreGeojson, VControlNavigation } from '@geoql/v-maplibre';
-          import { MaplibreSnowLayer } from '@geoql/maplibre-gl-snow';
-          const { snowGeoJson, snowfallRate } = useNYCSnow();
-          const mapOptions = {
-            style: '${cartoStyle.value}',
-            center: [-73.98, 40.758],
-            zoom: 13,
-            pitch: 55,
-            bearing: -17,
-          };
-          function onMapLoad(map) {
-            map.addLayer(new MaplibreSnowLayer({
-              intensity: snowfallRate.value / 4,
-              fog: true,
-            }));
-          }
-        ${SCRIPT_END}
+                  import { VMap, VLayerMaplibreGeojson, VControlNavigation } from '@geoql/v-maplibre';
+                  import { MaplibreSnowLayer } from '@geoql/maplibre-gl-snow';
+                  const { snowGeoJson, snowfallRate } = useNYCSnow();
+                  const mapOptions = {
+                    style: '${cartoStyle.value}',
+                    center: [-73.98, 40.758],
+                    zoom: 13,
+                    pitch: 55,
+                    bearing: -17,
+                  };
+                  function onMapLoad(map) {
+                    map.addLayer(new MaplibreSnowLayer({
+                      intensity: snowfallRate.value / 4,
+                      fog: true,
+                    }));
+                  }
+                ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions" class="h-full w-full" @loaded="onMapLoad">
-            <VControlNavigation position="top-right" />
-            <VLayerMaplibreGeojson
-              source-id="snow-streets"
-              layer-id="snow-extrusion"
-              :source="{ type: 'geojson', data: snowGeoJson }"
-              :layer="{
-                id: 'snow-extrusion',
-                type: 'fill-extrusion',
-                source: 'snow-streets',
-                paint: {
-                  'fill-extrusion-color': ['get', 'plowColor'],
-                  'fill-extrusion-height': ['+', 1, ['*', ['get', 'snowDepth'], 0.6]],
-                  'fill-extrusion-base': 0,
-                  'fill-extrusion-opacity': 0.85,
-                },
-              }"
-            />
-          </VMap>
-        </template>`;
+                <template>
+                  <VMap :options="mapOptions" class="h-full w-full" @loaded="onMapLoad">
+                    <VControlNavigation position="top-right" />
+                    <VLayerMaplibreGeojson
+                      source-id="snow-streets"
+                      layer-id="snow-extrusion"
+                      :source="{ type: 'geojson', data: snowGeoJson }"
+                      :layer="{
+                        id: 'snow-extrusion',
+                        type: 'fill-extrusion',
+                        source: 'snow-streets',
+                        paint: {
+                          'fill-extrusion-color': ['get', 'plowColor'],
+                          'fill-extrusion-height': ['+', 1, ['*', ['get', 'snowDepth'], 0.6]],
+                          'fill-extrusion-base': 0,
+                          'fill-extrusion-opacity': 0.85,
+                        },
+                      }"
+                    />
+                  </VMap>
+                </template>`;
 </script>
 
 <template>

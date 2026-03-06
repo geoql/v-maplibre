@@ -78,46 +78,46 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglGrid, VControlNavigation } from '@geoql/v-maplibre';
+                  import { VMap, VLayerDeckglGrid, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-            center: [-122.4, 37.78],
-            zoom: 11,
-            pitch: 45,
-            bearing: -17,
-            };
+                  const mapOptions = {
+                  style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+                  center: [-122.4, 37.78],
+                  zoom: 11,
+                  pitch: 45,
+                  bearing: -17,
+                  };
 
-            const gridData = [
-            { position: [-122.42, 37.78] },
-            { position: [-122.38, 37.79] },
-            // ... many more points for aggregation
-            ];
-          ${SCRIPT_END}
+                  const gridData = [
+                  { position: [-122.42, 37.78] },
+                  { position: [-122.38, 37.79] },
+                  // ... many more points for aggregation
+                  ];
+                ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglGrid
-                id="grid-layer"
-                :data="gridData"
-                :get-position="(d) => d.position"
-                :cell-size="200"
-                :elevation-scale="50"
-                :elevation-range="[0, 1000]"
-                :extruded="true"
-                :pickable="true"
-                :color-range="[
-                  [255, 255, 204],
-                  [199, 233, 180],
-                  [127, 205, 187],
-                  [65, 182, 196],
-                  [44, 127, 184],
-                  [37, 52, 148],
-                ]"
-              />
-            </VMap>
-          </template>`;
+                <template>
+                  <VMap :options="mapOptions" class="h-125 w-full">
+                    <VControlNavigation position="top-right" />
+                    <VLayerDeckglGrid
+                      id="grid-layer"
+                      :data="gridData"
+                      :get-position="(d) => d.position"
+                      :cell-size="200"
+                      :elevation-scale="50"
+                      :elevation-range="[0, 1000]"
+                      :extruded="true"
+                      :pickable="true"
+                      :color-range="[
+                        [255, 255, 204],
+                        [199, 233, 180],
+                        [127, 205, 187],
+                        [65, 182, 196],
+                        [44, 127, 184],
+                        [37, 52, 148],
+                      ]"
+                    />
+                  </VMap>
+                </template>`;
 </script>
 
 <template>

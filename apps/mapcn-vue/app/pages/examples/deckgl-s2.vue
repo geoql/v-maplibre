@@ -78,52 +78,52 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglS2, VControlNavigation } from '@geoql/v-maplibre';
+                  import { VMap, VLayerDeckglS2, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-122.4, 37.78],
-            zoom: 10,
-            pitch: 45,
-            };
+                  const mapOptions = {
+                  style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                  center: [-122.4, 37.78],
+                  zoom: 10,
+                  pitch: 45,
+                  };
 
-            interface S2Data {
-            token: string;
-            value: number;
-            density: 'high' | 'medium' | 'low';
-            }
+                  interface S2Data {
+                  token: string;
+                  value: number;
+                  density: 'high' | 'medium' | 'low';
+                  }
 
-            // S2 cell tokens (Google's spherical geometry library)
-            // Level 13 ≈ 1km², Level 15 ≈ 150m², Level 17 ≈ 20m²
-            const s2Data: S2Data[] = [
-            { token: '80858c4', value: 2800, density: 'high' },
-            { token: '80858cc', value: 2100, density: 'high' },
-            { token: '80858d4', value: 1500, density: 'medium' },
-            ];
+                  // S2 cell tokens (Google's spherical geometry library)
+                  // Level 13 ≈ 1km², Level 15 ≈ 150m², Level 17 ≈ 20m²
+                  const s2Data: S2Data[] = [
+                  { token: '80858c4', value: 2800, density: 'high' },
+                  { token: '80858cc', value: 2100, density: 'high' },
+                  { token: '80858d4', value: 1500, density: 'medium' },
+                  ];
 
-            const getS2Token = (d: unknown) => (d as S2Data).token;
-            const getElevation = (d: unknown) => (d as S2Data).value;
-            const getFillColor = (d: unknown) => {
-            const colors = { high: [255, 80, 120], medium: [255, 180, 80], low: [80, 180, 255] };
-            return [...colors[(d as S2Data).density], 200];
-            };
-          ${SCRIPT_END}
+                  const getS2Token = (d: unknown) => (d as S2Data).token;
+                  const getElevation = (d: unknown) => (d as S2Data).value;
+                  const getFillColor = (d: unknown) => {
+                  const colors = { high: [255, 80, 120], medium: [255, 180, 80], low: [80, 180, 255] };
+                  return [...colors[(d as S2Data).density], 200];
+                  };
+                ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglS2
-                id="s2-layer"
-                :data="s2Data"
-                :get-s2-token="getS2Token"
-                :get-fill-color="getFillColor"
-                :get-elevation="getElevation"
-                :extruded="true"
-                :pickable="true"
-                :auto-highlight="true"
-              />
-            </VMap>
-          </template>`;
+                <template>
+                  <VMap :options="mapOptions" class="h-125 w-full">
+                    <VControlNavigation position="top-right" />
+                    <VLayerDeckglS2
+                      id="s2-layer"
+                      :data="s2Data"
+                      :get-s2-token="getS2Token"
+                      :get-fill-color="getFillColor"
+                      :get-elevation="getElevation"
+                      :extruded="true"
+                      :pickable="true"
+                      :auto-highlight="true"
+                    />
+                  </VMap>
+                </template>`;
 </script>
 
 <template>

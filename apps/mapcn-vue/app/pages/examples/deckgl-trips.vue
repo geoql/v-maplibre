@@ -97,39 +97,39 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglTrips, VControlNavigation } from '@geoql/v-maplibre';
+                  import { VMap, VLayerDeckglTrips, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-            center: [-74.0, 40.72],
-            zoom: 12,
-            pitch: 45,
-            };
+                  const mapOptions = {
+                  style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+                  center: [-74.0, 40.72],
+                  zoom: 12,
+                  pitch: 45,
+                  };
 
-            // Fetch trip data with path coordinates and timestamps
-            const tripsData = await fetch(DATA_URL).then(r => r.json());
+                  // Fetch trip data with path coordinates and timestamps
+                  const tripsData = await fetch(DATA_URL).then(r => r.json());
 
-            // Animation loop updates currentTime
-            const currentTime = ref(0);
-          ${SCRIPT_END}
+                  // Animation loop updates currentTime
+                  const currentTime = ref(0);
+                ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglTrips
-                id="trips"
-                :data="tripsData"
-                :get-path="(d) => d.path"
-                :get-timestamps="(d) => d.timestamps"
-                :get-color="(d) => d.vendor === 0 ? [253, 128, 93] : [23, 184, 190]"
-                :current-time="currentTime"
-                :trail-length="180"
-                :width-min-pixels="3"
-                :cap-rounded="true"
-                :joint-rounded="true"
-              />
-            </VMap>
-          </template>`;
+                <template>
+                  <VMap :options="mapOptions" class="h-125 w-full">
+                    <VControlNavigation position="top-right" />
+                    <VLayerDeckglTrips
+                      id="trips"
+                      :data="tripsData"
+                      :get-path="(d) => d.path"
+                      :get-timestamps="(d) => d.timestamps"
+                      :get-color="(d) => d.vendor === 0 ? [253, 128, 93] : [23, 184, 190]"
+                      :current-time="currentTime"
+                      :trail-length="180"
+                      :width-min-pixels="3"
+                      :cap-rounded="true"
+                      :joint-rounded="true"
+                    />
+                  </VMap>
+                </template>`;
 </script>
 
 <template>

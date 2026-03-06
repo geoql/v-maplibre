@@ -109,61 +109,61 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import {
-          VMap,
-          VLayerDeckglScatterplot,
-          VLayerMaplibreStarfield,
-          VControlNavigation,
-          } from '@geoql/v-maplibre';
+                import {
+                VMap,
+                VLayerDeckglScatterplot,
+                VLayerMaplibreStarfield,
+                VControlNavigation,
+                } from '@geoql/v-maplibre';
 
-          // Geocentric sun position + local altitude for star fading
-          const { sunAzimuth, sunAltitude, localSunAltitude } = useSunPosition();
+                // Geocentric sun position + local altitude for star fading
+                const { sunAzimuth, sunAltitude, localSunAltitude } = useSunPosition();
 
-          const mapOptions = {
-          style: {
-            version: 8,
-            projection: { type: 'globe' },
-            sources: {
-              satellite: {
-                type: 'raster',
-                tiles: ['https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/g/{z}/{y}/{x}.jpg'],
-                tileSize: 256,
-              },
-            },
-            layers: [{ id: 'satellite', type: 'raster', source: 'satellite' }],
-            sky: { 'atmosphere-blend': ['interpolate', ['linear'], ['zoom'], 0, 1, 5, 1, 7, 0] },
-          },
-          center: [0, 20],
-          zoom: 1.5,
-          };
-        ${SCRIPT_END}
+                const mapOptions = {
+                style: {
+                  version: 8,
+                  projection: { type: 'globe' },
+                  sources: {
+                    satellite: {
+                      type: 'raster',
+                      tiles: ['https://tiles.maps.eox.at/wmts/1.0.0/s2cloudless-2020_3857/default/g/{z}/{y}/{x}.jpg'],
+                      tileSize: 256,
+                    },
+                  },
+                  layers: [{ id: 'satellite', type: 'raster', source: 'satellite' }],
+                  sky: { 'atmosphere-blend': ['interpolate', ['linear'], ['zoom'], 0, 1, 5, 1, 7, 0] },
+                },
+                center: [0, 20],
+                zoom: 1.5,
+                };
+              ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions" class="h-125 w-full">
-            <VLayerMaplibreStarfield
-              galaxy-texture-url="/milkyway.jpg"
-              :star-count="5000"
-              :star-size="2.5"
-              :sun-enabled="true"
-              :sun-azimuth="sunAzimuth"
-              :sun-altitude="sunAltitude"
-              :fade-altitude="localSunAltitude"
-              before="satellite"
-            />
-            <VControlNavigation position="top-right" />
-            <VLayerDeckglScatterplot
-              id="earthquakes"
-              :data="earthquakeData"
-              :get-position="getPosition"
-              :get-radius="getRadius"
-              :get-fill-color="getFillColor"
-              :radius-min-pixels="4"
-              :radius-max-pixels="45"
-              :opacity="0.9"
-              :pickable="true"
-            />
-          </VMap>
-        </template>`;
+              <template>
+                <VMap :options="mapOptions" class="h-125 w-full">
+                  <VLayerMaplibreStarfield
+                    galaxy-texture-url="/milkyway.jpg"
+                    :star-count="5000"
+                    :star-size="2.5"
+                    :sun-enabled="true"
+                    :sun-azimuth="sunAzimuth"
+                    :sun-altitude="sunAltitude"
+                    :fade-altitude="localSunAltitude"
+                    before="satellite"
+                  />
+                  <VControlNavigation position="top-right" />
+                  <VLayerDeckglScatterplot
+                    id="earthquakes"
+                    :data="earthquakeData"
+                    :get-position="getPosition"
+                    :get-radius="getRadius"
+                    :get-fill-color="getFillColor"
+                    :radius-min-pixels="4"
+                    :radius-max-pixels="45"
+                    :opacity="0.9"
+                    :pickable="true"
+                  />
+                </VMap>
+              </template>`;
 </script>
 
 <template>

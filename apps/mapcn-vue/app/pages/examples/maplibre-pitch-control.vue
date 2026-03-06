@@ -140,54 +140,54 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { ref } from 'vue';
-          import type { Map } from 'maplibre-gl';
-          import { VMap, VControlNavigation } from '@geoql/v-maplibre';
+                  import { ref } from 'vue';
+                  import type { Map } from 'maplibre-gl';
+                  import { VMap, VControlNavigation } from '@geoql/v-maplibre';
 
-          const mapRef = ref<Map | null>(null);
-          const pitch = ref(45);
-          const bearing = ref(0);
+                  const mapRef = ref<Map | null>(null);
+                  const pitch = ref(45);
+                  const bearing = ref(0);
 
-          function handleMapLoad(map: Map) {
-          mapRef.value = map;
+                  function handleMapLoad(map: Map) {
+                  mapRef.value = map;
 
-          // Sync controls with map gestures
-          map.on('pitchend', () => pitch.value = Math.round(map.getPitch()));
-          map.on('rotate', () => bearing.value = Math.round(map.getBearing()));
-          }
+                  // Sync controls with map gestures
+                  map.on('pitchend', () => pitch.value = Math.round(map.getPitch()));
+                  map.on('rotate', () => bearing.value = Math.round(map.getBearing()));
+                  }
 
-          function updatePitch(value: number) {
-          pitch.value = value;
-          mapRef.value?.easeTo({ pitch: value, duration: 300 });
-          }
+                  function updatePitch(value: number) {
+                  pitch.value = value;
+                  mapRef.value?.easeTo({ pitch: value, duration: 300 });
+                  }
 
-          function updateBearing(value: number) {
-          bearing.value = value;
-          mapRef.value?.easeTo({ bearing: value, duration: 300 });
-          }
+                  function updateBearing(value: number) {
+                  bearing.value = value;
+                  mapRef.value?.easeTo({ bearing: value, duration: 300 });
+                  }
 
-          function resetView() {
-          pitch.value = 0;
-          bearing.value = 0;
-          mapRef.value?.easeTo({ pitch: 0, bearing: 0, duration: 500 });
-          }
-        ${SCRIPT_END}
+                  function resetView() {
+                  pitch.value = 0;
+                  bearing.value = 0;
+                  mapRef.value?.easeTo({ pitch: 0, bearing: 0, duration: 500 });
+                  }
+                ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions" class="h-125 w-full" @loaded="handleMapLoad">
-            <VControlNavigation position="top-right" />
-          </VMap>
+                <template>
+                  <VMap :options="mapOptions" class="h-125 w-full" @loaded="handleMapLoad">
+                    <VControlNavigation position="top-right" />
+                  </VMap>
 
-          <div class="controls mt-4">
-            <label>Pitch: {{ pitch }}°</label>
-            <input type="range" :value="pitch" min="0" max="85" @input="updatePitch" />
+                  <div class="controls mt-4">
+                    <label>Pitch: {{ pitch }}°</label>
+                    <input type="range" :value="pitch" min="0" max="85" @input="updatePitch" />
 
-            <label>Bearing: {{ bearing }}°</label>
-            <input type="range" :value="bearing" min="-180" max="180" @input="updateBearing" />
+                    <label>Bearing: {{ bearing }}°</label>
+                    <input type="range" :value="bearing" min="-180" max="180" @input="updateBearing" />
 
-            <button @click="resetView">Reset</button>
-          </div>
-        </template>`;
+                    <button @click="resetView">Reset</button>
+                  </div>
+                </template>`;
 </script>
 
 <template>

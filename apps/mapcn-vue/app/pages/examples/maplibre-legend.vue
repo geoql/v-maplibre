@@ -332,148 +332,148 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const categoryCodeExample = `${SCRIPT_START}
-          import { VMap, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
-          import type { CategoryLegendItem } from '@geoql/v-maplibre';
+                  import { VMap, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+                  import type { CategoryLegendItem } from '@geoql/v-maplibre';
 
-          const legendItems: CategoryLegendItem[] = [
-          { value: 'West', label: 'West', color: '#e41a1c', visible: true },
-          { value: 'Southwest', label: 'Southwest', color: '#377eb8', visible: true },
-          { value: 'Midwest', label: 'Midwest', color: '#4daf4a', visible: true },
-          { value: 'Southeast', label: 'Southeast', color: '#984ea3', visible: true },
-          { value: 'Northeast', label: 'Northeast', color: '#ff7f00', visible: true },
-          ];
-        ${SCRIPT_END}
+                  const legendItems: CategoryLegendItem[] = [
+                  { value: 'West', label: 'West', color: '#e41a1c', visible: true },
+                  { value: 'Southwest', label: 'Southwest', color: '#377eb8', visible: true },
+                  { value: 'Midwest', label: 'Midwest', color: '#4daf4a', visible: true },
+                  { value: 'Southeast', label: 'Southeast', color: '#984ea3', visible: true },
+                  { value: 'Northeast', label: 'Northeast', color: '#ff7f00', visible: true },
+                  ];
+                ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions">
-            <VLayerMaplibreGeojson
-              source-id="regions"
-              layer-id="regions-fill"
-              :source="{ type: 'geojson', data: statesGeoJson }"
-              :layer="{
-                id: 'regions-fill',
-                type: 'fill',
-                paint: {
-                  'fill-color': [
-                    'match', ['get', 'region'],
-                    'West', '#e41a1c',
-                    'Southwest', '#377eb8',
-                    'Midwest', '#4daf4a',
-                    'Southeast', '#984ea3',
-                    'Northeast', '#ff7f00',
-                    '#999999'
-                  ],
-                  'fill-opacity': 0.7
-                }
-              }"
-            />
+                <template>
+                  <VMap :options="mapOptions">
+                    <VLayerMaplibreGeojson
+                      source-id="regions"
+                      layer-id="regions-fill"
+                      :source="{ type: 'geojson', data: statesGeoJson }"
+                      :layer="{
+                        id: 'regions-fill',
+                        type: 'fill',
+                        paint: {
+                          'fill-color': [
+                            'match', ['get', 'region'],
+                            'West', '#e41a1c',
+                            'Southwest', '#377eb8',
+                            'Midwest', '#4daf4a',
+                            'Southeast', '#984ea3',
+                            'Northeast', '#ff7f00',
+                            '#999999'
+                          ],
+                          'fill-opacity': 0.7
+                        }
+                      }"
+                    />
 
-            <!-- Category Legend with click-to-filter -->
-            <VControlLegend
-              :layer-ids="['regions-fill']"
-              type="category"
-              :items="legendItems"
-              property="fill-color"
-              title="US Regions"
-              :interactive="true"
-              @filter-change="handleFilterChange"
-            />
-          </VMap>
-        </template>`;
+                    <!-- Category Legend with click-to-filter -->
+                    <VControlLegend
+                      :layer-ids="['regions-fill']"
+                      type="category"
+                      :items="legendItems"
+                      property="fill-color"
+                      title="US Regions"
+                      :interactive="true"
+                      @filter-change="handleFilterChange"
+                    />
+                  </VMap>
+                </template>`;
 
   const gradientCodeExample = `${SCRIPT_START}
-          import { VMap, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
-          import type { GradientLegendItem } from '@geoql/v-maplibre';
+                  import { VMap, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+                  import type { GradientLegendItem } from '@geoql/v-maplibre';
 
-          const gradientLegend: GradientLegendItem = {
-          min: 0,
-          max: 500,
-          colors: ['#ffffcc', '#a1dab4', '#41b6c4', '#2c7fb8', '#253494'],
-          stops: [0, 100, 200, 350, 500],
-          minLabel: '0',
-          maxLabel: '500+ /mi²',
-          };
-        ${SCRIPT_END}
+                  const gradientLegend: GradientLegendItem = {
+                  min: 0,
+                  max: 500,
+                  colors: ['#ffffcc', '#a1dab4', '#41b6c4', '#2c7fb8', '#253494'],
+                  stops: [0, 100, 200, 350, 500],
+                  minLabel: '0',
+                  maxLabel: '500+ /mi²',
+                  };
+                ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions">
-            <VLayerMaplibreGeojson
-              source-id="density"
-              layer-id="density-fill"
-              :source="{ type: 'geojson', data: statesGeoJson }"
-              :layer="{
-                id: 'density-fill',
-                type: 'fill',
-                paint: {
-                  'fill-color': [
-                    'interpolate', ['linear'], ['get', 'density'],
-                    0, '#ffffcc',
-                    100, '#a1dab4',
-                    200, '#41b6c4',
-                    350, '#2c7fb8',
-                    500, '#253494'
-                  ],
-                  'fill-opacity': 0.8
-                }
-              }"
-            />
+                <template>
+                  <VMap :options="mapOptions">
+                    <VLayerMaplibreGeojson
+                      source-id="density"
+                      layer-id="density-fill"
+                      :source="{ type: 'geojson', data: statesGeoJson }"
+                      :layer="{
+                        id: 'density-fill',
+                        type: 'fill',
+                        paint: {
+                          'fill-color': [
+                            'interpolate', ['linear'], ['get', 'density'],
+                            0, '#ffffcc',
+                            100, '#a1dab4',
+                            200, '#41b6c4',
+                            350, '#2c7fb8',
+                            500, '#253494'
+                          ],
+                          'fill-opacity': 0.8
+                        }
+                      }"
+                    />
 
-            <!-- Gradient Legend for continuous data -->
-            <VControlLegend
-              :layer-ids="['density-fill']"
-              type="gradient"
-              :items="[gradientLegend]"
-              title="Population Density"
-              :interactive="false"
-            />
-          </VMap>
-        </template>`;
+                    <!-- Gradient Legend for continuous data -->
+                    <VControlLegend
+                      :layer-ids="['density-fill']"
+                      type="gradient"
+                      :items="[gradientLegend]"
+                      title="Population Density"
+                      :interactive="false"
+                    />
+                  </VMap>
+                </template>`;
 
   const sizeCodeExample = `${SCRIPT_START}
-          import { VMap, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
-          import type { SizeLegendItem } from '@geoql/v-maplibre';
+                  import { VMap, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+                  import type { SizeLegendItem } from '@geoql/v-maplibre';
 
-          const sizeLegendItems: SizeLegendItem[] = [
-          { value: 'large', label: '> 2.5M', size: 20 },
-          { value: 'medium', label: '1.5M - 2.5M', size: 14 },
-          { value: 'small', label: '< 1.5M', size: 8 },
-          ];
-        ${SCRIPT_END}
+                  const sizeLegendItems: SizeLegendItem[] = [
+                  { value: 'large', label: '> 2.5M', size: 20 },
+                  { value: 'medium', label: '1.5M - 2.5M', size: 14 },
+                  { value: 'small', label: '< 1.5M', size: 8 },
+                  ];
+                ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions">
-            <VLayerMaplibreGeojson
-              source-id="cities"
-              layer-id="cities-circles"
-              :source="{ type: 'geojson', data: citiesGeoJson }"
-              :layer="{
-                id: 'cities-circles',
-                type: 'circle',
-                paint: {
-                  'circle-radius': [
-                    'match', ['get', 'popClass'],
-                    'large', 20,
-                    'medium', 14,
-                    'small', 8,
-                    6
-                  ],
-                  'circle-color': '#3b82f6',
-                  'circle-stroke-color': '#ffffff',
-                  'circle-stroke-width': 2
-                }
-              }"
-            />
+                <template>
+                  <VMap :options="mapOptions">
+                    <VLayerMaplibreGeojson
+                      source-id="cities"
+                      layer-id="cities-circles"
+                      :source="{ type: 'geojson', data: citiesGeoJson }"
+                      :layer="{
+                        id: 'cities-circles',
+                        type: 'circle',
+                        paint: {
+                          'circle-radius': [
+                            'match', ['get', 'popClass'],
+                            'large', 20,
+                            'medium', 14,
+                            'small', 8,
+                            6
+                          ],
+                          'circle-color': '#3b82f6',
+                          'circle-stroke-color': '#ffffff',
+                          'circle-stroke-width': 2
+                        }
+                      }"
+                    />
 
-            <!-- Size Legend for proportional symbols -->
-            <VControlLegend
-              :layer-ids="['cities-circles']"
-              type="size"
-              :items="sizeLegendItems"
-              title="City Population"
-              :interactive="false"
-            />
-          </VMap>
-        </template>`;
+                    <!-- Size Legend for proportional symbols -->
+                    <VControlLegend
+                      :layer-ids="['cities-circles']"
+                      type="size"
+                      :items="sizeLegendItems"
+                      title="City Population"
+                      :interactive="false"
+                    />
+                  </VMap>
+                </template>`;
 
   const currentCodeExample = computed(() => {
     switch (activeTab.value) {

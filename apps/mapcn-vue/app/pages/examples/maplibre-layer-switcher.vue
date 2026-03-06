@@ -102,51 +102,51 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { ref, computed } from 'vue';
-          import { VMap, VControlNavigation } from '@geoql/v-maplibre';
+                  import { ref, computed } from 'vue';
+                  import { VMap, VControlNavigation } from '@geoql/v-maplibre';
 
-          const mapStyles = [
-          { id: 'positron', name: 'Light', url: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json' },
-          { id: 'dark-matter', name: 'Dark', url: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json' },
-          { id: 'voyager', name: 'Voyager', url: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json' },
-          ];
+                  const mapStyles = [
+                  { id: 'positron', name: 'Light', url: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json' },
+                  { id: 'dark-matter', name: 'Dark', url: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json' },
+                  { id: 'voyager', name: 'Voyager', url: 'https://basemaps.cartocdn.com/gl/voyager-gl-style/style.json' },
+                  ];
 
-          const currentStyleId = ref('positron');
-          const currentStyle = computed(() => mapStyles.find(s => s.id === currentStyleId.value));
+                  const currentStyleId = ref('positron');
+                  const currentStyle = computed(() => mapStyles.find(s => s.id === currentStyleId.value));
 
-          const mapOptions = computed(() => ({
-          style: currentStyle.value.url,
-          center: [-74.006, 40.7128],
-          zoom: 12,
-          }));
+                  const mapOptions = computed(() => ({
+                  style: currentStyle.value.url,
+                  center: [-74.006, 40.7128],
+                  zoom: 12,
+                  }));
 
-          function selectStyle(style) {
-          currentStyleId.value = style.id;
-          }
-        ${SCRIPT_END}
+                  function selectStyle(style) {
+                  currentStyleId.value = style.id;
+                  }
+                ${SCRIPT_END}
 
-        <template>
-          <div class="relative">
-            <VMap :key="currentStyleId" :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-            </VMap>
+                <template>
+                  <div class="relative">
+                    <VMap :key="currentStyleId" :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                    </VMap>
 
-            <!-- Layer Switcher Control -->
-            <div class="absolute bottom-4 left-4 z-10">
-              <div class="flex flex-col gap-1 rounded-lg bg-background/95 p-1 shadow-lg border">
-                <button
-                  v-for="style in mapStyles"
-                  :key="style.id"
-                  class="px-3 py-1.5 rounded text-sm"
-                  :class="currentStyleId === style.id ? 'bg-primary text-white' : 'hover:bg-muted'"
-                  @click="selectStyle(style)"
-                >
-                  {{ style.name }}
-                </button>
-              </div>
-            </div>
-          </div>
-        </template>`;
+                    <!-- Layer Switcher Control -->
+                    <div class="absolute bottom-4 left-4 z-10">
+                      <div class="flex flex-col gap-1 rounded-lg bg-background/95 p-1 shadow-lg border">
+                        <button
+                          v-for="style in mapStyles"
+                          :key="style.id"
+                          class="px-3 py-1.5 rounded text-sm"
+                          :class="currentStyleId === style.id ? 'bg-primary text-white' : 'hover:bg-muted'"
+                          @click="selectStyle(style)"
+                        >
+                          {{ style.name }}
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </template>`;
 </script>
 
 <template>

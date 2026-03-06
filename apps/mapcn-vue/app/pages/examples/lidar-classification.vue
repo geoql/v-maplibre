@@ -58,64 +58,64 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { ref } from 'vue';
-            import { VMap, VControlLidar, VControlNavigation } from '@geoql/v-maplibre';
-            import 'maplibre-gl-lidar/style.css';
+                    import { ref } from 'vue';
+                    import { VMap, VControlLidar, VControlNavigation } from '@geoql/v-maplibre';
+                    import 'maplibre-gl-lidar/style.css';
 
-            const lidarRef = ref<InstanceType<typeof VControlLidar> | null>(null);
+                    const lidarRef = ref<InstanceType<typeof VControlLidar> | null>(null);
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-123.075, 44.05],
-            zoom: 14,
-            pitch: 60,
-            maxPitch: 85,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                    center: [-123.075, 44.05],
+                    zoom: 14,
+                    pitch: 60,
+                    maxPitch: 85,
+                    };
 
-            const lidarOptions = {
-            collapsed: false,
-            pointSize: 2,
-            colorScheme: 'classification', // Use classification color scheme
-            pickable: true,
-            autoZoom: true,
-            };
+                    const lidarOptions = {
+                    collapsed: false,
+                    pointSize: 2,
+                    colorScheme: 'classification', // Use classification color scheme
+                    pickable: true,
+                    autoZoom: true,
+                    };
 
-            const copcUrl = 'https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz';
+                    const copcUrl = 'https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz';
 
-            // Programmatic classification control
-            const showOnlyBuildings = () => {
-            lidarRef.value?.hideAllClassifications();
-            lidarRef.value?.setClassificationVisibility(6, true); // Building
-            };
+                    // Programmatic classification control
+                    const showOnlyBuildings = () => {
+                    lidarRef.value?.hideAllClassifications();
+                    lidarRef.value?.setClassificationVisibility(6, true); // Building
+                    };
 
-            const showOnlyGround = () => {
-            lidarRef.value?.hideAllClassifications();
-            lidarRef.value?.setClassificationVisibility(2, true); // Ground
-            };
+                    const showOnlyGround = () => {
+                    lidarRef.value?.hideAllClassifications();
+                    lidarRef.value?.setClassificationVisibility(2, true); // Ground
+                    };
 
-            const showAll = () => {
-            lidarRef.value?.showAllClassifications();
-            };
-          ${SCRIPT_END}
+                    const showAll = () => {
+                    lidarRef.value?.showAllClassifications();
+                    };
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VControlLidar
-                ref="lidarRef"
-                position="top-right"
-                :options="lidarOptions"
-                :default-url="copcUrl"
-              />
-            </VMap>
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VControlLidar
+                        ref="lidarRef"
+                        position="top-right"
+                        :options="lidarOptions"
+                        :default-url="copcUrl"
+                      />
+                    </VMap>
 
-            <!-- Classification controls -->
-            <div class="mt-4 flex gap-2">
-              <button @click="showOnlyBuildings">Buildings Only</button>
-              <button @click="showOnlyGround">Ground Only</button>
-              <button @click="showAll">Show All</button>
-            </div>
-          </template>`;
+                    <!-- Classification controls -->
+                    <div class="mt-4 flex gap-2">
+                      <button @click="showOnlyBuildings">Buildings Only</button>
+                      <button @click="showOnlyGround">Ground Only</button>
+                      <button @click="showAll">Show All</button>
+                    </div>
+                  </template>`;
 </script>
 
 <template>

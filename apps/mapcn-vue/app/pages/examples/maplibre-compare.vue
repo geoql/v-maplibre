@@ -22,48 +22,48 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import maplibregl from 'maplibre-gl';
-          import { Compare } from '@geoql/maplibre-gl-compare';
-          import '@geoql/maplibre-gl-compare/style.css';
+                  import maplibregl from 'maplibre-gl';
+                  import { Compare } from '@geoql/maplibre-gl-compare';
+                  import '@geoql/maplibre-gl-compare/style.css';
 
-          const containerRef = ref<HTMLDivElement | null>(null);
-          const beforeRef = ref<HTMLDivElement | null>(null);
-          const afterRef = ref<HTMLDivElement | null>(null);
+                  const containerRef = ref<HTMLDivElement | null>(null);
+                  const beforeRef = ref<HTMLDivElement | null>(null);
+                  const afterRef = ref<HTMLDivElement | null>(null);
 
-          onMounted(() => {
-          const beforeMap = new maplibregl.Map({
-            container: beforeRef.value!,
-            style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
-            center: [-74.006, 40.7128],
-            zoom: 12,
-          });
+                  onMounted(() => {
+                  const beforeMap = new maplibregl.Map({
+                    container: beforeRef.value!,
+                    style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
+                    center: [-74.006, 40.7128],
+                    zoom: 12,
+                  });
 
-          const afterMap = new maplibregl.Map({
-            container: afterRef.value!,
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-74.006, 40.7128],
-            zoom: 12,
-          });
+                  const afterMap = new maplibregl.Map({
+                    container: afterRef.value!,
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                    center: [-74.006, 40.7128],
+                    zoom: 12,
+                  });
 
-          const compare = new Compare(beforeMap, afterMap, containerRef.value!, {
-            orientation: 'vertical',
-            theme: 'system',
-          });
+                  const compare = new Compare(beforeMap, afterMap, containerRef.value!, {
+                    orientation: 'vertical',
+                    theme: 'system',
+                  });
 
-          onUnmounted(() => {
-            compare.remove();
-            beforeMap.remove();
-            afterMap.remove();
-          });
-          });
-        ${SCRIPT_END}
+                  onUnmounted(() => {
+                    compare.remove();
+                    beforeMap.remove();
+                    afterMap.remove();
+                  });
+                  });
+                ${SCRIPT_END}
 
-        <template>
-          <div ref="containerRef" class="relative h-125 w-full">
-            <div ref="beforeRef" class="absolute inset-0" />
-            <div ref="afterRef" class="absolute inset-0" />
-          </div>
-        </template>`;
+                <template>
+                  <div ref="containerRef" class="relative h-125 w-full">
+                    <div ref="beforeRef" class="absolute inset-0" />
+                    <div ref="afterRef" class="absolute inset-0" />
+                  </div>
+                </template>`;
 </script>
 
 <template>

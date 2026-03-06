@@ -84,52 +84,52 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglGridCell, VControlNavigation } from '@geoql/v-maplibre';
+                  import { VMap, VLayerDeckglGridCell, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-122.4, 37.78],
-            zoom: 11,
-            pitch: 45,
-            };
+                  const mapOptions = {
+                  style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                  center: [-122.4, 37.78],
+                  zoom: 11,
+                  pitch: 45,
+                  };
 
-            interface GridCellData {
-            centroid: [number, number];
-            value: number;
-            }
+                  interface GridCellData {
+                  centroid: [number, number];
+                  value: number;
+                  }
 
-            // Pre-aggregated grid data
-            const gridData: GridCellData[] = [
-            { centroid: [-122.5, 37.7], value: 1000 },
-            { centroid: [-122.48, 37.72], value: 2500 },
-            // ... more cells
-            ];
+                  // Pre-aggregated grid data
+                  const gridData: GridCellData[] = [
+                  { centroid: [-122.5, 37.7], value: 1000 },
+                  { centroid: [-122.48, 37.72], value: 2500 },
+                  // ... more cells
+                  ];
 
-            const getPosition = (d: unknown) => (d as GridCellData).centroid;
-            const getElevation = (d: unknown) => (d as GridCellData).value;
-            const getFillColor = (d: unknown) => {
-            const value = (d as GridCellData).value;
-            const t = value / 5500;
-            return [255 * t, 100 * (1 - t), 255 * (1 - t), 200];
-            };
-          ${SCRIPT_END}
+                  const getPosition = (d: unknown) => (d as GridCellData).centroid;
+                  const getElevation = (d: unknown) => (d as GridCellData).value;
+                  const getFillColor = (d: unknown) => {
+                  const value = (d as GridCellData).value;
+                  const t = value / 5500;
+                  return [255 * t, 100 * (1 - t), 255 * (1 - t), 200];
+                  };
+                ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglGridCell
-                id="grid-cell-layer"
-                :data="gridData"
-                :get-position="getPosition"
-                :get-fill-color="getFillColor"
-                :get-elevation="getElevation"
-                :cell-size="2000"
-                :extruded="true"
-                :coverage="0.9"
-                :pickable="true"
-              />
-            </VMap>
-          </template>`;
+                <template>
+                  <VMap :options="mapOptions" class="h-125 w-full">
+                    <VControlNavigation position="top-right" />
+                    <VLayerDeckglGridCell
+                      id="grid-cell-layer"
+                      :data="gridData"
+                      :get-position="getPosition"
+                      :get-fill-color="getFillColor"
+                      :get-elevation="getElevation"
+                      :cell-size="2000"
+                      :extruded="true"
+                      :coverage="0.9"
+                      :pickable="true"
+                    />
+                  </VMap>
+                </template>`;
 </script>
 
 <template>

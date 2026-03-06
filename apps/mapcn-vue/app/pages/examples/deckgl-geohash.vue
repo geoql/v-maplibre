@@ -80,54 +80,54 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglGeohash, VControlNavigation } from '@geoql/v-maplibre';
+                    import { VMap, VLayerDeckglGeohash, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-122.4, 37.78],
-            zoom: 10,
-            pitch: 45,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                    center: [-122.4, 37.78],
+                    zoom: 10,
+                    pitch: 45,
+                    };
 
-            interface GeohashData {
-            geohash: string;
-            value: number;
-            }
+                    interface GeohashData {
+                    geohash: string;
+                    value: number;
+                    }
 
-            // Geohash precision determines cell size:
-            // 5 = ~5km, 6 = ~1.2km, 7 = ~150m, 8 = ~40m
-            const geohashData: GeohashData[] = [
-            { geohash: '9q8yu', value: 1500 },
-            { geohash: '9q8yv', value: 2200 },
-            { geohash: '9q8yt', value: 800 },
-            // ... more geohashes
-            ];
+                    // Geohash precision determines cell size:
+                    // 5 = ~5km, 6 = ~1.2km, 7 = ~150m, 8 = ~40m
+                    const geohashData: GeohashData[] = [
+                    { geohash: '9q8yu', value: 1500 },
+                    { geohash: '9q8yv', value: 2200 },
+                    { geohash: '9q8yt', value: 800 },
+                    // ... more geohashes
+                    ];
 
-            const getGeohash = (d: unknown) => (d as GeohashData).geohash;
-            const getElevation = (d: unknown) => (d as GeohashData).value;
-            const getFillColor = (d: unknown) => {
-            const value = (d as GeohashData).value;
-            const t = value / 2500;
-            return [100 + 155 * t, 200 * (1 - t), 255, 180];
-            };
-          ${SCRIPT_END}
+                    const getGeohash = (d: unknown) => (d as GeohashData).geohash;
+                    const getElevation = (d: unknown) => (d as GeohashData).value;
+                    const getFillColor = (d: unknown) => {
+                    const value = (d as GeohashData).value;
+                    const t = value / 2500;
+                    return [100 + 155 * t, 200 * (1 - t), 255, 180];
+                    };
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglGeohash
-                id="geohash-layer"
-                :data="geohashData"
-                :get-geohash="getGeohash"
-                :get-fill-color="getFillColor"
-                :get-elevation="getElevation"
-                :extruded="true"
-                :pickable="true"
-                :auto-highlight="true"
-                :elevation-scale="1"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VLayerDeckglGeohash
+                        id="geohash-layer"
+                        :data="geohashData"
+                        :get-geohash="getGeohash"
+                        :get-fill-color="getFillColor"
+                        :get-elevation="getElevation"
+                        :extruded="true"
+                        :pickable="true"
+                        :auto-highlight="true"
+                        :elevation-scale="1"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

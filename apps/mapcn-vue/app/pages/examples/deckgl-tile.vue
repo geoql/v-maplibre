@@ -63,43 +63,43 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglTile, VControlNavigation } from '@geoql/v-maplibre';
-            import { BitmapLayer } from '@deck.gl/layers';
+                    import { VMap, VLayerDeckglTile, VControlNavigation } from '@geoql/v-maplibre';
+                    import { BitmapLayer } from '@deck.gl/layers';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-            center: [0, 0],
-            zoom: 2,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+                    center: [0, 0],
+                    zoom: 2,
+                    };
 
-            const TILE_URL = 'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png';
+                    const TILE_URL = 'https://c.tile.openstreetmap.org/{z}/{x}/{y}.png';
 
-            const renderSubLayers = (props) => {
-            const { tile: { boundingBox }, data } = props;
-            const [min, max] = boundingBox;
+                    const renderSubLayers = (props) => {
+                    const { tile: { boundingBox }, data } = props;
+                    const [min, max] = boundingBox;
 
-            return new BitmapLayer({
-              ...props,
-              data: undefined,
-              image: data,
-              bounds: [min[0], min[1], max[0], max[1]],
-            });
-            };
-          ${SCRIPT_END}
+                    return new BitmapLayer({
+                      ...props,
+                      data: undefined,
+                      image: data,
+                      bounds: [min[0], min[1], max[0], max[1]],
+                    });
+                    };
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglTile
-                id="tile-layer"
-                :data="TILE_URL"
-                :render-sub-layers="renderSubLayers"
-                :min-zoom="0"
-                :max-zoom="19"
-                :tile-size="256"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VLayerDeckglTile
+                        id="tile-layer"
+                        :data="TILE_URL"
+                        :render-sub-layers="renderSubLayers"
+                        :min-zoom="0"
+                        :max-zoom="19"
+                        :tile-size="256"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

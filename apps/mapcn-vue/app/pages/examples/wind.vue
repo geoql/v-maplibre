@@ -51,70 +51,70 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { ref, onMounted } from 'vue';
-          import {
-          VMap,
-          VControlNavigation,
-          VLayerDeckglWindParticle,
-          createWindDataFromOpenWeatherMap,
-          } from '@geoql/v-maplibre';
-          import type { WindDataPoint, ColorStop } from '@geoql/v-maplibre';
+                import { ref, onMounted } from 'vue';
+                import {
+                VMap,
+                VControlNavigation,
+                VLayerDeckglWindParticle,
+                createWindDataFromOpenWeatherMap,
+                } from '@geoql/v-maplibre';
+                import type { WindDataPoint, ColorStop } from '@geoql/v-maplibre';
 
-          const windData = ref<WindDataPoint[]>([]);
+                const windData = ref<WindDataPoint[]>([]);
 
-          const colorRamp: ColorStop[] = [
-          [0.0, [59, 130, 189, 255]],
-          [0.2, [171, 221, 164, 255]],
-          [0.4, [254, 224, 139, 255]],
-          [0.6, [244, 109, 67, 255]],
-          [1.0, [213, 62, 79, 255]],
-          ];
+                const colorRamp: ColorStop[] = [
+                [0.0, [59, 130, 189, 255]],
+                [0.2, [171, 221, 164, 255]],
+                [0.4, [254, 224, 139, 255]],
+                [0.6, [244, 109, 67, 255]],
+                [1.0, [213, 62, 79, 255]],
+                ];
 
-          const generateGridPoints = () => {
-          const points = [];
-          for (let lat = -60; lat <= 60; lat += 20) {
-            for (let lon = -180; lon < 180; lon += 30) {
-              points.push({ lat, lon });
-            }
-          }
-          return points;
-          };
+                const generateGridPoints = () => {
+                const points = [];
+                for (let lat = -60; lat <= 60; lat += 20) {
+                  for (let lon = -180; lon < 180; lon += 30) {
+                    points.push({ lat, lon });
+                  }
+                }
+                return points;
+                };
 
-          const fetchWindData = async () => {
-          const gridPoints = generateGridPoints();
-          const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY';
+                const fetchWindData = async () => {
+                const gridPoints = generateGridPoints();
+                const apiKey = 'YOUR_OPENWEATHERMAP_API_KEY';
 
-          const responses = await Promise.all(
-            gridPoints.map(({ lat, lon }) =>
-              fetch(\`https://api.openweathermap.org/data/2.5/weather?lat=\${lat}&lon=\${lon}&appid=\${apiKey}\`)
-                .then(r => r.json())
-            )
-          );
+                const responses = await Promise.all(
+                  gridPoints.map(({ lat, lon }) =>
+                    fetch(\`https://api.openweathermap.org/data/2.5/weather?lat=\${lat}&lon=\${lon}&appid=\${apiKey}\`)
+                      .then(r => r.json())
+                  )
+                );
 
-          windData.value = createWindDataFromOpenWeatherMap(responses);
-          };
+                windData.value = createWindDataFromOpenWeatherMap(responses);
+                };
 
-          onMounted(() => {
-          fetchWindData();
-          setInterval(fetchWindData, 60 * 60 * 1000);
-          });
-        ${SCRIPT_END}
+                onMounted(() => {
+                fetchWindData();
+                setInterval(fetchWindData, 60 * 60 * 1000);
+                });
+              ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions" class="h-125 w-full">
-            <VLayerDeckglWindParticle
-              v-if="windData.length > 0"
-              id="wind-particles"
-              :wind-data="windData"
-              :num-particles="8192"
-              :max-age="30"
-              :speed-factor="50"
-              :color-ramp="colorRamp"
-              :speed-range="[0, 30]"
-            />
-            <VControlNavigation position="top-right" />
-          </VMap>
-        </template>`;
+              <template>
+                <VMap :options="mapOptions" class="h-125 w-full">
+                  <VLayerDeckglWindParticle
+                    v-if="windData.length > 0"
+                    id="wind-particles"
+                    :wind-data="windData"
+                    :num-particles="8192"
+                    :max-age="30"
+                    :speed-factor="50"
+                    :color-ramp="colorRamp"
+                    :speed-range="[0, 30]"
+                  />
+                  <VControlNavigation position="top-right" />
+                </VMap>
+              </template>`;
 </script>
 
 <template>

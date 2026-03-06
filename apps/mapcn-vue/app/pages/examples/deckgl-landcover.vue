@@ -63,27 +63,27 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglCOG, VControlNavigation } from '@geoql/v-maplibre';
+                    import { VMap, VLayerDeckglCOG, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-              style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-              center: [-98.5, 39.8], // Continental US
-              zoom: 4,
-            };
+                    const mapOptions = {
+                      style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+                      center: [-98.5, 39.8], // Continental US
+                      zoom: 4,
+                    };
 
-            // NLCD Land Cover COG with automatic colormap
-            const COG_URL = 'https://s3.us-east-1.amazonaws.com/.../NLCD_LndCov.tif';
-            ${SCRIPT_END}
+                    // NLCD Land Cover COG with automatic colormap
+                    const COG_URL = 'https://s3.us-east-1.amazonaws.com/.../NLCD_LndCov.tif';
+                    ${SCRIPT_END}
 
-            <template>
-              <VMap :options="mapOptions" class="h-125 w-full">
-                <VControlNavigation position="top-right" />
-                <VLayerDeckglCOG
-                  id="landcover-layer"
-                  :geotiff="COG_URL"
-                />
-              </VMap>
-            </template>`;
+                    <template>
+                      <VMap :options="mapOptions" class="h-125 w-full">
+                        <VControlNavigation position="top-right" />
+                        <VLayerDeckglCOG
+                          id="landcover-layer"
+                          :geotiff="COG_URL"
+                        />
+                      </VMap>
+                    </template>`;
 
   const mapLegendItems: CategoryLegendItem[] = [
     { value: 'open-water', label: 'Open Water', color: '#466b9f' },

@@ -71,41 +71,41 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglIcon, VControlNavigation } from '@geoql/v-maplibre';
+                  import { VMap, VLayerDeckglIcon, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-122.4, 37.78],
-            zoom: 12,
-            };
+                  const mapOptions = {
+                  style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                  center: [-122.4, 37.78],
+                  zoom: 12,
+                  };
 
-            const ICON_MAPPING = {
-            marker: { x: 0, y: 0, width: 128, height: 128, mask: true },
-            };
+                  const ICON_MAPPING = {
+                  marker: { x: 0, y: 0, width: 128, height: 128, mask: true },
+                  };
 
-            const iconData = [
-            { position: [-122.42, 37.78], name: 'Location A', color: [255, 140, 0] },
-            { position: [-122.38, 37.79], name: 'Location B', color: [0, 200, 150] },
-            // ... more points
-            ];
-          ${SCRIPT_END}
+                  const iconData = [
+                  { position: [-122.42, 37.78], name: 'Location A', color: [255, 140, 0] },
+                  { position: [-122.38, 37.79], name: 'Location B', color: [0, 200, 150] },
+                  // ... more points
+                  ];
+                ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglIcon
-                id="icon-layer"
-                :data="iconData"
-                :get-position="(d) => d.position"
-                :get-icon="() => 'marker'"
-                :get-color="(d) => d.color"
-                :get-size="40"
-                :icon-atlas="'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png'"
-                :icon-mapping="ICON_MAPPING"
-                :pickable="true"
-              />
-            </VMap>
-          </template>`;
+                <template>
+                  <VMap :options="mapOptions" class="h-125 w-full">
+                    <VControlNavigation position="top-right" />
+                    <VLayerDeckglIcon
+                      id="icon-layer"
+                      :data="iconData"
+                      :get-position="(d) => d.position"
+                      :get-icon="() => 'marker'"
+                      :get-color="(d) => d.color"
+                      :get-size="40"
+                      :icon-atlas="'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/icon-atlas.png'"
+                      :icon-mapping="ICON_MAPPING"
+                      :pickable="true"
+                    />
+                  </VMap>
+                </template>`;
 </script>
 
 <template>

@@ -52,45 +52,45 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { VMap, VMarker, VPopup, VControlNavigation } from '@geoql/v-maplibre';
+                  import { VMap, VMarker, VPopup, VControlNavigation } from '@geoql/v-maplibre';
 
-          const mapOptions = {
-          style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-          center: [-74.006, 40.7128],
-          zoom: 12,
-          };
+                  const mapOptions = {
+                  style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                  center: [-74.006, 40.7128],
+                  zoom: 12,
+                  };
 
-          const markers = [
-          { coordinates: [-74.006, 40.7128], title: 'New York City', description: 'The Big Apple' },
-          { coordinates: [-73.985, 40.748], title: 'Empire State Building', description: 'Iconic skyscraper' },
-          { coordinates: [-74.0445, 40.6892], title: 'Statue of Liberty', description: 'Symbol of freedom' },
-          ];
+                  const markers = [
+                  { coordinates: [-74.006, 40.7128], title: 'New York City', description: 'The Big Apple' },
+                  { coordinates: [-73.985, 40.748], title: 'Empire State Building', description: 'Iconic skyscraper' },
+                  { coordinates: [-74.0445, 40.6892], title: 'Statue of Liberty', description: 'Symbol of freedom' },
+                  ];
 
-          const selectedMarker = ref(null);
-        ${SCRIPT_END}
+                  const selectedMarker = ref(null);
+                ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions" class="h-125 w-full">
-            <VControlNavigation position="top-right" />
-            <VMarker
-              v-for="marker in markers"
-              :key="marker.title"
-              :coordinates="marker.coordinates"
-              @click="selectedMarker = marker"
-            />
-            <VPopup
-              v-if="selectedMarker"
-              :coordinates="selectedMarker.coordinates"
-              :options="{}"
-              @close="selectedMarker = null"
-            >
-              <div class="p-2">
-                <h3 class="font-bold">{{ selectedMarker.title }}</h3>
-                <p>{{ selectedMarker.description }}</p>
-              </div>
-            </VPopup>
-          </VMap>
-        </template>`;
+                <template>
+                  <VMap :options="mapOptions" class="h-125 w-full">
+                    <VControlNavigation position="top-right" />
+                    <VMarker
+                      v-for="marker in markers"
+                      :key="marker.title"
+                      :coordinates="marker.coordinates"
+                      @click="selectedMarker = marker"
+                    />
+                    <VPopup
+                      v-if="selectedMarker"
+                      :coordinates="selectedMarker.coordinates"
+                      :options="{}"
+                      @close="selectedMarker = null"
+                    >
+                      <div class="p-2">
+                        <h3 class="font-bold">{{ selectedMarker.title }}</h3>
+                        <p>{{ selectedMarker.description }}</p>
+                      </div>
+                    </VPopup>
+                  </VMap>
+                </template>`;
 </script>
 
 <template>

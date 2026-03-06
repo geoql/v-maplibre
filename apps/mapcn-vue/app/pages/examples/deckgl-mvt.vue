@@ -55,40 +55,40 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglMVT, VControlNavigation } from '@geoql/v-maplibre';
+                  import { VMap, VLayerDeckglMVT, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-            center: [-74.01, 40.707],
-            zoom: 14,
-            pitch: 45,
-            };
+                  const mapOptions = {
+                  style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+                  center: [-74.01, 40.707],
+                  zoom: 14,
+                  pitch: 45,
+                  };
 
-            // OpenFreeMap vector tiles (OpenMapTiles schema)
-            const MVT_URL = 'https://tiles.openfreemap.org/planet/{z}/{x}/{y}.pbf';
+                  // OpenFreeMap vector tiles (OpenMapTiles schema)
+                  const MVT_URL = 'https://tiles.openfreemap.org/planet/{z}/{x}/{y}.pbf';
 
-            const getFillColor = (f) => {
-            const layer = f.properties?.layerName;
-            if (layer === 'building') return [74, 80, 87, 200];
-            if (layer === 'water') return [64, 164, 223, 200];
-            if (layer === 'park') return [76, 175, 80, 200];
-            return [200, 200, 200, 100];
-            };
-          ${SCRIPT_END}
+                  const getFillColor = (f) => {
+                  const layer = f.properties?.layerName;
+                  if (layer === 'building') return [74, 80, 87, 200];
+                  if (layer === 'water') return [64, 164, 223, 200];
+                  if (layer === 'park') return [76, 175, 80, 200];
+                  return [200, 200, 200, 100];
+                  };
+                ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglMVT
-                id="mvt-layer"
-                :data="MVT_URL"
-                :get-fill-color="getFillColor"
-                :get-line-color="[255, 255, 255]"
-                :line-width-min-pixels="1"
-                :pickable="true"
-              />
-            </VMap>
-          </template>`;
+                <template>
+                  <VMap :options="mapOptions" class="h-125 w-full">
+                    <VControlNavigation position="top-right" />
+                    <VLayerDeckglMVT
+                      id="mvt-layer"
+                      :data="MVT_URL"
+                      :get-fill-color="getFillColor"
+                      :get-line-color="[255, 255, 255]"
+                      :line-width-min-pixels="1"
+                      :pickable="true"
+                    />
+                  </VMap>
+                </template>`;
 </script>
 
 <template>

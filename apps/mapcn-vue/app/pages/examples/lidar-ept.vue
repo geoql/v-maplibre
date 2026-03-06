@@ -62,42 +62,42 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VControlLidar, VControlNavigation } from '@geoql/v-maplibre';
-            import 'maplibre-gl-lidar/style.css';
+                    import { VMap, VControlLidar, VControlNavigation } from '@geoql/v-maplibre';
+                    import 'maplibre-gl-lidar/style.css';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-6.26, 53.34], // Dublin, Ireland
-            zoom: 14,
-            pitch: 60,
-            maxPitch: 85,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                    center: [-6.26, 53.34], // Dublin, Ireland
+                    zoom: 14,
+                    pitch: 60,
+                    maxPitch: 85,
+                    };
 
-            const lidarOptions = {
-            collapsed: false,
-            pointSize: 2,
-            colorScheme: 'elevation',
-            pickable: true,
-            autoZoom: true,
-            streamingPointBudget: 5_000_000, // 5 million points max
-            };
+                    const lidarOptions = {
+                    collapsed: false,
+                    pointSize: 2,
+                    colorScheme: 'elevation',
+                    pickable: true,
+                    autoZoom: true,
+                    streamingPointBudget: 5_000_000, // 5 million points max
+                    };
 
-            // Dublin EPT dataset from Entwine
-            const eptUrl = 'https://na-c.entwine.io/dublin/ept.json';
-          ${SCRIPT_END}
+                    // Dublin EPT dataset from Entwine
+                    const eptUrl = 'https://na-c.entwine.io/dublin/ept.json';
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VControlLidar
-                position="top-right"
-                :options="lidarOptions"
-                :default-url="eptUrl"
-                @load="(info) => console.log('Loaded:', info)"
-                @streamingprogress="(p) => console.log('Progress:', p)"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VControlLidar
+                        position="top-right"
+                        :options="lidarOptions"
+                        :default-url="eptUrl"
+                        @load="(info) => console.log('Loaded:', info)"
+                        @streamingprogress="(p) => console.log('Progress:', p)"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

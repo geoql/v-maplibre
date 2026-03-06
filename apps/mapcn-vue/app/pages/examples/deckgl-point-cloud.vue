@@ -90,58 +90,58 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { VMap, VLayerDeckglPointCloud, VControlNavigation } from '@geoql/v-maplibre';
+                import { VMap, VLayerDeckglPointCloud, VControlNavigation } from '@geoql/v-maplibre';
 
-          const mapOptions = {
-          style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-          center: [-122.4, 37.78],
-          zoom: 15,
-          pitch: 60,
-          };
+                const mapOptions = {
+                style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                center: [-122.4, 37.78],
+                zoom: 15,
+                pitch: 60,
+                };
 
-          interface PointData {
-          position: [number, number, number];
-          color: [number, number, number, number];
-          normal: [number, number, number];
-          }
+                interface PointData {
+                position: [number, number, number];
+                color: [number, number, number, number];
+                normal: [number, number, number];
+                }
 
-          // Point cloud data (typically from LiDAR, photogrammetry, etc.)
-          const pointCloudData: PointData[] = [
-          { position: [-122.4, 37.78, 10], color: [255, 0, 0, 255], normal: [0, 0, 1] },
-          { position: [-122.401, 37.781, 15], color: [0, 255, 0, 255], normal: [0, 0, 1] },
-          // ... more points
-          ];
+                // Point cloud data (typically from LiDAR, photogrammetry, etc.)
+                const pointCloudData: PointData[] = [
+                { position: [-122.4, 37.78, 10], color: [255, 0, 0, 255], normal: [0, 0, 1] },
+                { position: [-122.401, 37.781, 15], color: [0, 255, 0, 255], normal: [0, 0, 1] },
+                // ... more points
+                ];
 
-          const legendItems: GradientLegendItem[] = [
-            {
-              min: 0,
-              max: 70,
-              minLabel: 'Low',
-              maxLabel: 'High',
-              colors: ['#326496', '#beebf5'],
-            },
-          ];
+                const legendItems: GradientLegendItem[] = [
+                  {
+                    min: 0,
+                    max: 70,
+                    minLabel: 'Low',
+                    maxLabel: 'High',
+                    colors: ['#326496', '#beebf5'],
+                  },
+                ];
 
-          const getPosition = (d: unknown) => (d as PointData).position;
-          const getColor = (d: unknown) => (d as PointData).color;
-          const getNormal = (d: unknown) => (d as PointData).normal;
-        ${SCRIPT_END}
+                const getPosition = (d: unknown) => (d as PointData).position;
+                const getColor = (d: unknown) => (d as PointData).color;
+                const getNormal = (d: unknown) => (d as PointData).normal;
+              ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions" class="h-125 w-full">
-            <VControlNavigation position="top-right" />
-            <VLayerDeckglPointCloud
-              id="point-cloud-layer"
-              :data="pointCloudData"
-              :get-position="getPosition"
-              :get-color="getColor"
-              :get-normal="getNormal"
-              :point-size="3"
-              size-units="pixels"
-              :pickable="true"
-            />
-          </VMap>
-        </template>`;
+              <template>
+                <VMap :options="mapOptions" class="h-125 w-full">
+                  <VControlNavigation position="top-right" />
+                  <VLayerDeckglPointCloud
+                    id="point-cloud-layer"
+                    :data="pointCloudData"
+                    :get-position="getPosition"
+                    :get-color="getColor"
+                    :get-normal="getNormal"
+                    :point-size="3"
+                    size-units="pixels"
+                    :pickable="true"
+                  />
+                </VMap>
+              </template>`;
 </script>
 
 <template>

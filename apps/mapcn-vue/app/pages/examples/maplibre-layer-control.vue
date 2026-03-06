@@ -134,126 +134,126 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const maplibreCodeExample = `${SCRIPT_START}
-          import { VMap, VControlScale, VControlLayer, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+                import { VMap, VControlScale, VControlLayer, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
 
-          const statesGeoJson = ref(null);
-          // ... fetch GeoJSON data
-        ${SCRIPT_END}
+                const statesGeoJson = ref(null);
+                // ... fetch GeoJSON data
+              ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions">
-            <VControlScale position="bottom-left" />
+              <template>
+                <VMap :options="mapOptions">
+                  <VControlScale position="bottom-left" />
 
-            <!-- Add the GeoJSON layer -->
-            <VLayerMaplibreGeojson
-              source-id="states"
-              layer-id="states-fill"
-              :source="{ type: 'geojson', data: statesGeoJson }"
-              :layer="{
-                id: 'states-fill',
-                type: 'fill',
-                source: 'states',
-                paint: { 'fill-color': '#627BC1', 'fill-opacity': 0.5 }
-              }"
-            />
+                  <!-- Add the GeoJSON layer -->
+                  <VLayerMaplibreGeojson
+                    source-id="states"
+                    layer-id="states-fill"
+                    :source="{ type: 'geojson', data: statesGeoJson }"
+                    :layer="{
+                      id: 'states-fill',
+                      type: 'fill',
+                      source: 'states',
+                      paint: { 'fill-color': '#627BC1', 'fill-opacity': 0.5 }
+                    }"
+                  />
 
-            <!-- Layer Control for visibility & opacity -->
-            <VControlLayer
-              layer-id="states-fill"
-              title="US States Layer"
-              position="bottom-right"
-              :visible="true"
-              :opacity="0.5"
-            />
-          </VMap>
-        </template>`;
+                  <!-- Layer Control for visibility & opacity -->
+                  <VControlLayer
+                    layer-id="states-fill"
+                    title="US States Layer"
+                    position="bottom-right"
+                    :visible="true"
+                    :opacity="0.5"
+                  />
+                </VMap>
+              </template>`;
 
   const deckglCodeExample = `${SCRIPT_START}
-          import { VMap, VControlScale, VControlLayer, VLayerDeckglScatterplot } from '@geoql/v-maplibre';
+                import { VMap, VControlScale, VControlLayer, VLayerDeckglScatterplot } from '@geoql/v-maplibre';
 
-          const scatterData = [
-          { coordinates: [-122.4, 37.8], size: 50000 },
-          { coordinates: [-118.2, 34.0], size: 80000 },
-          // ... more points
-          ];
-        ${SCRIPT_END}
+                const scatterData = [
+                { coordinates: [-122.4, 37.8], size: 50000 },
+                { coordinates: [-118.2, 34.0], size: 80000 },
+                // ... more points
+                ];
+              ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions">
-            <VControlScale position="bottom-left" />
+              <template>
+                <VMap :options="mapOptions">
+                  <VControlScale position="bottom-left" />
 
-            <!-- deck.gl Scatterplot layer -->
-            <VLayerDeckglScatterplot
-              id="scatter-layer"
-              :data="scatterData"
-              :get-position="(d) => d.coordinates"
-              :get-radius="(d) => d.size"
-              :get-fill-color="[255, 140, 0, 200]"
-              :radius-scale="1"
-              :radius-min-pixels="5"
-              :radius-max-pixels="100"
-            />
+                  <!-- deck.gl Scatterplot layer -->
+                  <VLayerDeckglScatterplot
+                    id="scatter-layer"
+                    :data="scatterData"
+                    :get-position="(d) => d.coordinates"
+                    :get-radius="(d) => d.size"
+                    :get-fill-color="[255, 140, 0, 200]"
+                    :radius-scale="1"
+                    :radius-min-pixels="5"
+                    :radius-max-pixels="100"
+                  />
 
-            <!-- Layer Control for deck.gl layer -->
-            <VControlLayer
-              layer-id="scatter-layer"
-              title="Cities Layer"
-              position="bottom-right"
-              :visible="true"
-              :opacity="1"
-            />
-          </VMap>
-        </template>`;
+                  <!-- Layer Control for deck.gl layer -->
+                  <VControlLayer
+                    layer-id="scatter-layer"
+                    title="Cities Layer"
+                    position="bottom-right"
+                    :visible="true"
+                    :opacity="1"
+                  />
+                </VMap>
+              </template>`;
 
   const groupCodeExample = `${SCRIPT_START}
-          import { VMap, VControlScale, VControlLayerGroup, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+                import { VMap, VControlScale, VControlLayerGroup, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
 
-          const statesGeoJson = ref(null);
-          // ... fetch GeoJSON data
+                const statesGeoJson = ref(null);
+                // ... fetch GeoJSON data
 
-          const layerGroupConfig = [
-          { id: 'states-fill', title: 'US States', visible: true, opacity: 0.5 },
-          { id: 'states-outline', title: 'State Borders', visible: true, opacity: 1 },
-          ];
-        ${SCRIPT_END}
+                const layerGroupConfig = [
+                { id: 'states-fill', title: 'US States', visible: true, opacity: 0.5 },
+                { id: 'states-outline', title: 'State Borders', visible: true, opacity: 1 },
+                ];
+              ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions">
-            <VControlScale position="bottom-left" />
+              <template>
+                <VMap :options="mapOptions">
+                  <VControlScale position="bottom-left" />
 
-            <!-- Add multiple layers -->
-            <VLayerMaplibreGeojson
-              source-id="states"
-              layer-id="states-fill"
-              :source="{ type: 'geojson', data: statesGeoJson }"
-              :layer="{
-                id: 'states-fill',
-                type: 'fill',
-                source: 'states',
-                paint: { 'fill-color': '#627BC1', 'fill-opacity': 0.5 }
-              }"
-            />
-            <VLayerMaplibreGeojson
-              source-id="states"
-              layer-id="states-outline"
-              :source="{ type: 'geojson', data: statesGeoJson }"
-              :layer="{
-                id: 'states-outline',
-                type: 'line',
-                source: 'states',
-                paint: { 'line-color': '#627BC1', 'line-width': 2 }
-              }"
-            />
+                  <!-- Add multiple layers -->
+                  <VLayerMaplibreGeojson
+                    source-id="states"
+                    layer-id="states-fill"
+                    :source="{ type: 'geojson', data: statesGeoJson }"
+                    :layer="{
+                      id: 'states-fill',
+                      type: 'fill',
+                      source: 'states',
+                      paint: { 'fill-color': '#627BC1', 'fill-opacity': 0.5 }
+                    }"
+                  />
+                  <VLayerMaplibreGeojson
+                    source-id="states"
+                    layer-id="states-outline"
+                    :source="{ type: 'geojson', data: statesGeoJson }"
+                    :layer="{
+                      id: 'states-outline',
+                      type: 'line',
+                      source: 'states',
+                      paint: { 'line-color': '#627BC1', 'line-width': 2 }
+                    }"
+                  />
 
-            <!-- Control multiple layers in one panel -->
-            <VControlLayerGroup
-              :layers="layerGroupConfig"
-              title="Map Layers"
-              position="bottom-right"
-              :collapsible="true"
-            />
-          </VMap>
-        </template>`;
+                  <!-- Control multiple layers in one panel -->
+                  <VControlLayerGroup
+                    :layers="layerGroupConfig"
+                    title="Map Layers"
+                    position="bottom-right"
+                    :collapsible="true"
+                  />
+                </VMap>
+              </template>`;
 </script>
 
 <template>

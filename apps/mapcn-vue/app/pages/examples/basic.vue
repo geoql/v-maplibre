@@ -14,21 +14,21 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { VMap, VControlNavigation, VControlScale } from '@geoql/v-maplibre';
+                  import { VMap, VControlNavigation, VControlScale } from '@geoql/v-maplibre';
 
-          const mapOptions = {
-          style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-          center: [-74.006, 40.7128],
-          zoom: 11,
-          };
-        ${SCRIPT_END}
+                  const mapOptions = {
+                  style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                  center: [-74.006, 40.7128],
+                  zoom: 11,
+                  };
+                ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions" class="h-125 w-full">
-            <VControlNavigation position="top-right" />
-            <VControlScale position="bottom-left" />
-          </VMap>
-        </template>`;
+                <template>
+                  <VMap :options="mapOptions" class="h-125 w-full">
+                    <VControlNavigation position="top-right" />
+                    <VControlScale position="bottom-left" />
+                  </VMap>
+                </template>`;
 </script>
 
 <template>

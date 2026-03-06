@@ -78,36 +78,36 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglArc, VControlNavigation } from '@geoql/v-maplibre';
+                    import { VMap, VLayerDeckglArc, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [0, 30],
-            zoom: 1.5,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                    center: [0, 30],
+                    zoom: 1.5,
+                    };
 
-            const arcData = [
-            { source: [-122.4, 37.8], target: [139.7, 35.7], name: 'SF to Tokyo' },
-            { source: [-122.4, 37.8], target: [-0.1, 51.5], name: 'SF to London' },
-            // ... more arcs
-            ];
-          ${SCRIPT_END}
+                    const arcData = [
+                    { source: [-122.4, 37.8], target: [139.7, 35.7], name: 'SF to Tokyo' },
+                    { source: [-122.4, 37.8], target: [-0.1, 51.5], name: 'SF to London' },
+                    // ... more arcs
+                    ];
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglArc
-                id="arcs"
-                :data="arcData"
-                :get-source-position="(d) => d.source"
-                :get-target-position="(d) => d.target"
-                :get-source-color="[0, 180, 216, 200]"
-                :get-target-color="[114, 239, 221, 200]"
-                :get-width="2"
-                :great-circle="true"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VLayerDeckglArc
+                        id="arcs"
+                        :data="arcData"
+                        :get-source-position="(d) => d.source"
+                        :get-target-position="(d) => d.target"
+                        :get-source-color="[0, 180, 216, 200]"
+                        :get-target-color="[114, 239, 221, 200]"
+                        :get-width="2"
+                        :great-circle="true"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

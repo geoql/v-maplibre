@@ -52,31 +52,31 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { VMap, VLayerDeckglScatterplot, VControlNavigation } from '@geoql/v-maplibre';
+              import { VMap, VLayerDeckglScatterplot, VControlNavigation } from '@geoql/v-maplibre';
 
-          const mapOptions = {
-            style: 'https://maps.guru/api/v1/styles/standard/light/style.json?key=...',
-            center: [-98.5, 39.8],
-            zoom: 3.8,
-          };
-          ${SCRIPT_END}
+              const mapOptions = {
+                style: 'https://maps.guru/api/v1/styles/standard/light/style.json?key=...',
+                center: [-98.5, 39.8],
+                zoom: 3.8,
+              };
+              ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions">
-              <VLayerDeckglScatterplot
-                id="promap-bubbles"
-                :data="renderPoints"
-                :get-position="getPosition"
-                :get-radius="getRadius"
-                :get-fill-color="getFillColor"
-                :radius-min-pixels="2"
-                :radius-max-pixels="40"
-                :opacity="0.85"
-                :pickable="true"
-              />
-              <VControlNavigation position="top-right" />
-            </VMap>
-          </template>`;
+              <template>
+                <VMap :options="mapOptions">
+                  <VLayerDeckglScatterplot
+                    id="promap-bubbles"
+                    :data="renderPoints"
+                    :get-position="getPosition"
+                    :get-radius="getRadius"
+                    :get-fill-color="getFillColor"
+                    :radius-min-pixels="2"
+                    :radius-max-pixels="40"
+                    :opacity="0.85"
+                    :pickable="true"
+                  />
+                  <VControlNavigation position="top-right" />
+                </VMap>
+              </template>`;
 </script>
 
 <template>

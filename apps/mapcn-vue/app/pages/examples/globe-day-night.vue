@@ -58,23 +58,23 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerMaplibreStarfield, VControlNavigation } from '@geoql/v-maplibre';
-            // Geocentric sun position (subsolar lng + declination) + local altitude for fading
-            const { sunAzimuth, sunAltitude, localSunAltitude, skyMode } = useSunPosition();
-          ${SCRIPT_END}
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VLayerMaplibreStarfield
-                galaxy-texture-url="/milkyway.jpg"
-                :sun-enabled="true"
-                :sun-azimuth="sunAzimuth"
-                :sun-altitude="sunAltitude"
-                :fade-altitude="localSunAltitude"
-                before="satellite"
-              />
-              <VControlNavigation position="top-right" />
-            </VMap>
-            <p>Current mode: {{ skyMode }}</p>
-          </template>`;
+                    import { VMap, VLayerMaplibreStarfield, VControlNavigation } from '@geoql/v-maplibre';
+                    // Geocentric sun position (subsolar lng + declination) + local altitude for fading
+                    const { sunAzimuth, sunAltitude, localSunAltitude, skyMode } = useSunPosition();
+                  ${SCRIPT_END}
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VLayerMaplibreStarfield
+                        galaxy-texture-url="/milkyway.jpg"
+                        :sun-enabled="true"
+                        :sun-azimuth="sunAzimuth"
+                        :sun-altitude="sunAltitude"
+                        :fade-altitude="localSunAltitude"
+                        before="satellite"
+                      />
+                      <VControlNavigation position="top-right" />
+                    </VMap>
+                    <p>Current mode: {{ skyMode }}</p>
+                  </template>`;
 </script>
 
 <template>

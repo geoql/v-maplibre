@@ -72,36 +72,36 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerMaplibreGeojson, VControlNavigation } from '@geoql/v-maplibre';
+                    import { VMap, VLayerMaplibreGeojson, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-74.006, 40.7128],
-            zoom: 11,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                    center: [-74.006, 40.7128],
+                    zoom: 11,
+                    };
 
-            const geojsonData = { type: 'FeatureCollection', features: [...] };
+                    const geojsonData = { type: 'FeatureCollection', features: [...] };
 
-            const source = { type: 'geojson', data: geojsonData };
-            const fillLayer = {
-            id: 'geojson-fill',
-            type: 'fill',
-            source: 'geojson-source',
-            paint: { 'fill-color': '#10b981', 'fill-opacity': 0.5 },
-            };
-          ${SCRIPT_END}
+                    const source = { type: 'geojson', data: geojsonData };
+                    const fillLayer = {
+                    id: 'geojson-fill',
+                    type: 'fill',
+                    source: 'geojson-source',
+                    paint: { 'fill-color': '#10b981', 'fill-opacity': 0.5 },
+                    };
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerMaplibreGeojson
-                source-id="geojson-source"
-                layer-id="geojson-fill"
-                :source="source"
-                :layer="fillLayer"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VLayerMaplibreGeojson
+                        source-id="geojson-source"
+                        layer-id="geojson-fill"
+                        :source="source"
+                        :layer="fillLayer"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

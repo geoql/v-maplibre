@@ -103,41 +103,41 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglContour, VControlNavigation } from '@geoql/v-maplibre';
+                  import { VMap, VLayerDeckglContour, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-            center: [-122.4, 37.78],
-            zoom: 11,
-            };
+                  const mapOptions = {
+                  style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+                  center: [-122.4, 37.78],
+                  zoom: 11,
+                  };
 
-            const contourData = [
-            { position: [-122.42, 37.78] },
-            { position: [-122.38, 37.79] },
-            // ... many more points
-            ];
+                  const contourData = [
+                  { position: [-122.42, 37.78] },
+                  { position: [-122.38, 37.79] },
+                  // ... many more points
+                  ];
 
-            const contours = [
-            { threshold: 1, color: [255, 255, 178, 100], strokeWidth: 1 },
-            { threshold: 5, color: [254, 204, 92, 150], strokeWidth: 2 },
-            { threshold: 10, color: [253, 141, 60, 180], strokeWidth: 2 },
-            { threshold: 20, color: [240, 59, 32, 200], strokeWidth: 3 },
-            ];
-          ${SCRIPT_END}
+                  const contours = [
+                  { threshold: 1, color: [255, 255, 178, 100], strokeWidth: 1 },
+                  { threshold: 5, color: [254, 204, 92, 150], strokeWidth: 2 },
+                  { threshold: 10, color: [253, 141, 60, 180], strokeWidth: 2 },
+                  { threshold: 20, color: [240, 59, 32, 200], strokeWidth: 3 },
+                  ];
+                ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglContour
-                id="contour-layer"
-                :data="contourData"
-                :get-position="(d) => d.position"
-                :contours="contours"
-                :cell-size="50"
-                :pickable="true"
-              />
-            </VMap>
-          </template>`;
+                <template>
+                  <VMap :options="mapOptions" class="h-125 w-full">
+                    <VControlNavigation position="top-right" />
+                    <VLayerDeckglContour
+                      id="contour-layer"
+                      :data="contourData"
+                      :get-position="(d) => d.position"
+                      :contours="contours"
+                      :cell-size="50"
+                      :pickable="true"
+                    />
+                  </VMap>
+                </template>`;
 </script>
 
 <template>

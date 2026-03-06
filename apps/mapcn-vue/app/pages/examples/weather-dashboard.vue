@@ -54,27 +54,27 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { VMap, VMarker, VControlNavigation, VControlScale } from '@geoql/v-maplibre';
+                import { VMap, VMarker, VControlNavigation, VControlScale } from '@geoql/v-maplibre';
 
-          // Fetch weather for 25 major cities using Open-Meteo (free, no API key)
-          const lats = cities.map(c => c.lat).join(',');
-          const lons = cities.map(c => c.lon).join(',');
-          const url = \`https://api.open-meteo.com/v1/forecast?latitude=${'$'}{lats}&longitude=${'$'}{lons}&current=temperature_2m,weather_code&timezone=auto\`;
+                // Fetch weather for 25 major cities using Open-Meteo (free, no API key)
+                const lats = cities.map(c => c.lat).join(',');
+                const lons = cities.map(c => c.lon).join(',');
+                const url = \`https://api.open-meteo.com/v1/forecast?latitude=${'$'}{lats}&longitude=${'$'}{lons}&current=temperature_2m,weather_code&timezone=auto\`;
 
-          const data = await fetch(url).then(r => r.json());
-        ${SCRIPT_END}
+                const data = await fetch(url).then(r => r.json());
+              ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions" class="h-125 w-full">
-            <VMarker v-for="city in citiesWeather" :key="city.name" :lng-lat="[city.lon, city.lat]">
-              <div class="rounded-full bg-background/90 px-2 py-1 text-xs font-bold shadow">
-                {{ Math.round(city.current.temperature_2m) }}°
-              </div>
-            </VMarker>
-            <VControlNavigation position="top-right" />
-            <VControlScale position="bottom-left" />
-          </VMap>
-        </template>`;
+              <template>
+                <VMap :options="mapOptions" class="h-125 w-full">
+                  <VMarker v-for="city in citiesWeather" :key="city.name" :lng-lat="[city.lon, city.lat]">
+                    <div class="rounded-full bg-background/90 px-2 py-1 text-xs font-bold shadow">
+                      {{ Math.round(city.current.temperature_2m) }}°
+                    </div>
+                  </VMarker>
+                  <VControlNavigation position="top-right" />
+                  <VControlScale position="bottom-left" />
+                </VMap>
+              </template>`;
 </script>
 
 <template>

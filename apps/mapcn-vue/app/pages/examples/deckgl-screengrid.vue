@@ -79,42 +79,42 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { VMap, VLayerDeckglScreenGrid, VControlNavigation } from '@geoql/v-maplibre';
+                import { VMap, VLayerDeckglScreenGrid, VControlNavigation } from '@geoql/v-maplibre';
 
-          const mapOptions = {
-          style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-          center: [-122.4, 37.78],
-          zoom: 11,
-          };
+                const mapOptions = {
+                style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+                center: [-122.4, 37.78],
+                zoom: 11,
+                };
 
-          const screenGridData = [
-          { position: [-122.42, 37.78], weight: 5 },
-          { position: [-122.38, 37.79], weight: 10 },
-          // ... many more points
-          ];
-        ${SCRIPT_END}
+                const screenGridData = [
+                { position: [-122.42, 37.78], weight: 5 },
+                { position: [-122.38, 37.79], weight: 10 },
+                // ... many more points
+                ];
+              ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions" class="h-125 w-full">
-            <VControlNavigation position="top-right" />
-            <VLayerDeckglScreenGrid
-              id="screengrid-layer"
-              :data="screenGridData"
-              :get-position="(d) => d.position"
-              :get-weight="(d) => d.weight"
-              :cell-size-pixels="20"
-              :color-range="[
-                [255, 255, 178, 25],
-                [254, 217, 118, 85],
-                [254, 178, 76, 127],
-                [253, 141, 60, 170],
-                [240, 59, 32, 212],
-                [189, 0, 38, 255],
-              ]"
-              :pickable="true"
-            />
-          </VMap>
-        </template>`;
+              <template>
+                <VMap :options="mapOptions" class="h-125 w-full">
+                  <VControlNavigation position="top-right" />
+                  <VLayerDeckglScreenGrid
+                    id="screengrid-layer"
+                    :data="screenGridData"
+                    :get-position="(d) => d.position"
+                    :get-weight="(d) => d.weight"
+                    :cell-size-pixels="20"
+                    :color-range="[
+                      [255, 255, 178, 25],
+                      [254, 217, 118, 85],
+                      [254, 178, 76, 127],
+                      [253, 141, 60, 170],
+                      [240, 59, 32, 212],
+                      [189, 0, 38, 255],
+                    ]"
+                    :pickable="true"
+                  />
+                </VMap>
+              </template>`;
 </script>
 
 <template>

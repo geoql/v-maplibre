@@ -78,43 +78,43 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerDeckglHeatmap, VControlNavigation } from '@geoql/v-maplibre';
+                    import { VMap, VLayerDeckglHeatmap, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-            center: [-122.4, 37.8],
-            zoom: 11,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+                    center: [-122.4, 37.8],
+                    zoom: 11,
+                    };
 
-            const heatmapData = [
-            { coordinates: [-122.4, 37.8], weight: 5 },
-            { coordinates: [-122.38, 37.79], weight: 10 },
-            // ... more points
-            ];
-          ${SCRIPT_END}
+                    const heatmapData = [
+                    { coordinates: [-122.4, 37.8], weight: 5 },
+                    { coordinates: [-122.38, 37.79], weight: 10 },
+                    // ... more points
+                    ];
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglHeatmap
-                id="heatmap"
-                :data="heatmapData"
-                :get-position="(d) => d.coordinates"
-                :get-weight="(d) => d.weight"
-                :radius-pixels="30"
-                :intensity="1"
-                :threshold="0.03"
-                :color-range="[
-                  [255, 255, 178],
-                  [254, 217, 118],
-                  [254, 178, 76],
-                  [253, 141, 60],
-                  [240, 59, 32],
-                  [189, 0, 38],
-                ]"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VLayerDeckglHeatmap
+                        id="heatmap"
+                        :data="heatmapData"
+                        :get-position="(d) => d.coordinates"
+                        :get-weight="(d) => d.weight"
+                        :radius-pixels="30"
+                        :intensity="1"
+                        :threshold="0.03"
+                        :color-range="[
+                          [255, 255, 178],
+                          [254, 217, 118],
+                          [254, 178, 76],
+                          [253, 141, 60],
+                          [240, 59, 32],
+                          [189, 0, 38],
+                        ]"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

@@ -63,39 +63,39 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { VMap, VLayerDeckglColumn, VControlNavigation } from '@geoql/v-maplibre';
+                import { VMap, VLayerDeckglColumn, VControlNavigation } from '@geoql/v-maplibre';
 
-          const mapOptions = {
-          style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-          center: [-122.4, 37.78],
-          zoom: 12,
-          pitch: 45,
-          bearing: -17,
-          };
+                const mapOptions = {
+                style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                center: [-122.4, 37.78],
+                zoom: 12,
+                pitch: 45,
+                bearing: -17,
+                };
 
-          const columnData = [
-          { position: [-122.4, 37.78], elevation: 500, color: [255, 140, 0, 200] },
-          { position: [-122.38, 37.79], elevation: 800, color: [0, 200, 150, 200] },
-          // ... more columns
-          ];
-        ${SCRIPT_END}
+                const columnData = [
+                { position: [-122.4, 37.78], elevation: 500, color: [255, 140, 0, 200] },
+                { position: [-122.38, 37.79], elevation: 800, color: [0, 200, 150, 200] },
+                // ... more columns
+                ];
+              ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions" class="h-125 w-full">
-            <VControlNavigation position="top-right" />
-            <VLayerDeckglColumn
-              id="column-layer"
-              :data="columnData"
-              :get-position="(d) => d.position"
-              :get-elevation="(d) => d.elevation"
-              :get-fill-color="(d) => d.color"
-              :disk-resolution="12"
-              :radius="50"
-              :extruded="true"
-              :pickable="true"
-            />
-          </VMap>
-        </template>`;
+              <template>
+                <VMap :options="mapOptions" class="h-125 w-full">
+                  <VControlNavigation position="top-right" />
+                  <VLayerDeckglColumn
+                    id="column-layer"
+                    :data="columnData"
+                    :get-position="(d) => d.position"
+                    :get-elevation="(d) => d.elevation"
+                    :get-fill-color="(d) => d.color"
+                    :disk-resolution="12"
+                    :radius="50"
+                    :extruded="true"
+                    :pickable="true"
+                  />
+                </VMap>
+              </template>`;
 </script>
 
 <template>

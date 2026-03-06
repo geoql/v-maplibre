@@ -56,49 +56,49 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VLayerMaplibreVideo, VControlNavigation } from '@geoql/v-maplibre';
+                    import { VMap, VLayerMaplibreVideo, VControlNavigation } from '@geoql/v-maplibre';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-122.4, 37.78],
-            zoom: 12,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                    center: [-122.4, 37.78],
+                    zoom: 12,
+                    };
 
-            const videoSource = {
-            type: 'video',
-            urls: [
-              'https://example.com/video.mp4',
-              'https://example.com/video.webm',
-            ],
-            coordinates: [
-              [-122.45, 37.82], // top-left
-              [-122.35, 37.82], // top-right
-              [-122.35, 37.74], // bottom-right
-              [-122.45, 37.74], // bottom-left
-            ],
-            };
+                    const videoSource = {
+                    type: 'video',
+                    urls: [
+                      'https://example.com/video.mp4',
+                      'https://example.com/video.webm',
+                    ],
+                    coordinates: [
+                      [-122.45, 37.82], // top-left
+                      [-122.35, 37.82], // top-right
+                      [-122.35, 37.74], // bottom-right
+                      [-122.45, 37.74], // bottom-left
+                    ],
+                    };
 
-            const videoLayer = {
-            id: 'video-overlay',
-            type: 'raster',
-            source: 'video-source',
-            paint: {
-              'raster-opacity': 0.9,
-            },
-            };
-          ${SCRIPT_END}
+                    const videoLayer = {
+                    id: 'video-overlay',
+                    type: 'raster',
+                    source: 'video-source',
+                    paint: {
+                      'raster-opacity': 0.9,
+                    },
+                    };
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerMaplibreVideo
-                source-id="video-source"
-                layer-id="video-overlay"
-                :source="videoSource"
-                :layer="videoLayer"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VLayerMaplibreVideo
+                        source-id="video-source"
+                        layer-id="video-overlay"
+                        :source="videoSource"
+                        :layer="videoLayer"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

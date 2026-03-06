@@ -76,27 +76,27 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { VMap, VLayerDeckglCOG, VControlNavigation } from '@geoql/v-maplibre';
+                  import { VMap, VLayerDeckglCOG, VControlNavigation } from '@geoql/v-maplibre';
 
-          const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
-            center: [31.5, 30.0], // Egypt/Nile area
-            zoom: 8,
-          };
+                  const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-nolabels-gl-style/style.json',
+                    center: [31.5, 30.0], // Egypt/Nile area
+                    zoom: 8,
+                  };
 
-          // Sentinel-2 RGB imagery COG
-          const COG_URL = 'https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/Q/WD/2020/7/S2A_36QWD_20200701_0_L2A/TCI.tif';
-          ${SCRIPT_END}
+                  // Sentinel-2 RGB imagery COG
+                  const COG_URL = 'https://sentinel-cogs.s3.us-west-2.amazonaws.com/sentinel-s2-l2a-cogs/36/Q/WD/2020/7/S2A_36QWD_20200701_0_L2A/TCI.tif';
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VLayerDeckglCOG
-                id="cog-layer"
-                :geotiff="COG_URL"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VLayerDeckglCOG
+                        id="cog-layer"
+                        :geotiff="COG_URL"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

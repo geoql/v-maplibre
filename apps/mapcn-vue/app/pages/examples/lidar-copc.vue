@@ -58,39 +58,39 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-            import { VMap, VControlLidar, VControlNavigation } from '@geoql/v-maplibre';
-            import 'maplibre-gl-lidar/style.css';
+                    import { VMap, VControlLidar, VControlNavigation } from '@geoql/v-maplibre';
+                    import 'maplibre-gl-lidar/style.css';
 
-            const mapOptions = {
-            style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-            center: [-123.075, 44.05],
-            zoom: 14,
-            pitch: 60,
-            maxPitch: 85,
-            };
+                    const mapOptions = {
+                    style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                    center: [-123.075, 44.05],
+                    zoom: 14,
+                    pitch: 60,
+                    maxPitch: 85,
+                    };
 
-            const lidarOptions = {
-            collapsed: false,
-            pointSize: 2,
-            colorScheme: 'elevation',
-            pickable: true,
-            autoZoom: true,
-            };
+                    const lidarOptions = {
+                    collapsed: false,
+                    pointSize: 2,
+                    colorScheme: 'elevation',
+                    pickable: true,
+                    autoZoom: true,
+                    };
 
-            const copcUrl = 'https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz';
-          ${SCRIPT_END}
+                    const copcUrl = 'https://s3.amazonaws.com/hobu-lidar/autzen-classified.copc.laz';
+                  ${SCRIPT_END}
 
-          <template>
-            <VMap :options="mapOptions" class="h-125 w-full">
-              <VControlNavigation position="top-right" />
-              <VControlLidar
-                position="top-right"
-                :options="lidarOptions"
-                :default-url="copcUrl"
-                @load="(info) => console.log('Loaded:', info)"
-              />
-            </VMap>
-          </template>`;
+                  <template>
+                    <VMap :options="mapOptions" class="h-125 w-full">
+                      <VControlNavigation position="top-right" />
+                      <VControlLidar
+                        position="top-right"
+                        :options="lidarOptions"
+                        :default-url="copcUrl"
+                        @load="(info) => console.log('Loaded:', info)"
+                      />
+                    </VMap>
+                  </template>`;
 </script>
 
 <template>

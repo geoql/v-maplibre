@@ -53,18 +53,18 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { VMap, VControlNavigation } from '@geoql/v-maplibre';
-          import { MapboxOverlay } from '@deck.gl/mapbox';
-          import { TripsLayer } from '@deck.gl/geo-layers';
-          import { IconLayer } from '@deck.gl/layers';
+                  import { VMap, VControlNavigation } from '@geoql/v-maplibre';
+                  import { MapboxOverlay } from '@deck.gl/mapbox';
+                  import { TripsLayer } from '@deck.gl/geo-layers';
+                  import { IconLayer } from '@deck.gl/layers';
 
-          const tripData = ref([]);
-          const currentTime = ref(0);
-          ${SCRIPT_END}
-          <VMap :options="mapOptions" class="h-125 w-full">
-            <VControlNavigation position="top-right" />
-          </VMap>
-        </template>`;
+                  const tripData = ref([]);
+                  const currentTime = ref(0);
+                  ${SCRIPT_END}
+                  <VMap :options="mapOptions" class="h-125 w-full">
+                    <VControlNavigation position="top-right" />
+                  </VMap>
+                </template>`;
 </script>
 
 <template>

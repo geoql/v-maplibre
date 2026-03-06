@@ -55,46 +55,46 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { VMap, VLayerDeckglScenegraph, VControlNavigation } from '@geoql/v-maplibre';
-          import { GLTFLoader } from '@loaders.gl/gltf';
-          import { registerLoaders } from '@loaders.gl/core';
+                  import { VMap, VLayerDeckglScenegraph, VControlNavigation } from '@geoql/v-maplibre';
+                  import { GLTFLoader } from '@loaders.gl/gltf';
+                  import { registerLoaders } from '@loaders.gl/core';
 
-          // Register GLTFLoader globally
-          registerLoaders([GLTFLoader]);
+                  // Register GLTFLoader globally
+                  registerLoaders([GLTFLoader]);
 
-          const mapOptions = {
-          style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
-          center: [-122.4, 37.74],
-          zoom: 11,
-          pitch: 45,
-          };
+                  const mapOptions = {
+                  style: 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json',
+                  center: [-122.4, 37.74],
+                  zoom: 11,
+                  pitch: 45,
+                  };
 
-          // Animated box model from Khronos glTF samples
-          const MODEL_URL = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BoxAnimated/glTF-Binary/BoxAnimated.glb';
+                  // Animated box model from Khronos glTF samples
+                  const MODEL_URL = 'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/BoxAnimated/glTF-Binary/BoxAnimated.glb';
 
-          // BART stations data
-          const DATA_URL = 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/bart-stations.json';
+                  // BART stations data
+                  const DATA_URL = 'https://raw.githubusercontent.com/visgl/deck.gl-data/master/website/bart-stations.json';
 
-          const getPosition = (d) => d.coordinates;
-          const getOrientation = () => [0, Math.random() * 180, 90];
-        ${SCRIPT_END}
+                  const getPosition = (d) => d.coordinates;
+                  const getOrientation = () => [0, Math.random() * 180, 90];
+                ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions" class="h-125 w-full">
-            <VControlNavigation position="top-right" />
-            <VLayerDeckglScenegraph
-              id="bart-stations"
-              :data="DATA_URL"
-              :scenegraph="MODEL_URL"
-              :get-position="getPosition"
-              :get-orientation="getOrientation"
-              :size-scale="500"
-              :_animations="{ '*': { speed: 5 } }"
-              :_lighting="'pbr'"
-              :pickable="true"
-            />
-          </VMap>
-        </template>`;
+                <template>
+                  <VMap :options="mapOptions" class="h-125 w-full">
+                    <VControlNavigation position="top-right" />
+                    <VLayerDeckglScenegraph
+                      id="bart-stations"
+                      :data="DATA_URL"
+                      :scenegraph="MODEL_URL"
+                      :get-position="getPosition"
+                      :get-orientation="getOrientation"
+                      :size-scale="500"
+                      :_animations="{ '*': { speed: 5 } }"
+                      :_lighting="'pbr'"
+                      :pickable="true"
+                    />
+                  </VMap>
+                </template>`;
 </script>
 
 <template>

@@ -241,150 +241,150 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const maplibreCodeExample = `${SCRIPT_START}
-          import { VMap, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+                import { VMap, VControlLegend, VLayerMaplibreGeojson } from '@geoql/v-maplibre';
 
-          const statesGeoJson = ref(null);
+                const statesGeoJson = ref(null);
 
-          // Unemployment rates by state (2024 data)
-          const unemploymentByState = {
-          'California': 5.3,
-          'Texas': 4.1,
-          'New York': 4.5,
-          // ... more states
-          };
+                // Unemployment rates by state (2024 data)
+                const unemploymentByState = {
+                'California': 5.3,
+                'Texas': 4.1,
+                'New York': 4.5,
+                // ... more states
+                };
 
-          // Blues color scale for choropleth
-          const colorScale = [
-          { threshold: 0, color: '#f7fbff' },
-          { threshold: 2, color: '#deebf7' },
-          { threshold: 4, color: '#9ecae1' },
-          { threshold: 6, color: '#4292c6' },
-          { threshold: 8, color: '#084594' },
-          ];
+                // Blues color scale for choropleth
+                const colorScale = [
+                { threshold: 0, color: '#f7fbff' },
+                { threshold: 2, color: '#deebf7' },
+                { threshold: 4, color: '#9ecae1' },
+                { threshold: 6, color: '#4292c6' },
+                { threshold: 8, color: '#084594' },
+                ];
 
-          const legendItems = colorScale.map(item => ({
-          value: item.threshold,
-          label: item.threshold + '%+',
-          color: item.color,
-          }));
+                const legendItems = colorScale.map(item => ({
+                value: item.threshold,
+                label: item.threshold + '%+',
+                color: item.color,
+                }));
 
-          function getColorForRate(rate) {
-          for (let i = colorScale.length - 1; i >= 0; i--) {
-            if (rate >= colorScale[i].threshold) return colorScale[i].color;
-          }
-          return colorScale[0].color;
-          }
+                function getColorForRate(rate) {
+                for (let i = colorScale.length - 1; i >= 0; i--) {
+                  if (rate >= colorScale[i].threshold) return colorScale[i].color;
+                }
+                return colorScale[0].color;
+                }
 
-          // Fetch real US states GeoJSON and merge with data
-          async function fetchStatesData() {
-          const response = await fetch(
-            'https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json'
-          );
-          const data = await response.json();
+                // Fetch real US states GeoJSON and merge with data
+                async function fetchStatesData() {
+                const response = await fetch(
+                  'https://raw.githubusercontent.com/PublicaMundi/MappingAPI/master/data/geojson/us-states.json'
+                );
+                const data = await response.json();
 
-          statesGeoJson.value = {
-            type: 'FeatureCollection',
-            features: data.features.map(feature => ({
-              ...feature,
-              properties: {
-                ...feature.properties,
-                rate: unemploymentByState[feature.properties.name] ?? 0,
-                fillColor: getColorForRate(unemploymentByState[feature.properties.name] ?? 0)
-              }
-            }))
-          };
-          }
-        ${SCRIPT_END}
+                statesGeoJson.value = {
+                  type: 'FeatureCollection',
+                  features: data.features.map(feature => ({
+                    ...feature,
+                    properties: {
+                      ...feature.properties,
+                      rate: unemploymentByState[feature.properties.name] ?? 0,
+                      fillColor: getColorForRate(unemploymentByState[feature.properties.name] ?? 0)
+                    }
+                  }))
+                };
+                }
+              ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions">
-            <VLayerMaplibreGeojson
-              source-id="states"
-              layer-id="states-fill"
-              :source="{ type: 'geojson', data: statesGeoJson }"
-              :layer="{
-                id: 'states-fill',
-                type: 'fill',
-                source: 'states',
-                paint: { 'fill-color': ['get', 'fillColor'], 'fill-opacity': 0.8 }
-              }"
-            />
-            <VControlLegend
-              :layer-ids="['states-fill']"
-              type="category"
-              :items="legendItems"
-              title="Unemployment Rate (%)"
-              position="bottom-left"
-            />
-          </VMap>
-        </template>`;
+              <template>
+                <VMap :options="mapOptions">
+                  <VLayerMaplibreGeojson
+                    source-id="states"
+                    layer-id="states-fill"
+                    :source="{ type: 'geojson', data: statesGeoJson }"
+                    :layer="{
+                      id: 'states-fill',
+                      type: 'fill',
+                      source: 'states',
+                      paint: { 'fill-color': ['get', 'fillColor'], 'fill-opacity': 0.8 }
+                    }"
+                  />
+                  <VControlLegend
+                    :layer-ids="['states-fill']"
+                    type="category"
+                    :items="legendItems"
+                    title="Unemployment Rate (%)"
+                    position="bottom-left"
+                  />
+                </VMap>
+              </template>`;
 
   const deckglCodeExample = `${SCRIPT_START}
-          import { VMap, VControlLegend, VLayerDeckglGeojson } from '@geoql/v-maplibre';
+                import { VMap, VControlLegend, VLayerDeckglGeojson } from '@geoql/v-maplibre';
 
-          const statesGeoJson = ref(null);
-          const hoveredState = ref(null);
+                const statesGeoJson = ref(null);
+                const hoveredState = ref(null);
 
-          const colorScale = [
-          { threshold: 0, color: '#f7fbff' },
-          { threshold: 2, color: '#deebf7' },
-          { threshold: 4, color: '#9ecae1' },
-          { threshold: 6, color: '#4292c6' },
-          { threshold: 8, color: '#084594' },
-          ];
+                const colorScale = [
+                { threshold: 0, color: '#f7fbff' },
+                { threshold: 2, color: '#deebf7' },
+                { threshold: 4, color: '#9ecae1' },
+                { threshold: 6, color: '#4292c6' },
+                { threshold: 8, color: '#084594' },
+                ];
 
-          const legendItems = colorScale.map(item => ({
-          value: item.threshold,
-          label: item.threshold + '%+',
-          color: item.color,
-          }));
+                const legendItems = colorScale.map(item => ({
+                value: item.threshold,
+                label: item.threshold + '%+',
+                color: item.color,
+                }));
 
-          function hexToRgba(hex, alpha = 200) {
-          const result = /^#?([a-f\\d]{2})([a-f\\d]{2})([a-f\\d]{2})$/i.exec(hex);
-          return result ? [
-            parseInt(result[1], 16),
-            parseInt(result[2], 16),
-            parseInt(result[3], 16),
-            alpha,
-          ] : [247, 251, 255, alpha];
-          }
+                function hexToRgba(hex, alpha = 200) {
+                const result = /^#?([a-f\\d]{2})([a-f\\d]{2})([a-f\\d]{2})$/i.exec(hex);
+                return result ? [
+                  parseInt(result[1], 16),
+                  parseInt(result[2], 16),
+                  parseInt(result[3], 16),
+                  alpha,
+                ] : [247, 251, 255, alpha];
+                }
 
-          function getFillColor(feature) {
-          const rate = feature.properties.rate;
-          const color = getColorForRate(rate);
-          const isHovered = hoveredState.value?.name === feature.properties.name;
-          return hexToRgba(color, isHovered ? 255 : 200);
-          }
+                function getFillColor(feature) {
+                const rate = feature.properties.rate;
+                const color = getColorForRate(rate);
+                const isHovered = hoveredState.value?.name === feature.properties.name;
+                return hexToRgba(color, isHovered ? 255 : 200);
+                }
 
-          function handleHover(info) {
-          hoveredState.value = info.object?.properties ?? null;
-          }
-        ${SCRIPT_END}
+                function handleHover(info) {
+                hoveredState.value = info.object?.properties ?? null;
+                }
+              ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions">
-            <VLayerDeckglGeojson
-              id="states-choropleth"
-              :data="statesGeoJson"
-              :get-fill-color="getFillColor"
-              :get-line-color="[100, 100, 100, 255]"
-              :line-width-min-pixels="1"
-              :filled="true"
-              :stroked="true"
-              :pickable="true"
-              :auto-highlight="true"
-              :highlight-color="[255, 200, 0, 128]"
-              @hover="handleHover"
-            />
-            <VControlLegend
-              :layer-ids="['states-choropleth']"
-              type="category"
-              :items="legendItems"
-              title="Unemployment Rate (%)"
-              position="bottom-left"
-            />
-          </VMap>
-        </template>`;
+              <template>
+                <VMap :options="mapOptions">
+                  <VLayerDeckglGeojson
+                    id="states-choropleth"
+                    :data="statesGeoJson"
+                    :get-fill-color="getFillColor"
+                    :get-line-color="[100, 100, 100, 255]"
+                    :line-width-min-pixels="1"
+                    :filled="true"
+                    :stroked="true"
+                    :pickable="true"
+                    :auto-highlight="true"
+                    :highlight-color="[255, 200, 0, 128]"
+                    @hover="handleHover"
+                  />
+                  <VControlLegend
+                    :layer-ids="['states-choropleth']"
+                    type="category"
+                    :items="legendItems"
+                    title="Unemployment Rate (%)"
+                    position="bottom-left"
+                  />
+                </VMap>
+              </template>`;
 </script>
 
 <template>

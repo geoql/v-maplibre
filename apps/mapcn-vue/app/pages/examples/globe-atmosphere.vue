@@ -73,29 +73,29 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-          import { VMap, VLayerMaplibreStarfield, VControlNavigation } from '@geoql/v-maplibre';
+                import { VMap, VLayerMaplibreStarfield, VControlNavigation } from '@geoql/v-maplibre';
 
-          const { sunAzimuth, sunAltitude, setMode, modes, currentMode } =
-          useGlobeAtmosphere('night');
-        ${SCRIPT_END}
+                const { sunAzimuth, sunAltitude, setMode, modes, currentMode } =
+                useGlobeAtmosphere('night');
+              ${SCRIPT_END}
 
-        <template>
-          <VMap :options="mapOptions" class="h-125 w-full">
-            <VLayerMaplibreStarfield
-              galaxy-texture-url="/milkyway.jpg"
-              :sun-enabled="true"
-              :sun-azimuth="sunAzimuth"
-              :sun-altitude="sunAltitude"
-              before="satellite"
-            />
-            <VControlNavigation position="top-right" />
-          </VMap>
-          <div class="flex gap-2 mt-4">
-            <button v-for="mode in modes" :key="mode" @click="setMode(mode)">
-              {{ mode }}
-            </button>
-          </div>
-        </template>`;
+              <template>
+                <VMap :options="mapOptions" class="h-125 w-full">
+                  <VLayerMaplibreStarfield
+                    galaxy-texture-url="/milkyway.jpg"
+                    :sun-enabled="true"
+                    :sun-azimuth="sunAzimuth"
+                    :sun-altitude="sunAltitude"
+                    before="satellite"
+                  />
+                  <VControlNavigation position="top-right" />
+                </VMap>
+                <div class="flex gap-2 mt-4">
+                  <button v-for="mode in modes" :key="mode" @click="setMode(mode)">
+                    {{ mode }}
+                  </button>
+                </div>
+              </template>`;
 </script>
 
 <template>
