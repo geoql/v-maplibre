@@ -35,6 +35,7 @@ jobs:
       - name: Build mapcn-vue
         run: bun run build:mapcn
         env:
+          NODE_OPTIONS: --max-old-space-size=8192
           NITRO_PRESET: cloudflare-pages
           NUXT_PUBLIC_MAPSGURU_API_KEY: ${{ secrets.NUXT_PUBLIC_MAPSGURU_API_KEY }}
 
