@@ -1,5 +1,35 @@
 # Changelog
 
+## [1.7.0](https://github.com/geoql/v-maplibre/compare/v1.6.1...v1.7.0) (2026-03-19)
+
+
+### Features
+
+* **mosaic:** add ndviRange prop with pixel filter shader for NDVI range selection ([2c6d079](https://github.com/geoql/v-maplibre/commit/2c6d0798055d8b590611cc918f4adb87dfe3abde))
+* **v-maplibre:** add breakpoints prop to VLayerMaplibreCluster ([449a351](https://github.com/geoql/v-maplibre/commit/449a3511d59d603fb7c219688b57a22cb8713c5f))
+* **v-maplibre:** add sun rendering props to starfield layer ([6700c6b](https://github.com/geoql/v-maplibre/commit/6700c6bf3694997e4fd8d452ec90ed7acec7e767))
+* **v-maplibre:** add table legend type to VControlLegend ([c010df8](https://github.com/geoql/v-maplibre/commit/c010df86d199e00c4ae48ac012c338ab3a7d4df2))
+* **v-maplibre:** add VLayerMaplibreStarfield component ([6ec3648](https://github.com/geoql/v-maplibre/commit/6ec364862bb941fa67743c44f4f57189b7a04f1b))
+* **v-maplibre:** improve starfield layer sun rendering parameters ([f495673](https://github.com/geoql/v-maplibre/commit/f4956730abac99dbe9c7a6ea31c77b76105612f8))
+* **v-maplibre:** upgrade maplibre-gl-lidar to v0.11.1 ([ce0b1df](https://github.com/geoql/v-maplibre/commit/ce0b1df6eb0f199d39e754f5b242c8902702aae3))
+
+
+### Bug Fixes
+
+* **ci:** add @developmentseed/geotiff dep, rename configs to .mts for Vite 8 ([ff1a14a](https://github.com/geoql/v-maplibre/commit/ff1a14abdf67e70c2855f18ce911e3d722aae237))
+* **cog,mosaic:** migrate to deck.gl-geotiff v0.3 API — epsgResolver, updated types ([a7692f0](https://github.com/geoql/v-maplibre/commit/a7692f085107fda151f5144d5c99d24e5a858dbe))
+* **v-maplibre:** increase VControlLayer max-width to 280px ([881bf88](https://github.com/geoql/v-maplibre/commit/881bf88b3f582a6fac0d711b140e3499041dd317))
+* **v-maplibre:** preserve maplibregl-ctrl class across Vue re-renders ([13f9f81](https://github.com/geoql/v-maplibre/commit/13f9f81a9fe45a8033b55f6e0d6775c59cc14b6a))
+* **v-maplibre:** suppress browser focus outline on layer control buttons ([71c38e3](https://github.com/geoql/v-maplibre/commit/71c38e33f268a94b95394756d0a40f52b8fc20bd))
+
+
+### Miscellaneous
+
+* **deps:** bump dependencies and fix resvg-js catalog reference ([98a5693](https://github.com/geoql/v-maplibre/commit/98a5693740bf30add105c5a012d4504eab960534))
+* **deps:** drop geotiff, geotiff-geokeys-to-proj4, proj4 — now via @developmentseed/geotiff ([6fd1ded](https://github.com/geoql/v-maplibre/commit/6fd1ded4b2388205b884d4ae9af0216216bf19dd))
+* **deps:** update all workspace catalog dependencies ([66a78b7](https://github.com/geoql/v-maplibre/commit/66a78b740e668b776b69f924278814ab24439f5a))
+* restructure bun workspace catalogs with named prefixes ([8626b1f](https://github.com/geoql/v-maplibre/commit/8626b1f7d7f0789893bc3222e7c5957450650e39))
+
 ## [1.6.1](https://github.com/geoql/v-maplibre/compare/v1.6.0...v1.6.1) (2026-02-02)
 
 
