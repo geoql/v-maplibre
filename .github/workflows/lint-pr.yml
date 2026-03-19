@@ -36,7 +36,7 @@ jobs:
             doesn't match the configured pattern. Please ensure the subject
             starts with a lowercase letter, not uppercase.
 
-      - uses: marocchino/sticky-pull-request-comment@v2
+      - uses: marocchino/sticky-pull-request-comment@v3
         if: always() && (steps.lint_pr_title.outputs.error_message != null)
         with:
           header: pr-title-lint-error
@@ -57,7 +57,7 @@ jobs:
             - `feat(ui): add Button component`
             - `refactor!: drop Node.js 16 support`
 
-      - uses: marocchino/sticky-pull-request-comment@v2
+      - uses: marocchino/sticky-pull-request-comment@v3
         if: steps.lint_pr_title.outputs.error_message == null
         with:
           header: pr-title-lint-error
