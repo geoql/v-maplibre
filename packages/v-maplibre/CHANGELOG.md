@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.7.1](https://github.com/geoql/v-maplibre/compare/v1.7.0...v1.7.1) (2026-04-07)
+
+
+### Bug Fixes
+
+* **v-maplibre:** use real semver in dependencies instead of catalog refs ([4b48e31](https://github.com/geoql/v-maplibre/commit/4b48e31ff3fc6939c97900404dcc59df9dc52530))
+
 ## [1.7.0](https://github.com/geoql/v-maplibre/compare/v1.6.1...v1.7.0) (2026-04-07)
 
 
