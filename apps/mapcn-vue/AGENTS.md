@@ -143,7 +143,7 @@ import type { RoutePoint, MapState } from '~/types/map';
 
 <template>
   <VMap :options="mapOptions">
-    <VMarker :lng-lat="[-74.5, 40]" />
+    <VMarker :coordinates="[-74.5, 40]" />
     <VControlNavigation position="top-right" />
   </VMap>
 </template>
@@ -643,7 +643,7 @@ npx shadcn-vue@latest add https://mapcn-vue.geoql.in/r/map
 
 <template>
   <VMap :options="mapOptions" class="h-[500px] rounded-lg">
-    <VMarker :lng-lat="[-74.5, 40]" />
+    <VMarker :coordinates="[-74.5, 40]" />
     <VControlNavigation position="top-right" />
     <VControlScale position="bottom-left" />
   </VMap>

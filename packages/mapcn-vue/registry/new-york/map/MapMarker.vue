@@ -37,14 +37,14 @@
 
 <template>
   <VMarker
-    :lng-lat="props.lngLat"
+    :coordinates="props.lngLat"
     :draggable="props.draggable"
     :anchor="props.anchor"
     :offset="props.offset"
     :color="props.color"
     :scale="props.scale"
     :class="props.class"
-    @click="(e) => emit('click', e)"
+    @click="(e: MouseEvent) => emit('click', e)"
     @dragstart="(e) => emit('dragstart', e)"
     @drag="(e) => emit('drag', e)"
     @dragend="(e) => emit('dragend', e)"

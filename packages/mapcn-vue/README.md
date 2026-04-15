@@ -134,7 +134,7 @@ LiDAR point cloud visualization.
 <template>
   <Map :center="[-74.006, 40.7128]" :zoom="12" class="h-125 rounded-lg">
     <MapControls show-navigation show-scale></MapControls>
-    <MapMarker :lng-lat="[-74.006, 40.7128]"></MapMarker>
+    <MapMarker :coordinates="[-74.006, 40.7128]"></MapMarker>
   </Map>
 </template>
 ```

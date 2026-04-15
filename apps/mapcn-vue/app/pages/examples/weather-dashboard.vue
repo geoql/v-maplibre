@@ -61,7 +61,7 @@
 
               <template>
                 <VMap :options="mapOptions" class="h-125 w-full">
-                  <VMarker v-for="city in citiesWeather" :key="city.name" :lng-lat="[city.lon, city.lat]">
+                  <VMarker v-for="city in citiesWeather" :key="city.name" :coordinates="[city.lon, city.lat]">
                     <div class="rounded-full bg-background/90 px-2 py-1 text-xs font-bold shadow">
                       {{ Math.round(city.current.temperature_2m) }}°
                     </div>

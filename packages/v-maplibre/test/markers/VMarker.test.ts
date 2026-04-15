@@ -24,7 +24,7 @@ describe('VMarker', () => {
         options: defaultMapOptions,
       },
       slots: {
-        default: `<VMarker :lng-lat="[0, 0]" />`,
+        default: `<VMarker :coordinates="[0, 0]" />`,
       },
       global: {
         components: {
@@ -43,7 +43,7 @@ describe('VMarker', () => {
       },
       slots: {
         default: {
-          template: '<VMarker :lng-lat="{ lng: 10, lat: 20 }" />',
+          template: '<VMarker :coordinates="{ lng: 10, lat: 20 }" />',
           components: { VMarker },
         },
       },
@@ -59,7 +59,7 @@ describe('VMarker', () => {
       },
       slots: {
         default: {
-          template: '<VMarker :lng-lat="[10, 20]" />',
+          template: '<VMarker :coordinates="[10, 20]" />',
           components: { VMarker },
         },
       },
@@ -75,7 +75,7 @@ describe('VMarker', () => {
       },
       slots: {
         default: {
-          template: '<VMarker :lng-lat="[0, 0]" draggable />',
+          template: '<VMarker :coordinates="[0, 0]" draggable />',
           components: { VMarker },
         },
       },
@@ -92,7 +92,7 @@ describe('VMarker', () => {
       slots: {
         default: {
           template:
-            '<VMarker :lng-lat="[0, 0]" :options="{ color: \'#FF0000\' }" />',
+            '<VMarker :coordinates="[0, 0]" :options="{ color: \'#FF0000\' }" />',
           components: { VMarker },
         },
       },
@@ -111,7 +111,7 @@ describe('VMarker', () => {
       slots: {
         default: {
           template: `
-            <VMarker :lng-lat="[0, 0]">
+            <VMarker :coordinates="[0, 0]">
               <div class="custom-marker">Custom</div>
             </VMarker>
           `,

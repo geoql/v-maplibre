@@ -70,7 +70,7 @@ pnpm add maplibre-gl-wind
 
 <template>
   <VMap :options="mapOptions" style="height: 500px">
-    <VMarker :lng-lat="[-74.5, 40]"></VMarker>
+    <VMarker :coordinates="[-74.5, 40]"></VMarker>
   </VMap>
 </template>
 ```
