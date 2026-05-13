@@ -25,6 +25,25 @@ export default defineNuxtConfig({
   ],
   devtools: { enabled: true },
 
+  // Explicit font manifest — skips @nuxt/fonts CSS auto-scanning that was
+  // taking 6.8s/file × 74 files = ~41s aggregated in the build. We use exactly
+  // two families (Geist + Geist Mono), both from Google. Declaring them here
+  // means the font module never has to scan main.css or any SFC <style> block.
+  fonts: {
+    families: [
+      { name: 'Geist', provider: 'google', weights: [300, 400, 500, 700, 800] },
+      { name: 'Geist Mono', provider: 'google', weights: [400, 500, 700] },
+    ],
+    defaults: {
+      weights: [400, 700],
+      styles: ['normal'],
+      subsets: ['latin'],
+    },
+    experimental: {
+      processCSSVariables: false,
+    },
+  },
+
   app: {
     head: {
       title: 'mapcn-vue - Beautiful maps for Vue',
@@ -83,6 +102,10 @@ export default defineNuxtConfig({
     defaults: {
       component: 'MapcnDoc',
     },
+    // Skip per-request cache storage during prerender (we generate all OG
+    // images at build time, no runtime regeneration needed). Saves ~1s of
+    // worker bundle work and reduces peak heap by ~200MB on Cloudflare Pages.
+    runtimeCacheStorage: false,
   },
 
   site: {
@@ -112,6 +135,16 @@ export default defineNuxtConfig({
     worker: {
       format: 'es',
     },
+    optimizeDeps: {
+      exclude: ['@geoql/v-maplibre'],
+      include: [
+        'class-variance-authority',
+        'clsx',
+        'reka-ui',
+        'shiki/bundle/web',
+        'tailwind-merge',
+      ],
+    },
   },
 
   postcss: {
@@ -123,6 +156,14 @@ export default defineNuxtConfig({
     prerender: {
       crawlLinks: true,
       routes: ['/'],
+      // Limit concurrency to 4 (default is unlimited on local builds, which
+      // pushed RSS to +9.4GB on this codebase). With 4 the build retains a
+      // <4GB heap window that fits CI memory budgets without slowing wallclock.
+      concurrency: 4,
+      // Don't fail the build if a single prerendered route errors — we have
+      // a few zarr/source.coop pages that gracefully degrade when upstream
+      // is offline. They render the fallback UI as static HTML.
+      failOnError: false,
     },
     cloudflare: {
       nodeCompat: true,
@@ -138,10 +179,33 @@ export default defineNuxtConfig({
     replace: {
       'process.stdout': 'undefined',
     },
+
+    experimental: {
+      openAPI: false,
+    },
+
+    externals: {
+      packageNames: ['@resvg/resvg-js'],
+    },
   },
 
   shadcn: {
     prefix: '',
     componentDir: './app/components/ui',
+  },
+
+  hooks: {
+    'vite:extendConfig'(viteInlineConfig, env) {
+      if (env.isClient && viteInlineConfig.optimizeDeps?.include) {
+        const dropPrefixes = ['@nuxtjs/mdc >'];
+        const dropExact = new Set(['@plausible-analytics/tracker']);
+        viteInlineConfig.optimizeDeps.include =
+          viteInlineConfig.optimizeDeps.include.filter((entry) => {
+            if (typeof entry !== 'string') return true;
+            if (dropExact.has(entry)) return false;
+            return !dropPrefixes.some((p) => entry.startsWith(p));
+          });
+      }
+    },
   },
 });

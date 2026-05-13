@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nuxt dev",
+    "dev:host": "nuxt dev --host",
     "build": "nuxt build",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
@@ -25,7 +26,6 @@
     "@developmentseed/deck.gl-geotiff": "catalog:app:mapcn-vue",
     "@developmentseed/deck.gl-raster": "catalog:app:mapcn-vue",
     "@developmentseed/geotiff": "catalog:app:mapcn-vue",
-    "lerc": "catalog:app:mapcn-vue",
     "@geoql/maplibre-gl-compare": "catalog:app:mapcn-vue",
     "@geoql/maplibre-gl-snow": "catalog:app:mapcn-vue",
     "@geoql/maplibre-gl-starfield": "catalog:app:mapcn-vue",
@@ -45,14 +45,13 @@
     "@resvg/resvg-js": "catalog:app:mapcn-vue",
     "@resvg/resvg-wasm": "catalog:app:mapcn-vue",
     "@tanstack/vue-table": "catalog:app:mapcn-vue",
-    "@unovis/ts": "catalog:app:mapcn-vue",
-    "@unovis/vue": "catalog:app:mapcn-vue",
     "@vueuse/core": "catalog:app:mapcn-vue",
     "@vueuse/nuxt": "catalog:app:mapcn-vue",
     "class-variance-authority": "catalog:app:mapcn-vue",
     "clsx": "catalog:app:mapcn-vue",
     "flatbush": "catalog:app:mapcn-vue",
     "idb": "catalog:app:mapcn-vue",
+    "lerc": "catalog:app:mapcn-vue",
     "maplibre-gl": "catalog:default",
     "maplibre-gl-interpolate-heatmap": "catalog:app:mapcn-vue",
     "maplibre-gl-lidar": "catalog:app:mapcn-vue",
@@ -63,10 +62,10 @@
     "reka-ui": "catalog:app:mapcn-vue",
     "satori": "catalog:app:mapcn-vue",
     "shiki": "catalog:app:mapcn-vue",
-    "terra-draw": "catalog:app:mapcn-vue",
-    "terra-draw-maplibre-gl-adapter": "catalog:app:mapcn-vue",
     "tailwind-merge": "catalog:app:mapcn-vue",
     "tailwindcss-animate": "catalog:app:mapcn-vue",
+    "terra-draw": "catalog:app:mapcn-vue",
+    "terra-draw-maplibre-gl-adapter": "catalog:app:mapcn-vue",
     "three": "catalog:app:mapcn-vue",
     "tw-animate-css": "catalog:app:mapcn-vue",
     "vue-sonner": "catalog:app:mapcn-vue",
@@ -89,6 +88,5 @@
     "typescript": "catalog:default",
     "vue": "catalog:default",
     "wrangler": "catalog:app:mapcn-vue"
-  },
-  "packageManager": "bun@1.3.11"
+  }
 }

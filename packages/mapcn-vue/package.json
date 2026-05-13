@@ -23,7 +23,7 @@
   },
   "type": "module",
   "scripts": {
-    "build": "bun run scripts/build-registry.ts",
+    "build": "tsx scripts/build-registry.ts",
     "lint": "oxlint"
   },
   "dependencies": {
@@ -32,6 +32,7 @@
   "devDependencies": {
     "oxlint": "catalog:default",
     "shadcn-vue": "catalog:pkg:mapcn-vue",
+    "tsx": "^4.21.0",
     "typescript": "catalog:default",
     "vue": "catalog:default"
   },
@@ -40,5 +41,5 @@
     "tailwindcss": "^4.0.0",
     "vue": "^3.5.0"
   },
-  "packageManager": "bun@1.3.11"
+  "packageManager": "pnpm@11.1.1"
 }
