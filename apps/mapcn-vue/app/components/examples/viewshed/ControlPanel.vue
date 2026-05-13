@@ -58,7 +58,7 @@
           :key="obs.id"
           class="flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-xs text-muted-foreground hover:bg-accent hover:text-foreground"
         >
-          <span class="size-2.5 shrink-0 rounded-full bg-yellow-400"></span>
+          <span class="size-2.5 shrink-0 rounded-full bg-warning"></span>
           <span class="font-mono font-bold">{{ obs.label }}</span>
           <span class="ml-auto rounded-full bg-muted px-1.5 py-0.5 text-[10px]">
             {{ obs.heightM }}m

@@ -1,8 +1,9 @@
 <script setup lang="ts">
   import {
-    VMap,
-    VLayerMaplibreStarfield,
     VControlNavigation,
+    VControlScale,
+    VLayerMaplibreStarfield,
+    VMap,
   } from '@geoql/v-maplibre';
   import type { Map as MaplibreMap } from 'maplibre-gl';
   import type { SkyMode } from '~/types/globe';
@@ -146,6 +147,7 @@
             before="satellite"
           />
           <VControlNavigation position="top-right" />
+          <VControlScale position="bottom-left" />
         </VMap>
         <template #fallback>
           <div class="size-full bg-black"></div>

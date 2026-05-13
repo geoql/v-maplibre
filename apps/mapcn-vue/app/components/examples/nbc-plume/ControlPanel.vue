@@ -109,7 +109,7 @@
             E
           </div>
           <div
-            class="size-5 text-red-500 transition-transform"
+            class="size-5 text-destructive transition-transform"
             :style="{ transform: `rotate(${windDirection}deg)` }"
           >
             <Icon name="lucide:arrow-up" class="size-5" />
@@ -136,7 +136,7 @@
         </div>
         <div class="h-1.5 w-full overflow-hidden rounded-full bg-muted">
           <div
-            class="h-full rounded-full bg-red-500 transition-all"
+            class="h-full rounded-full bg-destructive transition-all"
             :style="{ width: `${progressPercent}%` }"
           ></div>
         </div>

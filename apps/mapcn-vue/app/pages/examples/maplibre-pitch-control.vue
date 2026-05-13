@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import type { Map as MaplibreMap } from 'maplibre-gl';
-  import { VMap, VControlNavigation } from '@geoql/v-maplibre';
+  import { VControlNavigation, VControlScale, VMap } from '@geoql/v-maplibre';
 
   useSeoMeta({
     title: 'Pitch & Bearing Control - mapcn-vue Examples',
@@ -209,6 +209,7 @@
             @loaded="handleMapLoad"
           >
             <VControlNavigation position="top-right" />
+            <VControlScale position="bottom-left" />
           </VMap>
           <template #fallback>
             <div class="flex h-full items-center justify-center bg-muted">

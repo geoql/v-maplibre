@@ -257,7 +257,7 @@
               class="relative cursor-grab active:cursor-grabbing"
             >
               <div
-                class="absolute -top-1 -right-1 z-10 flex size-4 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white shadow-sm"
+                class="absolute -top-1 -right-1 z-10 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white shadow-sm"
               >
                 {{ index + 1 }}
               </div>
@@ -311,7 +311,7 @@
             >
             <span
               v-if="optimizedOrder.length > 0"
-              class="rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-600 dark:text-emerald-400"
+              class="rounded-full bg-success/10 px-2 py-0.5 text-xs font-medium text-success dark:text-success"
             >
               Optimized
             </span>
@@ -407,13 +407,13 @@
 
                   <div
                     v-if="stop.type === 'start'"
-                    class="mt-0.5 text-xs text-emerald-600 dark:text-emerald-400"
+                    class="mt-0.5 text-xs text-success dark:text-success"
                   >
                     Starting point
                   </div>
                   <div
                     v-else-if="stop.type === 'end'"
-                    class="mt-0.5 text-xs text-red-600 dark:text-red-400"
+                    class="mt-0.5 text-xs text-destructive dark:text-destructive"
                   >
                     Final destination
                   </div>

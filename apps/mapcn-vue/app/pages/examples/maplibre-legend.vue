@@ -7,10 +7,11 @@
     Point,
   } from 'geojson';
   import {
-    VMap,
-    VControlNavigation,
     VControlLegend,
+    VControlNavigation,
+    VControlScale,
     VLayerMaplibreGeojson,
+    VMap,
   } from '@geoql/v-maplibre';
   import type {
     CategoryLegendItem,
@@ -555,6 +556,7 @@
             @loaded="handleMapLoad"
           >
             <VControlNavigation position="top-right" />
+            <VControlScale position="bottom-left" />
 
             <VLayerMaplibreGeojson
               source-id="regions-legend"
@@ -622,6 +624,7 @@
             @loaded="handleMapLoad"
           >
             <VControlNavigation position="top-right" />
+            <VControlScale position="bottom-left" />
 
             <VLayerMaplibreGeojson
               source-id="density-legend"
@@ -687,6 +690,7 @@
             @loaded="handleMapLoad"
           >
             <VControlNavigation position="top-right" />
+            <VControlScale position="bottom-left" />
 
             <VLayerMaplibreGeojson
               source-id="cities-legend"

@@ -82,19 +82,19 @@
           <div class="text-muted-foreground">Total</div>
         </div>
         <div class="rounded bg-muted/50 p-2 text-center">
-          <div class="text-lg font-bold text-green-500">
+          <div class="text-lg font-bold text-success">
             {{ stats.activeSensors }}
           </div>
           <div class="text-muted-foreground">Active</div>
         </div>
         <div class="rounded bg-muted/50 p-2 text-center">
-          <div class="text-lg font-bold text-amber-500">
+          <div class="text-lg font-bold text-warning">
             {{ stats.alertCount }}
           </div>
           <div class="text-muted-foreground">Threats</div>
         </div>
         <div class="rounded bg-muted/50 p-2 text-center">
-          <div class="text-lg font-bold text-blue-500">
+          <div class="text-lg font-bold text-primary">
             {{ stats.coveragePercent }}%
           </div>
           <div class="text-muted-foreground">Coverage</div>

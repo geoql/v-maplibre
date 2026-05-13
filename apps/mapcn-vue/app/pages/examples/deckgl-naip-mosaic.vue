@@ -12,7 +12,6 @@
     CategoryLegendItem,
   } from '@geoql/v-maplibre';
   import type { Map } from 'maplibre-gl';
-  import { motion, AnimatePresence } from 'motion-v';
   import {
     Select,
     SelectContent,
@@ -38,8 +37,6 @@
   const { mapStyle } = useMapStyle();
   const mapId = useId();
   const mapInstance = shallowRef<Map | null>(null);
-  const panelOpen = ref(true);
-
   const onMapLoaded = (map: Map) => {
     mapInstance.value = map;
   };
@@ -129,10 +126,6 @@
     { value: 'false-color', label: 'False Color (NIR)', color: '#e91e63' },
     { value: 'ndvi', label: 'NDVI Vegetation', color: '#8bc34a' },
   ];
-
-  function togglePanel() {
-    panelOpen.value = !panelOpen.value;
-  }
 
   function handleNdviRangeUpdate(value: number[]) {
     ndviRange.value = [value[0], value[1]];
@@ -227,106 +220,79 @@
         </VMap>
       </ClientOnly>
 
-      <!-- Toggle button - always visible -->
-      <button
-        class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
-        :class="{
-          'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen,
-        }"
-        @click="togglePanel"
-      >
-        <Icon
-          :name="
-            panelOpen ? 'lucide:panel-left-close' : 'lucide:panel-left-open'
-          "
-          class="size-4"
-        />
-      </button>
-
-      <!-- Collapsible panel with motion-v -->
-      <AnimatePresence>
-        <motion.div
-          v-if="panelOpen"
-          :initial="{ opacity: 0, x: -20, scale: 0.95 }"
-          :animate="{ opacity: 1, x: 0, scale: 1 }"
-          :exit="{ opacity: 0, x: -20, scale: 0.95 }"
-          :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
-          class="absolute top-16 left-4 z-10 w-64 rounded-lg bg-background/95 p-4 shadow-lg backdrop-blur-sm"
-        >
-          <h3 class="mb-2 text-sm font-semibold">NAIP Mosaic</h3>
-          <p class="mb-3 text-xs text-muted-foreground">
-            <span v-if="loading">Loading STAC items...</span>
-            <span v-else-if="error" class="text-destructive">{{ error }}</span>
-            <template v-else>
-              Fetched {{ stacItems.length }}
-              <a
-                href="https://stacspec.org/en"
-                target="_blank"
-                class="text-primary hover:underline"
-                >STAC</a
-              >
-              Items from
-              <a
-                href="https://planetarycomputer.microsoft.com"
-                target="_blank"
-                class="text-primary hover:underline"
-                >Microsoft Planetary Computer</a
-              >.
-            </template>
-          </p>
-          <p class="mb-3 text-xs text-muted-foreground">
-            All imagery is rendered client-side with
-            <strong>no server involved</strong> using
+      <MapPanel title="NAIP Mosaic">
+        <p class="mb-3 text-xs text-muted-foreground">
+          <span v-if="loading">Loading STAC items...</span>
+          <span v-else-if="error" class="text-destructive">{{ error }}</span>
+          <template v-else>
+            Fetched {{ stacItems.length }}
             <a
-              href="https://github.com/developmentseed/deck.gl-raster"
+              href="https://stacspec.org/en"
               target="_blank"
-              class="font-mono text-primary hover:underline"
-              >@developmentseed/deck.gl-raster</a
-            >.
-          </p>
-
-          <div>
-            <label class="mb-1.5 block text-xs font-medium">Render Mode</label>
-            <Select v-model="renderMode" :disabled="loading">
-              <SelectTrigger class="w-full">
-                <SelectValue :placeholder="getRenderModeLabel(renderMode)" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem
-                  v-for="opt in renderModeOptions"
-                  :key="opt.value"
-                  :value="opt.value"
-                >
-                  {{ opt.label }}
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <div v-if="showNdviSlider" class="mt-4">
-            <label class="mb-1.5 block text-xs font-medium">NDVI Range</label>
-            <Slider
-              :model-value="ndviRange"
-              :min="-1"
-              :max="1"
-              :step="0.01"
-              :min-steps-between-thumbs="0.02"
-              class="mt-2"
-              @update:model-value="handleNdviRangeUpdate"
-            />
-            <div
-              class="mt-1.5 flex justify-between text-[10px] text-muted-foreground"
+              class="text-primary hover:underline"
+              >STAC</a
             >
-              <span>-1</span>
-              <span
-                >{{ ndviRange[0].toFixed(2) }} –
-                {{ ndviRange[1].toFixed(2) }}</span
+            Items from
+            <a
+              href="https://planetarycomputer.microsoft.com"
+              target="_blank"
+              class="text-primary hover:underline"
+              >Microsoft Planetary Computer</a
+            >.
+          </template>
+        </p>
+        <p class="mb-3 text-xs text-muted-foreground">
+          All imagery is rendered client-side with
+          <strong>no server involved</strong> using
+          <a
+            href="https://github.com/developmentseed/deck.gl-raster"
+            target="_blank"
+            class="font-mono text-primary hover:underline"
+            >@developmentseed/deck.gl-raster</a
+          >.
+        </p>
+
+        <div>
+          <label class="mb-1.5 block text-xs font-medium">Render Mode</label>
+          <Select v-model="renderMode" :disabled="loading">
+            <SelectTrigger class="w-full">
+              <SelectValue :placeholder="getRenderModeLabel(renderMode)" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem
+                v-for="opt in renderModeOptions"
+                :key="opt.value"
+                :value="opt.value"
               >
-              <span>+1</span>
-            </div>
+                {{ opt.label }}
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div v-if="showNdviSlider" class="mt-4">
+          <label class="mb-1.5 block text-xs font-medium">NDVI Range</label>
+          <Slider
+            :model-value="ndviRange"
+            :min="-1"
+            :max="1"
+            :step="0.01"
+            :min-steps-between-thumbs="0.02"
+            class="mt-2"
+            @update:model-value="handleNdviRangeUpdate"
+          />
+          <div
+            class="mt-1.5 flex justify-between text-[10px] text-muted-foreground"
+          >
+            <span>-1</span>
+            <span
+              >{{ ndviRange[0].toFixed(2) }} –
+              {{ ndviRange[1].toFixed(2) }}</span
+            >
+            <span>+1</span>
           </div>
-        </motion.div>
-      </AnimatePresence>
+        </div>
+      </MapPanel>
     </div>
   </ComponentDemo>
 </template>

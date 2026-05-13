@@ -1,13 +1,13 @@
 <script setup lang="ts">
   import {
-    VMap,
-    VControlNavigation,
     VControlLegend,
+    VControlNavigation,
+    VControlScale,
+    VMap,
     VPopup,
   } from '@geoql/v-maplibre';
   import type { GradientLegendItem } from '@geoql/v-maplibre';
   import type { Map, LngLatLike } from 'maplibre-gl';
-  import { motion, AnimatePresence } from 'motion-v';
   import {
     Select,
     SelectContent,
@@ -37,8 +37,6 @@
 
   const mapId = useId();
   const mapInstance = shallowRef<Map | null>(null);
-  const panelOpen = ref(true);
-
   // Hover popup state
   const popupVisible = ref(false);
   const popupLngLat = ref<LngLatLike>([0, 0]);
@@ -254,11 +252,6 @@
       selectedHhi.value = hhiVars[0].code;
     }
   });
-
-  function togglePanel() {
-    panelOpen.value = !panelOpen.value;
-  }
-
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
@@ -298,6 +291,7 @@
           @loaded="onMapLoad"
         >
           <VControlNavigation position="top-right" />
+          <VControlScale position="bottom-left" />
           <VControlLegend
             :layer-ids="['hhi-fill']"
             type="gradient"
@@ -325,113 +319,84 @@
           <div class="size-full animate-pulse bg-muted"></div>
         </template>
       </ClientOnly>
+      <MapPanel title="HHI">
+        <h3 class="mb-3 text-sm font-semibold">Market Concentration (HHI)</h3>
 
-      <!-- Toggle button - always visible -->
-      <button
-        class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
-        :class="{
-          'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen,
-        }"
-        @click="togglePanel"
-      >
-        <Icon
-          :name="
-            panelOpen ? 'lucide:panel-left-close' : 'lucide:panel-left-open'
-          "
-          class="size-4"
-        />
-      </button>
+        <!-- Group selector -->
+        <div class="mb-3">
+          <label class="mb-1.5 block text-xs font-medium">Group</label>
+          <Select v-model="selectedGroup">
+            <SelectTrigger class="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem
+                v-for="group in hhiConfig.groupVars"
+                :key="group.code"
+                :value="group.code"
+              >
+                {{ group.label }}
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-      <!-- Collapsible panel with motion-v -->
-      <AnimatePresence>
-        <motion.div
-          v-if="panelOpen"
-          :initial="{ opacity: 0, x: -20, scale: 0.95 }"
-          :animate="{ opacity: 1, x: 0, scale: 1 }"
-          :exit="{ opacity: 0, x: -20, scale: 0.95 }"
-          :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
-          class="absolute top-16 left-4 z-10 w-64 rounded-lg bg-background/95 p-4 shadow-lg backdrop-blur-sm"
-        >
-          <h3 class="mb-3 text-sm font-semibold">Market Concentration (HHI)</h3>
+        <!-- Level selector -->
+        <div class="mb-3">
+          <label class="mb-1.5 block text-xs font-medium">Level</label>
+          <Select v-model="selectedLevel">
+            <SelectTrigger class="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem
+                v-for="level in currentLevels"
+                :key="level.code"
+                :value="level.code"
+              >
+                {{ level.label }}
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-          <!-- Group selector -->
-          <div class="mb-3">
-            <label class="mb-1.5 block text-xs font-medium">Group</label>
-            <Select v-model="selectedGroup">
-              <SelectTrigger class="w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem
-                  v-for="group in hhiConfig.groupVars"
-                  :key="group.code"
-                  :value="group.code"
-                >
-                  {{ group.label }}
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+        <!-- HHI dimension selector -->
+        <div class="mb-3">
+          <label class="mb-1.5 block text-xs font-medium">HHI Dimension</label>
+          <Select v-model="selectedHhi">
+            <SelectTrigger class="w-full">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem
+                v-for="hhi in currentHhiVars"
+                :key="hhi.code"
+                :value="hhi.code"
+              >
+                {{ hhi.label }}
+              </SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
 
-          <!-- Level selector -->
-          <div class="mb-3">
-            <label class="mb-1.5 block text-xs font-medium">Level</label>
-            <Select v-model="selectedLevel">
-              <SelectTrigger class="w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem
-                  v-for="level in currentLevels"
-                  :key="level.code"
-                  :value="level.code"
-                >
-                  {{ level.label }}
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
+        <!-- Year slider -->
+        <div class="mb-3">
+          <label class="mb-1.5 block text-xs font-medium"
+            >Year: {{ selectedYear[0] }}</label
+          >
+          <Slider
+            v-model="selectedYear"
+            :min="hhiConfig.years[0]"
+            :max="hhiConfig.years[hhiConfig.years.length - 1]"
+            :step="1"
+          />
+        </div>
 
-          <!-- HHI dimension selector -->
-          <div class="mb-3">
-            <label class="mb-1.5 block text-xs font-medium"
-              >HHI Dimension</label
-            >
-            <Select v-model="selectedHhi">
-              <SelectTrigger class="w-full">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem
-                  v-for="hhi in currentHhiVars"
-                  :key="hhi.code"
-                  :value="hhi.code"
-                >
-                  {{ hhi.label }}
-                </SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
-          <!-- Year slider -->
-          <div class="mb-3">
-            <label class="mb-1.5 block text-xs font-medium"
-              >Year: {{ selectedYear[0] }}</label
-            >
-            <Slider
-              v-model="selectedYear"
-              :min="hhiConfig.years[0]"
-              :max="hhiConfig.years[hhiConfig.years.length - 1]"
-              :step="1"
-            />
-          </div>
-
-          <!-- Current column display -->
-          <div class="border-t pt-3 text-xs text-muted-foreground">
-            Showing: {{ columnName }}
-          </div>
-        </motion.div>
-      </AnimatePresence>
+        <!-- Current column display -->
+        <div class="border-t pt-3 text-xs text-muted-foreground">
+          Showing: {{ columnName }}
+        </div>
+      </MapPanel>
     </div>
   </ComponentDemo>
 </template>

@@ -126,11 +126,11 @@
       </div>
       <div class="grid grid-cols-2 gap-2">
         <div class="flex items-center gap-1.5 text-xs text-muted-foreground">
-          <span class="size-1.5 rounded-full bg-orange-400"></span>
+          <span class="size-1.5 rounded-full bg-warning"></span>
           <span>PM2.5: {{ airQuality.pm2_5.toFixed(1) }} µg/m³</span>
         </div>
         <div class="flex items-center gap-1.5 text-xs text-muted-foreground">
-          <span class="size-1.5 rounded-full bg-amber-400"></span>
+          <span class="size-1.5 rounded-full bg-warning"></span>
           <span>PM10: {{ airQuality.pm10.toFixed(1) }} µg/m³</span>
         </div>
       </div>

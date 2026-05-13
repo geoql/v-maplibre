@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { AnimatePresence, motion } from 'motion-v';
   import type { ViewportBounds, PromapSearchResult } from '~/types/promap';
   import type MapContainer from '~/components/examples/promap/MapContainer.vue';
 
@@ -35,8 +34,6 @@
     setHoveredZip,
     setSearchQuery,
   } = usePromapData();
-
-  const panelOpen = ref(true);
   const mapContainerRef = ref<InstanceType<typeof MapContainer> | null>(null);
 
   function handleViewportChange(bounds: ViewportBounds): void {
@@ -129,46 +126,19 @@
         @viewport-change="handleViewportChange"
         @hover-zip="setHoveredZip"
       />
-
-      <!-- Toggle button -->
-      <button
-        class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg border border-border/50 bg-background/95 shadow-sm backdrop-blur-sm transition-colors hover:bg-accent"
-        :class="{
-          'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen,
-        }"
-        @click="panelOpen = !panelOpen"
-      >
-        <Icon
-          :name="
-            panelOpen ? 'lucide:panel-left-close' : 'lucide:panel-left-open'
-          "
-          class="size-4"
+      <MapPanel title="ProMap" panel-width="w-72">
+        <ExamplesPromapControlPanel
+          :view-mode="viewMode"
+          :local-view="localView"
+          :stats="viewportStats"
+          :search-results="searchResults"
+          :total-points="allData.length"
+          @set-mode="setViewMode"
+          @toggle-local-view="toggleLocalView"
+          @search="setSearchQuery"
+          @select-result="handleSelectResult"
         />
-      </button>
-
-      <!-- Collapsible panel with motion-v -->
-      <AnimatePresence>
-        <motion.div
-          v-if="panelOpen"
-          :initial="{ opacity: 0, x: -20, scale: 0.95 }"
-          :animate="{ opacity: 1, x: 0, scale: 1 }"
-          :exit="{ opacity: 0, x: -20, scale: 0.95 }"
-          :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
-          class="absolute top-16 left-4 z-10 w-72 max-h-[calc(100%-5rem)] overflow-auto rounded-xl bg-background/95 shadow-lg backdrop-blur-sm"
-        >
-          <ExamplesPromapControlPanel
-            :view-mode="viewMode"
-            :local-view="localView"
-            :stats="viewportStats"
-            :search-results="searchResults"
-            :total-points="allData.length"
-            @set-mode="setViewMode"
-            @toggle-local-view="toggleLocalView"
-            @search="setSearchQuery"
-            @select-result="handleSelectResult"
-          />
-        </motion.div>
-      </AnimatePresence>
+      </MapPanel>
     </div>
   </ComponentDemo>
 </template>

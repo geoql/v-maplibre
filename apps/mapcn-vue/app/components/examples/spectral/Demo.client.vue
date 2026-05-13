@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { VMap } from '@geoql/v-maplibre';
+  import { VMap, VControlScale } from '@geoql/v-maplibre';
   import { Compare } from '@geoql/maplibre-gl-compare';
   import '@geoql/maplibre-gl-compare/style.css';
   import type { Map } from 'maplibre-gl';
@@ -150,6 +150,8 @@
       :options="afterMapOptions"
       class="absolute inset-0"
       @loaded="onAfterMapLoaded"
-    />
+    >
+      <VControlScale position="bottom-left" />
+    </VMap>
   </div>
 </template>

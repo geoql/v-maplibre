@@ -4,7 +4,6 @@
     SpectralPair,
     Orientation,
   } from '~/types/defense-spectral';
-  import { motion, AnimatePresence } from 'motion-v';
 
   useSeoMeta({
     title: 'Multi-Spectral Compare - mapcn-vue Examples',
@@ -50,8 +49,6 @@
 
   const orientation = ref<Orientation>('vertical');
   const selectedPair = ref<SpectralPair>(SPECTRAL_PAIRS[0]);
-  const panelOpen = ref(true);
-
   const beforeStyle = computed(() => BAND_STYLES[selectedPair.value.before]);
   const afterStyle = computed(() => BAND_STYLES[selectedPair.value.after]);
 
@@ -102,42 +99,15 @@ ${SCRIPT_END}
           </div>
         </template>
       </ClientOnly>
-
-      <!-- Toggle button -->
-      <button
-        class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
-        :class="{
-          'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen,
-        }"
-        @click="panelOpen = !panelOpen"
-      >
-        <Icon
-          :name="
-            panelOpen ? 'lucide:panel-left-close' : 'lucide:panel-left-open'
-          "
-          class="size-4"
+      <MapPanel title="Spectral" panel-width="w-56">
+        <ExamplesSpectralControlPanel
+          :pairs="SPECTRAL_PAIRS"
+          :selected-pair="selectedPair"
+          :orientation="orientation"
+          @update:selected-pair="selectedPair = $event"
+          @update:orientation="orientation = $event"
         />
-      </button>
-
-      <!-- Collapsible control panel -->
-      <AnimatePresence>
-        <motion.div
-          v-if="panelOpen"
-          :initial="{ opacity: 0, x: -20, scale: 0.95 }"
-          :animate="{ opacity: 1, x: 0, scale: 1 }"
-          :exit="{ opacity: 0, x: -20, scale: 0.95 }"
-          :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
-          class="absolute top-16 left-4 z-10 w-56 rounded-lg bg-background/95 p-4 shadow-lg backdrop-blur-sm"
-        >
-          <ExamplesSpectralControlPanel
-            :pairs="SPECTRAL_PAIRS"
-            :selected-pair="selectedPair"
-            :orientation="orientation"
-            @update:selected-pair="selectedPair = $event"
-            @update:orientation="orientation = $event"
-          />
-        </motion.div>
-      </AnimatePresence>
+      </MapPanel>
     </div>
   </ComponentDemo>
 </template>

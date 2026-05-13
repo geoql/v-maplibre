@@ -63,7 +63,7 @@
         class="flex items-center gap-2 rounded-md px-2 py-1.5 text-xs hover:bg-accent"
       >
         <span
-          class="flex size-5 shrink-0 items-center justify-center rounded-full bg-blue-500/20 text-[10px] font-bold text-blue-400"
+          class="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/20 text-[10px] font-bold text-primary"
         >
           {{ wp.label.split('-')[1] }}
         </span>
@@ -105,13 +105,13 @@
         </div>
         <div class="rounded-md bg-muted/50 px-2.5 py-2">
           <div class="text-[10px] text-muted-foreground">Elev. Gain</div>
-          <div class="text-sm font-semibold text-emerald-500">
+          <div class="text-sm font-semibold text-success">
             +{{ routeStats.elevationGain }} m
           </div>
         </div>
         <div class="rounded-md bg-muted/50 px-2.5 py-2">
           <div class="text-[10px] text-muted-foreground">Elev. Loss</div>
-          <div class="text-sm font-semibold text-red-400">
+          <div class="text-sm font-semibold text-destructive">
             -{{ routeStats.elevationLoss }} m
           </div>
         </div>
@@ -134,7 +134,7 @@
             fill="none"
             stroke="currentColor"
             stroke-width="1.5"
-            class="text-emerald-500"
+            class="text-success"
           />
         </svg>
       </div>

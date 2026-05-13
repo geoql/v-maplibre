@@ -186,7 +186,7 @@
           <template #markers="{ setRef }">
             <div
               :ref="wrapMarkerRef(setRef)"
-              class="flex size-6 items-center justify-center rounded-full border-2 border-white bg-red-500 shadow-lg"
+              class="flex size-6 items-center justify-center rounded-full border-2 border-white bg-destructive shadow-lg"
             >
               <div class="size-2 rounded-full bg-white"></div>
             </div>
@@ -197,7 +197,7 @@
           <template #markers="{ setRef }">
             <div
               :ref="wrapMarkerRef(setRef)"
-              class="flex size-6 items-center justify-center rounded-full border-2 border-white bg-emerald-500 shadow-lg"
+              class="flex size-6 items-center justify-center rounded-full border-2 border-white bg-success shadow-lg"
             >
               <div class="size-2 rounded-full bg-white"></div>
             </div>
@@ -247,7 +247,7 @@
                 :class="[
                   'w-full rounded-lg border p-3 text-left transition-all',
                   selectedRouteIndex === index
-                    ? 'border-indigo-500 bg-card shadow-sm'
+                    ? 'border-primary bg-card shadow-sm'
                     : `
                       border-border bg-card/50
                       hover:border-border/80 hover:bg-card
@@ -272,7 +272,7 @@
                   }}</span>
                   <span
                     v-if="index === 0"
-                    class="ml-auto rounded-full bg-emerald-500/10 px-2 py-0.5 text-xs font-medium text-emerald-600 dark:text-emerald-400"
+                    class="ml-auto rounded-full bg-success/10 px-2 py-0.5 text-xs font-medium text-success dark:text-success"
                   >
                     Fastest
                   </span>
@@ -290,11 +290,11 @@
 
           <div class="mt-3 space-y-1.5 border-t border-border pt-3">
             <div class="flex items-center gap-2 text-sm">
-              <div class="size-2.5 rounded-full bg-red-500"></div>
+              <div class="size-2.5 rounded-full bg-destructive"></div>
               <span class="text-muted-foreground">Rotterdam</span>
             </div>
             <div class="flex items-center gap-2 text-sm">
-              <div class="size-2.5 rounded-full bg-emerald-500"></div>
+              <div class="size-2.5 rounded-full bg-success"></div>
               <span class="text-muted-foreground">Amsterdam</span>
             </div>
           </div>

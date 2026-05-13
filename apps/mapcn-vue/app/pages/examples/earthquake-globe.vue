@@ -1,10 +1,11 @@
 <script setup lang="ts">
   import {
-    VMap,
+    VControlLegend,
+    VControlNavigation,
+    VControlScale,
     VLayerDeckglScatterplot,
     VLayerMaplibreStarfield,
-    VControlNavigation,
-    VControlLegend,
+    VMap,
   } from '@geoql/v-maplibre';
   import type { PickingInfo } from '@deck.gl/core';
   import type { CategoryLegendItem } from '@geoql/v-maplibre';
@@ -191,6 +192,7 @@
             before="satellite"
           />
           <VControlNavigation position="top-right" />
+          <VControlScale position="bottom-left" />
           <VControlLegend
             :layer-ids="['earthquakes']"
             position="bottom-left"
@@ -223,7 +225,7 @@
       <Transition name="slide-up">
         <div
           v-if="selectedQuake"
-          class="absolute bottom-3 left-3 z-10 max-w-[calc(100%-24px)] rounded-lg border border-cyan-500/20 bg-gray-950/90 p-4 shadow-[0_0_30px_rgba(0,200,255,0.06)] backdrop-blur-xl sm:w-72"
+          class="absolute bottom-3 left-3 z-10 max-w-[calc(100%-24px)] rounded-lg border border-primary/20 bg-gray-950/90 p-4 shadow-[0_0_30px_rgba(0,200,255,0.06)] backdrop-blur-xl sm:w-72"
         >
           <button
             class="absolute right-2 top-2 flex size-6 items-center justify-center rounded-full text-white/40 transition-colors hover:bg-white/10 hover:text-white"
@@ -233,7 +235,7 @@
           </button>
 
           <h3
-            class="mb-3 pr-7 text-sm font-bold uppercase leading-tight tracking-wider text-cyan-400"
+            class="mb-3 pr-7 text-sm font-bold uppercase leading-tight tracking-wider text-primary"
           >
             {{ selectedQuake.place }}
           </h3>
@@ -250,13 +252,13 @@
                 <span class="font-medium tracking-wider text-white/40">
                   MAGNITUDE
                 </span>
-                <span class="font-mono text-xs font-bold text-cyan-400">
+                <span class="font-mono text-xs font-bold text-primary">
                   {{ selectedQuake.magnitude.toFixed(1) }}
                 </span>
               </div>
               <div class="h-2 rounded-full bg-white/5">
                 <div
-                  class="h-full rounded-full bg-gradient-to-r from-cyan-500 to-cyan-300 shadow-[0_0_10px_rgba(34,211,238,0.4)] transition-all duration-500"
+                  class="h-full rounded-full bg-gradient-to-r from-primary to-primary shadow-[0_0_10px_rgba(34,211,238,0.4)] transition-all duration-500"
                   :style="{ width: magnitudeBarWidth }"
                 ></div>
               </div>
@@ -266,13 +268,13 @@
                 <span class="font-medium tracking-wider text-white/40">
                   DEPTH
                 </span>
-                <span class="font-mono text-xs font-bold text-orange-400">
+                <span class="font-mono text-xs font-bold text-warning">
                   {{ selectedQuake.depth.toFixed(0) }} km
                 </span>
               </div>
               <div class="h-2 rounded-full bg-white/5">
                 <div
-                  class="h-full rounded-full bg-gradient-to-r from-orange-500 to-red-500 shadow-[0_0_10px_rgba(249,115,22,0.4)] transition-all duration-500"
+                  class="h-full rounded-full bg-gradient-to-r from-warning to-destructive shadow-[0_0_10px_rgba(249,115,22,0.4)] transition-all duration-500"
                   :style="{ width: depthBarWidth }"
                 ></div>
               </div>
@@ -289,7 +291,7 @@
         <div class="text-center">
           <Icon
             name="lucide:loader-2"
-            class="mb-2 size-8 animate-spin text-cyan-400"
+            class="mb-2 size-8 animate-spin text-primary"
           />
           <p class="text-sm text-white/60">Loading earthquake data...</p>
         </div>

@@ -151,7 +151,7 @@
                 Store
               </div>
               <div
-                class="flex size-8 items-center justify-center rounded-full border-2 border-white bg-emerald-500 shadow-lg"
+                class="flex size-8 items-center justify-center rounded-full border-2 border-white bg-success shadow-lg"
               >
                 <Icon name="maki:shop" class="size-4 text-white" />
               </div>
@@ -166,13 +166,13 @@
                 v-if="deliveryRouteInfo"
                 class="absolute -top-9 left-1/2 -translate-x-1/2 rounded-sm bg-zinc-900/90 px-2 py-1 text-xs font-medium whitespace-nowrap text-white shadow-lg"
               >
-                <span class="text-emerald-400">{{
+                <span class="text-success">{{
                   formatDuration(deliveryRouteInfo.duration)
                 }}</span>
                 away
               </div>
               <div
-                class="flex size-10 items-center justify-center rounded-full border-2 border-white bg-blue-500 shadow-lg"
+                class="flex size-10 items-center justify-center rounded-full border-2 border-white bg-primary shadow-lg"
               >
                 <Icon name="lucide:truck" class="size-5 text-white" />
               </div>
@@ -189,7 +189,7 @@
                 Home
               </div>
               <div
-                class="flex size-8 items-center justify-center rounded-full border-2 border-white bg-blue-500 shadow-lg"
+                class="flex size-8 items-center justify-center rounded-full border-2 border-white bg-primary shadow-lg"
               >
                 <Icon name="maki:home" class="size-4 text-white" />
               </div>
@@ -226,16 +226,16 @@
         <div class="p-4">
           <div class="mb-4 flex items-center gap-3">
             <div
-              class="flex size-10 items-center justify-center rounded-full bg-blue-500/10"
+              class="flex size-10 items-center justify-center rounded-full bg-primary/10"
             >
-              <Icon name="lucide:truck" class="size-5 text-blue-500" />
+              <Icon name="lucide:truck" class="size-5 text-primary" />
             </div>
             <div>
               <div class="font-semibold">Order #12847</div>
               <div class="text-sm text-muted-foreground">
                 <span class="inline-flex items-center gap-1">
                   <span
-                    class="size-2 animate-pulse rounded-full bg-green-500"
+                    class="size-2 animate-pulse rounded-full bg-success"
                   ></span>
                   On the way
                 </span>
@@ -275,18 +275,15 @@
             class="flex items-center gap-3 rounded-lg border border-border bg-card p-2.5"
           >
             <div
-              class="flex size-7 items-center justify-center rounded-full bg-emerald-500/10"
+              class="flex size-7 items-center justify-center rounded-full bg-success/10"
             >
-              <Icon name="lucide:store" class="size-3.5 text-emerald-500" />
+              <Icon name="lucide:store" class="size-3.5 text-success" />
             </div>
             <div class="flex-1">
               <div class="text-sm font-medium">Store</div>
               <div class="text-xs text-muted-foreground">Pickup location</div>
             </div>
-            <Icon
-              name="lucide:check-circle-2"
-              class="size-4 text-emerald-500"
-            />
+            <Icon name="lucide:check-circle-2" class="size-4 text-success" />
           </div>
 
           <div class="ml-4 h-4 border-l-2 border-dashed border-border"></div>
@@ -295,9 +292,9 @@
             class="flex items-center gap-3 rounded-lg border border-border bg-card p-2.5"
           >
             <div
-              class="flex size-7 items-center justify-center rounded-full bg-blue-500/10"
+              class="flex size-7 items-center justify-center rounded-full bg-primary/10"
             >
-              <Icon name="lucide:home" class="size-3.5 text-blue-500" />
+              <Icon name="lucide:home" class="size-3.5 text-primary" />
             </div>
             <div class="flex-1">
               <div class="text-sm font-medium">Home</div>

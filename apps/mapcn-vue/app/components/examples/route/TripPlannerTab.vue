@@ -169,7 +169,7 @@
             <template #markers="{ setRef }">
               <div
                 :ref="wrapMarkerRef(setRef)"
-                class="flex size-6 items-center justify-center rounded-full border-2 border-white bg-indigo-500 shadow-lg"
+                class="flex size-6 items-center justify-center rounded-full border-2 border-white bg-primary shadow-lg"
               >
                 <div class="size-2 rounded-full bg-white"></div>
               </div>
@@ -238,7 +238,7 @@
                 <div
                   v-for="(highlight, index) in tripData.highlights"
                   :key="`route-highlight-${index}`"
-                  class="inline-flex items-center gap-1 rounded-full bg-indigo-500/10 px-2 py-0.5 text-xs font-medium text-indigo-600 dark:text-indigo-400"
+                  class="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary dark:text-primary"
                 >
                   <Icon name="lucide:map-pin" class="size-3" />
                   {{ highlight.name }}
@@ -260,7 +260,7 @@
               >
                 <div class="flex items-center gap-2">
                   <div
-                    class="flex size-6 items-center justify-center rounded-full bg-indigo-500/10 text-xs font-bold text-indigo-600 dark:text-indigo-400"
+                    class="flex size-6 items-center justify-center rounded-full bg-primary/10 text-xs font-bold text-primary dark:text-primary"
                   >
                     {{ day.day }}
                   </div>
@@ -325,7 +325,7 @@
                     <span class="font-medium">{{ day.stay.name }}</span>
                   </div>
                   <span
-                    class="text-xs font-semibold text-indigo-600 dark:text-indigo-400"
+                    class="text-xs font-semibold text-primary dark:text-primary"
                   >
                     {{ day.stay.price }}
                   </span>

@@ -2,11 +2,12 @@
   import type { Map as MaplibreMap } from 'maplibre-gl';
   import { AttributionControl } from 'maplibre-gl';
   import {
+    VControlLegend,
+    VControlNavigation,
+    VControlScale,
+    VLayerMaplibreRoute,
     VMap,
     VMarker,
-    VLayerMaplibreRoute,
-    VControlNavigation,
-    VControlLegend,
   } from '@geoql/v-maplibre';
   import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import type { ValhallaResponse } from '~/types/route';
@@ -285,6 +286,7 @@
         @loaded="handleMapLoad"
       >
         <VControlNavigation position="top-right" />
+        <VControlScale position="bottom-left" />
         <VControlLegend
           :layer-ids="['playback-route-full', 'playback-route-progress']"
           position="bottom-left"

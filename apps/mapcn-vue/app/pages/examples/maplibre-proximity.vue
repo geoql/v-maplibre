@@ -1,15 +1,15 @@
 <script setup lang="ts">
   import type { Map as MaplibreMap } from 'maplibre-gl';
   import {
-    VMap,
-    VControlNavigation,
     VControlLegend,
-    VMarker,
+    VControlNavigation,
+    VControlScale,
     VLayerMaplibreGeojson,
+    VMap,
+    VMarker,
   } from '@geoql/v-maplibre';
   import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import type { FeatureCollection, LineString } from 'geojson';
-  import { motion, AnimatePresence } from 'motion-v';
   import type {
     LocationPoint,
     Connection,
@@ -35,8 +35,6 @@
   const mapLoaded = ref(false);
   const distancesLoading = ref(false);
   const distancesError = ref<string | null>(null);
-  const panelOpen = ref(true);
-
   const mapOptions = computed(() => ({
     container: `proximity-map-${mapId}`,
     style: mapStyle.value,
@@ -349,6 +347,7 @@
           @loaded="handleMapLoad"
         >
           <VControlNavigation position="top-right" />
+          <VControlScale position="bottom-left" />
 
           <VLayerMaplibreGeojson
             v-if="mapLoaded && linesWithColor.features.length > 0"
@@ -394,123 +393,97 @@
         </template>
       </ClientOnly>
 
-      <!-- Toggle button - always visible -->
-      <button
-        class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
-        :class="{
-          'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen,
-        }"
-        @click="panelOpen = !panelOpen"
-      >
-        <Icon
-          :name="
-            panelOpen ? 'lucide:panel-left-close' : 'lucide:panel-left-open'
-          "
-          class="size-4"
-        />
-      </button>
-
-      <!-- Collapsible connections panel -->
-      <AnimatePresence>
-        <motion.div
-          v-if="panelOpen"
-          :initial="{ opacity: 0, x: -20, scale: 0.95 }"
-          :animate="{ opacity: 1, x: 0, scale: 1 }"
-          :exit="{ opacity: 0, x: -20, scale: 0.95 }"
-          :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
-          class="absolute top-16 left-4 z-10 w-72 max-h-[calc(100%-6rem)] overflow-auto rounded-lg bg-background/95 shadow-lg backdrop-blur-sm"
-        >
-          <div class="p-4">
-            <div class="mb-3 flex items-center justify-between">
-              <h3 class="text-sm font-semibold">Connections</h3>
-              <label class="flex items-center gap-2 text-xs">
-                <input
-                  v-model="showAllConnections"
-                  type="checkbox"
-                  class="rounded-sm border-border"
-                />
-                Show all
-              </label>
-            </div>
-
-            <div class="space-y-1">
-              <button
-                v-for="loc in locations"
-                :key="loc.id"
-                class="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-xs transition-colors"
-                :class="[
-                  selectedLocation === loc.id
-                    ? 'bg-primary/10'
-                    : 'hover:bg-muted',
-                ]"
-                @click="toggleLocation(loc.id)"
-              >
-                <div
-                  class="flex size-5 items-center justify-center rounded-full"
-                  :style="{ backgroundColor: getMarkerColor(loc.type) }"
-                >
-                  <Icon
-                    :name="getMarkerIcon(loc.type)"
-                    class="size-2.5 text-white"
-                  />
-                </div>
-                <span>{{ loc.name }}</span>
-              </button>
-            </div>
+      <MapPanel title="Connections" panel-width="w-72">
+        <div>
+          <div class="mb-3 flex items-center justify-between">
+            <h3 class="text-sm font-semibold">Connections</h3>
+            <label class="flex items-center gap-2 text-xs">
+              <input
+                v-model="showAllConnections"
+                type="checkbox"
+                class="rounded-sm border-border"
+              />
+              Show all
+            </label>
           </div>
 
-          <div class="border-t pb-2">
-            <div class="flex items-center justify-between px-4 py-2">
-              <span class="text-xs font-medium">
-                {{ visibleConnections.length }} connections
-              </span>
-              <div
-                v-if="distancesLoading"
-                class="flex items-center gap-1 text-xs text-muted-foreground"
-              >
-                <Icon name="lucide:loader-2" class="size-3 animate-spin" />
-                Loading...
-              </div>
-              <div v-else-if="distancesError" class="text-xs text-destructive">
-                {{ distancesError }}
-              </div>
-            </div>
-            <div
-              v-if="visibleConnections.length > 0"
-              class="max-h-32 overflow-y-auto"
+          <div class="space-y-1">
+            <button
+              v-for="loc in locations"
+              :key="loc.id"
+              class="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-xs transition-colors"
+              :class="[
+                selectedLocation === loc.id
+                  ? 'bg-primary/10'
+                  : 'hover:bg-muted',
+              ]"
+              @click="toggleLocation(loc.id)"
             >
-              <table class="w-full text-xs">
-                <thead class="sticky top-0 bg-background/95">
-                  <tr class="border-b">
-                    <th class="px-3 py-1 text-left font-medium">From</th>
-                    <th class="px-3 py-1 text-left font-medium">To</th>
-                    <th class="px-3 py-1 text-right font-medium">Dist</th>
-                    <th class="px-3 py-1 text-right font-medium">Time</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr
-                    v-for="conn in visibleConnections"
-                    :key="`${conn.from.id}-${conn.to.id}`"
-                    class="border-b last:border-0"
-                  >
-                    <td class="px-3 py-1">{{ conn.from.name }}</td>
-                    <td class="px-3 py-1">{{ conn.to.name }}</td>
-                    <td class="px-3 py-1 text-right tabular-nums">
-                      {{ conn.distance.toFixed(1) }} km
-                    </td>
-                    <td
-                      class="px-3 py-1 text-right text-muted-foreground tabular-nums"
-                    >
-                      {{ formatDuration(conn.duration) }}
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <div
+                class="flex size-5 items-center justify-center rounded-full"
+                :style="{ backgroundColor: getMarkerColor(loc.type) }"
+              >
+                <Icon
+                  :name="getMarkerIcon(loc.type)"
+                  class="size-2.5 text-white"
+                />
+              </div>
+              <span>{{ loc.name }}</span>
+            </button>
+          </div>
+        </div>
+
+        <div class="border-t pb-2">
+          <div class="flex items-center justify-between px-4 py-2">
+            <span class="text-xs font-medium">
+              {{ visibleConnections.length }} connections
+            </span>
+            <div
+              v-if="distancesLoading"
+              class="flex items-center gap-1 text-xs text-muted-foreground"
+            >
+              <Icon name="lucide:loader-2" class="size-3 animate-spin" />
+              Loading...
+            </div>
+            <div v-else-if="distancesError" class="text-xs text-destructive">
+              {{ distancesError }}
             </div>
           </div>
-        </motion.div>
-      </AnimatePresence>
+          <div
+            v-if="visibleConnections.length > 0"
+            class="max-h-32 overflow-y-auto"
+          >
+            <table class="w-full text-xs">
+              <thead class="sticky top-0 bg-background/95">
+                <tr class="border-b">
+                  <th class="px-3 py-1 text-left font-medium">From</th>
+                  <th class="px-3 py-1 text-left font-medium">To</th>
+                  <th class="px-3 py-1 text-right font-medium">Dist</th>
+                  <th class="px-3 py-1 text-right font-medium">Time</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  v-for="conn in visibleConnections"
+                  :key="`${conn.from.id}-${conn.to.id}`"
+                  class="border-b last:border-0"
+                >
+                  <td class="px-3 py-1">{{ conn.from.name }}</td>
+                  <td class="px-3 py-1">{{ conn.to.name }}</td>
+                  <td class="px-3 py-1 text-right tabular-nums">
+                    {{ conn.distance.toFixed(1) }} km
+                  </td>
+                  <td
+                    class="px-3 py-1 text-right text-muted-foreground tabular-nums"
+                  >
+                    {{ formatDuration(conn.duration) }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </MapPanel>
     </div>
   </ComponentDemo>
 </template>

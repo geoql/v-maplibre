@@ -45,13 +45,13 @@
             <div class="text-muted-foreground">Total</div>
           </div>
           <div class="rounded-md bg-muted/50 px-2 py-1.5">
-            <div class="font-mono font-bold text-emerald-400">
+            <div class="font-mono font-bold text-success">
               {{ stats.searchedSectors }}
             </div>
             <div class="text-muted-foreground">Searched</div>
           </div>
           <div class="rounded-md bg-muted/50 px-2 py-1.5">
-            <div class="font-mono font-bold text-orange-400">
+            <div class="font-mono font-bold text-warning">
               {{ stats.remainingSectors }}
             </div>
             <div class="text-muted-foreground">Remaining</div>

@@ -2,11 +2,12 @@
   import type { Map as MaplibreMap } from 'maplibre-gl';
   import type { PickingInfo } from '@deck.gl/core';
   import {
-    VMap,
-    VControlNavigation,
     VControlLegend,
-    VLayerMaplibreGeojson,
+    VControlNavigation,
+    VControlScale,
     VLayerDeckglGeojson,
+    VLayerMaplibreGeojson,
+    VMap,
   } from '@geoql/v-maplibre';
   import type { TableLegendItem } from '@geoql/v-maplibre';
   import type {
@@ -456,6 +457,7 @@
             @loaded="handleMapLoad"
           >
             <VControlNavigation position="top-right" />
+            <VControlScale position="bottom-left" />
 
             <VLayerMaplibreGeojson
               source-id="states-choropleth"
@@ -505,6 +507,7 @@
             @loaded="handleMapLoad"
           >
             <VControlNavigation position="top-right" />
+            <VControlScale position="bottom-left" />
 
             <VLayerDeckglGeojson
               id="states-choropleth-deck"

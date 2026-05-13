@@ -99,9 +99,9 @@
           >
             <div class="flex items-center gap-3">
               <div
-                class="flex size-8 items-center justify-center rounded-full bg-emerald-500/15"
+                class="flex size-8 items-center justify-center rounded-full bg-success/15"
               >
-                <div class="size-2.5 rounded-full bg-emerald-500"></div>
+                <div class="size-2.5 rounded-full bg-success"></div>
               </div>
               <div class="flex-1">
                 <p class="text-sm font-medium text-popover-foreground">

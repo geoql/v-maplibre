@@ -1,6 +1,5 @@
 <script setup lang="ts">
   import type { NodeType } from '~/types/defense-comms';
-  import { AnimatePresence, motion } from 'motion-v';
 
   useSeoMeta({
     title: 'Tactical Comms Network - mapcn-vue Examples',
@@ -25,9 +24,6 @@
     startSimulation,
     cleanup,
   } = useCommsNetwork();
-
-  const panelOpen = ref(true);
-
   onMounted(() => {
     startSimulation();
   });
@@ -100,39 +96,15 @@ ${SCRIPT_END}
         class="size-full"
       />
 
-      <button
-        class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg border border-border/50 bg-background/95 shadow-sm backdrop-blur-sm transition-colors hover:bg-accent"
-        :class="{
-          'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen,
-        }"
-        @click="panelOpen = !panelOpen"
-      >
-        <Icon
-          :name="
-            panelOpen ? 'lucide:panel-left-close' : 'lucide:panel-left-open'
-          "
-          class="size-4"
+      <MapPanel title="Comms">
+        <ExamplesCommsControlPanel
+          :active-node-types="activeNodeTypes"
+          :stats="stats"
+          :node-types="nodeTypes"
+          :links="links"
+          @toggle-type="handleToggleType"
         />
-      </button>
-
-      <AnimatePresence>
-        <motion.div
-          v-if="panelOpen"
-          :initial="{ opacity: 0, x: -20, scale: 0.95 }"
-          :animate="{ opacity: 1, x: 0, scale: 1 }"
-          :exit="{ opacity: 0, x: -20, scale: 0.95 }"
-          :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
-          class="absolute top-16 left-4 z-10 w-64 max-h-[calc(100%-5rem)] overflow-auto rounded-xl bg-background/95 shadow-lg backdrop-blur-sm"
-        >
-          <ExamplesCommsControlPanel
-            :active-node-types="activeNodeTypes"
-            :stats="stats"
-            :node-types="nodeTypes"
-            :links="links"
-            @toggle-type="handleToggleType"
-          />
-        </motion.div>
-      </AnimatePresence>
+      </MapPanel>
     </div>
   </ComponentDemo>
 </template>

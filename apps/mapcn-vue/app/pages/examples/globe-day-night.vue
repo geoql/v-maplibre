@@ -1,8 +1,9 @@
 <script setup lang="ts">
   import {
-    VMap,
-    VLayerMaplibreStarfield,
     VControlNavigation,
+    VControlScale,
+    VLayerMaplibreStarfield,
+    VMap,
   } from '@geoql/v-maplibre';
 
   useSeoMeta({
@@ -115,6 +116,7 @@
             before="satellite"
           />
           <VControlNavigation position="top-right" />
+          <VControlScale position="bottom-left" />
         </VMap>
         <template #fallback>
           <div class="size-full bg-black"></div>

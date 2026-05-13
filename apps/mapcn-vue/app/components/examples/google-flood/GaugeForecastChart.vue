@@ -131,11 +131,11 @@
         </div>
       </div>
 
-      <div v-else class="rounded-md bg-green-500/10 p-2.5">
+      <div v-else class="rounded-md bg-success/10 p-2.5">
         <div class="flex items-center gap-2">
           <Icon
             name="lucide:shield-check"
-            class="size-4 shrink-0 text-green-500"
+            class="size-4 shrink-0 text-success"
           />
           <div>
             <p class="text-xs font-medium text-foreground">

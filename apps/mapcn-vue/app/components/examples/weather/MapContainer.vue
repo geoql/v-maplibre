@@ -3,10 +3,11 @@
   import type { CityWeather, AirQualityData, AqiLevel } from '~/types/weather';
   import type { Map as MaplibreMap } from 'maplibre-gl';
   import {
+    VControlLegend,
+    VControlNavigation,
+    VControlScale,
     VMap,
     VMarker,
-    VControlNavigation,
-    VControlLegend,
   } from '@geoql/v-maplibre';
   import type {
     GradientLegendItem,
@@ -200,6 +201,7 @@
           </template>
         </VMarker>
         <VControlNavigation position="top-right" />
+        <VControlScale position="bottom-left" />
         <VControlLegend
           :layer-ids="[]"
           type="gradient"

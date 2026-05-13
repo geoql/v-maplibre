@@ -27,12 +27,6 @@
 
   const { mapStyle } = useMapStyle();
   const mapId = useId();
-  const panelOpen = ref(true);
-
-  function togglePanel() {
-    panelOpen.value = !panelOpen.value;
-  }
-
   const mapOptions = computed(() => ({
     container: `actransit-example-${mapId}`,
     style: mapStyle.value,
@@ -392,48 +386,20 @@
             </div>
           </motion.div>
         </AnimatePresence>
-
-        <!-- Toggle button - always visible -->
-        <button
-          class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
-          :class="{
-            'bg-primary text-primary-foreground hover:bg-primary/90':
-              !panelOpen,
-          }"
-          @click="togglePanel"
-        >
-          <Icon
-            :name="
-              panelOpen ? 'lucide:panel-left-close' : 'lucide:panel-left-open'
-            "
-            class="size-4"
+        <MapPanel title="AC Transit" panel-width="w-auto">
+          <ExamplesActransitControlPanel
+            :bus-count="buses.length"
+            :total-buses="totalBuses"
+            :loading="loading"
+            :error="error"
+            :route-filter="routeFilter"
+            :selected-bus="selectedBus"
+            :trip-average-speeds="tripAverageSpeeds"
+            @update:route-filter="routeFilter = $event"
+            @refresh="fetchData"
+            @clear-filters="clearFilters"
           />
-        </button>
-
-        <!-- Collapsible control panel with motion-v -->
-        <AnimatePresence>
-          <motion.div
-            v-if="panelOpen"
-            :initial="{ opacity: 0, x: -20, scale: 0.95 }"
-            :animate="{ opacity: 1, x: 0, scale: 1 }"
-            :exit="{ opacity: 0, x: -20, scale: 0.95 }"
-            :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
-            class="absolute top-16 left-4 z-10"
-          >
-            <ExamplesActransitControlPanel
-              :bus-count="buses.length"
-              :total-buses="totalBuses"
-              :loading="loading"
-              :error="error"
-              :route-filter="routeFilter"
-              :selected-bus="selectedBus"
-              :trip-average-speeds="tripAverageSpeeds"
-              @update:route-filter="routeFilter = $event"
-              @refresh="fetchData"
-              @clear-filters="clearFilters"
-            />
-          </motion.div>
-        </AnimatePresence>
+        </MapPanel>
       </ClientOnly>
     </div>
   </ComponentDemo>

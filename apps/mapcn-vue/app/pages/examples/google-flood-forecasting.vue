@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { AnimatePresence, motion } from 'motion-v';
   import { FLOOD_REGIONS } from '~/composables/use-google-flood';
   import type { FloodMarker } from '~/types/flood';
 
@@ -31,9 +30,6 @@
     clearSelection,
     refresh,
   } = useGoogleFlood();
-
-  const panelOpen = ref(true);
-
   const currentRegion = computed(
     () =>
       FLOOD_REGIONS.find((r) => r.code === regionCode.value) ??
@@ -64,11 +60,6 @@
   function handleRefresh(): void {
     refresh();
   }
-
-  function togglePanel(): void {
-    panelOpen.value = !panelOpen.value;
-  }
-
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
@@ -130,21 +121,6 @@ ${SCRIPT_END}
         @close-popup="handleClosePopup"
       />
 
-      <button
-        class="absolute left-4 top-4 z-10 flex size-9 items-center justify-center rounded-lg border border-border/50 bg-background/95 shadow-sm backdrop-blur-sm transition-colors hover:bg-accent"
-        :class="{
-          'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen,
-        }"
-        @click="togglePanel"
-      >
-        <Icon
-          :name="
-            panelOpen ? 'lucide:panel-left-close' : 'lucide:panel-left-open'
-          "
-          class="size-4"
-        />
-      </button>
-
       <div
         v-if="loading && floodMarkers.length === 0"
         class="absolute left-1/2 top-4 z-10 -translate-x-1/2 rounded-lg border border-border/50 bg-background/90 px-4 py-2 shadow-sm backdrop-blur-sm"
@@ -158,46 +134,37 @@ ${SCRIPT_END}
         </div>
       </div>
 
-      <AnimatePresence>
-        <motion.div
-          v-if="panelOpen"
-          :initial="{ opacity: 0, x: -20, scale: 0.95 }"
-          :animate="{ opacity: 1, x: 0, scale: 1 }"
-          :exit="{ opacity: 0, x: -20, scale: 0.95 }"
-          :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
-          class="absolute left-4 top-16 z-10 w-72 max-h-[calc(100%-5rem)] overflow-auto rounded-xl border border-border/50 bg-background/95 shadow-lg backdrop-blur-sm"
-        >
-          <ExamplesGoogleFloodRegionSelector
-            :model-value="regionCode"
-            @update:model-value="handleRegionChange"
+      <MapPanel title="Flood Forecast" panel-width="w-72">
+        <ExamplesGoogleFloodRegionSelector
+          :model-value="regionCode"
+          @update:model-value="handleRegionChange"
+        />
+
+        <div class="border-t border-border">
+          <ExamplesGoogleFloodStatusPanel
+            :markers="floodMarkers"
+            :loading="loading"
+            :error="error"
+            :last-fetch="lastFetch"
+            @refresh="handleRefresh"
           />
+        </div>
 
-          <div class="border-t border-border">
-            <ExamplesGoogleFloodStatusPanel
-              :markers="floodMarkers"
-              :loading="loading"
-              :error="error"
-              :last-fetch="lastFetch"
-              @refresh="handleRefresh"
-            />
-          </div>
+        <div class="border-t border-border">
+          <ExamplesGoogleFloodGaugeForecastChart
+            :forecast="selectedGauge?.forecast"
+            :loading="selectedGauge?.forecastLoading ?? false"
+            :selected="!!selectedGauge"
+          />
+        </div>
 
-          <div class="border-t border-border">
-            <ExamplesGoogleFloodGaugeForecastChart
-              :forecast="selectedGauge?.forecast"
-              :loading="selectedGauge?.forecastLoading ?? false"
-              :selected="!!selectedGauge"
-            />
-          </div>
-
-          <div class="border-t border-border">
-            <ExamplesGoogleFloodEventsPanel
-              :events="significantEvents"
-              :loading="loading"
-            />
-          </div>
-        </motion.div>
-      </AnimatePresence>
+        <div class="border-t border-border">
+          <ExamplesGoogleFloodEventsPanel
+            :events="significantEvents"
+            :loading="loading"
+          />
+        </div>
+      </MapPanel>
     </div>
   </ComponentDemo>
 </template>
