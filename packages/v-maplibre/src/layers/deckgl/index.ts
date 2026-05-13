@@ -37,6 +37,8 @@ export { VLayerDeckglScenegraph } from './scenegraph';
 export { VLayerDeckglCOG } from './cog';
 export { VLayerDeckglMosaic } from './mosaic';
 export type { MosaicSource, MosaicRenderMode, RenderModule } from './mosaic';
+export { VLayerDeckglMultiCOG } from './multi-cog';
+export type { MultiCOGComposite } from './multi-cog';
 
 export {
   VLayerDeckglWindParticle,
