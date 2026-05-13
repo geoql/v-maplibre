@@ -99,9 +99,11 @@ export default defineNuxtConfig({
   },
 
   ogImage: {
-    defaults: {
-      component: 'MapcnDoc',
-    },
+    // No `defaults.component` — nuxt-og-image v6 removed that field. The
+    // module auto-selects the first non-community component in
+    // app/components/OgImage/ (MapcnDoc.satori.vue) as the default.
+    // Per-page overrides still use `defineOgImage({ component: '...' })`.
+    //
     // Skip per-request cache storage during prerender (we generate all OG
     // images at build time, no runtime regeneration needed). Saves ~1s of
     // worker bundle work and reduces peak heap by ~200MB on Cloudflare Pages.
@@ -184,8 +186,13 @@ export default defineNuxtConfig({
       openAPI: false,
     },
 
+    // `external: [...]` (from unjs/externality) keeps @resvg/resvg-js out of
+    // the worker bundle — it's a CJS-only native binary that breaks Cloudflare
+    // Workers when bundled. Renamed from `packageNames` which never actually
+    // existed in NodeExternalsOptions (silently no-op'd at runtime, caught by
+    // TS in Nuxt 4.4.5 / Nitro 2.13).
     externals: {
-      packageNames: ['@resvg/resvg-js'],
+      external: ['@resvg/resvg-js'],
     },
   },
 
