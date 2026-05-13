@@ -27,10 +27,16 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
         with:
-          bun-version: latest
+          version: 11
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
 
       - name: Download build artifact
         if: inputs.skip-build == true
@@ -40,21 +46,21 @@ jobs:
           path: apps/mapcn-vue/dist/
 
       - name: Install dependencies
-        run: bun install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Build library
         if: inputs.skip-build != true
-        run: bun run --cwd packages/v-maplibre build
+        run: pnpm --filter @geoql/v-maplibre run build
         env:
           NODE_OPTIONS: --max-old-space-size=8192
 
       - name: Generate ProMap data
         if: inputs.skip-build != true
-        run: bun run apps/mapcn-vue/scripts/prepare-promap-data.ts
+        run: pnpm --filter @geoql/mapcn-vue-app exec tsx scripts/prepare-promap-data.ts
 
       - name: Build mapcn-vue
         if: inputs.skip-build != true
-        run: bun run build:mapcn
+        run: pnpm run build:mapcn
         env:
           NODE_OPTIONS: --max-old-space-size=8192
           NITRO_PRESET: cloudflare-pages
@@ -62,7 +68,7 @@ jobs:
 
       - name: Deploy to Cloudflare Pages
         working-directory: apps/mapcn-vue
-        run: bun x wrangler pages deploy dist --project-name=mapcn-vue
+        run: pnpm exec wrangler pages deploy dist --project-name=mapcn-vue
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
