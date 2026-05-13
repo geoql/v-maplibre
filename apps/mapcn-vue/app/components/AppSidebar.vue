@@ -20,12 +20,16 @@
 
   const route = useRoute();
   const { setOpenMobile } = useSidebar();
+  const colorMode = useColorMode();
 
-  // Close mobile sidebar on route change
   watch(
     () => route.path,
     () => setOpenMobile(false),
   );
+
+  function toggleColorMode() {
+    colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
+  }
 </script>
 
 <template>
@@ -97,15 +101,28 @@
     </SidebarContent>
 
     <SidebarFooter class="border-t border-sidebar-border px-4 py-3">
-      <a
-        href="https://github.com/geoql/v-maplibre"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="inline-flex size-7 items-center justify-center rounded-md text-sidebar-foreground/70 transition-colors hover:text-sidebar-foreground"
-      >
-        <Icon name="simple-icons:github" class="size-4" />
-        <span class="sr-only">GitHub</span>
-      </a>
+      <div class="flex items-center gap-1">
+        <a
+          href="https://github.com/geoql/v-maplibre"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex size-8 items-center justify-center rounded-md text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground"
+        >
+          <Icon name="simple-icons:github" class="size-4" />
+          <span class="sr-only">GitHub</span>
+        </a>
+        <button
+          type="button"
+          class="inline-flex size-8 items-center justify-center rounded-md text-sidebar-foreground/70 transition-colors hover:bg-sidebar-accent hover:text-sidebar-foreground"
+          @click="toggleColorMode"
+        >
+          <Icon
+            :name="colorMode.value === 'dark' ? 'lucide:sun' : 'lucide:moon'"
+            class="size-4"
+          />
+          <span class="sr-only">Toggle theme</span>
+        </button>
+      </div>
     </SidebarFooter>
   </Sidebar>
 </template>

@@ -3,8 +3,15 @@
 
   const { state, setOpen } = useSidebar();
   const colorMode = useColorMode();
+  const route = useRoute();
 
   const isExpanded = computed(() => state.value === 'expanded');
+
+  // Example pages on mobile own the top-left area (custom toggles, legends,
+  // loading overlays). The peek-bar already exposes "Back to Examples" and the
+  // sidebar is reachable from there, so we hide this global toolbar on those
+  // routes at <md to prevent overlap with example-specific chrome.
+  const isExamplePage = computed(() => route.path.startsWith('/examples/'));
 
   function handleEscape(event: KeyboardEvent): void {
     if (event.key === 'Escape' && isExpanded.value) {
@@ -31,10 +38,13 @@
     ></div>
   </Transition>
 
-  <!-- Floating toolbar — hidden when sidebar is open -->
+  <!-- Floating toolbar — hidden when sidebar is open OR on mobile example pages -->
   <div
     class="pointer-events-none absolute left-3 top-3 z-30 flex items-center gap-1 transition-opacity duration-200"
-    :class="isExpanded ? 'opacity-0' : 'opacity-100'"
+    :class="[
+      isExpanded ? 'opacity-0' : 'opacity-100',
+      isExamplePage ? 'hidden md:flex' : '',
+    ]"
   >
     <SidebarTrigger
       class="pointer-events-auto rounded-lg bg-background/80 backdrop-blur-sm"
