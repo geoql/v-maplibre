@@ -1,4 +1,6 @@
 import type {
+  PromapApiResponse,
+  PromapRow,
   ZipDataPoint,
   ZipRenderPoint,
   ViewMode,
@@ -6,32 +8,26 @@ import type {
   ViewportStats,
   QuintileBucket,
   PromapSearchResult,
-  WorkerRequest,
-  WorkerResponse,
 } from '~/types/promap';
-import { getCachedPromapData, setCachedPromapData } from '~/utils/promap-cache';
 
 // ── Color palettes ──────────────────────────────────────────────────────────
 /** Levels mode: warm palette — cheapest (blue) → most expensive (red) */
 const LEVELS_COLORS: [number, number, number][] = [
-  [33, 102, 172], // Q1 — cheapest — blue
-  [103, 169, 207], // Q2
-  [253, 219, 199], // Q3
-  [244, 109, 67], // Q4
-  [214, 48, 39], // Q5 — most expensive — red
+  [33, 102, 172],
+  [103, 169, 207],
+  [253, 219, 199],
+  [244, 109, 67],
+  [214, 48, 39],
 ];
 
 /** Changes mode: diverging — declining (black/gray) → appreciating (blue) */
 const CHANGES_COLORS: [number, number, number][] = [
-  [26, 26, 26], // Q1 — biggest decline — near-black
-  [115, 115, 115], // Q2 — moderate decline — gray
-  [189, 189, 189], // Q3 — flat — light gray
-  [107, 174, 214], // Q4 — moderate appreciation — light blue
-  [33, 113, 181], // Q5 — biggest appreciation — bright blue
+  [26, 26, 26],
+  [115, 115, 115],
+  [189, 189, 189],
+  [107, 174, 214],
+  [33, 113, 181],
 ];
-
-/** URL to the pre-processed promap data JSON */
-const DATA_URL = '/data/promap-data.json';
 
 // ── Quantile computation ────────────────────────────────────────────────────
 function quantile(sorted: number[], q: number): number {
@@ -81,11 +77,29 @@ export function formatPopulation(value: number): string {
   return String(value);
 }
 
+/** Convert a server-side PromapRow into the client-side ZipDataPoint shape. */
+function toZipDataPoint(row: PromapRow): ZipDataPoint {
+  return {
+    zip: row.zip,
+    coordinates: [row.lng, row.lat],
+    population: row.population,
+    price: row.price,
+    priceChange: row.p1 / 100,
+    city: row.city,
+    state: row.state,
+    metro: row.metro,
+  };
+}
+
+const VIEWPORT_DEBOUNCE_MS = 250;
+const QUERY_LIMIT = 5000;
+
 // ── Main composable ─────────────────────────────────────────────────────────
 export function usePromapData() {
   const allData = ref<ZipDataPoint[]>([]);
+  const totalRecords = ref(0);
   const isLoading = ref(true);
-  const loadingMessage = ref('Initializing...');
+  const loadingMessage = ref('Loading viewport…');
   const loadError = ref<string | null>(null);
 
   const viewMode = ref<ViewMode>('levels');
@@ -95,81 +109,45 @@ export function usePromapData() {
   const searchQuery = ref('');
   const dataVersion = ref(0);
 
-  // ── Load data via Web Worker + IndexedDB cache ──────────────────────────
-  async function loadData(): Promise<void> {
+  let fetchTimer: ReturnType<typeof setTimeout> | null = null;
+  let inflightController: AbortController | null = null;
+
+  /** Fetch records for the current viewport from the D1-backed server route. */
+  async function fetchViewport(bounds: ViewportBounds): Promise<void> {
     if (!import.meta.client) return;
 
+    inflightController?.abort();
+    const controller = new AbortController();
+    inflightController = controller;
+
     try {
-      // Try IndexedDB cache first
-      loadingMessage.value = 'Checking cache...';
-      const cached = await getCachedPromapData('v1');
-      if (cached && cached.length > 0) {
-        allData.value = cached;
-        isLoading.value = false;
-        loadingMessage.value = '';
-        return;
-      }
+      isLoading.value = true;
+      loadingMessage.value = 'Loading viewport…';
 
-      // Cache miss — use Web Worker for off-main-thread fetch + parse
-      loadingMessage.value = 'Loading real estate data...';
-
-      const worker = new Worker(
-        new URL('~/workers/promap.worker.ts', import.meta.url),
-        { type: 'module' },
-      );
-
-      await new Promise<void>((resolve, reject) => {
-        worker.onmessage = async (event: MessageEvent<WorkerResponse>) => {
-          const msg = event.data;
-
-          switch (msg.type) {
-            case 'progress':
-              loadingMessage.value = msg.message;
-              break;
-            case 'data':
-              allData.value = msg.points;
-              isLoading.value = false;
-              loadingMessage.value = '';
-
-              // Cache in IndexedDB for next visit
-              await setCachedPromapData(msg.version, msg.points);
-
-              worker.terminate();
-              resolve();
-              break;
-            case 'error':
-              loadError.value = msg.message;
-              isLoading.value = false;
-              worker.terminate();
-              reject(new Error(msg.message));
-              break;
-          }
-        };
-
-        worker.onerror = (err) => {
-          loadError.value = err.message || 'Worker error';
-          isLoading.value = false;
-          worker.terminate();
-          reject(new Error(err.message));
-        };
-
-        const request: WorkerRequest = { type: 'init', dataUrl: DATA_URL };
-        worker.postMessage(request);
+      const bbox = `${bounds.west},${bounds.south},${bounds.east},${bounds.north}`;
+      const response = await $fetch<PromapApiResponse>('/api/promap', {
+        query: { bbox, limit: QUERY_LIMIT },
+        signal: controller.signal,
       });
+
+      if (controller.signal.aborted) return;
+
+      allData.value = response.rows.map(toZipDataPoint);
+      totalRecords.value = response.total;
+      loadError.value = null;
+      isLoading.value = false;
+      loadingMessage.value = '';
+      dataVersion.value++;
     } catch (err) {
+      if (controller.signal.aborted) return;
       const message =
-        err instanceof Error ? err.message : 'Failed to load data';
+        err instanceof Error ? err.message : 'Failed to load viewport';
       loadError.value = message;
       isLoading.value = false;
     }
   }
 
-  // Fire data loading on client
-  if (import.meta.client) {
-    loadData();
-  }
-
-  // ── Visible points (filtered by viewport when LocalView is on) ──────────
+  // ── Visible points (client-side bbox filter for tight viewport semantics) ─
   const visiblePoints = computed<ZipDataPoint[]>(() => {
     if (!localView.value || !viewportBounds.value) return allData.value;
     const b = viewportBounds.value;
@@ -197,7 +175,6 @@ export function usePromapData() {
 
   // ── Render-ready points (all data, colored by current quintiles) ────────
   const renderPoints = computed<ZipRenderPoint[]>(() => {
-    // Access dataVersion to force recomputation when viewport changes
     void dataVersion.value;
 
     const q = quintiles.value;
@@ -209,8 +186,8 @@ export function usePromapData() {
       const qi = getQuintileIndex(value, q);
       const color = colors[qi];
 
-      // Radius proportional to sqrt(population) for area-accurate sizing
-      // Fallback to price-based sizing for the ~6 ZIPs without population
+      // Radius proportional to sqrt(population) for area-accurate sizing.
+      // Fallback to price-based sizing for the ~6 ZIPs without population.
       const radius =
         p.population > 0
           ? Math.max(Math.sqrt(p.population) * 0.8, 200)
@@ -303,7 +280,7 @@ export function usePromapData() {
     ];
   });
 
-  // ── Search ──────────────────────────────────────────────────────────────
+  // ── Search (operates on the currently-loaded viewport set) ──────────────
   const searchResults = computed<PromapSearchResult[]>(() => {
     const q = searchQuery.value.trim().toLowerCase();
     if (q.length < 2) return [];
@@ -329,7 +306,11 @@ export function usePromapData() {
   // ── Actions ─────────────────────────────────────────────────────────────
   function updateViewport(bounds: ViewportBounds): void {
     viewportBounds.value = bounds;
-    dataVersion.value++;
+
+    if (fetchTimer) clearTimeout(fetchTimer);
+    fetchTimer = setTimeout(() => {
+      fetchViewport(bounds);
+    }, VIEWPORT_DEBOUNCE_MS);
   }
 
   function setViewMode(mode: ViewMode): void {
@@ -349,8 +330,14 @@ export function usePromapData() {
     searchQuery.value = query;
   }
 
+  onBeforeUnmount(() => {
+    if (fetchTimer) clearTimeout(fetchTimer);
+    inflightController?.abort();
+  });
+
   return {
     allData: readonly(allData),
+    totalRecords: readonly(totalRecords),
     isLoading: readonly(isLoading),
     loadingMessage: readonly(loadingMessage),
     loadError: readonly(loadError),
