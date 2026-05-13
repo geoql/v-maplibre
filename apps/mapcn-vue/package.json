@@ -42,7 +42,6 @@
     "@math.gl/core": "catalog:app:mapcn-vue",
     "@math.gl/types": "catalog:app:mapcn-vue",
     "@nuxtjs/plausible": "catalog:app:mapcn-vue",
-    "@resvg/resvg-js": "catalog:app:mapcn-vue",
     "@resvg/resvg-wasm": "catalog:app:mapcn-vue",
     "@tanstack/vue-table": "catalog:app:mapcn-vue",
     "@vueuse/core": "catalog:app:mapcn-vue",

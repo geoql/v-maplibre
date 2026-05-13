@@ -67,7 +67,6 @@ catalogs:
     '@math.gl/core': ^4.1.0
     '@math.gl/types': ^4.1.0
     '@resvg/resvg-wasm': ^2.6.2
-    '@resvg/resvg-js': ^2.6.2
     '@nuxt/content': ^3.13.0
     '@nuxt/icon': ^2.2.2
     '@nuxt/fonts': ^0.14.0

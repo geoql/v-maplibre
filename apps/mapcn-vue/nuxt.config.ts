@@ -185,15 +185,6 @@ export default defineNuxtConfig({
     experimental: {
       openAPI: false,
     },
-
-    // `external: [...]` (from unjs/externality) keeps @resvg/resvg-js out of
-    // the worker bundle — it's a CJS-only native binary that breaks Cloudflare
-    // Workers when bundled. Renamed from `packageNames` which never actually
-    // existed in NodeExternalsOptions (silently no-op'd at runtime, caught by
-    // TS in Nuxt 4.4.5 / Nitro 2.13).
-    externals: {
-      external: ['@resvg/resvg-js'],
-    },
   },
 
   shadcn: {
