@@ -3,7 +3,7 @@
   import type { LngLatLike } from 'maplibre-gl';
 
   export interface MapMarkerProps {
-    lngLat: LngLatLike;
+    coordinates: LngLatLike;
     draggable?: boolean;
     anchor?:
       | 'center'
@@ -37,7 +37,7 @@
 
 <template>
   <VMarker
-    :coordinates="props.lngLat"
+    :coordinates="props.coordinates"
     :draggable="props.draggable"
     :anchor="props.anchor"
     :offset="props.offset"
