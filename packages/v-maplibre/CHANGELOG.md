@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.8.0](https://github.com/geoql/v-maplibre/compare/v1.7.1...v1.8.0) (2026-05-13)
+
+
+### Features
+
+* **v-maplibre:** add VLayerDeckglMultiCOG wrapper ([fdaf5cb](https://github.com/geoql/v-maplibre/commit/fdaf5cbbe24c3856d2118d7c98e26af50ef9d396))
+* **v-maplibre:** add VLayerDeckglZarr wrapper ([4edb6c5](https://github.com/geoql/v-maplibre/commit/4edb6c5e6ee5fb846c2012e9fb29ce0023b37bbf))
+
+
+### Bug Fixes
+
+* **v-maplibre:** adapt COG/Mosaic to deck.gl-geotiff 0.6 API ([26900b1](https://github.com/geoql/v-maplibre/commit/26900b10b2f0f9015f3968a6c5ea0e44f8bce11d))
+
+
+### Documentation
+
+* **agents:** canonicalize AGENTS.md, symlink CLAUDE.md per Vercel pattern ([d67c4dc](https://github.com/geoql/v-maplibre/commit/d67c4dc9655a022d88acc4693e671dad19d75bc5))
+
+
+### Code Refactoring
+
+* **v-maplibre:** adopt vite-plus for build + test ([108dba6](https://github.com/geoql/v-maplibre/commit/108dba6a2c567564dc8cbfcec0fcb30fbacde4c7))
+
 ## [1.7.1](https://github.com/geoql/v-maplibre/compare/v1.7.0...v1.7.1) (2026-04-07)
 
 
