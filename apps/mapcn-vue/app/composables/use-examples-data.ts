@@ -439,18 +439,60 @@ export function useExamplesData() {
       icon: 'lucide:satellite',
       examples: [
         {
-          title: 'COG Layer',
-          description: 'GPU-accelerated Cloud-Optimized GeoTIFF visualization.',
+          title: 'RGB GeoTIFF (COG)',
+          description:
+            'GPU-accelerated true-color Sentinel-2 imagery from a Cloud-Optimized GeoTIFF.',
           href: '/examples/deckgl-cog',
           icon: 'lucide:satellite',
           badge: 'Sentinel-2',
         },
         {
           title: 'Land Cover COG',
-          description: 'NLCD land use classification with automatic colormap.',
+          description:
+            'NLCD land use classification with automatic categorical colormap.',
           href: '/examples/deckgl-landcover',
           icon: 'lucide:trees',
           badge: 'NLCD',
+        },
+        {
+          title: 'NAIP Mosaic',
+          description:
+            'Client-side mosaic of NAIP aerial imagery COGs sourced from Microsoft Planetary Computer.',
+          href: '/examples/deckgl-naip-mosaic',
+          icon: 'lucide:satellite-dish',
+          badge: 'STAC',
+        },
+        {
+          title: 'Before / After Comparison',
+          description:
+            'Swipe between two timestamps of Vermont state imagery (2018 vs 2024) using paired COG layers.',
+          href: '/examples/deckgl-comparison',
+          icon: 'lucide:scan',
+          badge: 'A / B',
+        },
+        {
+          title: 'Sentinel-2 Multi-Band',
+          description:
+            'Sentinel-2 multi-band compositing from separate COGs at different native resolutions. True Color, False Color, and SWIR presets rendered entirely client-side.',
+          href: '/examples/deckgl-sentinel2',
+          icon: 'lucide:satellite',
+          badge: 'MultiCOG',
+        },
+        {
+          title: 'ECMWF GeoZarr',
+          description:
+            'ECMWF Open Data temperature GeoZarr rendered with deck.gl-raster ZarrLayer + zarrita. Single time slice with grayscale rescale.',
+          href: '/examples/deckgl-zarr-ecmwf',
+          icon: 'lucide:cloud',
+          badge: 'Zarr',
+        },
+        {
+          title: 'AEF Mosaic',
+          description:
+            'Annual Earth Foundation embedding mosaic via VLayerDeckglZarr. Int8 quantized embeddings dequantized + RGB-mapped across 9 annual snapshots (2017–2025).',
+          href: '/examples/deckgl-aef-mosaic',
+          icon: 'lucide:layers',
+          badge: 'Zarr Mosaic',
         },
       ],
     },
