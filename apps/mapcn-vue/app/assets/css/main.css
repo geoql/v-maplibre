@@ -8,78 +8,86 @@
   padding-inline: 1rem;
 }
 
-/* ─── Mist-based theme (blue-tinted neutrals, violet primary) ─── */
+/*
+ * Tech Utility direction — Linear / Vercel / Stripe reference set.
+ * Pinned by apps/mapcn-vue/.claude/skills/mapcn-vue-design/SKILL.md
+ * NEVER reintroduce: Inter / Plus Jakarta / Space Grotesk / gradient-text class.
+ */
 
 @theme {
-  /* Typography: 4-font stack */
-  --font-sans: 'Plus Jakarta Sans', ui-sans-serif, system-ui, sans-serif;
-  --font-mono: 'JetBrains Mono', ui-monospace, 'Cascadia Code', monospace;
-  --font-display: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
-  --font-serif: 'Instrument Serif', ui-serif, Georgia, serif;
+  --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-mono: 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
+  --font-display: var(--font-sans);
 
-  /* Mist palette: blue-tinted neutrals (hue ~214-228) */
-  --color-background: oklch(0.987 0.002 197.1); /* mist-50 */
-  --color-foreground: oklch(0.148 0.004 228.8); /* mist-950 */
-  --color-card: oklch(1 0.001 214);
-  --color-card-foreground: oklch(0.148 0.004 228.8);
-  --color-popover: oklch(1 0.001 214);
-  --color-popover-foreground: oklch(0.148 0.004 228.8);
-  --color-primary: oklch(0.55 0.22 275); /* violet */
-  --color-primary-foreground: oklch(0.987 0.002 197.1);
-  --color-secondary: oklch(0.963 0.002 197.1); /* mist-100 */
-  --color-secondary-foreground: oklch(0.218 0.008 223.9); /* mist-900 */
-  --color-muted: oklch(0.963 0.002 197.1); /* mist-100 */
-  --color-muted-foreground: oklch(0.56 0.021 213.5); /* mist-500 */
-  --color-accent: oklch(0.963 0.002 197.1); /* mist-100 */
-  --color-accent-foreground: oklch(0.218 0.008 223.9); /* mist-900 */
-  --color-destructive: oklch(0.577 0.245 27.325);
-  --color-destructive-foreground: oklch(0.577 0.245 27.325);
-  --color-border: oklch(0.925 0.005 214.3); /* mist-200 */
-  --color-input: oklch(0.925 0.005 214.3); /* mist-200 */
-  --color-ring: oklch(0.55 0.22 275); /* violet */
-  --radius: 0.625rem;
+  /* Light-mode tokens — cool blue undertone */
+  --color-background: oklch(0.99 0.003 254);
+  --color-foreground: oklch(0.18 0.012 254);
+  --color-card: oklch(0.97 0.005 254);
+  --color-card-foreground: oklch(0.18 0.012 254);
+  --color-popover: oklch(0.97 0.005 254);
+  --color-popover-foreground: oklch(0.18 0.012 254);
+  --color-primary: oklch(0.55 0.18 254);
+  --color-primary-foreground: oklch(0.99 0.003 254);
+  --color-secondary: oklch(0.94 0.006 254);
+  --color-secondary-foreground: oklch(0.18 0.012 254);
+  --color-muted: oklch(0.94 0.006 254);
+  --color-muted-foreground: oklch(0.42 0.012 254);
+  --color-accent: oklch(0.94 0.006 254);
+  --color-accent-foreground: oklch(0.18 0.012 254);
+  --color-destructive: oklch(0.55 0.22 27);
+  --color-destructive-foreground: oklch(0.99 0.003 254);
+  --color-success: oklch(0.55 0.16 165);
+  --color-success-foreground: oklch(0.99 0.003 254);
+  --color-warning: oklch(0.65 0.16 75);
+  --color-warning-foreground: oklch(0.18 0.012 254);
+  --color-border: oklch(0.88 0.008 254);
+  --color-input: oklch(0.88 0.008 254);
+  --color-ring: oklch(0.55 0.18 254);
+  --radius: 0.5rem;
 
-  /* Sidebar: componentry.fun-style navigation panel */
-  --color-sidebar: oklch(0.987 0.002 197.1); /* mist-50 */
-  --color-sidebar-foreground: oklch(0.148 0.004 228.8); /* mist-950 */
-  --color-sidebar-primary: oklch(0.55 0.22 275); /* violet */
-  --color-sidebar-primary-foreground: oklch(0.987 0.002 197.1);
-  --color-sidebar-accent: oklch(0.963 0.002 197.1); /* mist-100 */
-  --color-sidebar-accent-foreground: oklch(0.218 0.008 223.9); /* mist-900 */
-  --color-sidebar-border: oklch(0.925 0.005 214.3); /* mist-200 */
-  --color-sidebar-ring: oklch(0.55 0.22 275); /* violet */
+  --color-sidebar: oklch(0.97 0.005 254);
+  --color-sidebar-foreground: oklch(0.18 0.012 254);
+  --color-sidebar-primary: oklch(0.55 0.18 254);
+  --color-sidebar-primary-foreground: oklch(0.99 0.003 254);
+  --color-sidebar-accent: oklch(0.94 0.006 254);
+  --color-sidebar-accent-foreground: oklch(0.18 0.012 254);
+  --color-sidebar-border: oklch(0.88 0.008 254);
+  --color-sidebar-ring: oklch(0.55 0.18 254);
 }
 
 .dark {
-  --color-background: oklch(0.1 0.004 225); /* near-black with blue tint */
-  --color-foreground: oklch(0.987 0.002 197.1); /* mist-50 */
-  --color-card: oklch(0.148 0.006 225); /* mist-950 blue */
-  --color-card-foreground: oklch(0.987 0.002 197.1);
-  --color-popover: oklch(0.155 0.006 225);
-  --color-popover-foreground: oklch(0.987 0.002 197.1);
-  --color-primary: oklch(0.65 0.22 275); /* brighter violet */
-  --color-primary-foreground: oklch(0.1 0.004 225);
-  --color-secondary: oklch(0.218 0.008 223.9); /* mist-900 */
-  --color-secondary-foreground: oklch(0.987 0.002 197.1);
-  --color-muted: oklch(0.218 0.008 223.9); /* mist-900 */
-  --color-muted-foreground: oklch(0.723 0.014 214.4); /* mist-400 */
-  --color-accent: oklch(0.218 0.008 223.9); /* mist-900 */
-  --color-accent-foreground: oklch(0.987 0.002 197.1);
-  --color-destructive: oklch(0.396 0.141 25.723);
-  --color-destructive-foreground: oklch(0.637 0.237 25.331);
-  --color-border: oklch(0.275 0.011 216.9); /* mist-800 */
-  --color-input: oklch(0.275 0.011 216.9); /* mist-800 */
-  --color-ring: oklch(0.65 0.22 275); /* brighter violet */
+  --color-background: oklch(0.16 0.015 254);
+  --color-foreground: oklch(0.96 0.006 254);
+  --color-card: oklch(0.2 0.015 254);
+  --color-card-foreground: oklch(0.96 0.006 254);
+  --color-popover: oklch(0.2 0.015 254);
+  --color-popover-foreground: oklch(0.96 0.006 254);
+  --color-primary: oklch(0.7 0.16 254);
+  --color-primary-foreground: oklch(0.16 0.015 254);
+  --color-secondary: oklch(0.24 0.018 254);
+  --color-secondary-foreground: oklch(0.96 0.006 254);
+  --color-muted: oklch(0.24 0.018 254);
+  --color-muted-foreground: oklch(0.68 0.012 254);
+  --color-accent: oklch(0.24 0.018 254);
+  --color-accent-foreground: oklch(0.96 0.006 254);
+  --color-destructive: oklch(0.62 0.22 27);
+  --color-destructive-foreground: oklch(0.16 0.015 254);
+  --color-success: oklch(0.72 0.16 165);
+  --color-success-foreground: oklch(0.16 0.015 254);
+  --color-warning: oklch(0.78 0.16 75);
+  --color-warning-foreground: oklch(0.16 0.015 254);
+  --color-border: oklch(0.3 0.012 254);
+  --color-input: oklch(0.3 0.012 254);
+  --color-ring: oklch(0.7 0.16 254);
 
-  /* Sidebar (dark) */
-  --color-sidebar: oklch(0.12 0.005 225); /* slightly lighter than background */
-  --color-sidebar-foreground: oklch(0.987 0.002 197.1); /* mist-50 */
-  --color-sidebar-primary: oklch(0.65 0.22 275); /* brighter violet */
-  --color-sidebar-primary-foreground: oklch(0.1 0.004 225);
-  --color-sidebar-accent: oklch(0.218 0.008 223.9); /* mist-900 */
-  --color-sidebar-accent-foreground: oklch(0.987 0.002 197.1);
-  --color-sidebar-border: oklch(0.275 0.011 216.9); /* mist-800 */
-  --color-sidebar-ring: oklch(0.65 0.22 275); /* brighter violet */
+  --color-sidebar: oklch(0.2 0.015 254);
+  --color-sidebar-foreground: oklch(0.96 0.006 254);
+  --color-sidebar-primary: oklch(0.7 0.16 254);
+  --color-sidebar-primary-foreground: oklch(0.16 0.015 254);
+  --color-sidebar-accent: oklch(0.24 0.018 254);
+  --color-sidebar-accent-foreground: oklch(0.96 0.006 254);
+  --color-sidebar-border: oklch(0.3 0.012 254);
+  --color-sidebar-ring: oklch(0.7 0.16 254);
 }
 
 /* ─── Base ─── */
@@ -204,27 +212,7 @@ canvas {
   opacity: 0;
 }
 
-/* ─── Componentry.fun-style utilities ─── */
-
-/* Gradient text — use on headings for depth */
-.gradient-text {
-  @apply bg-clip-text text-transparent;
-  background-image: linear-gradient(
-    to right,
-    var(--color-foreground),
-    var(--color-muted-foreground),
-    var(--color-foreground)
-  );
-}
-
-.dark .gradient-text {
-  background-image: linear-gradient(
-    to right,
-    oklch(0.987 0.002 197.1),
-    oklch(0.56 0.021 213.5),
-    oklch(0.987 0.002 197.1)
-  );
-}
+/* ─── Utilities ─── */
 
 /* Gradient fade overlays — dissolve content into background */
 .gradient-fade-top {
@@ -272,7 +260,7 @@ canvas {
   width: 1.5rem;
   margin-right: 1.25rem;
   text-align: right;
-  color: oklch(0.56 0.021 213.5); /* mist-500 */
+  color: var(--color-muted-foreground);
   user-select: none;
   font-size: 0.75rem;
 }
