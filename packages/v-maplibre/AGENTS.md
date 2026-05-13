@@ -195,29 +195,47 @@ src/
 └── index.ts
 ```
 
-### Rule #9: pnpm Catalog Dependencies (CRITICAL)
+### Rule #9: Published-Package Dependency Pinning (CRITICAL)
 
-All dependency versions are managed centrally via **pnpm workspace catalogs** in `pnpm-workspace.yaml`. **NEVER** use direct version strings in this package's `package.json`.
+This package is **published to npm** as `@geoql/v-maplibre` (`"private": false`). It is installed by public-facing users via `npm install`, `yarn add`, `bun add`, etc. — **none of which understand pnpm's `catalog:` protocol**.
+
+All `dependencies`, `devDependencies`, and `peerDependencies` in **this file** MUST use real semver. Catalog refs are only allowed in `apps/*` and other `"private": true` workspace members where they get resolved by pnpm at install time and never reach end users.
 
 ```jsonc
-// CORRECT
+// CORRECT - real semver in every dep block
 "dependencies": {
-  "maplibre-gl": "catalog:",               // uses default catalog
-  "three": "catalog:pkg:v-maplibre"         // uses named catalog
+  "maplibre-gl": "^5.24.0",
+  "pmtiles": "^4.4.1"
+},
+"devDependencies": {
+  "@deck.gl/core": "^9.3.2",
+  "three": "^0.184.0"
+},
+"peerDependencies": {
+  "@deck.gl/core": "^9.3.0",
+  "vue": "^3.5.0"
 }
 
-// WRONG - Direct version strings are forbidden
+// WRONG - catalog refs break `npm install` for end users
+// and break `npm install <git-url>` for source-fork builders
 "dependencies": {
-  "maplibre-gl": "^5.5.0",
-  "three": "^0.183.2"
+  "maplibre-gl": "catalog:default",
+  "three": "catalog:pkg:v-maplibre"
 }
 ```
 
+**Why this matters:**
+
+- End users running `npm install @geoql/v-maplibre` get whatever `dependencies` lists. If it says `catalog:`, npm reports `EUNSUPPORTEDPROTOCOL` and the install fails.
+- pnpm DOES replace `catalog:` on `pnpm publish`, but the file at HEAD on GitHub is what users see — and what tools like Renovate, Snyk, and GitHub's dep graph parse.
+- `npm install github:geoql/v-maplibre#main` (install from a git ref) skips pnpm entirely → catalog refs aren't replaced → install fails.
+- Per-monorepo catalogs in `pnpm-workspace.yaml` are still useful: they keep `apps/mapcn-vue` and `apps/docs` aligned with this package's version expectations. But this file MUST mirror the catalog values manually.
+
 **When adding a new dependency:**
 
-1. Add the version to the `pkg:v-maplibre` catalog in `pnpm-workspace.yaml` under `catalogs:`
-2. Reference it here as `"catalog:pkg:v-maplibre"`
-3. Shared deps (vue, typescript) go in the `default` catalog, reference as `"catalog:"`
+1. Add it as real semver to this `package.json` and to `packages/v-maplibre/jsr.json` (npm + JSR are both public publish targets — both must work without pnpm).
+2. There is **no** `pkg:v-maplibre` catalog in `pnpm-workspace.yaml` (removed — it would just duplicate this file). If `apps/mapcn-vue` or `apps/docs` happen to import the same package directly, those apps reference the `app:mapcn-vue` / `app:docs` catalog instead — those are private workspaces where `catalog:` is safe.
+3. Renovate / Dependabot will scan this `package.json` and `jsr.json` together — keep their version pins in sync on every bump or you'll get cross-target drift PRs.
 
 ---
 

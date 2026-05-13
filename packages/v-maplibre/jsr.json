@@ -4,26 +4,29 @@
   "exports": "./dist/index.js",
   "imports": {
     "vue": "npm:vue@^3.5.0",
-    "maplibre-gl": "npm:maplibre-gl@^5.15.0",
-    "pmtiles": "npm:pmtiles@^4.3.2",
-    "@deck.gl/core": "npm:@deck.gl/core@^9.2.5",
-    "@deck.gl/layers": "npm:@deck.gl/layers@^9.2.5",
-    "@deck.gl/mapbox": "npm:@deck.gl/mapbox@^9.2.5",
-    "@deck.gl/aggregation-layers": "npm:@deck.gl/aggregation-layers@^9.2.5",
-    "@deck.gl/geo-layers": "npm:@deck.gl/geo-layers@^9.2.5",
-    "@deck.gl/mesh-layers": "npm:@deck.gl/mesh-layers@^9.2.5",
-    "@developmentseed/deck.gl-geotiff": "npm:@developmentseed/deck.gl-geotiff@^0.1.0",
-    "geotiff-geokeys-to-proj4": "npm:geotiff-geokeys-to-proj4@^2024.4.0",
-    "maplibre-gl-lidar": "npm:maplibre-gl-lidar@^0.11.1",
-    "@luma.gl/core": "npm:@luma.gl/core@^9.2.6",
-    "@luma.gl/engine": "npm:@luma.gl/engine@^9.2.6",
-    "@geoql/maplibre-gl-wind": "npm:@geoql/maplibre-gl-wind@^0.1.0"
+    "maplibre-gl": "npm:maplibre-gl@^5.24.0",
+    "pmtiles": "npm:pmtiles@^4.4.1",
+    "@deck.gl/aggregation-layers": "npm:@deck.gl/aggregation-layers@^9.3.0",
+    "@deck.gl/core": "npm:@deck.gl/core@^9.3.0",
+    "@deck.gl/geo-layers": "npm:@deck.gl/geo-layers@^9.3.0",
+    "@deck.gl/layers": "npm:@deck.gl/layers@^9.3.0",
+    "@deck.gl/mapbox": "npm:@deck.gl/mapbox@^9.3.0",
+    "@deck.gl/mesh-layers": "npm:@deck.gl/mesh-layers@^9.3.0",
+    "@developmentseed/deck.gl-geotiff": "npm:@developmentseed/deck.gl-geotiff@^0.6.0",
+    "@developmentseed/deck.gl-raster": "npm:@developmentseed/deck.gl-raster@^0.6.0",
+    "@developmentseed/deck.gl-zarr": "npm:@developmentseed/deck.gl-zarr@^0.6.0",
+    "@developmentseed/geotiff": "npm:@developmentseed/geotiff@^0.6.0",
+    "@developmentseed/proj": "npm:@developmentseed/proj@^0.6.0",
+    "zarrita": "npm:zarrita@^0.7.0",
+    "@geoql/maplibre-gl-starfield": "npm:@geoql/maplibre-gl-starfield@^0.1.0",
+    "maplibre-gl-lidar": "npm:maplibre-gl-lidar@^0.13.0",
+    "maplibre-gl-wind": "npm:maplibre-gl-wind@^0.2.0",
+    "three": "npm:three@>=0.176.0",
+    "@luma.gl/core": "npm:@luma.gl/core@^9.3.0",
+    "@luma.gl/engine": "npm:@luma.gl/engine@^9.3.0",
+    "@luma.gl/shadertools": "npm:@luma.gl/shadertools@^9.3.0"
   },
   "publish": {
-    "exclude": [
-      "!dist",
-      "!README.md",
-      "!LICENSE"
-    ]
+    "exclude": ["!dist", "!README.md", "!LICENSE"]
   }
 }
