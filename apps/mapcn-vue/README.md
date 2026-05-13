@@ -16,12 +16,12 @@ This project uses [Maps Guru](https://maps.guru) for map styles and the Google F
 
 ```bash
 # Install dependencies (from monorepo root)
-bun install
+pnpm install
 
 # Start development server
-bun run dev:mapcn
+pnpm run dev:mapcn
 # or from this directory
-bun run dev
+pnpm run dev
 ```
 
 The site runs at `http://localhost:3000`.
@@ -60,7 +60,7 @@ apps/mapcn-vue/
 ## Build
 
 ```bash
-bun run build
+pnpm run build
 ```
 
 Output in `.output/` directory.

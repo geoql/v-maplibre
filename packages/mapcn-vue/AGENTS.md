@@ -18,6 +18,39 @@
 
 ---
 
+## Skills Integration & Priority
+
+This package uses **one** project-pinned skill from [`.agents/skills/`](../../.agents/skills/):
+
+| Skill                                                                    | When to Load                                       |
+| ------------------------------------------------------------------------ | -------------------------------------------------- |
+| [`vue-best-practices`](../../.agents/skills/vue-best-practices/SKILL.md) | Any Vue 3 component / composable / reactivity work |
+
+Registry components ship into the **user's** project via `npx shadcn-vue add ...` — they must work in **any** Vue 3 host (Nuxt, Vite, Vue CLI). For that reason:
+
+- `nuxt-best-practices` / `nuxt-seo-best-practices` / `nuxt-geo-best-practices` do **not** apply — registry components must NEVER import `#imports`, `~/`, or any Nuxt-only API
+- `mapcn-vue-design` does **not** apply — the user's app owns its design tokens; registry components must respect whatever `@theme` block the user provides (we only consume `bg-primary` / `text-foreground` / etc.)
+
+**Priority rule: This AGENTS.md ALWAYS takes precedence over generic skills when they conflict.**
+
+### Known Conflicts (AGENTS.md wins)
+
+| Skill Says                                                                   | AGENTS.md Says (Use This)                                                                                                                                               |
+| ---------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Extract reusable logic into shared composables                               | **Don't.** Each component must be self-contained — see Rule #1 below. Shared composables become broken imports in the user's project.                                   |
+| Use `useColorMode` from `#imports` (Nuxt auto-import)                        | Use **`useColorMode` from `@vueuse/core`** — registry components must work in plain Vue, not just Nuxt — see Rule #2 below                                              |
+| Import from sibling registry components (`import Map from '../map/Map.vue'`) | **Forbidden.** When the user copies one component, they don't get the sibling. Inline what you need — see Rule #1 below                                                 |
+| Use `<style scoped>` for component-local styling                             | **Tailwind only**, no `<style>` blocks (one exception: `MapPopup.vue` needs raw CSS because MapLibre renders popups outside Vue's reactivity scope — see Rule #3 below) |
+| Hardcode style URLs / colors / configuration                                 | Always **expose customization via props** with sensible defaults — see Rule #4 below                                                                                    |
+| Default-export component (`export default Component`)                        | **Named export only** in `index.ts` (`export { default as Map } from './Map.vue'`) — required by shadcn-vue registry builder                                            |
+| Use any standard component naming                                            | Components MUST follow `Map{Feature}.vue` pattern — required by the registry builder script                                                                             |
+
+### What Skills Add (Not in AGENTS.md)
+
+- **`vue-best-practices`** — `ref` vs `reactive`, `shallowRef` for large data, `toRaw`/`toRefs` semantics, `v-once`/`v-memo`, proper `:key` usage, single-responsibility composables, Composition-API patterns
+
+---
+
 ## CRITICAL RULES - NEVER VIOLATE THESE
 
 ### Rule #1: Components Must Be Self-Contained
@@ -136,9 +169,9 @@ export { default as MapPopup } from './MapPopup.vue';
 export default { Map, MapMarker, MapPopup };
 ```
 
-### Rule #7: Bun Catalog Dependencies (CRITICAL)
+### Rule #7: pnpm Catalog Dependencies (CRITICAL)
 
-All dependency versions are managed centrally via Bun workspace catalogs in the root `package.json`. **NEVER** use direct version strings in this package's `package.json`.
+All dependency versions are managed centrally via **pnpm workspace catalogs** in `pnpm-workspace.yaml`. **NEVER** use direct version strings in this package's `package.json`.
 
 ```jsonc
 // CORRECT
@@ -156,7 +189,7 @@ All dependency versions are managed centrally via Bun workspace catalogs in the 
 
 **When adding a new dependency:**
 
-1. Add the version to the `pkg:mapcn-vue` catalog in root `package.json` under `workspaces.catalogs`
+1. Add the version to the `pkg:mapcn-vue` catalog in `pnpm-workspace.yaml` under `catalogs:`
 2. Reference it here as `"catalog:pkg:mapcn-vue"`
 3. Shared deps (vue, typescript) go in the `default` catalog, reference as `"catalog:"`
 
@@ -287,7 +320,7 @@ The registry JSON files in `public/r/` are generated by a custom build script, f
 ### Build Command
 
 ```bash
-bun run build  # Runs scripts/build-registry.ts
+pnpm --filter @geoql/mapcn-vue run build  # Runs scripts/build-registry.ts via tsx
 ```
 
 ### Registry JSON Format
@@ -444,13 +477,13 @@ For example:
 
 ```bash
 # Build registry (generates public/r/*.json)
-bun run build
+pnpm --filter @geoql/mapcn-vue run build
 
 # Linting
-bun run lint             # Run oxlint
+pnpm --filter @geoql/mapcn-vue run lint             # Run oxlint
 
 # From monorepo root
-bun run build            # Builds all packages including this
+pnpm run build            # Builds all packages including this
 ```
 
 ---
@@ -486,7 +519,7 @@ Edit `scripts/build-registry.ts` and add an entry to the `COMPONENTS` map:
 ### 4. Rebuild Registry
 
 ```bash
-bun run build
+pnpm --filter @geoql/mapcn-vue run build
 ```
 
 This regenerates `public/r/map-new-feature.json` and updates `public/r/registry.json`.
@@ -519,7 +552,7 @@ Before every code change:
 
 6. **Is the build script updated?**
    - [ ] New component added to `COMPONENTS` map in `scripts/build-registry.ts`?
-   - [ ] `bun run build` regenerated `public/r/` successfully?
+   - [ ] `pnpm --filter @geoql/mapcn-vue run build` regenerated `public/r/` successfully?
 
 ### Preferred Patterns
 
@@ -532,5 +565,5 @@ Before every code change:
 
 ---
 
-**Last Updated:** 2026-04-07
+**Last Updated:** 2026-05-12
 **Maintainer:** GeoQL Team

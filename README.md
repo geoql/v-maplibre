@@ -20,12 +20,18 @@
 | [docs](./apps/docs)           | API documentation (Docus)        |
 | [mapcn-vue](./apps/mapcn-vue) | mapcn-vue showcase site (Nuxt 4) |
 
+## For AI Coding Assistants
+
+If you're using Claude Code, Cursor, Copilot, OpenCode, or any AGENTS.md-compatible assistant, start with [`AGENTS.md`](./AGENTS.md) (`CLAUDE.md` is a symlink to the same file). It documents the project-pinned skills under [`.agents/skills/`](./.agents/skills/), the per-package skill matrix, and the hard constraints that apply everywhere.
+
+---
+
 ## Quick Start
 
 ### Option 1: Install the library
 
 ```bash
-bun add @geoql/v-maplibre maplibre-gl @deck.gl/{core,layers,mapbox,aggregation-layers,geo-layers,mesh-layers} maplibre-gl-wind
+pnpm add @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox @deck.gl/aggregation-layers @deck.gl/geo-layers @deck.gl/mesh-layers maplibre-gl-wind
 ```
 
 > **Note:** All packages above are required peer dependencies. See the [package README](./packages/v-maplibre/README.md#installation) for details.
@@ -60,33 +66,32 @@ This copies theme-aware map components directly into your project.
 
 ## Development
 
-This monorepo uses [Bun](https://bun.sh) workspaces. The `apps/docs` app is excluded from workspaces and installed separately (Docus requires isolated dependencies).
+This monorepo uses [pnpm v11](https://pnpm.io) workspaces. All four projects (`packages/v-maplibre`, `packages/mapcn-vue`, `apps/mapcn-vue`, `apps/docs`) live in a single workspace with a single `pnpm-lock.yaml`.
 
 ```bash
-# Install dependencies
-bun install
-bun run setup:docs   # Required: installs docs deps separately
+# Install all dependencies in one go
+pnpm install
 
 # Development
-bun run dev:lib      # Watch mode for library
-bun run dev:docs     # Docus documentation
-bun run dev:mapcn    # mapcn-vue site
+pnpm run dev:lib      # Watch mode for library
+pnpm run dev:docs     # Docus documentation
+pnpm run dev:mapcn    # mapcn-vue site
 
 # Build
-bun run build        # Build all packages
-bun run build:docs   # Build docs
-bun run build:mapcn  # Build mapcn-vue
+pnpm run build        # Build all packages
+pnpm run build:docs   # Build docs
+pnpm run build:mapcn  # Build mapcn-vue
 
 # Test
-bun run test         # Run tests
-bun run test:coverage
+pnpm run test         # Run tests
+pnpm run test:coverage
 
 # Lint & Format
-bun run lint
-bun run format
+pnpm run lint
+pnpm run format
 
 # Release (from packages/v-maplibre)
-bun run release
+pnpm run release
 ```
 
 ## Monorepo Structure
@@ -101,10 +106,11 @@ v-maplibre/
 │       ├── registry/new-york/        # Source components (one folder per component)
 │       └── public/r/                 # Generated registry JSONs
 ├── apps/
-│   ├── docs/              # Docus documentation (excluded from workspace)
+│   ├── docs/              # Docus documentation (workspace member, own catalog)
 │   └── mapcn-vue/         # Nuxt 4 showcase site
-├── package.json           # Bun workspaces root
-└── bun.lock
+├── package.json           # pnpm workspaces root
+├── pnpm-workspace.yaml    # Workspace packages + catalogs
+└── pnpm-lock.yaml
 ```
 
 ## License

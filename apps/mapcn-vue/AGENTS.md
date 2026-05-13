@@ -19,11 +19,64 @@
 
 ---
 
+## Skills Integration & Priority
+
+This app uses **five** project-pinned skills from [`.agents/skills/`](../../.agents/skills/):
+
+| Skill                                                                              | When to Load                                                                       |
+| ---------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------- |
+| [`mapcn-vue-design`](../../.agents/skills/mapcn-vue-design/SKILL.md)               | **Any visual work** — CSS, components, layouts, marketing surfaces, design assets  |
+| [`nuxt-best-practices`](../../.agents/skills/nuxt-best-practices/SKILL.md)         | Nuxt patterns — data fetching, server routes, auto-imports, rendering modes        |
+| [`nuxt-seo-best-practices`](../../.agents/skills/nuxt-seo-best-practices/SKILL.md) | SEO / OG images / Cloudflare — meta tags, dynamic OG images, Nitro config          |
+| [`nuxt-geo-best-practices`](../../.agents/skills/nuxt-geo-best-practices/SKILL.md) | Generative-Engine Optimization — llms.txt, GPTBot/ClaudeBot, JSON-LD, AI citations |
+| [`vue-best-practices`](../../.agents/skills/vue-best-practices/SKILL.md)           | Vue components / reactivity / Composition API                                      |
+
+**Priority rule: This AGENTS.md ALWAYS takes precedence over generic skills when they conflict.**
+
+### Known Conflicts (AGENTS.md wins)
+
+| Skill Says                                                                     | AGENTS.md Says (Use This)                                                                                                                                                                             |
+| ------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Use `useFetch` / `useAsyncData` for data fetching                              | Example pages use **direct `$fetch`** (or `useActransitData`-style composables) — these are demos, not production data loads, and SSR-streamed cache would obscure the demo intent                    |
+| Use Pinia for global state                                                     | Use **`ref` + `useState`** — examples are self-contained, no need for cross-page state                                                                                                                |
+| Use `provide / inject` for cross-component state                               | Use **`useState`** for global state, **`useColorMode`** for theme — SSR-safe, no provider wrapper                                                                                                     |
+| Use generic `design-discipline` directions catalog                             | **Tech Utility direction is pinned** — see [`mapcn-vue-design`](../../.agents/skills/mapcn-vue-design/SKILL.md). No deviation without explicit user override.                                         |
+| Generic Tailwind color utilities (`bg-blue-500`, `text-emerald-500`)           | **Forbidden.** Only semantic tokens (`bg-primary`, `text-success`, `text-warning`, `text-destructive`) defined in `main.css`                                                                          |
+| `font-display`, `font-serif`, or any Inter / Space Grotesk / Plus Jakarta Sans | **Forbidden.** ONE family only — `Geist` (sans) + `Geist Mono` (mono)                                                                                                                                 |
+| Standard `<input type="number">` / `<input type="range">` in example UIs       | Use **shadcn-vue `<Input>` + `<Slider>` + `<Label>`** — consistent with the rest of the app                                                                                                           |
+| Place SEO config / OG image generation in any layout                           | Use **per-page `useSeoMeta()` + `defineOgImage()`** in each example page; OG images served by `apps/mapcn-vue/server/routes/__og-image__/`                                                            |
+| Static `robots.txt` blocking AI bots                                           | **Allow** GPTBot / ClaudeBot / PerplexityBot / Google-Extended in `public/robots.txt` — see [`nuxt-geo-best-practices`](../../.agents/skills/nuxt-geo-best-practices/SKILL.md). We want AI citations. |
+| Every example page wraps `<VMap>` with its own controls                        | **Every example must render `<VControlScale position="bottom-left" />`** (directly or via a child component) — non-negotiable map UX rule                                                             |
+| Auto-position MapPanel in any corner                                           | **Top-right only** on mobile (`top-32 right-3`) — see `MapPanel.vue`. Bottom-left/bottom-right collides with Legend + scale bar.                                                                      |
+| Bottom-sheet overlay on map (`absolute bottom-0` of map container)             | Bottom sheet must be a **flex sibling beneath the map**, not an absolute-positioned overlay — see `ComponentDemo.vue` for the pattern                                                                 |
+
+### What Skills Add (Not in AGENTS.md)
+
+The skills supplement this file with generic patterns not covered here:
+
+- **`vue-best-practices`** — Reactivity (`ref` vs `reactive`, `toRefs`, `shallowRef`, `toRaw` for large data), performance (`v-once`, `v-memo`, `defineAsyncComponent`, `KeepAlive`), templates (`v-show` vs `v-if`, proper `:key` usage, avoid `v-if` + `v-for`), Composition-API patterns
+- **`nuxt-best-practices`** — Server-route file layout, useFetch caching semantics, route grouping, transition handling, Nitro task scheduling
+- **`nuxt-seo-best-practices`** — Satori font loading, OG image caching strategies, dynamic per-route `og:image` URL signing
+- **`nuxt-geo-best-practices`** — `llms.txt` schema, citation-friendly content density rules, structured-data validation
+- **`mapcn-vue-design`** — Full OKLch token contract, Distinctive Moment catalog, refusal protocol when a request conflicts with the pinned direction
+
+---
+
 ## CRITICAL RULES - NEVER VIOLATE THESE
 
 > **STOP AND READ BEFORE WRITING ANY CODE**
 >
 > These rules are **NON-NEGOTIABLE**. Violating them causes frustration and wasted time.
+
+Hard bans specific to this app:
+
+- NO `.gradient-text` class (deleted from `main.css`)
+- NO `bg-clip-text` headlines with `bg-gradient-to-*`
+- NO `font-display` / `font-serif` Tailwind utilities — one family only (`Geist`)
+- NO raw Tailwind color utilities: `bg-blue-*`, `text-emerald-*`, `bg-red-*`, etc. Use semantic tokens (`bg-primary`, `text-success`, `text-warning`, `text-destructive`).
+- NO `rounded-2xl` or larger. Cap at `rounded-lg` (8px).
+- NO drop shadows for elevation — borders only.
+- NO centered-everything hero compositions. Use asymmetric 8/4 or 7/5 splits.
 
 ### Rule #1: NEVER Define Types/Interfaces Inline
 
@@ -402,9 +455,9 @@ const mapStyle = computed(() =>
 );
 ```
 
-### Rule #16: Bun Catalog Dependencies (CRITICAL)
+### Rule #16: pnpm Catalog Dependencies (CRITICAL)
 
-All dependency versions are managed centrally via Bun workspace catalogs in the root `package.json`. **NEVER** use direct version strings in this package's `package.json`.
+All dependency versions are managed centrally via **pnpm workspace catalogs** in `pnpm-workspace.yaml`. **NEVER** use direct version strings in this package's `package.json`.
 
 ```jsonc
 // CORRECT
@@ -423,7 +476,7 @@ All dependency versions are managed centrally via Bun workspace catalogs in the 
 
 **When adding a new dependency:**
 
-1. Add the version to the `app:mapcn-vue` catalog in root `package.json` under `workspaces.catalogs`
+1. Add the version to the `app:mapcn-vue` catalog in `pnpm-workspace.yaml` under `catalogs:`
 2. Reference it here as `"catalog:app:mapcn-vue"`
 3. Use `workspace:*` only for internal monorepo packages (e.g., `@geoql/v-maplibre`)
 
@@ -784,19 +837,19 @@ Use CSS variables for theming (defined in `main.css`):
 ## Development Commands
 
 ```bash
-# Development
-bun run dev              # Start dev server (http://localhost:3000)
+# Development (from this directory)
+pnpm run dev              # Start dev server (http://localhost:3000)
 
 # Build
-bun run build            # Build for production
-bun run preview          # Preview production build
+pnpm run build            # Build for production
+pnpm run preview          # Preview production build
 
 # Linting
-bun run lint             # Run oxlint
+pnpm run lint             # Run oxlint
 
 # From monorepo root
-bun run dev:mapcn        # Start this app
-bun run build:mapcn      # Build this app
+pnpm run dev:mapcn        # Start this app
+pnpm run build:mapcn      # Build this app
 ```
 
 ---
@@ -942,5 +995,5 @@ From Butterick's Practical Typography — rules for the showcase site.
 
 ---
 
-**Last Updated:** 2026-02-22
+**Last Updated:** 2026-05-12
 **Maintainer:** GeoQL Team

@@ -4,16 +4,16 @@
 
 Built with [Docus](https://docus.dev) - a Nuxt-based documentation theme.
 
-**Note:** This app is excluded from the monorepo workspace and installed separately (Docus requires isolated dependencies).
+**Note:** This app is a member of the root pnpm workspace and uses the `app:docs` catalog in `pnpm-workspace.yaml` for its Docus-specific dependencies. Run `pnpm install` at the repo root to install everything.
 
 ## Development
 
 ```bash
 # From monorepo root (recommended)
-bun run dev:docs
+pnpm run dev:docs
 
 # Or from this directory
-bun run dev
+pnpm run dev
 ```
 
 The documentation site runs at `http://localhost:3000`.
@@ -42,10 +42,10 @@ Add or edit Markdown files in the `content/` directory. Files are automatically:
 
 ```bash
 # From monorepo root
-bun run build:docs
+pnpm run build:docs
 
 # Or from this directory
-bun run build
+pnpm run build
 ```
 
 ## Tech Stack

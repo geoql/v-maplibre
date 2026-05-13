@@ -19,6 +19,37 @@
 
 ---
 
+## Skills Integration & Priority
+
+This package uses **one** project-pinned skill from [`.agents/skills/`](../../.agents/skills/):
+
+| Skill                                                                    | When to Load                                       |
+| ------------------------------------------------------------------------ | -------------------------------------------------- |
+| [`vue-best-practices`](../../.agents/skills/vue-best-practices/SKILL.md) | Any Vue 3 component / composable / reactivity work |
+
+`mapcn-vue-design`, `nuxt-best-practices`, `nuxt-seo-best-practices`, `nuxt-geo-best-practices` do **not** apply — this is a framework-agnostic library that runs in any Vue 3 host (Nuxt, Vite, Vue CLI, plain HTML).
+
+**Priority rule: This AGENTS.md ALWAYS takes precedence over generic skills when they conflict.**
+
+### Known Conflicts (AGENTS.md wins)
+
+| Skill Says                                              | AGENTS.md Says (Use This)                                                                                                                              |
+| ------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Pass map/state via props for clarity                    | Use **`injectMap()`** — all layer and control components receive the parent map via `provide/inject` (see Rule #2 below)                               |
+| One deck.gl `MapboxOverlay` per layer                   | Use **shared `useDeckOverlay` composable** — single overlay per VMap, multiple deck.gl layers stacked through it (see Rule #7 below)                   |
+| Auto-clean DOM via Vue lifecycle                        | **Manually `removeLayer` / `removeControl`** in `onUnmounted` — MapLibre owns the canvas, Vue's unmount won't remove map artifacts (see Rule #3 below) |
+| Use `reactive()` for option objects                     | Use **`ref()` + `watch()`** for MapLibre options — `reactive()` proxies break MapLibre's identity checks                                               |
+| Compute layer instances inside `computed`               | **Create deck.gl layers inside `watch()` callbacks** — creating them in `computed` triggers GPU resource churn on every reactive update                |
+| Use `useFetch` for tile / data loading                  | **Don't.** Library code can't import Nuxt-specific composables. Use `fetch()` directly inside layer setup.                                             |
+| Use `defineProps<Props>()` with optional inferred types | Use **`withDefaults(defineProps<Props>(), { ... })`** with explicit defaults — Vue's runtime needs concrete defaults for optional props                |
+| `as any` to silence deck.gl generic inference           | **Forbidden.** Use precise deck.gl types (`GeoJsonLayerProps`, `PickingInfo`, `Color`) — see Rule #5 below                                             |
+
+### What Skills Add (Not in AGENTS.md)
+
+- **`vue-best-practices`** — `ref` vs `reactive`, `shallowRef`, avoiding destructure on reactive objects, `v-once`/`v-memo`, `defineAsyncComponent`, `KeepAlive`, single-responsibility composables, return refs not reactive objects, `v-show` vs `v-if`, proper `:key` usage
+
+---
+
 ## CRITICAL RULES - NEVER VIOLATE THESE
 
 ### Rule #1: All Components Must Use Vue 3 Composition API
@@ -164,9 +195,9 @@ src/
 └── index.ts
 ```
 
-### Rule #9: Bun Catalog Dependencies (CRITICAL)
+### Rule #9: pnpm Catalog Dependencies (CRITICAL)
 
-All dependency versions are managed centrally via Bun workspace catalogs in the root `package.json`. **NEVER** use direct version strings in this package's `package.json`.
+All dependency versions are managed centrally via **pnpm workspace catalogs** in `pnpm-workspace.yaml`. **NEVER** use direct version strings in this package's `package.json`.
 
 ```jsonc
 // CORRECT
@@ -184,7 +215,7 @@ All dependency versions are managed centrally via Bun workspace catalogs in the 
 
 **When adding a new dependency:**
 
-1. Add the version to the `pkg:v-maplibre` catalog in root `package.json` under `workspaces.catalogs`
+1. Add the version to the `pkg:v-maplibre` catalog in `pnpm-workspace.yaml` under `catalogs:`
 2. Reference it here as `"catalog:pkg:v-maplibre"`
 3. Shared deps (vue, typescript) go in the `default` catalog, reference as `"catalog:"`
 
@@ -472,27 +503,27 @@ describe('VControlNavigation', () => {
 ## Development Commands
 
 ```bash
-# Development
-bun run dev              # Start Vite dev server
+# Development (from this directory)
+pnpm run dev              # Start Vite dev server
 
 # Build
-bun run build            # Build library + types
+pnpm run build            # Build library + types
 
 # Testing
-bun run test             # Run tests
-bun run test:ui          # Test with UI
-bun run test:coverage    # Coverage report
+pnpm run test             # Run tests
+pnpm run test:ui          # Test with UI
+pnpm run test:coverage    # Coverage report
 
 # Linting
-bun run lint             # Run oxlint
-bun run lint:fix         # Fix lint issues
+pnpm run lint             # Run oxlint
+pnpm run lint:fix         # Fix lint issues
 
 # Formatting
-bun run format           # Format with Prettier
-bun run format:check     # Check formatting
+pnpm run format           # Format with oxfmt
+pnpm run format:check     # Check formatting
 
 # From monorepo root
-bun run dev:lib          # Watch mode
+pnpm run dev:lib          # Watch mode
 ```
 
 ---
@@ -575,5 +606,5 @@ Before every code change:
 
 ---
 
-**Last Updated:** 2026-01-16
+**Last Updated:** 2026-05-12
 **Maintainer:** GeoQL Team

@@ -6,8 +6,8 @@ Thank you for your interest in contributing! This guide will help you get starte
 
 ### Prerequisites
 
-- Node.js (LTS version)
-- bun 1.3.11
+- Node.js (LTS, see [`.nvmrc`](./.nvmrc))
+- pnpm v11
 - Git
 
 ### Getting Started
@@ -22,13 +22,13 @@ cd v-maplibre
 2. **Install dependencies**
 
 ```bash
-bun install
+pnpm install   # installs all four workspace projects
 ```
 
 3. **Set up git hooks**
 
 ```bash
-bun prepare
+pnpm run prepare
 ```
 
 This installs Husky hooks for:
@@ -44,62 +44,62 @@ This installs Husky hooks for:
 > See [mapcn-vue setup instructions](./apps/mapcn-vue/README.md#setup-api-keys).
 
 ```bash
-bun run dev:lib      # Watch mode for library
-bun run dev:docs     # Docus documentation
-bun run dev:mapcn    # mapcn-vue site
+pnpm run dev:lib      # Watch mode for library
+pnpm run dev:docs     # Docus documentation
+pnpm run dev:mapcn    # mapcn-vue site
 ```
 
 ### Running Tests
 
 ```bash
 # Run tests in watch mode
-bun test
+pnpm test
 
 # Run tests once
-bun test run
+pnpm --filter @geoql/v-maplibre exec vitest run
 
 # Run tests with coverage
-bun test:coverage
+pnpm run test:coverage
 
 # Run tests with UI
-bun test:ui
+pnpm --filter @geoql/v-maplibre run test:ui
 ```
 
 ### Linting and Formatting
 
 ```bash
 # Run Oxlint
-bun lint
+pnpm run lint
 
 # Fix lint issues
-bun lint:fix
+pnpm --filter @geoql/v-maplibre run lint:fix
 
 # Format code
-bun format
+pnpm run format
 
 # Check formatting
-bun format:check
+pnpm run format:check
 ```
 
 ### Building
 
 ```bash
-bun run build        # Build all packages
-bun run build:docs   # Build docs
-bun run build:mapcn  # Build mapcn-vue
+pnpm run build        # Build all packages
+pnpm run build:docs   # Build docs
+pnpm run build:mapcn  # Build mapcn-vue
 ```
 
 ### Documentation
 
 ```bash
 # Start docs dev server
-bun docs:dev
+pnpm run dev:docs
 
 # Build docs
-bun docs:build
+pnpm run build:docs
 
 # Preview docs build
-bun docs:preview
+pnpm --filter @geoql/v-maplibre-docs run preview
 ```
 
 ## Commit Convention
@@ -198,9 +198,9 @@ git push origin feat/my-new-feature
 
 ### Pull Request Checklist
 
-- [ ] Tests pass locally (`bun test`)
-- [ ] Code is linted (`bun lint`)
-- [ ] Code is formatted (`bun format`)
+- [ ] Tests pass locally (`pnpm test`)
+- [ ] Code is linted (`pnpm run lint`)
+- [ ] Code is formatted (`pnpm run format`)
 - [ ] Test coverage is maintained (90%+)
 - [ ] Documentation is updated
 - [ ] Commit messages follow conventional commits

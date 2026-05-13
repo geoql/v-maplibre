@@ -18,6 +18,40 @@
 
 ---
 
+## Skills Integration & Priority
+
+This app uses **three** project-pinned skills from [`.agents/skills/`](../../.agents/skills/):
+
+| Skill | When to Load |
+| ----- | ------------ |
+| [`nuxt-best-practices`](../../.agents/skills/nuxt-best-practices/SKILL.md) | Nuxt config / data loading / Nitro / server routes |
+| [`nuxt-seo-best-practices`](../../.agents/skills/nuxt-seo-best-practices/SKILL.md) | SEO / OG images / Cloudflare config / JSON-LD |
+| [`nuxt-geo-best-practices`](../../.agents/skills/nuxt-geo-best-practices/SKILL.md) | Generative-Engine Optimization (llms.txt, AI crawler allowlist) |
+
+`vue-best-practices` is rarely needed (no custom Vue components — Docus owns its theme). `mapcn-vue-design` does **not** apply (Docus owns layout and tokens).
+
+**Priority rule: This AGENTS.md ALWAYS takes precedence over generic skills when they conflict.**
+
+### Known Conflicts (AGENTS.md wins)
+
+| Skill Says | AGENTS.md Says (Use This) |
+| ---------- | ------------------------- |
+| Build custom layouts and components | **Don't.** Docus owns the theme. Write content (Markdown) only — see Rule #5 below |
+| Use `useFetch` / `useAsyncData` for data | **Docus handles content loading via `@nuxt/content`** + Cloudflare D1 binding (`DB`). Don't add manual fetch layers. |
+| Custom OG image generation | Docus handles OG image generation via its built-in theme — `nuxt-seo-best-practices` Satori patterns DO NOT apply here |
+| Pinia for state | **Not needed.** Docus pages are mostly static markdown. Theme toggle uses `@nuxtjs/color-mode`. |
+| `useState` for global state | **Not needed** for this site. If state ever becomes necessary, use `useState`. |
+| Static `robots.txt` blocking AI bots | **Allow** GPTBot / ClaudeBot / PerplexityBot / Google-Extended — we want AI citations of the API docs |
+| Build `llms.txt` from scratch | Docus auto-generates `llms.txt` and `llms-full.txt` from `content/` (see `nuxt.config.ts` `llms` block) — extend the generator config, don't rewrite |
+
+### What Skills Add (Not in AGENTS.md)
+
+- **`nuxt-best-practices`** — Nitro Cloudflare preset config, env var conventions, route grouping
+- **`nuxt-seo-best-practices`** — Sitemap generation, robots.txt strategy when self-hosted, structured-data schemas
+- **`nuxt-geo-best-practices`** — `llms.txt` schema, citation-friendly content rules (high info density, plain language, statistics over fluff), JSON-LD entity clarity
+
+---
+
 ## CRITICAL RULES
 
 ### Rule #1: Documentation Lives in `content/` Directory
@@ -256,7 +290,7 @@ const options: MapOptions = {
 ```
 
 ```bash
-bun add @geoql/v-maplibre maplibre-gl
+pnpm add @geoql/v-maplibre maplibre-gl
 ```
 ````
 
@@ -284,12 +318,12 @@ Error/danger message.
 npm install @geoql/v-maplibre
 ```
 
-```bash [bun]
-bun add @geoql/v-maplibre
-```
-
 ```bash [pnpm]
 pnpm add @geoql/v-maplibre
+```
+
+```bash [yarn]
+yarn add @geoql/v-maplibre
 ```
 ::
 ```
@@ -314,18 +348,18 @@ Card content goes here.
 
 ```bash
 # Development (from this directory)
-bun run dev              # Start dev server
+pnpm run dev              # Start dev server
 
 # From monorepo root
-bun run setup:docs       # Install deps (required first time)
-bun run dev:docs         # Start docs dev server
+pnpm install              # Installs all workspace projects (including docs)
+pnpm run dev:docs         # Start docs dev server
 
 # Build
-bun run build            # Build for production
+pnpm run build            # Build for production
 
 # Linting
-bun run lint             # Run oxlint + eslint
-bun run lint:fix         # Fix lint issues
+pnpm run lint             # Run oxlint + eslint
+pnpm --filter @geoql/v-maplibre-docs run lint:fix         # Fix lint issues
 ```
 
 ---
@@ -383,5 +417,5 @@ content: {
 
 ---
 
-**Last Updated:** 2026-01-16
+**Last Updated:** 2026-05-12
 **Maintainer:** GeoQL Team

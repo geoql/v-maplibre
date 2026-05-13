@@ -24,7 +24,7 @@ npx shadcn-vue@latest add https://mapcn-vue.geoql.in/r/map-deckgl-core
 The components require these peer dependencies:
 
 ```bash
-bun add @geoql/v-maplibre maplibre-gl @vueuse/core
+pnpm add @geoql/v-maplibre maplibre-gl @vueuse/core
 ```
 
 ## Available Components

@@ -23,17 +23,14 @@
 ## Installation
 
 ```bash
-# bun
-bun add @geoql/v-maplibre maplibre-gl @deck.gl/{core,layers,mapbox,aggregation-layers,geo-layers,mesh-layers} maplibre-gl-wind
+# pnpm (recommended)
+pnpm add @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox @deck.gl/aggregation-layers @deck.gl/geo-layers @deck.gl/mesh-layers maplibre-gl-wind
 
 # npm
-npm install @geoql/v-maplibre maplibre-gl @deck.gl/{core,layers,mapbox,aggregation-layers,geo-layers,mesh-layers} maplibre-gl-wind
+npm install @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox @deck.gl/aggregation-layers @deck.gl/geo-layers @deck.gl/mesh-layers maplibre-gl-wind
 
 # yarn
-yarn add @geoql/v-maplibre maplibre-gl @deck.gl/{core,layers,mapbox,aggregation-layers,geo-layers,mesh-layers} maplibre-gl-wind
-
-# pnpm
-pnpm add @geoql/v-maplibre maplibre-gl @deck.gl/{core,layers,mapbox,aggregation-layers,geo-layers,mesh-layers} maplibre-gl-wind
+yarn add @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox @deck.gl/aggregation-layers @deck.gl/geo-layers @deck.gl/mesh-layers maplibre-gl-wind
 ```
 
 > **Note:** All packages listed above are required peer dependencies. Without them, your build will fail with missing export errors.
@@ -43,17 +40,17 @@ pnpm add @geoql/v-maplibre maplibre-gl @deck.gl/{core,layers,mapbox,aggregation-
 Install these packages based on the features you need:
 
 ```bash
-# Raster/COG layers (Cloud-Optimized GeoTIFF)
-bun add @developmentseed/deck.gl-raster @developmentseed/deck.gl-geotiff @developmentseed/geotiff
+# Raster/COG layers (Cloud-Optimized GeoTIFF) — requires deck.gl-raster ^0.6.0
+pnpm add @developmentseed/deck.gl-raster @developmentseed/deck.gl-geotiff @developmentseed/geotiff
 
 # COG Mosaic layers (client-side mosaicking of multiple COGs)
-bun add @developmentseed/deck.gl-raster @developmentseed/deck.gl-geotiff @developmentseed/geotiff
+pnpm add @developmentseed/deck.gl-raster @developmentseed/deck.gl-geotiff @developmentseed/geotiff
 
 # LiDAR viewer control
-bun add maplibre-gl-lidar
+pnpm add maplibre-gl-lidar
 
 # Wind particle visualization
-bun add maplibre-gl-wind
+pnpm add maplibre-gl-wind
 ```
 
 ## Quick Start
@@ -297,16 +294,16 @@ This package is part of the [v-maplibre monorepo](https://github.com/geoql/v-map
 # Clone and install (from monorepo root)
 git clone https://github.com/geoql/v-maplibre.git
 cd v-maplibre
-bun install
+pnpm install
 
 # Build this package
-bun run --cwd packages/v-maplibre build
+pnpm --filter @geoql/v-maplibre run build
 
 # Run tests
-bun run test
+pnpm run test
 
 # Watch mode
-bun run dev:lib
+pnpm run dev:lib
 ```
 
 ## License
