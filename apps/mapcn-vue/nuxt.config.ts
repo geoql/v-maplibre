@@ -1,3 +1,8 @@
+import libraryPkg from '../../packages/v-maplibre/package.json' with { type: 'json' };
+
+// Bump alongside packages/v-maplibre version. Source: GitHub release date for the matching tag.
+const LIBRARY_RELEASED_AT = '2026-04-07T11:12:28Z';
+
 export default defineNuxtConfig({
   modules: [
     '@nuxtjs/color-mode',
@@ -67,6 +72,10 @@ export default defineNuxtConfig({
     googleFloodApiKey: '',
     public: {
       mapsguruApiKey: '',
+      library: {
+        version: libraryPkg.version,
+        releasedAt: LIBRARY_RELEASED_AT,
+      },
     },
   },
 
