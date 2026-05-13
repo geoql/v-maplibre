@@ -500,11 +500,12 @@ All dependency versions are managed centrally via **pnpm workspace catalogs** in
 
 ### Server (`server/`)
 
-| Component        | Technology                                      |
-| ---------------- | ----------------------------------------------- |
-| **Server**       | Nitro (Nuxt's built-in)                         |
-| **Registry API** | `/r/[name].ts` - shadcn-vue registry endpoint   |
-| **API Routes**   | Valhalla routing proxy, geocoding, trip planner |
+| Component        | Technology                                                                              |
+| ---------------- | --------------------------------------------------------------------------------------- |
+| **Server**       | Nitro (Nuxt's built-in)                                                                 |
+| **Database**     | **Cloudflare D1** (`mapcn-vue-db`) — see [`server/db/README.md`](./server/db/README.md) |
+| **Registry API** | `/r/[name].ts` - shadcn-vue registry endpoint                                           |
+| **API Routes**   | `/api/promap` (D1-backed), Valhalla routing, geocoding, trip planner, groundsource      |
 
 ### Deployment
 
@@ -756,6 +757,20 @@ Each example page should follow this structure:
 ---
 
 ## API Routes
+
+### ProMap (D1-backed)
+
+`GET /api/promap?bbox=W,S,E,N&limit=5000` returns viewport-bounded ZIP-level
+rows from the Cloudflare D1 `promap` table, sorted by `size_rank ASC`
+(biggest cities first). Local dev falls back to `better-sqlite3` reading the
+Miniflare emulator file directly.
+
+The route uses the standard Nuxt 4 server pattern: `defineRouteMeta` for
+OpenAPI metadata, `getValidatedQuery` for input parsing, `createError` for
+error responses. See [`server/routes/api/promap.get.ts`](./server/routes/api/promap.get.ts).
+
+**Contributors on their own CF account**: follow [`server/db/README.md`](./server/db/README.md)
+to provision your own D1 database and apply the schema + seed.
 
 ### Valhalla Routing Proxy
 
