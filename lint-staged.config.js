@@ -1,7 +1,7 @@
 export default {
   'apps/mapcn-vue/**/*.{js,jsx,ts,tsx,vue}': [
-    'bun run --cwd apps/mapcn-vue format',
-    'bun run --cwd apps/mapcn-vue lint:fix',
+    'pnpm --filter @geoql/mapcn-vue-app run format',
+    'pnpm --filter @geoql/mapcn-vue-app run lint:fix',
   ],
   '*.{js,jsx,ts,tsx,vue}': ['oxlint --fix', 'oxfmt --write'],
   '*.{json,md,yml,yaml,css,html}': [

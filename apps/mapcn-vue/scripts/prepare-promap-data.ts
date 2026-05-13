@@ -1,7 +1,7 @@
 /**
  * Build-time script to prepare ProMap data from Zillow ZHVI + Census centroids + SimpleMaps population.
  *
- * Run: bun run apps/mapcn-vue/scripts/prepare-promap-data.ts
+ * Run: pnpm --filter @geoql/mapcn-vue-app exec tsx scripts/prepare-promap-data.ts
  *
  * Downloads:
  *   1. Zillow ZHVI CSV (~120MB, 26,300 ZIPs × 322 columns)
@@ -11,6 +11,8 @@
  * Joins on ZIP code and outputs a compact JSON array to:
  *   apps/mapcn-vue/public/data/promap-data.json
  */
+import { writeFile, mkdir } from 'node:fs/promises';
+import { dirname } from 'node:path';
 
 const ZHVI_URL =
   'https://files.zillowstatic.com/research/public_csvs/zhvi/Zip_zhvi_uc_sfrcondo_tier_0.33_0.67_sm_sa_month.csv';
@@ -341,7 +343,8 @@ async function main(): Promise<void> {
 
   console.log('\n💾 Writing output...');
   const json = JSON.stringify(records);
-  await Bun.write(OUTPUT_PATH, json);
+  await mkdir(dirname(OUTPUT_PATH), { recursive: true });
+  await writeFile(OUTPUT_PATH, json, 'utf8');
 
   const sizeBytes = json.length;
   const sizeMB = (sizeBytes / 1024 / 1024).toFixed(2);
