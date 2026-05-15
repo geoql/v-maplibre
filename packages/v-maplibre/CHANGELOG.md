@@ -1,5 +1,35 @@
 # Changelog
 
+## [1.8.0](https://github.com/geoql/v-maplibre/compare/v1.7.1...v1.8.0) (2026-05-15)
+
+
+### Features
+
+* **v-maplibre:** add VLayerDeckglMultiCOG wrapper ([fdaf5cb](https://github.com/geoql/v-maplibre/commit/fdaf5cbbe24c3856d2118d7c98e26af50ef9d396))
+* **v-maplibre:** add VLayerDeckglZarr wrapper ([4edb6c5](https://github.com/geoql/v-maplibre/commit/4edb6c5e6ee5fb846c2012e9fb29ce0023b37bbf))
+
+
+### Bug Fixes
+
+* **v-maplibre:** adapt COG/Mosaic to deck.gl-geotiff 0.6 API ([26900b1](https://github.com/geoql/v-maplibre/commit/26900b10b2f0f9015f3968a6c5ea0e44f8bce11d))
+* **v-maplibre:** use real semver in all dep blocks for npm + JSR ([a0b02d2](https://github.com/geoql/v-maplibre/commit/a0b02d2cd01a278c79f34e7bd0bb2a582a303e0b))
+
+
+### Documentation
+
+* **agents:** canonicalize AGENTS.md, symlink CLAUDE.md per Vercel pattern ([d67c4dc](https://github.com/geoql/v-maplibre/commit/d67c4dc9655a022d88acc4693e671dad19d75bc5))
+* refactor docs for VMarker component from lng-lat to coordinates ([fea8186](https://github.com/geoql/v-maplibre/commit/fea8186bb0120e1dfec200e634f8e80122de8d0f))
+
+
+### Miscellaneous
+
+* bump deps + restore @resvg/resvg-js for dev mode ([784f175](https://github.com/geoql/v-maplibre/commit/784f1750c828e3604e39fabbb06bbc81ba5ed481))
+
+
+### Code Refactoring
+
+* **v-maplibre:** adopt vite-plus for build + test ([108dba6](https://github.com/geoql/v-maplibre/commit/108dba6a2c567564dc8cbfcec0fcb30fbacde4c7))
+
 ## [1.7.1](https://github.com/geoql/v-maplibre/compare/v1.7.0...v1.7.1) (2026-04-07)
 
 
