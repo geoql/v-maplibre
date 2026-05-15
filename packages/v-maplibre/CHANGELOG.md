@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.8.1](https://github.com/geoql/v-maplibre/compare/v1.8.0...v1.8.1) (2026-05-15)
+
+
+### Documentation
+
+* **v-maplibre:** truthful peer-dependency install matrix in package README ([fd0b20b](https://github.com/geoql/v-maplibre/commit/fd0b20b11335e507c778e910ca0bca0a4db1c632))
+
 ## [1.8.0](https://github.com/geoql/v-maplibre/compare/v1.7.1...v1.8.0) (2026-05-15)
 
 
