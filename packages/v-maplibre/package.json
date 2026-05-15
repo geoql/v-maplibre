@@ -80,18 +80,18 @@
     "@deck.gl/layers": "^9.3.2",
     "@deck.gl/mapbox": "^9.3.2",
     "@deck.gl/mesh-layers": "^9.3.2",
-    "@developmentseed/deck.gl-geotiff": "^0.6.1",
-    "@developmentseed/deck.gl-raster": "^0.6.1",
-    "@developmentseed/deck.gl-zarr": "^0.6.1",
-    "@developmentseed/geotiff": "^0.6.1",
-    "@developmentseed/proj": "^0.6.1",
+    "@developmentseed/deck.gl-geotiff": "^0.7.0",
+    "@developmentseed/deck.gl-raster": "^0.7.0",
+    "@developmentseed/deck.gl-zarr": "^0.7.0",
+    "@developmentseed/geotiff": "^0.7.0",
+    "@developmentseed/proj": "^0.7.0",
     "@geoql/maplibre-gl-starfield": "^0.1.1",
     "@luma.gl/core": "^9.3.3",
     "@luma.gl/engine": "^9.3.3",
     "@luma.gl/shadertools": "^9.3.3",
     "@tsdown/css": "^0.22.0",
-    "@types/node": "^25.7.0",
-    "@vitejs/plugin-vue": "^6.0.6",
+    "@types/node": "^25.8.0",
+    "@vitejs/plugin-vue": "^6.0.7",
     "@vitest/coverage-v8": "^4.1.6",
     "@vue/test-utils": "^2.4.10",
     "happy-dom": "^20.9.0",
@@ -100,9 +100,9 @@
     "three": "^0.184.0",
     "typescript": "^6.0.3",
     "unplugin-vue": "^7.2.0",
-    "vite-plus": "^0.1.20",
+    "vite-plus": "^0.1.21",
     "vue": "^3.5.34",
-    "vue-tsc": "^3.2.8",
+    "vue-tsc": "^3.2.9",
     "zarrita": "^0.7.3"
   },
   "peerDependencies": {
@@ -174,5 +174,5 @@
       "optional": true
     }
   },
-  "packageManager": "pnpm@11.1.1"
+  "packageManager": "pnpm@11.1.2"
 }
