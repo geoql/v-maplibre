@@ -1,5 +1,18 @@
 <script setup lang="ts">
   /**
+   * GeoZarr tile renderer with optional reprojection (caller supplies the store).
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@developmentseed/deck.gl-raster`
+   * @requires `@developmentseed/deck.gl-zarr`
+   * @requires `@developmentseed/proj`
+   * @requires `zarrita`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @developmentseed/deck.gl-raster @developmentseed/deck.gl-zarr @developmentseed/proj zarrita`
+   */
+  /**
    * VLayerDeckglZarr — GeoZarr tile rendering with reprojection.
    *
    * Wraps @developmentseed/deck.gl-zarr ZarrLayer.
@@ -28,8 +41,11 @@
     SliceInput,
   } from '@developmentseed/deck.gl-zarr';
   import type * as zarr from 'zarrita';
-  import { injectStrict, MapKey } from '../../../utils';
+  import { injectStrict, MapKey, requirePeer } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
+
+  const ZARR_PEER_INSTALL =
+    'pnpm add @deck.gl/core @deck.gl/layers @deck.gl/mapbox @developmentseed/deck.gl-raster @developmentseed/deck.gl-zarr @developmentseed/proj zarrita';
 
   interface Props {
     id: string;
@@ -132,8 +148,16 @@
   const initializeLayer = async () => {
     try {
       const [zarrModule, projModule] = await Promise.all([
-        import('@developmentseed/deck.gl-zarr'),
-        import('@developmentseed/proj'),
+        requirePeer(
+          '@developmentseed/deck.gl-zarr',
+          () => import('@developmentseed/deck.gl-zarr'),
+          ZARR_PEER_INSTALL,
+        ),
+        requirePeer(
+          '@developmentseed/proj',
+          () => import('@developmentseed/proj'),
+          ZARR_PEER_INSTALL,
+        ),
       ]);
 
       ZarrLayerClass.value = markRaw(zarrModule.ZarrLayer);

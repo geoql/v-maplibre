@@ -1,5 +1,19 @@
 <script setup lang="ts">
   /**
+   * Multi-band split-resolution COG compositor (e.g. Sentinel-2 band combinations).
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/layers`
+   * @requires `@developmentseed/deck.gl-geotiff`
+   * @requires `@developmentseed/deck.gl-raster`
+   * @requires `@developmentseed/geotiff`
+   * @requires `@developmentseed/proj`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers @developmentseed/deck.gl-geotiff @developmentseed/deck.gl-raster @developmentseed/geotiff @developmentseed/proj`
+   */
+  /**
    * VLayerDeckglMultiCOG — multi-band split-resolution COG compositing.
    *
    * Wraps @developmentseed/deck.gl-geotiff MultiCOGLayer.
@@ -22,7 +36,10 @@
   import type { RasterModule } from '@developmentseed/deck.gl-raster';
   import type { MultiCOGSourceConfig } from '@developmentseed/deck.gl-geotiff';
   import type { GeoTIFF } from '@developmentseed/geotiff';
-  import { injectStrict, MapKey } from '../../../utils';
+  import { injectStrict, MapKey, requirePeer } from '../../../utils';
+
+  const MULTICOG_PEER_INSTALL =
+    'pnpm add @deck.gl/core @deck.gl/layers @deck.gl/mapbox @developmentseed/deck.gl-geotiff @developmentseed/deck.gl-raster @developmentseed/geotiff @developmentseed/proj';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
 
   /**
@@ -183,8 +200,16 @@
   const initializeLayer = async () => {
     try {
       const [geotiffModule, projModule] = await Promise.all([
-        import('@developmentseed/deck.gl-geotiff'),
-        import('@developmentseed/proj'),
+        requirePeer(
+          '@developmentseed/deck.gl-geotiff',
+          () => import('@developmentseed/deck.gl-geotiff'),
+          MULTICOG_PEER_INSTALL,
+        ),
+        requirePeer(
+          '@developmentseed/proj',
+          () => import('@developmentseed/proj'),
+          MULTICOG_PEER_INSTALL,
+        ),
       ]);
 
       MultiCOGLayerClass.value = markRaw(geotiffModule.MultiCOGLayer);

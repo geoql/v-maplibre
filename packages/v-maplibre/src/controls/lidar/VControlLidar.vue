@@ -1,6 +1,14 @@
 <script setup lang="ts">
+  /**
+   * COPC / LAZ point-cloud viewer control with streaming + colormap controls.
+   *
+   * @requires `maplibre-gl-lidar`
+   *
+   * Install with:
+   * `pnpm add maplibre-gl-lidar`
+   */
   import { onMounted, onUnmounted, ref } from 'vue';
-  import { MapKey, injectStrict } from '../../utils';
+  import { MapKey, injectStrict, requirePeer } from '../../utils';
   import { lidarControlEvents as events } from './events';
   import type {
     ControlPosition,
@@ -106,7 +114,10 @@
   });
 
   const addControl = async (): Promise<void> => {
-    const { LidarControl } = await import('maplibre-gl-lidar');
+    const { LidarControl } = await requirePeer(
+      'maplibre-gl-lidar',
+      () => import('maplibre-gl-lidar'),
+    );
 
     control.value = new LidarControl(
       props.options || defaultOptions,
