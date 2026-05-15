@@ -48,3 +48,6 @@ TODO.local.md
 # Cloudflare Pages / Workers local state (D1, KV, etc.)
 .wrangler
 .opencode
+
+# Git worktrees for parallel branch work
+.worktrees
