@@ -30,11 +30,29 @@ If you're using Claude Code, Cursor, Copilot, OpenCode, or any AGENTS.md-compati
 
 ### Option 1: Install the library
 
+The library has **two required dependencies**. Everything else is opt-in per feature.
+
 ```bash
-pnpm add @geoql/v-maplibre maplibre-gl @deck.gl/core @deck.gl/layers @deck.gl/mapbox @deck.gl/aggregation-layers @deck.gl/geo-layers @deck.gl/mesh-layers maplibre-gl-wind
+pnpm add @geoql/v-maplibre maplibre-gl
 ```
 
-> **Note:** All packages above are required peer dependencies. See the [package README](./packages/v-maplibre/README.md#installation) for details.
+That's it for `VMap`, `VMarker`, `VPopup`, all controls (`VControl*`), and every MapLibre-native layer (`VLayerMaplibre*`).
+
+Add the optional packages below **only** for the layers you actually use:
+
+| Feature        | Components                                                                                                                                                                                                                                                                                   | Install                                                                                                             |
+| -------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| deck.gl base   | `VLayerDeckgl`, `VLayerDeckglScatterplot`, `VLayerDeckglArc`, `VLayerDeckglLine`, `VLayerDeckglPath`, `VLayerDeckglPolygon`, `VLayerDeckglSolidPolygon`, `VLayerDeckglGeojson`, `VLayerDeckglIcon`, `VLayerDeckglText`, `VLayerDeckglColumn`, `VLayerDeckglBitmap`, `VLayerDeckglPointCloud` | `pnpm add @deck.gl/core @deck.gl/layers @deck.gl/mapbox`                                                            |
+| Aggregation    | `VLayerDeckglHeatmap`, `VLayerDeckglHexagon`, `VLayerDeckglGrid`, `VLayerDeckglGridCell`, `VLayerDeckglContour`, `VLayerDeckglScreenGrid`                                                                                                                                                    | + `@deck.gl/aggregation-layers`                                                                                     |
+| Geo / tiles    | `VLayerDeckglTrips`, `VLayerDeckglMVT`, `VLayerDeckglTile`, `VLayerDeckglTile3D`, `VLayerDeckglTerrain`, `VLayerDeckglH3Hexagon`, `VLayerDeckglH3Cluster`, `VLayerDeckglS2`, `VLayerDeckglGeohash`, `VLayerDeckglQuadkey`, `VLayerDeckglGreatCircle`, `VLayerDeckglWMS`                      | + `@deck.gl/geo-layers`                                                                                             |
+| 3D mesh        | `VLayerDeckglSimpleMesh`, `VLayerDeckglScenegraph`                                                                                                                                                                                                                                           | + `@deck.gl/mesh-layers`                                                                                            |
+| Raster (COG)   | `VLayerDeckglCOG`, `VLayerDeckglMultiCOG`, `VLayerDeckglMosaic`                                                                                                                                                                                                                              | + `@developmentseed/deck.gl-geotiff @developmentseed/deck.gl-raster @developmentseed/geotiff @developmentseed/proj` |
+| Zarr           | `VLayerDeckglZarr`                                                                                                                                                                                                                                                                           | + `@developmentseed/deck.gl-zarr zarrita`                                                                           |
+| Wind particles | `VLayerDeckglWindParticle`                                                                                                                                                                                                                                                                   | + `maplibre-gl-wind`                                                                                                |
+| LiDAR          | `VControlLidar`                                                                                                                                                                                                                                                                              | + `maplibre-gl-lidar`                                                                                               |
+| Starfield      | `VLayerMaplibreStarfield`                                                                                                                                                                                                                                                                    | + `@geoql/maplibre-gl-starfield three`                                                                              |
+
+See the [Getting Started guide](https://v-maplibre.geoql.in/guide/getting-started) for full installation details.
 
 ```vue
 <script setup lang="ts">
