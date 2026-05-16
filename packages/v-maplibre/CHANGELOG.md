@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.9.0](https://github.com/geoql/v-maplibre/compare/v1.8.1...v1.9.0) (2026-05-16)
+
+
+### Features
+
+* **v-maplibre:** add requirePeer helper for typed dynamic peer-dep loading ([47c6062](https://github.com/geoql/v-maplibre/commit/47c6062f08a68ff73c4fa6b583c7b98747021320))
+* **v-maplibre:** peer-dependency UX — requirePeer helper + per-component docs + [@requires](https://github.com/requires) JSDoc ([ccc1fa4](https://github.com/geoql/v-maplibre/commit/ccc1fa4516a7fe7c70dcc12c10e299f97d2e206f))
+
+
+### Documentation
+
+* **v-maplibre:** add [@requires](https://github.com/requires) JSDoc annotations to layer components ([5cfe75f](https://github.com/geoql/v-maplibre/commit/5cfe75fe720c31bff6a1f3b430fdb24dd4dc46a5))
+
 ## [1.8.1](https://github.com/geoql/v-maplibre/compare/v1.8.0...v1.8.1) (2026-05-15)
 
 
