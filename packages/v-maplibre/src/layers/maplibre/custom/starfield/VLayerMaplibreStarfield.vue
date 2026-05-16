@@ -1,4 +1,12 @@
 <script setup lang="ts">
+  /**
+   * Animated starfield overlay rendered as a custom MapLibre layer for night-time / space-themed basemaps.
+   *
+   * @requires `@geoql/maplibre-gl-starfield`
+   *
+   * Install with:
+   * `pnpm add @geoql/maplibre-gl-starfield`
+   */
   import { ref, watch, onBeforeUnmount } from 'vue';
   import type { Map } from 'maplibre-gl';
   import { MaplibreStarfieldLayer } from '@geoql/maplibre-gl-starfield';

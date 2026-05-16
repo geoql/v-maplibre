@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Generate contour lines or isobands from point aggregations.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/aggregation-layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/aggregation-layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { ContourLayer } from '@deck.gl/aggregation-layers';
   import type { Color, PickingInfo, Position } from '@deck.gl/core';

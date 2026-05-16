@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Gaussian-kernel heatmap from point data, GPU-aggregated.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/aggregation-layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/aggregation-layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { HeatmapLayer } from '@deck.gl/aggregation-layers';
   import type { PickingInfo, Position } from '@deck.gl/core';

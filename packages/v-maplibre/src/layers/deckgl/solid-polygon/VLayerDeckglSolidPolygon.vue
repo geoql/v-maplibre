@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Triangulated solid polygons with extrusion (fastest filled polygons in deck.gl).
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { SolidPolygonLayer } from '@deck.gl/layers';
   import type { SolidPolygonLayerProps } from '@deck.gl/layers';

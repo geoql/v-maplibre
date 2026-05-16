@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Aggregate points into a regular square grid (GPU or CPU).
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/aggregation-layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/aggregation-layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { GridLayer } from '@deck.gl/aggregation-layers';
   import type { Color, PickingInfo, Position } from '@deck.gl/core';

@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Render GeoJSON FeatureCollections as deck.gl points/lines/polygons.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { GeoJsonLayer } from '@deck.gl/layers';
   import type { PickingInfo } from '@deck.gl/core';

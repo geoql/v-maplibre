@@ -1,4 +1,18 @@
 <script setup lang="ts">
+  /**
+   * Single Cloud-Optimized GeoTIFF (COG) viewer with automatic CRS reprojection.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/layers`
+   * @requires `@developmentseed/deck.gl-geotiff`
+   * @requires `@developmentseed/deck.gl-raster`
+   * @requires `@developmentseed/geotiff`
+   * @requires `@developmentseed/proj`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers @developmentseed/deck.gl-geotiff @developmentseed/deck.gl-raster @developmentseed/geotiff @developmentseed/proj`
+   */
   import {
     onMounted,
     onBeforeUnmount,
@@ -8,8 +22,11 @@
     markRaw,
   } from 'vue';
   import type { Color, PickingInfo } from '@deck.gl/core';
-  import { injectStrict, MapKey } from '../../../utils';
+  import { injectStrict, MapKey, requirePeer } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
+
+  const COG_PEER_INSTALL =
+    'pnpm add @deck.gl/core @deck.gl/layers @deck.gl/mapbox @developmentseed/deck.gl-geotiff @developmentseed/deck.gl-raster @developmentseed/geotiff @developmentseed/proj';
 
   interface Props {
     id: string;
@@ -168,8 +185,16 @@
   const initializeLayer = async () => {
     try {
       const [geotiffModule, projModule] = await Promise.all([
-        import('@developmentseed/deck.gl-geotiff'),
-        import('@developmentseed/proj'),
+        requirePeer(
+          '@developmentseed/deck.gl-geotiff',
+          () => import('@developmentseed/deck.gl-geotiff'),
+          COG_PEER_INSTALL,
+        ),
+        requirePeer(
+          '@developmentseed/proj',
+          () => import('@developmentseed/proj'),
+          COG_PEER_INSTALL,
+        ),
       ]);
 
       COGLayerClass.value = markRaw(geotiffModule.COGLayer);

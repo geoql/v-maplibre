@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Animated trail paths over time (vehicle / animal tracks).
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/geo-layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/geo-layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { TripsLayer } from '@deck.gl/geo-layers';
   import type { TripsLayerProps } from '@deck.gl/geo-layers';

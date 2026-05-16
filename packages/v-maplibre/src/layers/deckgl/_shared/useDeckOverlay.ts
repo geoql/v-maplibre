@@ -11,6 +11,7 @@ import {
 } from 'vue';
 import type { MapboxOverlay } from '@deck.gl/mapbox';
 import type { Map, MapMouseEvent } from 'maplibre-gl';
+import { requirePeer } from '../../../utils';
 
 export const DeckOverlayKey: InjectionKey<ShallowRef<MapboxOverlay | null>> =
   Symbol('DeckOverlay');
@@ -102,7 +103,11 @@ export function useDeckOverlay(
     if (overlay.value) return Promise.resolve();
     if (initPromise) return initPromise;
 
-    initPromise = import('@deck.gl/mapbox')
+    initPromise = requirePeer(
+      '@deck.gl/mapbox',
+      () => import('@deck.gl/mapbox'),
+      'pnpm add @deck.gl/core @deck.gl/mapbox',
+    )
       .then(({ MapboxOverlay }) => {
         if (overlay.value) return;
 

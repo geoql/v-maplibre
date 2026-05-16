@@ -1,5 +1,19 @@
 <script setup lang="ts">
   /**
+   * Client-side COG mosaic for STAC items — GPU-rendered, no tile server required.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/layers`
+   * @requires `@developmentseed/deck.gl-geotiff`
+   * @requires `@developmentseed/deck.gl-raster`
+   * @requires `@developmentseed/geotiff`
+   * @requires `@developmentseed/proj`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers @developmentseed/deck.gl-geotiff @developmentseed/deck.gl-raster @developmentseed/geotiff @developmentseed/proj`
+   */
+  /**
    * VLayerDeckglMosaic - Client-side COG mosaic layer for STAC items
    *
    * Uses @developmentseed/deck.gl-geotiff v0.3.0 MosaicLayer for efficient
@@ -27,8 +41,11 @@
     MosaicSource as BaseMosaicSource,
   } from '@developmentseed/deck.gl-geotiff';
   import type { EpsgResolver } from '@developmentseed/proj';
-  import { injectStrict, MapKey } from '../../../utils';
+  import { injectStrict, MapKey, requirePeer } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
+
+  const MOSAIC_PEER_INSTALL =
+    'pnpm add @deck.gl/core @deck.gl/layers @deck.gl/mapbox @developmentseed/deck.gl-geotiff @developmentseed/deck.gl-raster @developmentseed/geotiff @developmentseed/proj';
 
   /**
    * A STAC-like item with bounding box and COG asset URL
@@ -364,10 +381,26 @@ uniform ndviFilterUniforms {
     try {
       const [geotiffModule, rasterModule, devGeotiff, projModule] =
         await Promise.all([
-          import('@developmentseed/deck.gl-geotiff'),
-          import('@developmentseed/deck.gl-raster/gpu-modules'),
-          import('@developmentseed/geotiff'),
-          import('@developmentseed/proj'),
+          requirePeer(
+            '@developmentseed/deck.gl-geotiff',
+            () => import('@developmentseed/deck.gl-geotiff'),
+            MOSAIC_PEER_INSTALL,
+          ),
+          requirePeer(
+            '@developmentseed/deck.gl-raster',
+            () => import('@developmentseed/deck.gl-raster/gpu-modules'),
+            MOSAIC_PEER_INSTALL,
+          ),
+          requirePeer(
+            '@developmentseed/geotiff',
+            () => import('@developmentseed/geotiff'),
+            MOSAIC_PEER_INSTALL,
+          ),
+          requirePeer(
+            '@developmentseed/proj',
+            () => import('@developmentseed/proj'),
+            MOSAIC_PEER_INSTALL,
+          ),
         ]);
 
       modules.value = markRaw({

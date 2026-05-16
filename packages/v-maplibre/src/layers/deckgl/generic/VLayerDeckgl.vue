@@ -1,4 +1,13 @@
 <script setup lang="ts">
+  /**
+   * Generic deck.gl layer wrapper — supply your own deck.gl Layer instance via the `layer` prop.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import type { PickingInfo } from '@deck.gl/core';
   import { injectStrict, MapKey } from '../../../utils';

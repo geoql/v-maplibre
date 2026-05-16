@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Render terrain meshes from elevation tiles (terrain-rgb / mapbox-rgb).
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/geo-layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/geo-layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { TerrainLayer } from '@deck.gl/geo-layers';
   import type { Color, PickingInfo } from '@deck.gl/core';

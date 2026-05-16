@@ -1,5 +1,13 @@
 export { default as VLayerDeckglWindParticle } from './VLayerDeckglWindParticle.vue';
 
+/**
+ * Wind particle layer re-exports from `maplibre-gl-wind`.
+ *
+ * @requires `maplibre-gl-wind`
+ *
+ * Install with:
+ * `pnpm add maplibre-gl-wind`
+ */
 export {
   WindParticleLayer,
   generateWindTexture,

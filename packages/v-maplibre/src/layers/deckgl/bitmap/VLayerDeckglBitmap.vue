@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Render a single bitmap image at geographic bounds.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { BitmapLayer } from '@deck.gl/layers';
   import type { Color, PickingInfo, Position } from '@deck.gl/core';

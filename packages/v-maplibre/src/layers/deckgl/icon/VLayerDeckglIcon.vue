@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Sprite-sheet icon layer for many marker-like points (cheaper than DOM markers).
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { IconLayer } from '@deck.gl/layers';
   import type { IconLayerProps } from '@deck.gl/layers';

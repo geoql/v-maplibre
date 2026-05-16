@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Render curved 3D arcs between coordinate pairs.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { ArcLayer } from '@deck.gl/layers';
   import type { ArcLayerProps } from '@deck.gl/layers';

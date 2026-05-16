@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Render arbitrary axis-aligned grid cells with extrusion.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { GridCellLayer } from '@deck.gl/layers';
   import type { GridCellLayerProps } from '@deck.gl/layers';

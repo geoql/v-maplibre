@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Render flat straight lines between coordinate pairs.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { LineLayer } from '@deck.gl/layers';
   import type { LineLayerProps } from '@deck.gl/layers';

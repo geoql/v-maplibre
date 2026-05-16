@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Instance an animated GLTF scenegraph at many positions.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/mesh-layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/mesh-layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { ScenegraphLayer } from '@deck.gl/mesh-layers';
   import type { ScenegraphLayerProps } from '@deck.gl/mesh-layers';

@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Extruded hexagonal / cylindrical columns at point positions.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { ColumnLayer } from '@deck.gl/layers';
   import type { ColumnLayerProps } from '@deck.gl/layers';

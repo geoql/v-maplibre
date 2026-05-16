@@ -28,6 +28,8 @@ import VMap from './map/VMap.vue';
 import VMarker from './markers/VMarker.vue';
 import VPopup from './popups/VPopup.vue';
 
+export { requirePeer } from './utils';
+
 export {
   VMap,
   VMarker,

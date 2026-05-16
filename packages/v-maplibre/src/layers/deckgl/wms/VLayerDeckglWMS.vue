@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Consume WMS endpoints as deck.gl tiles.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/geo-layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/geo-layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { _WMSLayer as WMSLayer } from '@deck.gl/geo-layers';
   import type { WMSLayerProps } from '@deck.gl/geo-layers';

@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Render Geohash cells as deck.gl polygons.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/geo-layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/geo-layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { GeohashLayer } from '@deck.gl/geo-layers';
   import type { GeohashLayerProps } from '@deck.gl/geo-layers';

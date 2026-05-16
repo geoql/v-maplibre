@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Render bitmap-font text labels at coordinate positions.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { TextLayer } from '@deck.gl/layers';
   import type { TextLayerProps } from '@deck.gl/layers';

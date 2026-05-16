@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Render a list of polylines with width-in-meters or width-in-pixels.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { PathLayer } from '@deck.gl/layers';
   import type { PathLayerProps } from '@deck.gl/layers';

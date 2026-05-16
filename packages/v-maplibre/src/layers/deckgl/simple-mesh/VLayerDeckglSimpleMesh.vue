@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Instance a single 3D mesh (GLTF / OBJ) at many positions.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/mesh-layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/mesh-layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { SimpleMeshLayer } from '@deck.gl/mesh-layers';
   import type { SimpleMeshLayerProps } from '@deck.gl/mesh-layers';

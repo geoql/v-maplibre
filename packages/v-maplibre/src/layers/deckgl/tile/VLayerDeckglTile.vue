@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Generic XYZ raster / vector tile viewer (deck.gl TileLayer).
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/geo-layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/geo-layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { TileLayer } from '@deck.gl/geo-layers';
   import type { TileLayerProps } from '@deck.gl/geo-layers';

@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Render Uber H3 hexagons as individual filled cells.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/geo-layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/geo-layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { H3HexagonLayer } from '@deck.gl/geo-layers';
   import type { H3HexagonLayerProps } from '@deck.gl/geo-layers';

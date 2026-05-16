@@ -52,7 +52,7 @@ Add the optional packages below **only** for the layers you actually use:
 | LiDAR          | `VControlLidar`                                                                                                                                                                                                                                                                              | + `maplibre-gl-lidar`                                                                                               |
 | Starfield      | `VLayerMaplibreStarfield`                                                                                                                                                                                                                                                                    | + `@geoql/maplibre-gl-starfield three`                                                                              |
 
-See the [Getting Started guide](https://v-maplibre.geoql.in/guide/getting-started) for full installation details.
+See the [Peer Dependencies guide](https://v-maplibre.geoql.in/guide/peer-dependencies) for the full per-component reference.
 
 ```vue
 <script setup lang="ts">

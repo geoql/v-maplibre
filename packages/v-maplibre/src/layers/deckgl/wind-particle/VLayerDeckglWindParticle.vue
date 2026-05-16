@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * GPU-animated wind/current particle field on top of a vector field texture.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `maplibre-gl-wind`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox maplibre-gl-wind`
+   */
   import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue';
   import type { PickingInfo } from '@deck.gl/core';
   import { injectStrict, MapKey } from '../../../utils';

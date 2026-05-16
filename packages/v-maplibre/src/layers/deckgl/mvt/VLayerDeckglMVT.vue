@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Consume Mapbox Vector Tile (MVT / PBF) endpoints.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/geo-layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/geo-layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { MVTLayer } from '@deck.gl/geo-layers';
   import type { Color, PickingInfo } from '@deck.gl/core';

@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Render filled / stroked polygons with optional extrusion (cheaper than SolidPolygon).
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { PolygonLayer } from '@deck.gl/layers';
   import type { PolygonLayerProps } from '@deck.gl/layers';

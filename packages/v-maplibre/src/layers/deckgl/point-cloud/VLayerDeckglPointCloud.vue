@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Render xyz / xyz+rgb point clouds (small/medium size, no LOD).
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { PointCloudLayer } from '@deck.gl/layers';
   import type { PointCloudLayerProps } from '@deck.gl/layers';

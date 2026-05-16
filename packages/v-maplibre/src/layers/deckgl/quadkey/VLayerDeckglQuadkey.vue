@@ -1,4 +1,14 @@
 <script setup lang="ts">
+  /**
+   * Render Bing-style quadkey tiles as deck.gl polygons.
+   *
+   * @requires `@deck.gl/core`
+   * @requires `@deck.gl/mapbox`
+   * @requires `@deck.gl/geo-layers`
+   *
+   * Install with:
+   * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/geo-layers`
+   */
   import { onMounted, onBeforeUnmount, watch } from 'vue';
   import { QuadkeyLayer } from '@deck.gl/geo-layers';
   import type { QuadkeyLayerProps } from '@deck.gl/geo-layers';
