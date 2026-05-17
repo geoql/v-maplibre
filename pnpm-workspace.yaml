@@ -38,6 +38,9 @@ catalogs:
     wrangler: ^4.92.0
 
   app:mapcn-vue:
+    '@nuxtjs/robots': ^6.0.7
+    '@nuxtjs/sitemap': ^8.0.12
+    'nuxt-schema-org': ^6.0.4
     '@deck.gl/aggregation-layers': ^9.3.2
     '@deck.gl/core': ^9.3.2
     '@deck.gl/geo-layers': ^9.3.2

@@ -13,6 +13,9 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     'motion-v/nuxt',
     'nuxt-og-image',
+    '@nuxtjs/sitemap',
+    '@nuxtjs/robots',
+    'nuxt-schema-org',
     '@nuxtjs/tailwindcss',
     [
       '@nuxtjs/plausible',
@@ -115,6 +118,68 @@ export default defineNuxtConfig({
     description:
       'Beautiful map components for Vue. Built on @geoql/v-maplibre, styled with Tailwind CSS, works with shadcn-vue.',
     url: 'https://mapcn-vue.geoql.in',
+  },
+
+  // AI-crawler allowlist per nuxt-geo-best-practices rule ai-robots-allowlist.
+  // Refusing AI crawlers blocks brand from ChatGPT/Perplexity/Gemini citations entirely.
+  robots: {
+    groups: [
+      {
+        userAgent: [
+          'GPTBot', // OpenAI training crawler
+          'ChatGPT-User', // OpenAI user-driven browse
+          'OAI-SearchBot', // OpenAI search index
+          'ClaudeBot', // Anthropic crawler
+          'anthropic-ai', // Anthropic older identifier
+          'Claude-Web', // Anthropic web fetcher
+          'PerplexityBot', // Perplexity index crawler
+          'Perplexity-User', // Perplexity user-driven browse
+          'Google-Extended', // Gemini training
+          'Applebot-Extended', // Apple Intelligence training
+          'cohere-ai', // Cohere crawler
+          'FacebookBot', // Meta AI
+          'Meta-ExternalAgent', // Meta AI alternate
+          'Bytespider', // ByteDance/TikTok AI
+          'CCBot', // Common Crawl (used by many LLMs)
+          'Amazonbot', // Amazon Alexa AI
+          'omgilibot', // Webz.io AI training
+          'Diffbot', // knowledge graph
+        ],
+        allow: ['/'],
+      },
+      {
+        userAgent: ['*'],
+        allow: ['/'],
+        disallow: ['/api/', '/__nuxt_content/', '/__og-image/'], // internal API routes only
+      },
+    ],
+    sitemap: '/sitemap.xml',
+  },
+
+  // Generated at build time, served from Cloudflare Pages CDN. Discovered automatically
+  // by @nuxt/content + Nuxt pages router.
+  sitemap: {
+    xsl: false, // Skip XSL stylesheet to keep CF Pages bundle small
+    defaults: {
+      changefreq: 'weekly',
+      priority: 0.8,
+    },
+  },
+
+  // Site-wide identity for nuxt-schema-org. Per-page schemas (FAQPage, WebPage,
+  // SoftwareApplication) added via useSchemaOrg in app.vue and composables.
+  schemaOrg: {
+    identity: {
+      type: 'Organization',
+      name: 'GeoQL',
+      url: 'https://mapcn-vue.geoql.in',
+      logo: 'https://mapcn-vue.geoql.in/favicon.svg',
+      sameAs: [
+        'https://github.com/geoql',
+        'https://www.npmjs.com/package/@geoql/v-maplibre',
+        'https://x.com/geoql',
+      ],
+    },
   },
 
   compatibilityDate: '2025-01-06',
