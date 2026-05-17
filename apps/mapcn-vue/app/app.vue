@@ -11,6 +11,33 @@
     ogUrl: computed(() => `https://mapcn-vue.geoql.in${route.path}`),
   });
 
+  useSchemaOrg([
+    defineOrganization({
+      name: 'GeoQL',
+      url: 'https://mapcn-vue.geoql.in',
+      logo: '/favicon.svg',
+      sameAs: [
+        'https://github.com/geoql',
+        'https://www.npmjs.com/package/@geoql/v-maplibre',
+        'https://x.com/geoql',
+      ],
+    }),
+    defineWebSite({
+      name: 'mapcn-vue',
+      description:
+        'Beautiful, theme-aware map components for Vue 3 powered by MapLibre GL',
+    }),
+    defineSoftwareApplication({
+      name: '@geoql/v-maplibre',
+      applicationCategory: 'DeveloperApplication',
+      operatingSystem: 'Web',
+      offers: {
+        price: '0',
+        priceCurrency: 'USD',
+      },
+    }),
+  ]);
+
   function skipToMain(): void {
     const main = document.getElementById('main-content');
     if (main) {
