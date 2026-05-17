@@ -716,3 +716,34 @@ canvas {
 .lidar-pointclouds-list::-webkit-scrollbar-thumb {
   background-color: var(--color-muted-foreground);
 }
+
+.lidar-colormap-select {
+  background: var(--color-background);
+  border: 1px solid var(--color-input);
+  color: var(--color-foreground);
+  border-radius: calc(var(--radius) - 2px);
+}
+
+.lidar-colormap-select:focus {
+  outline: none;
+  border-color: var(--color-ring);
+  box-shadow: 0 0 0 2px color-mix(in oklch, var(--color-ring) 20%, transparent);
+}
+
+.lidar-colormap-select option {
+  background: var(--color-popover);
+  color: var(--color-popover-foreground);
+}
+
+.lidar-share-section {
+  background: transparent;
+  border-color: var(--color-border);
+}
+
+.lidar-range-mode {
+  accent-color: var(--color-primary);
+}
+
+.lidar-range-mode input[type='radio'] {
+  accent-color: var(--color-primary);
+}
