@@ -21,7 +21,13 @@
   import type { GetTileDataOptions } from '@developmentseed/deck.gl-zarr';
   import type { Texture } from '@luma.gl/core';
   import * as zarr from 'zarrita';
-  import { Input } from '~/components/ui/input';
+  import {
+    NumberField,
+    NumberFieldContent,
+    NumberFieldDecrement,
+    NumberFieldIncrement,
+    NumberFieldInput,
+  } from '~/components/ui/number-field';
   import { Label } from '~/components/ui/label';
   import {
     Select,
@@ -441,16 +447,22 @@ ${SCRIPT_END}
               class="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
               >R</Label
             >
-            <Input
+            <NumberField
               id="aef-r"
               :model-value="rBandIdx"
-              type="text"
-              inputmode="numeric"
-              class="h-8 px-2 text-xs tabular-nums"
+              :min="0"
+              :max="NUM_BANDS - 1"
+              :step="1"
               @update:model-value="
-                (v: string | number) => (rBandIdx = clampBand(Number(v)))
+                (v) => (rBandIdx = clampBand(Number(v ?? 0)))
               "
-            />
+            >
+              <NumberFieldContent>
+                <NumberFieldDecrement />
+                <NumberFieldInput class="tabular-nums" />
+                <NumberFieldIncrement />
+              </NumberFieldContent>
+            </NumberField>
           </div>
           <div class="space-y-1.5">
             <Label
@@ -458,16 +470,22 @@ ${SCRIPT_END}
               class="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
               >G</Label
             >
-            <Input
+            <NumberField
               id="aef-g"
               :model-value="gBandIdx"
-              type="text"
-              inputmode="numeric"
-              class="h-8 px-2 text-xs tabular-nums"
+              :min="0"
+              :max="NUM_BANDS - 1"
+              :step="1"
               @update:model-value="
-                (v: string | number) => (gBandIdx = clampBand(Number(v)))
+                (v) => (gBandIdx = clampBand(Number(v ?? 0)))
               "
-            />
+            >
+              <NumberFieldContent>
+                <NumberFieldDecrement />
+                <NumberFieldInput class="tabular-nums" />
+                <NumberFieldIncrement />
+              </NumberFieldContent>
+            </NumberField>
           </div>
           <div class="space-y-1.5">
             <Label
@@ -475,16 +493,22 @@ ${SCRIPT_END}
               class="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
               >B</Label
             >
-            <Input
+            <NumberField
               id="aef-b"
               :model-value="bBandIdx"
-              type="text"
-              inputmode="numeric"
-              class="h-8 px-2 text-xs tabular-nums"
+              :min="0"
+              :max="NUM_BANDS - 1"
+              :step="1"
               @update:model-value="
-                (v: string | number) => (bBandIdx = clampBand(Number(v)))
+                (v) => (bBandIdx = clampBand(Number(v ?? 0)))
               "
-            />
+            >
+              <NumberFieldContent>
+                <NumberFieldDecrement />
+                <NumberFieldInput class="tabular-nums" />
+                <NumberFieldIncrement />
+              </NumberFieldContent>
+            </NumberField>
           </div>
         </div>
 
@@ -495,16 +519,22 @@ ${SCRIPT_END}
               class="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
               >Rescale Min</Label
             >
-            <Input
+            <NumberField
               id="aef-rmin"
               :model-value="rescaleMin"
-              type="text"
-              inputmode="decimal"
-              class="h-8 px-2 text-xs tabular-nums"
-              @update:model-value="
-                (v: string | number) => (rescaleMin = Number(v) || 0)
-              "
-            />
+              :step="0.1"
+              :format-options="{
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 3,
+              }"
+              @update:model-value="(v) => (rescaleMin = Number(v ?? 0) || 0)"
+            >
+              <NumberFieldContent>
+                <NumberFieldDecrement />
+                <NumberFieldInput class="tabular-nums" />
+                <NumberFieldIncrement />
+              </NumberFieldContent>
+            </NumberField>
           </div>
           <div class="space-y-1.5">
             <Label
@@ -512,16 +542,22 @@ ${SCRIPT_END}
               class="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
               >Rescale Max</Label
             >
-            <Input
+            <NumberField
               id="aef-rmax"
               :model-value="rescaleMax"
-              type="text"
-              inputmode="decimal"
-              class="h-8 px-2 text-xs tabular-nums"
-              @update:model-value="
-                (v: string | number) => (rescaleMax = Number(v) || 0)
-              "
-            />
+              :step="0.1"
+              :format-options="{
+                minimumFractionDigits: 1,
+                maximumFractionDigits: 3,
+              }"
+              @update:model-value="(v) => (rescaleMax = Number(v ?? 0) || 0)"
+            >
+              <NumberFieldContent>
+                <NumberFieldDecrement />
+                <NumberFieldInput class="tabular-nums" />
+                <NumberFieldIncrement />
+              </NumberFieldContent>
+            </NumberField>
           </div>
         </div>
       </MapPanel>
