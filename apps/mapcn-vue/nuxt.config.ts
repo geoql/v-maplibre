@@ -250,6 +250,18 @@ export default defineNuxtConfig({
     experimental: {
       openAPI: false,
     },
+
+    // Expose content/ markdown as a Nitro server asset namespace so the
+    // /llms-full.txt route can read it via useStorage('assets:docs') at
+    // request time. This works in dev (Node), in Rollup prod builds, AND
+    // on Cloudflare Workers — unlike Vite `?raw` imports which Rollup's
+    // server bundle does not understand.
+    serverAssets: [
+      {
+        baseName: 'docs',
+        dir: './content',
+      },
+    ],
   },
 
   shadcn: {
