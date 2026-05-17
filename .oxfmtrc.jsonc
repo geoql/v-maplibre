@@ -23,5 +23,8 @@
     "**/CHANGELOG.md",
     "**/jsr.json",
     "**/package.json",
+    // MDC syntax (::component, ---frontmatter---) parses incorrectly under
+    // oxfmt's markdown rules — keep @nuxt/content collections hand-formatted.
+    "apps/mapcn-vue/content/**/*.md",
   ],
 }
