@@ -27,7 +27,7 @@
       description:
         'Beautiful, theme-aware map components for Vue 3 powered by MapLibre GL',
     }),
-    defineSoftwareApplication({
+    defineSoftwareApp({
       name: '@geoql/v-maplibre',
       applicationCategory: 'DeveloperApplication',
       operatingSystem: 'Web',
