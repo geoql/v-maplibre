@@ -10,5 +10,13 @@ export default defineContentConfig({
         description: z.string().optional(),
       }),
     }),
+    faq: defineCollection({
+      type: 'page',
+      source: 'faq.md',
+      schema: z.object({
+        title: z.string(),
+        description: z.string().optional(),
+      }),
+    }),
   },
 });
