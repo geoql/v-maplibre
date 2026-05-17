@@ -132,16 +132,10 @@
     });
   });
 
-  useSeoMeta({
-    title: page.value.title,
-    description: page.value.description,
-    ogTitle: page.value.title,
-    ogDescription: page.value.description,
-    ogType: 'website',
-    ogSiteName: 'mapcn-vue',
-    twitterCard: 'summary_large_image',
-    twitterTitle: page.value.title,
-    twitterDescription: page.value.description,
+  usePageGeo({
+    title: page.value.title ?? 'Documentation',
+    description: page.value.description ?? 'mapcn-vue documentation',
+    ogType: 'article',
   });
 
   defineOgImage('MapcnDoc', {
