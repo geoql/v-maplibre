@@ -1,4 +1,7 @@
 <script setup lang="ts">
+  const { library } = useRuntimeConfig().public;
+  const libraryMajor = `${library.version.split('.')[0]}.x`;
+
   const FAQ_ENTRIES: Array<{ question: string; answer: string }> = [
     {
       question: 'What is mapcn-vue?',
@@ -7,8 +10,7 @@
     },
     {
       question: 'What are the peer dependencies?',
-      answer:
-        'mapcn-vue components require four peers: Vue 3.4+ (Composition API with <script setup>), MapLibre GL JS 5.x (the rendering engine), @geoql/v-maplibre 0.x (the Vue wrappers consumed by every component), and Tailwind CSS v4. deck.gl-based components additionally depend on @deck.gl/core, @deck.gl/layers, and @deck.gl/mapbox.',
+      answer: `mapcn-vue components require four peers: Vue 3.4+ (Composition API with <script setup>), MapLibre GL JS 5.x (the rendering engine), @geoql/v-maplibre ${libraryMajor} (the Vue wrappers consumed by every component, currently v${library.version}), and Tailwind CSS v4. deck.gl-based components additionally depend on @deck.gl/core, @deck.gl/layers, and @deck.gl/mapbox.`,
     },
     {
       question: 'Does mapcn-vue support Vue 2?',
@@ -60,12 +62,13 @@
   });
 
   useSchemaOrg([
-    defineFaqPage({
-      mainEntity: FAQ_ENTRIES.map((entry) => ({
-        question: entry.question,
-        answer: entry.answer,
-      })),
-    }),
+    defineWebPage({ '@type': 'FAQPage' }),
+    ...FAQ_ENTRIES.map((entry) =>
+      defineQuestion({
+        name: entry.question,
+        acceptedAnswer: entry.answer,
+      }),
+    ),
   ]);
 
   defineOgImage('MapcnDoc', {
