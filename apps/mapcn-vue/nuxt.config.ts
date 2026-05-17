@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     '@nuxtjs/sitemap',
     '@nuxtjs/robots',
     'nuxt-schema-org',
+    'nuxt-llms',
     '@nuxtjs/tailwindcss',
     [
       '@nuxtjs/plausible',
@@ -182,6 +183,31 @@ export default defineNuxtConfig({
     },
   },
 
+  // nuxt-llms auto-generates /llms.txt + /llms-full.txt at build time by
+  // reading from registered @nuxt/content collections (docs + faq).
+  // Canonical replacement for our prior hand-rolled server/routes/llms*.ts.
+  llms: {
+    domain: 'https://mapcn-vue.geoql.in',
+    title: 'mapcn-vue',
+    description:
+      'Beautiful, theme-aware map components for Vue 3 powered by MapLibre GL and deck.gl. shadcn-vue compatible — copy components directly into your project, no black-box package.',
+    full: {
+      title: 'mapcn-vue full documentation',
+      description:
+        'Complete documentation, FAQ, and component catalog inlined for AI agent ingestion.',
+    },
+    sections: [
+      {
+        title: 'Documentation',
+        contentCollection: 'docs',
+      },
+      {
+        title: 'FAQ',
+        contentCollection: 'faq',
+      },
+    ],
+  },
+
   compatibilityDate: '2025-01-06',
 
   vite: {
@@ -250,18 +276,6 @@ export default defineNuxtConfig({
     experimental: {
       openAPI: false,
     },
-
-    // Expose content/ markdown as a Nitro server asset namespace so the
-    // /llms-full.txt route can read it via useStorage('assets:docs') at
-    // request time. This works in dev (Node), in Rollup prod builds, AND
-    // on Cloudflare Workers — unlike Vite `?raw` imports which Rollup's
-    // server bundle does not understand.
-    serverAssets: [
-      {
-        baseName: 'docs',
-        dir: './content',
-      },
-    ],
   },
 
   shadcn: {
