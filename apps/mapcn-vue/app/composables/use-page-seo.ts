@@ -28,4 +28,8 @@ export function usePageSeo(options: PageSeoOptions) {
     twitterTitle: options.title,
     twitterDescription: options.description,
   });
+
+  useHead({
+    link: [{ rel: 'canonical', href: canonicalUrl }],
+  });
 }
