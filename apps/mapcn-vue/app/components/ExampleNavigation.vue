@@ -1,11 +1,33 @@
 <script setup lang="ts">
   import { Separator } from '~/components/ui/separator';
 
+  import type { Example } from '~/types/examples';
+
   const route = useRoute();
   const { categories } = useExamplesData();
 
-  // Flatten all examples in order
-  const allExamples = computed(() => categories.flatMap((cat) => cat.examples));
+  /**
+   * Flatten categories.examples then dedupe by href, keeping the LAST
+   * occurrence. The `featured` category at the top re-surfaces curated
+   * examples that also live in their canonical category later in the
+   * list — without dedup, prev/next on those pages traverses the
+   * `featured` neighbours instead of the categorical ones the user
+   * navigated in from.
+   */
+  const allExamples = computed<Example[]>(() => {
+    const seen = new Set<string>();
+    const out: Example[] = [];
+    for (let i = categories.length - 1; i >= 0; i--) {
+      const cat = categories[i]!;
+      for (let j = cat.examples.length - 1; j >= 0; j--) {
+        const ex = cat.examples[j]!;
+        if (seen.has(ex.href)) continue;
+        seen.add(ex.href);
+        out.unshift(ex);
+      }
+    }
+    return out;
+  });
 
   const currentIndex = computed(() =>
     allExamples.value.findIndex((ex) => ex.href === route.path),
