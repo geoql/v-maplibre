@@ -13,20 +13,16 @@
    * list — without dedup, prev/next on those pages traverses the
    * `featured` neighbours instead of the categorical ones the user
    * navigated in from.
+   *
+   * Forward-pass collect lastSeenIndex per href, then forward-pass
+   * filter to keep only the entry at that index. This is the simplest
+   * deterministic dedup-keep-last that preserves the original order.
    */
   const allExamples = computed<Example[]>(() => {
-    const seen = new Set<string>();
-    const out: Example[] = [];
-    for (let i = categories.length - 1; i >= 0; i--) {
-      const cat = categories[i]!;
-      for (let j = cat.examples.length - 1; j >= 0; j--) {
-        const ex = cat.examples[j]!;
-        if (seen.has(ex.href)) continue;
-        seen.add(ex.href);
-        out.unshift(ex);
-      }
-    }
-    return out;
+    const flat: Example[] = categories.flatMap((cat) => cat.examples);
+    const lastSeen = new Map<string, number>();
+    flat.forEach((ex, i) => lastSeen.set(ex.href, i));
+    return flat.filter((ex, i) => lastSeen.get(ex.href) === i);
   });
 
   const currentIndex = computed(() =>
