@@ -1,6 +1,12 @@
 version: 2
 updates:
   # npm/pnpm — single entry covers the whole pnpm workspace (root lockfile)
+  # NOTE: this monorepo uses pnpm catalogs (pnpm-workspace.yaml).
+  # Dependabot supports pnpm catalogs since Feb 2025 (PR #11471) but its
+  # grouping logic for catalog-only deps is fragile — without explicit
+  # catch-all patterns Dependabot opens one PR per catalog-tied dep
+  # instead of bundling them. The catch-all in `minor-and-patch` below
+  # is intentionally broad to bundle every minor/patch update.
   - package-ecosystem: 'npm'
     directory: '/'
     schedule:
@@ -15,9 +21,20 @@ updates:
       - 'dependencies'
       - 'automated'
     versioning-strategy: 'increase'
+    # Ignore transitive-only loaders.gl bumps — they ride along with
+    # deck.gl version bumps already covered by `deckgl-major`. Without
+    # this Dependabot opens noise PRs per loaders.gl package (#95, #97,
+    # #99 in this repo's history) because catalog already has the
+    # target version but lockfile shows transitive 4.4.1 + direct 4.4.2.
+    ignore:
+      - dependency-name: '@loaders.gl/*'
+        update-types:
+          - 'version-update:semver-patch'
     groups:
-      # Group all non-major updates together
+      # Catch-all minor/patch — keep this FIRST so other matchers can't
+      # accidentally split a patch update into its own PR.
       minor-and-patch:
+        applies-to: version-updates
         update-types:
           - 'minor'
           - 'patch'
@@ -25,6 +42,7 @@ updates:
           - '*'
       # Group major deck.gl ecosystem updates
       deckgl-major:
+        applies-to: version-updates
         update-types:
           - 'major'
         patterns:
@@ -32,8 +50,10 @@ updates:
           - '@luma.gl/*'
           - '@loaders.gl/*'
           - '@math.gl/*'
+          - '@developmentseed/*'
       # Group major Vue ecosystem updates
       vue-major:
+        applies-to: version-updates
         update-types:
           - 'major'
         patterns:
@@ -43,6 +63,7 @@ updates:
           - '@vueuse/*'
       # Group major Nuxt ecosystem updates
       nuxt-major:
+        applies-to: version-updates
         update-types:
           - 'major'
         patterns:
@@ -51,6 +72,7 @@ updates:
           - '@nuxtjs/*'
       # Group major Tailwind CSS updates
       tailwind-major:
+        applies-to: version-updates
         update-types:
           - 'major'
         patterns:
@@ -59,12 +81,14 @@ updates:
           - 'tailwind-merge'
       # Group major MapLibre updates
       maplibre-major:
+        applies-to: version-updates
         update-types:
           - 'major'
         patterns:
           - 'maplibre-gl*'
       # Group major testing updates
       testing-major:
+        applies-to: version-updates
         update-types:
           - 'major'
         patterns:
@@ -72,6 +96,7 @@ updates:
           - '@vitest/*'
       # Group major tooling updates
       tooling-major:
+        applies-to: version-updates
         update-types:
           - 'major'
         patterns:
@@ -81,6 +106,8 @@ updates:
           - 'oxfmt'
           - 'husky'
           - 'lint-staged'
+          - 'vue-tsc'
+          - '@types/*'
 
   # Enable version updates for GitHub Actions
   - package-ecosystem: 'github-actions'
