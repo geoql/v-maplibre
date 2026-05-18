@@ -21,8 +21,8 @@ allowBuilds:
 catalogs:
   default:
     maplibre-gl: ^5.24.0
-    oxfmt: ^0.49.0
-    oxlint: ^1.64.0
+    oxfmt: ^0.50.0
+    oxlint: ^1.65.0
     typescript: ^6.0.3
     vue: ^3.5.34
 
@@ -38,8 +38,8 @@ catalogs:
     wrangler: ^4.92.0
 
   app:mapcn-vue:
-    '@nuxtjs/robots': ^6.0.7
-    '@nuxtjs/sitemap': ^8.0.12
+    '@nuxtjs/robots': ^6.0.8
+    '@nuxtjs/sitemap': ^8.0.15
     'nuxt-schema-org': ^6.0.4
     '@deck.gl/aggregation-layers': ^9.3.2
     '@deck.gl/core': ^9.3.2
@@ -57,7 +57,7 @@ catalogs:
     '@geoql/maplibre-gl-starfield': ^0.1.1
     '@geoql/maplibre-gl-snow': ^0.0.9
     '@geoql/maplibre-gl-compare': ^0.0.3
-    '@iconify-json/lucide': ^1.2.107
+    '@iconify-json/lucide': ^1.2.108
     '@iconify-json/simple-icons': ^1.2.82
     '@iconify-json/vscode-icons': ^1.2.49
     '@loaders.gl/3d-tiles': ^4.4.2
@@ -71,7 +71,7 @@ catalogs:
     '@math.gl/types': ^4.1.0
     '@resvg/resvg-js': ^2.6.2
     '@resvg/resvg-wasm': ^2.6.2
-    '@nuxt/content': ^3.13.0
+    '@nuxt/content': ^3.14.0
     '@nuxt/icon': ^2.2.2
     '@nuxt/fonts': ^0.14.0
     '@nuxtjs/color-mode': ^4.0.0
@@ -106,5 +106,5 @@ catalogs:
     vue-sonner: ^2.0.9
     wrangler: ^4.92.0
     terra-draw: ^1.30.0
-    terra-draw-maplibre-gl-adapter: ^1.4.0
+    terra-draw-maplibre-gl-adapter: ^1.4.1
     yoga-wasm-web: ^0.3.3

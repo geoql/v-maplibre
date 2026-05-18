@@ -90,7 +90,7 @@
     "@luma.gl/engine": "^9.3.3",
     "@luma.gl/shadertools": "^9.3.3",
     "@tsdown/css": "^0.22.0",
-    "@types/node": "^25.8.0",
+    "@types/node": "^25.9.0",
     "@vitejs/plugin-vue": "^6.0.7",
     "@vitest/coverage-v8": "^4.1.6",
     "@vue/test-utils": "^2.4.10",
@@ -102,7 +102,7 @@
     "unplugin-vue": "^7.2.0",
     "vite-plus": "^0.1.21",
     "vue": "^3.5.34",
-    "vue-tsc": "^3.2.9",
+    "vue-tsc": "^3.3.0",
     "zarrita": "^0.7.3"
   },
   "peerDependencies": {
