@@ -13,7 +13,9 @@
   "dependencies": {
     "better-sqlite3": "catalog:app:docs",
     "docus": "catalog:app:docs",
-    "nuxt": "catalog:app:docs"
+    "nuxt": "catalog:app:docs",
+    "zod": "catalog:app:docs",
+    "zod-to-json-schema": "catalog:app:docs"
   },
   "devDependencies": {
     "@nuxtjs/plausible": "catalog:app:docs",

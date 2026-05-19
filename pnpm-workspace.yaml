@@ -36,6 +36,12 @@ catalogs:
     docus: ^5.11.0
     nuxt: ^4.4.6
     wrangler: ^4.92.0
+    # Required by docus → @nuxt/content collection schema generation.
+    # CI fails on `nuxt prepare` without these because @nuxt/content 3.13.x
+    # peer-requires zod (not bundled). Local installs sometimes resolve to
+    # 3.14.x which sidesteps the requirement, but CI consistently pulls 3.13.x.
+    zod: ^3.25.76
+    zod-to-json-schema: ^3.25.2
 
   app:mapcn-vue:
     '@nuxtjs/robots': ^6.0.8
