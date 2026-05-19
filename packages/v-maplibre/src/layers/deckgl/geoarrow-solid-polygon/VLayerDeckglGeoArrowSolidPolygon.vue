@@ -73,8 +73,6 @@
       GEOARROW_PEER_INSTALL,
     );
     LayerClass.value = markRaw(mod.GeoArrowSolidPolygonLayer);
-    const layer = createLayer();
-    if (layer) addLayer(layer);
   };
 
   onMounted(() => {
@@ -85,6 +83,12 @@
         initializeLayer();
       });
     }
+  });
+
+  watch(LayerClass, (cls) => {
+    if (!cls || !props.data) return;
+    const layer = createLayer();
+    if (layer) addLayer(layer);
   });
 
   watch(
@@ -100,7 +104,7 @@
       props.wireframe,
     ],
     () => {
-      if (!LayerClass.value) return;
+      if (!LayerClass.value || !props.data) return;
       const layer = createLayer();
       if (layer) updateLayer(props.id, layer);
     },

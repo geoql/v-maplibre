@@ -24,7 +24,7 @@
 
   type Props = {
     id: string;
-    data: import('apache-arrow').RecordBatch;
+    data: import('apache-arrow').RecordBatch | null | undefined;
     getPolygon?: unknown;
     getFillColor?: unknown;
     getLineColor?: unknown;
@@ -61,7 +61,7 @@
   >(null);
 
   const createLayer = () => {
-    if (!LayerClass.value) return null;
+    if (!LayerClass.value || !props.data) return null;
     const layer = new LayerClass.value({
       ...(props as object),
       id: props.id,
@@ -78,8 +78,6 @@
       GEOARROW_PEER_INSTALL,
     );
     LayerClass.value = markRaw(mod.GeoArrowPolygonLayer);
-    const layer = createLayer();
-    if (layer) addLayer(layer);
   };
 
   onMounted(() => {
@@ -90,6 +88,13 @@
         initializeLayer();
       });
     }
+  });
+
+  // Create layer when LayerClass becomes available (handles async module load race condition).
+  watch(LayerClass, (cls) => {
+    if (!cls || !props.data) return;
+    const layer = createLayer();
+    if (layer) addLayer(layer);
   });
 
   watch(
@@ -108,7 +113,7 @@
       props.wireframe,
     ],
     () => {
-      if (!LayerClass.value) return;
+      if (!LayerClass.value || !props.data) return;
       const layer = createLayer();
       if (layer) updateLayer(props.id, layer);
     },

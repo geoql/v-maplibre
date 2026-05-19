@@ -2,7 +2,6 @@
   import {
     VMap,
     VLayerDeckglGeoArrowPolygon,
-    VLayerDeckglGeoArrowSolidPolygon,
     VControlNavigation,
     VControlScale,
     VControlLegend,
@@ -134,34 +133,20 @@
           <VControlScale position="bottom-left" />
 
           <VLayerDeckglGeoArrowPolygon
-            v-if="batch && !extruded"
-            id="geoarrow-countries-flat"
+            id="geoarrow-countries"
             :data="batch"
             :get-fill-color="fillOpacity"
             :get-line-color="[180, 220, 255, 255]"
             :line-width-min-pixels="1"
+            :extruded="extruded"
+            :get-elevation="elevationMultiplier"
             stroked
             filled
             pickable
           />
 
-          <VLayerDeckglGeoArrowSolidPolygon
-            v-if="batch && extruded"
-            id="geoarrow-countries-extruded"
-            :data="batch"
-            :get-fill-color="fillOpacity"
-            :get-line-color="[180, 220, 255, 255]"
-            :get-elevation="elevationMultiplier"
-            extruded
-            filled
-            pickable
-          />
-
           <VControlLegend
-            :layer-ids="[
-              'geoarrow-countries-flat',
-              'geoarrow-countries-extruded',
-            ]"
+            :layer-ids="['geoarrow-countries']"
             position="bottom-right"
             type="category"
             title="Natural Earth Countries"
@@ -248,7 +233,7 @@
           />
         </div>
 
-        <div v-if="extruded" class="mb-1">
+        <div v-show="extruded" class="mb-1">
           <label
             class="mb-1.5 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
           >
