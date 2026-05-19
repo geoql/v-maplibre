@@ -37,7 +37,9 @@
     "lint-staged": "^17.0.5",
     "oxfmt": "^0.50.0",
     "oxlint": "^1.65.0",
-    "typescript": "^6.0.3"
+    "typescript": "^6.0.3",
+    "zod": "^3.25.76",
+    "zod-to-json-schema": "^3.25.2"
   },
   "packageManager": "pnpm@11.1.2",
   "engines": {
