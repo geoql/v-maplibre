@@ -67,6 +67,10 @@ pnpm add @developmentseed/deck.gl-geotiff @developmentseed/deck.gl-raster @devel
 # Zarr — VLayerDeckglZarr
 pnpm add @developmentseed/deck.gl-zarr zarrita
 
+# GeoArrow — VLayerDeckglGeoArrowScatterplot, VLayerDeckglGeoArrowPath,
+# VLayerDeckglGeoArrowPolygon, VLayerDeckglGeoArrowSolidPolygon
+pnpm add @geoarrow/deck.gl-geoarrow apache-arrow @math.gl/polygon
+
 # Wind particles — VLayerDeckglWindParticle
 pnpm add maplibre-gl-wind
 
@@ -180,6 +184,15 @@ High-performance WebGL visualization layers powered by deck.gl:
 
 - `VLayerDeckglCOG` - Cloud-Optimized GeoTIFF visualization (GPU-accelerated, auto-reprojection)
 - `VLayerDeckglMosaic` - Client-side COG mosaic from STAC items (requires `flatbush`, `proj4`)
+
+**GeoArrow Layers** (requires `@geoarrow/deck.gl-geoarrow`, `apache-arrow`, `@math.gl/polygon`)
+
+Render Apache Arrow `RecordBatch` data with GeoArrow extension types directly — no GeoJSON parsing. Ideal for GeoParquet / Arrow IPC sources and very large point/polygon datasets.
+
+- `VLayerDeckglGeoArrowScatterplot` - Points from a GeoArrow point / multipoint column
+- `VLayerDeckglGeoArrowPath` - Polylines from a GeoArrow linestring / multilinestring column
+- `VLayerDeckglGeoArrowPolygon` - Filled + stroked polygons from a GeoArrow polygon / multipolygon column
+- `VLayerDeckglGeoArrowSolidPolygon` - 3D extruded polygons (height-mapped choropleths, building footprints)
 
 **Wind Visualization** (requires `maplibre-gl-wind`)
 

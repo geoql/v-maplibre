@@ -223,6 +223,8 @@ export default defineNuxtConfig({
         '@luma.gl/core',
         '@luma.gl/engine',
         '@luma.gl/shadertools',
+        '@geoarrow/deck.gl-geoarrow',
+        'apache-arrow',
       ],
     },
     worker: {

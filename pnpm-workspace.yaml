@@ -52,6 +52,9 @@ catalogs:
     '@developmentseed/deck.gl-zarr': ^0.7.0
     '@developmentseed/geotiff': ^0.7.0
     '@developmentseed/proj': ^0.7.0
+    '@geoarrow/deck.gl-geoarrow': ^0.4.1
+    '@math.gl/polygon': ^4.1.0
+    apache-arrow: ^17.0.0
     zarrita: ^0.7.3
     lerc: ^4.1.1
     '@geoql/maplibre-gl-starfield': ^0.1.1

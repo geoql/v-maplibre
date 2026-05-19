@@ -41,6 +41,11 @@ export { VLayerDeckglMultiCOG } from './multi-cog';
 export type { MultiCOGComposite } from './multi-cog';
 export { VLayerDeckglZarr } from './zarr';
 
+export { VLayerDeckglGeoArrowScatterplot } from './geoarrow-scatterplot';
+export { VLayerDeckglGeoArrowPath } from './geoarrow-path';
+export { VLayerDeckglGeoArrowPolygon } from './geoarrow-polygon';
+export { VLayerDeckglGeoArrowSolidPolygon } from './geoarrow-solid-polygon';
+
 export {
   VLayerDeckglWindParticle,
   WindParticleLayer,

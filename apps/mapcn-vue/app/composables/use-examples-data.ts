@@ -497,6 +497,23 @@ export function useExamplesData() {
       ],
     },
     {
+      id: 'geoarrow',
+      title: 'GeoArrow / Apache Arrow',
+      description:
+        'Native Arrow IPC + GeoParquet rendering with deck.gl-geoarrow',
+      icon: 'lucide:network',
+      examples: [
+        {
+          title: 'GeoArrow Polygons',
+          description:
+            'Natural Earth countries from a native GeoArrow IPC file. Zero GeoJSON parsing — Arrow RecordBatch goes straight to the GPU. Toggle 3D extrusion to switch wrappers.',
+          href: '/examples/deckgl-geoarrow',
+          icon: 'lucide:map',
+          badge: 'Arrow IPC',
+        },
+      ],
+    },
+    {
       id: 'lidar',
       title: 'LiDAR Point Clouds',
       description: 'LAS/LAZ/COPC/EPT streaming visualization',
