@@ -4,6 +4,7 @@ packages:
 
 overrides:
   vite: ^8.0.13
+  zod: ^3.25.76
 
 allowBuilds:
   '@parcel/watcher': true

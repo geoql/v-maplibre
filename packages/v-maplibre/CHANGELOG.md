@@ -2,163 +2,144 @@
 
 ## [1.9.0](https://github.com/geoql/v-maplibre/compare/v1.8.1...v1.9.0) (2026-05-16)
 
-
 ### Features
 
-* **v-maplibre:** add requirePeer helper for typed dynamic peer-dep loading ([47c6062](https://github.com/geoql/v-maplibre/commit/47c6062f08a68ff73c4fa6b583c7b98747021320))
-* **v-maplibre:** peer-dependency UX — requirePeer helper + per-component docs + [@requires](https://github.com/requires) JSDoc ([ccc1fa4](https://github.com/geoql/v-maplibre/commit/ccc1fa4516a7fe7c70dcc12c10e299f97d2e206f))
-
+- **v-maplibre:** add requirePeer helper for typed dynamic peer-dep loading ([47c6062](https://github.com/geoql/v-maplibre/commit/47c6062f08a68ff73c4fa6b583c7b98747021320))
+- **v-maplibre:** peer-dependency UX — requirePeer helper + per-component docs + [@requires](https://github.com/requires) JSDoc ([ccc1fa4](https://github.com/geoql/v-maplibre/commit/ccc1fa4516a7fe7c70dcc12c10e299f97d2e206f))
 
 ### Documentation
 
-* **v-maplibre:** add [@requires](https://github.com/requires) JSDoc annotations to layer components ([5cfe75f](https://github.com/geoql/v-maplibre/commit/5cfe75fe720c31bff6a1f3b430fdb24dd4dc46a5))
+- **v-maplibre:** add [@requires](https://github.com/requires) JSDoc annotations to layer components ([5cfe75f](https://github.com/geoql/v-maplibre/commit/5cfe75fe720c31bff6a1f3b430fdb24dd4dc46a5))
 
 ## [1.8.1](https://github.com/geoql/v-maplibre/compare/v1.8.0...v1.8.1) (2026-05-15)
 
-
 ### Documentation
 
-* **v-maplibre:** truthful peer-dependency install matrix in package README ([fd0b20b](https://github.com/geoql/v-maplibre/commit/fd0b20b11335e507c778e910ca0bca0a4db1c632))
+- **v-maplibre:** truthful peer-dependency install matrix in package README ([fd0b20b](https://github.com/geoql/v-maplibre/commit/fd0b20b11335e507c778e910ca0bca0a4db1c632))
 
 ## [1.8.0](https://github.com/geoql/v-maplibre/compare/v1.7.1...v1.8.0) (2026-05-15)
 
-
 ### Features
 
-* **v-maplibre:** add VLayerDeckglMultiCOG wrapper ([fdaf5cb](https://github.com/geoql/v-maplibre/commit/fdaf5cbbe24c3856d2118d7c98e26af50ef9d396))
-* **v-maplibre:** add VLayerDeckglZarr wrapper ([4edb6c5](https://github.com/geoql/v-maplibre/commit/4edb6c5e6ee5fb846c2012e9fb29ce0023b37bbf))
-
+- **v-maplibre:** add VLayerDeckglMultiCOG wrapper ([fdaf5cb](https://github.com/geoql/v-maplibre/commit/fdaf5cbbe24c3856d2118d7c98e26af50ef9d396))
+- **v-maplibre:** add VLayerDeckglZarr wrapper ([4edb6c5](https://github.com/geoql/v-maplibre/commit/4edb6c5e6ee5fb846c2012e9fb29ce0023b37bbf))
 
 ### Bug Fixes
 
-* **v-maplibre:** adapt COG/Mosaic to deck.gl-geotiff 0.6 API ([26900b1](https://github.com/geoql/v-maplibre/commit/26900b10b2f0f9015f3968a6c5ea0e44f8bce11d))
-* **v-maplibre:** use real semver in all dep blocks for npm + JSR ([a0b02d2](https://github.com/geoql/v-maplibre/commit/a0b02d2cd01a278c79f34e7bd0bb2a582a303e0b))
-
+- **v-maplibre:** adapt COG/Mosaic to deck.gl-geotiff 0.6 API ([26900b1](https://github.com/geoql/v-maplibre/commit/26900b10b2f0f9015f3968a6c5ea0e44f8bce11d))
+- **v-maplibre:** use real semver in all dep blocks for npm + JSR ([a0b02d2](https://github.com/geoql/v-maplibre/commit/a0b02d2cd01a278c79f34e7bd0bb2a582a303e0b))
 
 ### Documentation
 
-* **agents:** canonicalize AGENTS.md, symlink CLAUDE.md per Vercel pattern ([d67c4dc](https://github.com/geoql/v-maplibre/commit/d67c4dc9655a022d88acc4693e671dad19d75bc5))
-* refactor docs for VMarker component from lng-lat to coordinates ([fea8186](https://github.com/geoql/v-maplibre/commit/fea8186bb0120e1dfec200e634f8e80122de8d0f))
-
+- **agents:** canonicalize AGENTS.md, symlink CLAUDE.md per Vercel pattern ([d67c4dc](https://github.com/geoql/v-maplibre/commit/d67c4dc9655a022d88acc4693e671dad19d75bc5))
+- refactor docs for VMarker component from lng-lat to coordinates ([fea8186](https://github.com/geoql/v-maplibre/commit/fea8186bb0120e1dfec200e634f8e80122de8d0f))
 
 ### Miscellaneous
 
-* bump deps + restore @resvg/resvg-js for dev mode ([784f175](https://github.com/geoql/v-maplibre/commit/784f1750c828e3604e39fabbb06bbc81ba5ed481))
-
+- bump deps + restore @resvg/resvg-js for dev mode ([784f175](https://github.com/geoql/v-maplibre/commit/784f1750c828e3604e39fabbb06bbc81ba5ed481))
 
 ### Code Refactoring
 
-* **v-maplibre:** adopt vite-plus for build + test ([108dba6](https://github.com/geoql/v-maplibre/commit/108dba6a2c567564dc8cbfcec0fcb30fbacde4c7))
+- **v-maplibre:** adopt vite-plus for build + test ([108dba6](https://github.com/geoql/v-maplibre/commit/108dba6a2c567564dc8cbfcec0fcb30fbacde4c7))
 
 ## [1.7.1](https://github.com/geoql/v-maplibre/compare/v1.7.0...v1.7.1) (2026-04-07)
 
-
 ### Bug Fixes
 
-* **v-maplibre:** use real semver in dependencies instead of catalog refs ([4b48e31](https://github.com/geoql/v-maplibre/commit/4b48e31ff3fc6939c97900404dcc59df9dc52530))
+- **v-maplibre:** use real semver in dependencies instead of catalog refs ([4b48e31](https://github.com/geoql/v-maplibre/commit/4b48e31ff3fc6939c97900404dcc59df9dc52530))
 
 ## [1.7.0](https://github.com/geoql/v-maplibre/compare/v1.6.1...v1.7.0) (2026-04-07)
 
-
 ### Features
 
-* **mosaic:** add NDVI range filter with luma.gl v9 uniform pipeline ([40c501c](https://github.com/geoql/v-maplibre/commit/40c501c59327c35522f397bf701b0f5f60d143cc))
-* **mosaic:** add ndviRange prop with pixel filter shader for NDVI range selection ([2c6d079](https://github.com/geoql/v-maplibre/commit/2c6d0798055d8b590611cc918f4adb87dfe3abde))
-* **v-maplibre:** add breakpoints prop to VLayerMaplibreCluster ([449a351](https://github.com/geoql/v-maplibre/commit/449a3511d59d603fb7c219688b57a22cb8713c5f))
-* **v-maplibre:** add sun rendering props to starfield layer ([6700c6b](https://github.com/geoql/v-maplibre/commit/6700c6bf3694997e4fd8d452ec90ed7acec7e767))
-* **v-maplibre:** add table legend type to VControlLegend ([c010df8](https://github.com/geoql/v-maplibre/commit/c010df86d199e00c4ae48ac012c338ab3a7d4df2))
-* **v-maplibre:** add VLayerMaplibreStarfield component ([6ec3648](https://github.com/geoql/v-maplibre/commit/6ec364862bb941fa67743c44f4f57189b7a04f1b))
-* **v-maplibre:** improve starfield layer sun rendering parameters ([f495673](https://github.com/geoql/v-maplibre/commit/f4956730abac99dbe9c7a6ea31c77b76105612f8))
-* **v-maplibre:** upgrade maplibre-gl-lidar to v0.11.1 ([ce0b1df](https://github.com/geoql/v-maplibre/commit/ce0b1df6eb0f199d39e754f5b242c8902702aae3))
-
+- **mosaic:** add NDVI range filter with luma.gl v9 uniform pipeline ([40c501c](https://github.com/geoql/v-maplibre/commit/40c501c59327c35522f397bf701b0f5f60d143cc))
+- **mosaic:** add ndviRange prop with pixel filter shader for NDVI range selection ([2c6d079](https://github.com/geoql/v-maplibre/commit/2c6d0798055d8b590611cc918f4adb87dfe3abde))
+- **v-maplibre:** add breakpoints prop to VLayerMaplibreCluster ([449a351](https://github.com/geoql/v-maplibre/commit/449a3511d59d603fb7c219688b57a22cb8713c5f))
+- **v-maplibre:** add sun rendering props to starfield layer ([6700c6b](https://github.com/geoql/v-maplibre/commit/6700c6bf3694997e4fd8d452ec90ed7acec7e767))
+- **v-maplibre:** add table legend type to VControlLegend ([c010df8](https://github.com/geoql/v-maplibre/commit/c010df86d199e00c4ae48ac012c338ab3a7d4df2))
+- **v-maplibre:** add VLayerMaplibreStarfield component ([6ec3648](https://github.com/geoql/v-maplibre/commit/6ec364862bb941fa67743c44f4f57189b7a04f1b))
+- **v-maplibre:** improve starfield layer sun rendering parameters ([f495673](https://github.com/geoql/v-maplibre/commit/f4956730abac99dbe9c7a6ea31c77b76105612f8))
+- **v-maplibre:** upgrade maplibre-gl-lidar to v0.11.1 ([ce0b1df](https://github.com/geoql/v-maplibre/commit/ce0b1df6eb0f199d39e754f5b242c8902702aae3))
 
 ### Bug Fixes
 
-* **ci:** add @developmentseed/geotiff dep, rename configs to .mts for Vite 8 ([ff1a14a](https://github.com/geoql/v-maplibre/commit/ff1a14abdf67e70c2855f18ce911e3d722aae237))
-* **cog,mosaic:** migrate to deck.gl-geotiff v0.3 API — epsgResolver, updated types ([a7692f0](https://github.com/geoql/v-maplibre/commit/a7692f085107fda151f5144d5c99d24e5a858dbe))
-* **lib:** add click workaround for deck.gl MapboxOverlay ([1a7d446](https://github.com/geoql/v-maplibre/commit/1a7d446f7510749fe4c1a14cbbc9826c3a7b5f47))
-* **mosaic:** force layer re-creation on renderMode change to flush MosaicLayer cache ([4fabce4](https://github.com/geoql/v-maplibre/commit/4fabce40804b669a73383f4825f116d5e4477b16))
-* **mosaic:** use v0.3 default getTileData pipeline, fix fromUrl signature ([6ac9e95](https://github.com/geoql/v-maplibre/commit/6ac9e95acc718169590b8c112d902fcd5986720c))
-* **mosaic:** v0.3 getTileData with fetchTile API, remove broken NDVIRangeFilter shader ([f51762a](https://github.com/geoql/v-maplibre/commit/f51762a3510cad249de9222b6cb67670885f0d00))
-* **v-maplibre:** increase VControlLayer max-width to 280px ([881bf88](https://github.com/geoql/v-maplibre/commit/881bf88b3f582a6fac0d711b140e3499041dd317))
-* **v-maplibre:** preserve maplibregl-ctrl class across Vue re-renders ([13f9f81](https://github.com/geoql/v-maplibre/commit/13f9f81a9fe45a8033b55f6e0d6775c59cc14b6a))
-* **v-maplibre:** suppress browser focus outline on layer control buttons ([71c38e3](https://github.com/geoql/v-maplibre/commit/71c38e33f268a94b95394756d0a40f52b8fc20bd))
-
+- **ci:** add @developmentseed/geotiff dep, rename configs to .mts for Vite 8 ([ff1a14a](https://github.com/geoql/v-maplibre/commit/ff1a14abdf67e70c2855f18ce911e3d722aae237))
+- **cog,mosaic:** migrate to deck.gl-geotiff v0.3 API — epsgResolver, updated types ([a7692f0](https://github.com/geoql/v-maplibre/commit/a7692f085107fda151f5144d5c99d24e5a858dbe))
+- **lib:** add click workaround for deck.gl MapboxOverlay ([1a7d446](https://github.com/geoql/v-maplibre/commit/1a7d446f7510749fe4c1a14cbbc9826c3a7b5f47))
+- **mosaic:** force layer re-creation on renderMode change to flush MosaicLayer cache ([4fabce4](https://github.com/geoql/v-maplibre/commit/4fabce40804b669a73383f4825f116d5e4477b16))
+- **mosaic:** use v0.3 default getTileData pipeline, fix fromUrl signature ([6ac9e95](https://github.com/geoql/v-maplibre/commit/6ac9e95acc718169590b8c112d902fcd5986720c))
+- **mosaic:** v0.3 getTileData with fetchTile API, remove broken NDVIRangeFilter shader ([f51762a](https://github.com/geoql/v-maplibre/commit/f51762a3510cad249de9222b6cb67670885f0d00))
+- **v-maplibre:** increase VControlLayer max-width to 280px ([881bf88](https://github.com/geoql/v-maplibre/commit/881bf88b3f582a6fac0d711b140e3499041dd317))
+- **v-maplibre:** preserve maplibregl-ctrl class across Vue re-renders ([13f9f81](https://github.com/geoql/v-maplibre/commit/13f9f81a9fe45a8033b55f6e0d6775c59cc14b6a))
+- **v-maplibre:** suppress browser focus outline on layer control buttons ([71c38e3](https://github.com/geoql/v-maplibre/commit/71c38e33f268a94b95394756d0a40f52b8fc20bd))
 
 ### Documentation
 
-* update install instructions for @developmentseed/geotiff v0.3 ([8869ff9](https://github.com/geoql/v-maplibre/commit/8869ff9a29002e264ef33a7b080703a1408aa570))
-
+- update install instructions for @developmentseed/geotiff v0.3 ([8869ff9](https://github.com/geoql/v-maplibre/commit/8869ff9a29002e264ef33a7b080703a1408aa570))
 
 ### Miscellaneous
 
-* **deps:** bump dependencies and fix resvg-js catalog reference ([98a5693](https://github.com/geoql/v-maplibre/commit/98a5693740bf30add105c5a012d4504eab960534))
-* **deps:** drop geotiff, geotiff-geokeys-to-proj4, proj4 — now via @developmentseed/geotiff ([6fd1ded](https://github.com/geoql/v-maplibre/commit/6fd1ded4b2388205b884d4ae9af0216216bf19dd))
-* **deps:** update all workspace catalog dependencies ([66a78b7](https://github.com/geoql/v-maplibre/commit/66a78b740e668b776b69f924278814ab24439f5a))
-* **deps:** upgrade typescript 5.9 to 6.0, adapt tsconfigs for breaking changes ([efea700](https://github.com/geoql/v-maplibre/commit/efea700dbdf71c6857e9a94f2ea40bc34e311ef7))
-* remove stale eslint-disable comment and dependabot eslint pattern ([8d4d7dd](https://github.com/geoql/v-maplibre/commit/8d4d7dd8e008c1d40031bf4cce0451f2404262c8))
-* restructure bun workspace catalogs with named prefixes ([8626b1f](https://github.com/geoql/v-maplibre/commit/8626b1f7d7f0789893bc3222e7c5957450650e39))
+- **deps:** bump dependencies and fix resvg-js catalog reference ([98a5693](https://github.com/geoql/v-maplibre/commit/98a5693740bf30add105c5a012d4504eab960534))
+- **deps:** drop geotiff, geotiff-geokeys-to-proj4, proj4 — now via @developmentseed/geotiff ([6fd1ded](https://github.com/geoql/v-maplibre/commit/6fd1ded4b2388205b884d4ae9af0216216bf19dd))
+- **deps:** update all workspace catalog dependencies ([66a78b7](https://github.com/geoql/v-maplibre/commit/66a78b740e668b776b69f924278814ab24439f5a))
+- **deps:** upgrade typescript 5.9 to 6.0, adapt tsconfigs for breaking changes ([efea700](https://github.com/geoql/v-maplibre/commit/efea700dbdf71c6857e9a94f2ea40bc34e311ef7))
+- remove stale eslint-disable comment and dependabot eslint pattern ([8d4d7dd](https://github.com/geoql/v-maplibre/commit/8d4d7dd8e008c1d40031bf4cce0451f2404262c8))
+- restructure bun workspace catalogs with named prefixes ([8626b1f](https://github.com/geoql/v-maplibre/commit/8626b1f7d7f0789893bc3222e7c5957450650e39))
 
 ## [1.6.1](https://github.com/geoql/v-maplibre/compare/v1.6.0...v1.6.1) (2026-02-02)
 
-
 ### Bug Fixes
 
-* **v-maplibre:** add missing [@luma](https://github.com/luma).gl imports to jsr.json for JSR publish ([c2cd8ce](https://github.com/geoql/v-maplibre/commit/c2cd8ce9b421ec52bf6a47880bf4eb6fff18a98e))
+- **v-maplibre:** add missing [@luma](https://github.com/luma).gl imports to jsr.json for JSR publish ([c2cd8ce](https://github.com/geoql/v-maplibre/commit/c2cd8ce9b421ec52bf6a47880bf4eb6fff18a98e))
 
 ## [1.6.0](https://github.com/geoql/v-maplibre/compare/v1.5.0...v1.6.0) (2026-01-27)
 
-
 ### Features
 
-* **controls:** add deck.gl layer filtering with DataFilterExtension support ([ec0d656](https://github.com/geoql/v-maplibre/commit/ec0d6562cd1e565703405d93f9f66b327fc898cb))
-* **controls:** add legend auto-generation from MapLibre paint properties ([985d2b7](https://github.com/geoql/v-maplibre/commit/985d2b785b110748a53c121978e7cfadff1b6ce0))
-* **controls:** add MapLibre layer filtering from legend clicks ([6152cb7](https://github.com/geoql/v-maplibre/commit/6152cb704bde57cad57126e1d251177df7653ffd))
-* **controls:** add VControlLayer for MapLibre layer visibility and opacity ([a08d3c1](https://github.com/geoql/v-maplibre/commit/a08d3c18cba386eaae2ecda1cbf11494e67e76b7))
-* **controls:** add VControlLayerGroup for multi-layer control panel ([8db2038](https://github.com/geoql/v-maplibre/commit/8db2038fda8557427c8d3584217a30691e1e2a25))
-* **controls:** add VControlLegend with category type and explicit items ([782a5ba](https://github.com/geoql/v-maplibre/commit/782a5baa769a67a576082b1d60ad4d2e11496dc2))
-* **controls:** extend VControlLayer with deck.gl layer support ([e05a3ab](https://github.com/geoql/v-maplibre/commit/e05a3ab7e7571d20dab777638cebfc40155881f7))
-* **layers:** add VLayerDeckglMosaic for client-side COG mosaicking ([faf78d0](https://github.com/geoql/v-maplibre/commit/faf78d0581f98073b06b70cd6262752700d3e16d))
-* **map:** call useDeckOverlay at VMap level for child component access to DeckLayersKey ([b755a38](https://github.com/geoql/v-maplibre/commit/b755a382ad524b37c1d5aa610eed0b1014015243))
-* upgrade deck.gl-raster to v0.2.0 with built-in MosaicLayer ([bd9f065](https://github.com/geoql/v-maplibre/commit/bd9f0656e47fd60d7a795873bfc6bdc24c09e2a5))
-* **v-maplibre:** add VLayerMaplibreIsochrone component ([0f52336](https://github.com/geoql/v-maplibre/commit/0f52336fb199fe817b6665d2102a7fa1c1abfb73))
-
+- **controls:** add deck.gl layer filtering with DataFilterExtension support ([ec0d656](https://github.com/geoql/v-maplibre/commit/ec0d6562cd1e565703405d93f9f66b327fc898cb))
+- **controls:** add legend auto-generation from MapLibre paint properties ([985d2b7](https://github.com/geoql/v-maplibre/commit/985d2b785b110748a53c121978e7cfadff1b6ce0))
+- **controls:** add MapLibre layer filtering from legend clicks ([6152cb7](https://github.com/geoql/v-maplibre/commit/6152cb704bde57cad57126e1d251177df7653ffd))
+- **controls:** add VControlLayer for MapLibre layer visibility and opacity ([a08d3c1](https://github.com/geoql/v-maplibre/commit/a08d3c18cba386eaae2ecda1cbf11494e67e76b7))
+- **controls:** add VControlLayerGroup for multi-layer control panel ([8db2038](https://github.com/geoql/v-maplibre/commit/8db2038fda8557427c8d3584217a30691e1e2a25))
+- **controls:** add VControlLegend with category type and explicit items ([782a5ba](https://github.com/geoql/v-maplibre/commit/782a5baa769a67a576082b1d60ad4d2e11496dc2))
+- **controls:** extend VControlLayer with deck.gl layer support ([e05a3ab](https://github.com/geoql/v-maplibre/commit/e05a3ab7e7571d20dab777638cebfc40155881f7))
+- **layers:** add VLayerDeckglMosaic for client-side COG mosaicking ([faf78d0](https://github.com/geoql/v-maplibre/commit/faf78d0581f98073b06b70cd6262752700d3e16d))
+- **map:** call useDeckOverlay at VMap level for child component access to DeckLayersKey ([b755a38](https://github.com/geoql/v-maplibre/commit/b755a382ad524b37c1d5aa610eed0b1014015243))
+- upgrade deck.gl-raster to v0.2.0 with built-in MosaicLayer ([bd9f065](https://github.com/geoql/v-maplibre/commit/bd9f0656e47fd60d7a795873bfc6bdc24c09e2a5))
+- **v-maplibre:** add VLayerMaplibreIsochrone component ([0f52336](https://github.com/geoql/v-maplibre/commit/0f52336fb199fe817b6665d2102a7fa1c1abfb73))
 
 ### Bug Fixes
 
-* **controls:** add 10px margin to match MapLibre control spacing ([45d555a](https://github.com/geoql/v-maplibre/commit/45d555aece67fe1bc929557eaf93f47c84c80226))
-* **controls:** add pointer-events:auto directly to control CSS ([e4b54ff](https://github.com/geoql/v-maplibre/commit/e4b54ff94dbf0ea2da2d4c472a65e06415dd7620))
-* **controls:** ensure collapsed controls remain clickable with IControl ([2ce13d7](https://github.com/geoql/v-maplibre/commit/2ce13d7f346b8b1be9a703ca2c7a409d686b3c2a))
-* **controls:** improve mobile touch targets for collapsible headers ([749fb49](https://github.com/geoql/v-maplibre/commit/749fb49d2027a8d35dd615b7d0c467c75e1623a5))
-* **controls:** improve VControlLegend spacing and collapsed border handling ([7927cab](https://github.com/geoql/v-maplibre/commit/7927cab1dde9a94ffb3221aa7ef5f83832dd63e8))
-* **controls:** make VControlLayer/VControlLayerGroup compact with text truncation ([30a3639](https://github.com/geoql/v-maplibre/commit/30a3639f72a13a9e30ee29e99304d852d95ed8a5))
-* **controls:** use opacityProp variable instead of undefined opacityProperty.value ([208302b](https://github.com/geoql/v-maplibre/commit/208302b6e2b8a4ac552b55783250f647112e09b1))
-* **layers:** mosaic renderMode changes now update tiles properly ([368f51d](https://github.com/geoql/v-maplibre/commit/368f51d92b36d773def8ed0be30cf8b5bc88b030))
-* **layers:** use inline colormap shader for NDVI to avoid texture issues ([621f56c](https://github.com/geoql/v-maplibre/commit/621f56c87b0c4fb1358b14cefdcce003d99b914e))
-* resolve luma.gl multiple versions error by centralizing deck.gl stack in catalog ([9d2fbf1](https://github.com/geoql/v-maplibre/commit/9d2fbf1ecaeb8ae7ac4cd4739291ba3b18baf22e))
-* restore getProj4String helper for deck.gl-geotiff geoKeysParser ([d143554](https://github.com/geoql/v-maplibre/commit/d1435541dbb964751479551a1b054b44fed70107))
-* **v-maplibre:** make VMarker coordinates prop required ([112afb1](https://github.com/geoql/v-maplibre/commit/112afb1347b5c2de6e8eb5ce9eb9ee105df41e39))
-* **v-maplibre:** resolve layer initialization race condition in GeoJSON and Isochrone components ([824f926](https://github.com/geoql/v-maplibre/commit/824f9267b1e581e40622f476ed4d3544a1654f14))
-
+- **controls:** add 10px margin to match MapLibre control spacing ([45d555a](https://github.com/geoql/v-maplibre/commit/45d555aece67fe1bc929557eaf93f47c84c80226))
+- **controls:** add pointer-events:auto directly to control CSS ([e4b54ff](https://github.com/geoql/v-maplibre/commit/e4b54ff94dbf0ea2da2d4c472a65e06415dd7620))
+- **controls:** ensure collapsed controls remain clickable with IControl ([2ce13d7](https://github.com/geoql/v-maplibre/commit/2ce13d7f346b8b1be9a703ca2c7a409d686b3c2a))
+- **controls:** improve mobile touch targets for collapsible headers ([749fb49](https://github.com/geoql/v-maplibre/commit/749fb49d2027a8d35dd615b7d0c467c75e1623a5))
+- **controls:** improve VControlLegend spacing and collapsed border handling ([7927cab](https://github.com/geoql/v-maplibre/commit/7927cab1dde9a94ffb3221aa7ef5f83832dd63e8))
+- **controls:** make VControlLayer/VControlLayerGroup compact with text truncation ([30a3639](https://github.com/geoql/v-maplibre/commit/30a3639f72a13a9e30ee29e99304d852d95ed8a5))
+- **controls:** use opacityProp variable instead of undefined opacityProperty.value ([208302b](https://github.com/geoql/v-maplibre/commit/208302b6e2b8a4ac552b55783250f647112e09b1))
+- **layers:** mosaic renderMode changes now update tiles properly ([368f51d](https://github.com/geoql/v-maplibre/commit/368f51d92b36d773def8ed0be30cf8b5bc88b030))
+- **layers:** use inline colormap shader for NDVI to avoid texture issues ([621f56c](https://github.com/geoql/v-maplibre/commit/621f56c87b0c4fb1358b14cefdcce003d99b914e))
+- resolve luma.gl multiple versions error by centralizing deck.gl stack in catalog ([9d2fbf1](https://github.com/geoql/v-maplibre/commit/9d2fbf1ecaeb8ae7ac4cd4739291ba3b18baf22e))
+- restore getProj4String helper for deck.gl-geotiff geoKeysParser ([d143554](https://github.com/geoql/v-maplibre/commit/d1435541dbb964751479551a1b054b44fed70107))
+- **v-maplibre:** make VMarker coordinates prop required ([112afb1](https://github.com/geoql/v-maplibre/commit/112afb1347b5c2de6e8eb5ce9eb9ee105df41e39))
+- **v-maplibre:** resolve layer initialization race condition in GeoJSON and Isochrone components ([824f926](https://github.com/geoql/v-maplibre/commit/824f9267b1e581e40622f476ed4d3544a1654f14))
 
 ### Documentation
 
-* **layers:** update TODO and add reserved colormapData prop for future use ([f11e6e6](https://github.com/geoql/v-maplibre/commit/f11e6e69a3660ec21cd8d8c1e780c22cf6fc964e))
-
+- **layers:** update TODO and add reserved colormapData prop for future use ([f11e6e6](https://github.com/geoql/v-maplibre/commit/f11e6e69a3660ec21cd8d8c1e780c22cf6fc964e))
 
 ### Miscellaneous
 
-* migrate to oxfmt/oxlint, integrate maps.guru tiles ([0a2a4b1](https://github.com/geoql/v-maplibre/commit/0a2a4b12f4c98063f34f677f491582df111ae50e))
-* remove flatbush from dependencies (now built into deck.gl-geotiff v0.2.0) ([607e369](https://github.com/geoql/v-maplibre/commit/607e369898bd691e5b25edb83e0fe29e8fdf508b))
-
+- migrate to oxfmt/oxlint, integrate maps.guru tiles ([0a2a4b1](https://github.com/geoql/v-maplibre/commit/0a2a4b12f4c98063f34f677f491582df111ae50e))
+- remove flatbush from dependencies (now built into deck.gl-geotiff v0.2.0) ([607e369](https://github.com/geoql/v-maplibre/commit/607e369898bd691e5b25edb83e0fe29e8fdf508b))
 
 ### Code Refactoring
 
-* **controls:** move ExpressionValue type to types.ts ([ec77623](https://github.com/geoql/v-maplibre/commit/ec776233c9865ccc4d3d4591e4493db5b90b1286))
-* **controls:** use MapLibre IControl for proper control stacking ([654b75e](https://github.com/geoql/v-maplibre/commit/654b75e1ee698d701a2d4daf57fc342bb6576333))
-* extract getProj4Def helper for cleaner EPSG code handling ([1e5a9f3](https://github.com/geoql/v-maplibre/commit/1e5a9f3ecb1c8af07e9aef206641a0af0898d6af))
-* **layers:** remove unused colormap texture code from mosaic layer ([e895ebb](https://github.com/geoql/v-maplibre/commit/e895ebb7adc65c6a70760906480a9cd08a5570c1))
-* **v-maplibre:** move derived layers to layers/maplibre/custom/ ([5a2505a](https://github.com/geoql/v-maplibre/commit/5a2505a9b291b9d6f7ad4ac740f560de132d7ebd))
+- **controls:** move ExpressionValue type to types.ts ([ec77623](https://github.com/geoql/v-maplibre/commit/ec776233c9865ccc4d3d4591e4493db5b90b1286))
+- **controls:** use MapLibre IControl for proper control stacking ([654b75e](https://github.com/geoql/v-maplibre/commit/654b75e1ee698d701a2d4daf57fc342bb6576333))
+- extract getProj4Def helper for cleaner EPSG code handling ([1e5a9f3](https://github.com/geoql/v-maplibre/commit/1e5a9f3ecb1c8af07e9aef206641a0af0898d6af))
+- **layers:** remove unused colormap texture code from mosaic layer ([e895ebb](https://github.com/geoql/v-maplibre/commit/e895ebb7adc65c6a70760906480a9cd08a5570c1))
+- **v-maplibre:** move derived layers to layers/maplibre/custom/ ([5a2505a](https://github.com/geoql/v-maplibre/commit/5a2505a9b291b9d6f7ad4ac740f560de132d7ebd))
 
 ## [1.5.0](https://github.com/geoql/v-maplibre/compare/v1.4.0...v1.5.0) (2026-01-16)
 
