@@ -1,5 +1,5 @@
 import type { WindDataPoint, ColorStop } from '@geoql/v-maplibre';
-import { createWindDataFromOpenWeatherMap } from '@geoql/v-maplibre';
+import { createWindDataFromOpenWeatherMap } from 'maplibre-gl-wind';
 
 export function useWindData() {
   const isLoading = ref(true);

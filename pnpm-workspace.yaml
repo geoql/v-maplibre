@@ -104,6 +104,7 @@ catalogs:
     jszip: ^3.10.1
     maplibre-gl-interpolate-heatmap: 0.1.3
     maplibre-gl-lidar: ^0.13.0
+    maplibre-gl-wind: ^0.2.0
     motion-v: ^2.2.1
     nuxt: ^4.4.6
     nuxt-llms: ^0.2.0

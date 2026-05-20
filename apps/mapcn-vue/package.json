@@ -59,6 +59,7 @@
     "maplibre-gl": "catalog:default",
     "maplibre-gl-interpolate-heatmap": "catalog:app:mapcn-vue",
     "maplibre-gl-lidar": "catalog:app:mapcn-vue",
+    "maplibre-gl-wind": "catalog:app:mapcn-vue",
     "motion-v": "catalog:app:mapcn-vue",
     "nuxt": "catalog:app:mapcn-vue",
     "nuxt-llms": "catalog:app:mapcn-vue",

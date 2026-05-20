@@ -53,9 +53,9 @@
                 VMap,
                 VControlNavigation,
                 VLayerDeckglWindParticle,
-                createWindDataFromOpenWeatherMap,
                 } from '@geoql/v-maplibre';
                 import type { WindDataPoint, ColorStop } from '@geoql/v-maplibre';
+                import { createWindDataFromOpenWeatherMap } from 'maplibre-gl-wind';
 
                 const windData = ref<WindDataPoint[]>([]);
 
