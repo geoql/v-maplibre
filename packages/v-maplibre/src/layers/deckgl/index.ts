@@ -147,12 +147,11 @@ export const VLayerDeckglGeoArrowTrips: Component = defineAsyncComponent(() =>
 export const VLayerDeckglWindParticle: Component = defineAsyncComponent(() =>
   import('./wind-particle').then((m) => m.VLayerDeckglWindParticle),
 );
-export {
-  createWindDataFromOpenWeatherMap,
-  type WindDataPoint,
-  type WindTextureResult,
-  type GenerateWindTextureOptions,
-  type ColorStop,
+export type {
+  WindDataPoint,
+  WindTextureResult,
+  GenerateWindTextureOptions,
+  ColorStop,
 } from './wind-particle';
 
 export {
