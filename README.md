@@ -54,6 +54,8 @@ Add the optional packages below **only** for the layers you actually use:
 
 See the [Peer Dependencies guide](https://v-maplibre.geoql.in/guide/peer-dependencies) for the full per-component reference.
 
+> Wind-data helpers (`createWindDataFromOpenWeatherMap`, `generateWindTexture`, `WindParticleLayer`, `windUniforms`) ship from `maplibre-gl-wind` directly — `import { ... } from 'maplibre-gl-wind'`.
+
 ```vue
 <script setup lang="ts">
   import { VMap, VMarker } from '@geoql/v-maplibre';
