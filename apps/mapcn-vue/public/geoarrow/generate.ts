@@ -419,11 +419,11 @@ function genNycBoroughs(): void {
     polyField,
   );
   const schema = new Schema([
-    listField('geometry', 'geoarrow.multipolygon', polyField),
     new Field('name', new Utf8()),
+    listField('geometry', 'geoarrow.multipolygon', polyField),
   ]);
   const names = strData(boroughs.map((b) => b[0]));
-  writeArrow('nyc-boroughs.arrows', schema, [geom, names]);
+  writeArrow('nyc-boroughs.arrows', schema, [names, geom]);
 }
 
 console.log(`Generating GeoArrow demo files to: ${OUT}`);

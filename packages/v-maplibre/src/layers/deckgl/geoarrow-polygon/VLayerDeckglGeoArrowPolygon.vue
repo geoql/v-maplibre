@@ -116,7 +116,11 @@
       cfg.earcutWorkerUrl = props.earcutWorkerUrl;
     try {
       return markRaw(new LayerClass.value(cfg));
-    } catch {
+    } catch (err) {
+      console.error(
+        '[VLayerDeckglGeoArrowPolygon] failed to construct layer:',
+        err,
+      );
       return null;
     }
   };
