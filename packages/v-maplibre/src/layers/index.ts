@@ -1,4 +1,5 @@
-// Base MapLibre layers
+import { defineAsyncComponent, type Component } from 'vue';
+
 export { CanvasLayer as VLayerMaplibreCanvas } from './maplibre/canvas';
 export { GeojsonLayer as VLayerMaplibreGeojson } from './maplibre/geojson';
 export { ImageLayer as VLayerMaplibreImage } from './maplibre/image';
@@ -6,11 +7,12 @@ export { RasterLayer as VLayerMaplibreRaster } from './maplibre/raster';
 export { VectorLayer as VLayerMaplibreVector } from './maplibre/vector';
 export { VideoLayer as VLayerMaplibreVideo } from './maplibre/video';
 export { PmtileLayer as VLayerMaplibrePmtile } from './maplibre/pmtile';
-
-// Custom/derived layers (composed from base layers)
 export { ClusterLayer as VLayerMaplibreCluster } from './maplibre/custom/cluster';
 export { RouteLayer as VLayerMaplibreRoute } from './maplibre/custom/route';
 export { VLayerMaplibreIsochrone } from './maplibre/custom/isochrone';
-export { StarfieldLayer as VLayerMaplibreStarfield } from './maplibre/custom/starfield';
+
+export const VLayerMaplibreStarfield: Component = defineAsyncComponent(() =>
+  import('./maplibre/custom/starfield').then((m) => m.StarfieldLayer),
+);
 
 export * from './deckgl';

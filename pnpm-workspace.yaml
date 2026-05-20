@@ -4,6 +4,12 @@ packages:
 
 overrides:
   vite: ^8.0.13
+  # Single-version pins to avoid dual-resolution at docs `nuxt prepare`:
+  # docus@5.11 pulls @nuxt/content@3.13.0 (no zod3 chunk -> defineCollection
+  # throws via the zod3 placeholder), while @nuxt/ui pulls @nuxt/content@3.14.0.
+  # Pinning to 3.14 + zod 4 makes every path use the zod4 chunk.
+  '@nuxt/content': ^3.14.0
+  zod: ^4.4.3
 
 allowBuilds:
   '@parcel/watcher': true

@@ -8,7 +8,8 @@
   } from '@geoql/v-maplibre';
   import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import { tableFromIPC } from 'apache-arrow';
-  import type { RecordBatch } from 'apache-arrow';
+  import type { Table } from 'apache-arrow';
+  import { markRaw, shallowRef, watch } from 'vue';
   import { Button } from '~/components/ui/button';
   import { Slider } from '~/components/ui/slider';
 
@@ -28,13 +29,13 @@
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 
-  const GEOARROW_URL =
-    'https://cdn.jsdelivr.net/gh/geoarrow/geoarrow-data@main/natural-earth/files/natural-earth_countries-geography.arrows';
+  const GEOARROW_URL = '/geoarrow/natural-earth_countries-geography.arrows';
 
-  const batch = shallowRef<RecordBatch | null>(null);
+  const table = shallowRef<Table | null>(null);
   const loading = ref(true);
   const error = ref<string | null>(null);
 
+  const firstBatch = computed(() => table.value?.batches[0] ?? null);
   const extruded = ref(false);
   const elevationScale = ref<number[]>([50000]);
   const opacity = ref<number[]>([180]);
@@ -55,12 +56,19 @@
         throw new Error(`HTTP ${response.status} loading ${GEOARROW_URL}`);
       }
       const buffer = await response.arrayBuffer();
-      const table = tableFromIPC(new Uint8Array(buffer));
-      const firstBatch = table.batches[0];
-      if (!firstBatch) {
+      const arrowTable = tableFromIPC(new Uint8Array(buffer));
+      if (!arrowTable.batches[0]) {
         throw new Error('Arrow IPC file contains no record batches');
       }
-      batch.value = firstBatch;
+      console.log(
+        '[GA-PAGE] table set, batches:',
+        arrowTable.batches.length,
+        'numRows:',
+        arrowTable.numRows,
+        'has geometry:',
+        !!arrowTable.getChild('geometry'),
+      );
+      table.value = arrowTable;
     } catch (err) {
       error.value = err instanceof Error ? err.message : String(err);
     } finally {
@@ -90,7 +98,7 @@
                     import { tableFromIPC } from 'apache-arrow';
                     import type { RecordBatch } from 'apache-arrow';
 
-                    const batch = shallowRef<RecordBatch | null>(null);
+  const table = shallowRef<Table | null>(null);
 
                     onMounted(async () => {
                       const url = 'https://cdn.jsdelivr.net/gh/geoarrow/geoarrow-data@main/natural-earth/files/natural-earth_countries-geography.arrows';
@@ -134,12 +142,10 @@
 
           <VLayerDeckglGeoArrowPolygon
             id="geoarrow-countries"
-            :data="batch"
+            :data="table"
             :get-fill-color="fillOpacity"
-            :get-line-color="[180, 220, 255, 255]"
-            :line-width-min-pixels="1"
-            :extruded="extruded"
-            :get-elevation="elevationMultiplier"
+            :get-line-color="[200, 220, 255, 255]"
+            :line-width-min-pixels="0.5"
             stroked
             filled
             pickable
@@ -185,7 +191,7 @@
             </div>
             <div class="tabular-nums text-foreground">
               <span v-if="loading">—</span>
-              <span v-else-if="batch">{{ batch.numRows }}</span>
+              <span v-else-if="table">{{ table.numRows }}</span>
               <span v-else>—</span>
             </div>
           </div>

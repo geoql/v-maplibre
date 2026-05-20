@@ -42,7 +42,14 @@
     beforeId?: string;
   };
 
-  const props = defineProps<Props>();
+  const props = withDefaults(defineProps<Props>(), {
+    visible: true,
+    pickable: false,
+    autoHighlight: false,
+    jointRounded: false,
+    capRounded: false,
+    billboard: false,
+  });
 
   const emit = defineEmits<{
     click: [info: PickingInfo];
@@ -93,15 +100,7 @@
   });
 
   watch(
-    () => [
-      props.data,
-      props.getPath,
-      props.getColor,
-      props.getWidth,
-      props.widthScale,
-      props.opacity,
-      props.visible,
-    ],
+    () => props.data,
     () => {
       if (!LayerClass.value || !props.data) return;
       const layer = createLayer();

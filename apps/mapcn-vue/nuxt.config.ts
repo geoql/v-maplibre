@@ -233,6 +233,9 @@ export default defineNuxtConfig({
     optimizeDeps: {
       exclude: ['@geoql/v-maplibre'],
       include: [
+        '@deck.gl/mapbox',
+        '@geoarrow/deck.gl-geoarrow',
+        'apache-arrow',
         'class-variance-authority',
         'clsx',
         'reka-ui',

@@ -44,9 +44,18 @@
     pickable?: boolean;
     autoHighlight?: boolean;
     beforeId?: string;
+    earcutWorkerUrl?: string | URL | null;
   };
 
-  const props = defineProps<Props>();
+  const props = withDefaults(defineProps<Props>(), {
+    visible: true,
+    pickable: false,
+    autoHighlight: false,
+    stroked: true,
+    filled: true,
+    extruded: false,
+    wireframe: false,
+  });
 
   const emit = defineEmits<{
     click: [info: PickingInfo];
@@ -62,29 +71,67 @@
 
   const createLayer = () => {
     if (!LayerClass.value || !props.data) return null;
-    const layer = new LayerClass.value({
-      ...(props as object),
+    const cfg: Record<string, unknown> = {
       id: props.id,
+      data: props.data,
       onClick: (info: PickingInfo) => emit('click', info),
       onHover: (info: PickingInfo) => emit('hover', info),
-    });
-    return markRaw(layer);
+    };
+    if (props.getPolygon !== undefined) cfg.getPolygon = props.getPolygon;
+    if (props.getFillColor !== undefined) cfg.getFillColor = props.getFillColor;
+    if (props.getLineColor !== undefined) cfg.getLineColor = props.getLineColor;
+    if (props.getLineWidth !== undefined) cfg.getLineWidth = props.getLineWidth;
+    if (props.getElevation !== undefined) cfg.getElevation = props.getElevation;
+    if (props.lineWidthUnits !== undefined)
+      cfg.lineWidthUnits = props.lineWidthUnits;
+    if (props.lineWidthScale !== undefined)
+      cfg.lineWidthScale = props.lineWidthScale;
+    if (props.lineWidthMinPixels !== undefined)
+      cfg.lineWidthMinPixels = props.lineWidthMinPixels;
+    if (props.lineWidthMaxPixels !== undefined)
+      cfg.lineWidthMaxPixels = props.lineWidthMaxPixels;
+    if (props.stroked !== undefined) cfg.stroked = props.stroked;
+    if (props.filled !== undefined) cfg.filled = props.filled;
+    if (props.extruded !== undefined) cfg.extruded = props.extruded;
+    if (props.wireframe !== undefined) cfg.wireframe = props.wireframe;
+    if (props.elevationScale !== undefined)
+      cfg.elevationScale = props.elevationScale;
+    if (props.opacity !== undefined) cfg.opacity = props.opacity;
+    if (props.visible !== undefined) cfg.visible = props.visible;
+    if (props.pickable !== undefined) cfg.pickable = props.pickable;
+    if (props.autoHighlight !== undefined)
+      cfg.autoHighlight = props.autoHighlight;
+    if (props.beforeId !== undefined) cfg.beforeId = props.beforeId;
+    if (props.earcutWorkerUrl !== undefined)
+      cfg.earcutWorkerUrl = props.earcutWorkerUrl;
+    try {
+      return markRaw(new LayerClass.value(cfg));
+    } catch {
+      return null;
+    }
   };
 
   const initializeLayer = async () => {
-    const mod = await requirePeer(
-      '@geoarrow/deck.gl-geoarrow',
-      () => import('@geoarrow/deck.gl-geoarrow'),
-      GEOARROW_PEER_INSTALL,
-    );
-    LayerClass.value = markRaw(mod.GeoArrowPolygonLayer);
+    try {
+      const mod = await requirePeer(
+        '@geoarrow/deck.gl-geoarrow',
+        () => import('@geoarrow/deck.gl-geoarrow'),
+        GEOARROW_PEER_INSTALL,
+      );
+      LayerClass.value = markRaw(mod.GeoArrowPolygonLayer);
+    } catch {
+      // peer dep not installed — wrapper is inert
+    }
   };
 
   onMounted(() => {
+    // VMap mounts before MapLibre's style finishes loading. Wait for the
+    // first `idle` event which fires once the style is loaded AND the first
+    // frame has rendered — guarantees the map is ready regardless of timing.
     if (map.value?.isStyleLoaded()) {
       initializeLayer();
     } else {
-      map.value?.once('style.load', () => {
+      map.value?.once('idle', () => {
         initializeLayer();
       });
     }
@@ -98,20 +145,7 @@
   });
 
   watch(
-    () => [
-      props.data,
-      props.getPolygon,
-      props.getFillColor,
-      props.getLineColor,
-      props.getLineWidth,
-      props.getElevation,
-      props.opacity,
-      props.visible,
-      props.stroked,
-      props.filled,
-      props.extruded,
-      props.wireframe,
-    ],
+    () => props.data,
     () => {
       if (!LayerClass.value || !props.data) return;
       const layer = createLayer();

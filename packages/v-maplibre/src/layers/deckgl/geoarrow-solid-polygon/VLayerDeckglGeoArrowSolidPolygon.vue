@@ -41,7 +41,15 @@
     beforeId?: string;
   };
 
-  const props = defineProps<Props>();
+  const props = withDefaults(defineProps<Props>(), {
+    visible: true,
+    pickable: false,
+    autoHighlight: false,
+    extruded: false,
+    wireframe: false,
+    filled: true,
+    metrics: false,
+  });
 
   const emit = defineEmits<{
     click: [info: PickingInfo];
@@ -92,17 +100,7 @@
   });
 
   watch(
-    () => [
-      props.data,
-      props.getPolygon,
-      props.getFillColor,
-      props.getLineColor,
-      props.getElevation,
-      props.opacity,
-      props.visible,
-      props.extruded,
-      props.wireframe,
-    ],
+    () => props.data,
     () => {
       if (!LayerClass.value || !props.data) return;
       const layer = createLayer();

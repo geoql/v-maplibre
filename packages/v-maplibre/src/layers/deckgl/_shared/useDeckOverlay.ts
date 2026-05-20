@@ -114,7 +114,9 @@ export function useDeckOverlay(
         overlay.value = new MapboxOverlay({
           interleaved,
           layers: [],
-        });
+          onError: (err: unknown) =>
+            console.error('[useDeckOverlay] deck onError:', err),
+        } as ConstructorParameters<typeof MapboxOverlay>[0]);
 
         mapInstance.addControl(overlay.value);
         registerClickHandler(mapInstance);

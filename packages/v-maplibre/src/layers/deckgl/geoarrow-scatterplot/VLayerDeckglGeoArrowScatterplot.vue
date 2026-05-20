@@ -53,7 +53,15 @@
     beforeId?: string;
   };
 
-  const props = defineProps<Props>();
+  const props = withDefaults(defineProps<Props>(), {
+    visible: true,
+    pickable: false,
+    autoHighlight: false,
+    stroked: false,
+    filled: true,
+    billboard: false,
+    antialiasing: true,
+  });
 
   const emit = defineEmits<{
     click: [info: PickingInfo];
@@ -104,19 +112,7 @@
   });
 
   watch(
-    () => [
-      props.data,
-      props.getPosition,
-      props.getRadius,
-      props.getFillColor,
-      props.getLineColor,
-      props.getLineWidth,
-      props.radiusScale,
-      props.opacity,
-      props.visible,
-      props.stroked,
-      props.filled,
-    ],
+    () => props.data,
     () => {
       if (!LayerClass.value || !props.data) return;
       const layer = createLayer();
