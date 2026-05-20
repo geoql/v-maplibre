@@ -500,16 +500,72 @@ export function useExamplesData() {
       id: 'geoarrow',
       title: 'GeoArrow / Apache Arrow',
       description:
-        'Native Arrow IPC + GeoParquet rendering with deck.gl-geoarrow',
+        'Native Arrow IPC rendering with deck.gl-geoarrow — Point, LineString, Polygon, MultiPolygon, Text, Trips',
       icon: 'lucide:network',
       examples: [
         {
           title: 'GeoArrow Polygons',
           description:
-            'Natural Earth countries from a native GeoArrow IPC file. Zero GeoJSON parsing — Arrow RecordBatch goes straight to the GPU. Toggle 3D extrusion to switch wrappers.',
+            'Natural Earth countries from a GeoArrow IPC file. Toggle 3D extrusion to switch between Polygon and SolidPolygon wrappers.',
           href: '/examples/deckgl-geoarrow',
           icon: 'lucide:map',
           badge: 'Arrow IPC',
+        },
+        {
+          title: 'GeoArrow Points',
+          description:
+            'City clusters as a MultiPoint geometry. Each point rendered directly from Arrow struct<x,y> coordinates.',
+          href: '/examples/deckgl-geoarrow-scatterplot',
+          icon: 'lucide:scatter-chart',
+          badge: 'Scatterplot',
+        },
+        {
+          title: 'GeoArrow Multipoint',
+          description:
+            'Individual cities as explicit Multipoint features from a GeoArrow IPC file.',
+          href: '/examples/deckgl-geoarrow-multipoint',
+          icon: 'lucide:dot',
+          badge: 'MultiPoint',
+        },
+        {
+          title: 'GeoArrow LineStrings',
+          description:
+            'Famous travel routes as LineString geometries. Flat coordinate arrays encoded in Arrow IPC format.',
+          href: '/examples/deckgl-geoarrow-path',
+          icon: 'lucide:route',
+          badge: 'LineString',
+        },
+        {
+          title: 'GeoArrow NYC Polygons',
+          description:
+            'NYC borough outlines as MultiPolygon geometry. Demonstrates multiple disjoint polygon shapes in one layer.',
+          href: '/examples/deckgl-geoarrow-polygon-nyc',
+          icon: 'lucide:hexagon',
+          badge: 'MultiPolygon',
+        },
+        {
+          title: 'GeoArrow Text Labels',
+          description:
+            'City name labels from a GeoArrow table with a Point geometry column and a text name column.',
+          href: '/examples/deckgl-geoarrow-text',
+          icon: 'lucide:type',
+          badge: 'TextLayer',
+        },
+        {
+          title: 'GeoArrow Trips',
+          description:
+            'Animated travel paths with timestamps. Demonstrates the TripsLayer using Arrow list<int64> timestamps.',
+          href: '/examples/deckgl-geoarrow-triplines',
+          icon: 'lucide:clock',
+          badge: 'TripsLayer',
+        },
+        {
+          title: 'All Geometry Types',
+          description:
+            'Point, LineString, and Polygon in a single view — three GeoArrow IPC files rendered together.',
+          href: '/examples/deckgl-geoarrow-mixed',
+          icon: 'lucide:layers',
+          badge: 'Combined',
         },
       ],
     },

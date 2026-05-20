@@ -29,7 +29,8 @@
   const { mapStyle } = useMapStyle();
   const mapId = useId();
 
-  const GEOARROW_URL = '/geoarrow/natural-earth_countries-geography.arrows';
+  const GEOARROW_URL =
+    'https://cdn.jsdelivr.net/gh/geoarrow/geoarrow-data@main/natural-earth/files/natural-earth_countries-geography.arrows';
 
   const table = shallowRef<Table | null>(null);
   const loading = ref(true);

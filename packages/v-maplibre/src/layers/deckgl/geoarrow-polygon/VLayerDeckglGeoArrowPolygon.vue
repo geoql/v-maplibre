@@ -45,6 +45,10 @@
     autoHighlight?: boolean;
     beforeId?: string;
     earcutWorkerUrl?: string | URL | null;
+    /** Normalize polygons that cross the antimeridian. Default: true. */
+    _normalize?: boolean;
+    /** Wrap polygons across the antimeridian. Default: true. */
+    wrapLongitude?: boolean;
   };
 
   const props = withDefaults(defineProps<Props>(), {
@@ -55,6 +59,9 @@
     filled: true,
     extruded: false,
     wireframe: false,
+    // _normalize default left undefined — GeoArrow native data is already
+    // normalized; setting true causes deck.gl to re-normalize Struct-based
+    // coords and produces stretched polygons.
   });
 
   const emit = defineEmits<{
@@ -94,6 +101,9 @@
     if (props.filled !== undefined) cfg.filled = props.filled;
     if (props.extruded !== undefined) cfg.extruded = props.extruded;
     if (props.wireframe !== undefined) cfg.wireframe = props.wireframe;
+    if (props._normalize !== undefined) cfg._normalize = props._normalize;
+    if (props.wrapLongitude !== undefined)
+      cfg.wrapLongitude = props.wrapLongitude;
     if (props.elevationScale !== undefined)
       cfg.elevationScale = props.elevationScale;
     if (props.opacity !== undefined) cfg.opacity = props.opacity;
@@ -125,15 +135,13 @@
   };
 
   onMounted(() => {
-    // VMap mounts before MapLibre's style finishes loading. Wait for the
-    // first `idle` event which fires once the style is loaded AND the first
-    // frame has rendered — guarantees the map is ready regardless of timing.
+    // deck.gl layers (MapboxOverlay) don't need MapLibre style data but we
+    // wait for the style to be loaded as a safety belt — matches all other
+    // deck.gl wrappers in this library.
     if (map.value?.isStyleLoaded()) {
       initializeLayer();
     } else {
-      map.value?.once('idle', () => {
-        initializeLayer();
-      });
+      map.value?.once('style.load', () => initializeLayer());
     }
   });
 

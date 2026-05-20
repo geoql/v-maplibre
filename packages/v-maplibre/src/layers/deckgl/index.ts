@@ -137,15 +137,22 @@ export const VLayerDeckglGeoArrowSolidPolygon: Component = defineAsyncComponent(
       (m) => m.VLayerDeckglGeoArrowSolidPolygon,
     ),
 );
+export const VLayerDeckglGeoArrowText: Component = defineAsyncComponent(() =>
+  import('./geoarrow-text').then((m) => m.VLayerDeckglGeoArrowText),
+);
+export const VLayerDeckglGeoArrowTrips: Component = defineAsyncComponent(() =>
+  import('./geoarrow-trips').then((m) => m.VLayerDeckglGeoArrowTrips),
+);
 
 export const VLayerDeckglWindParticle: Component = defineAsyncComponent(() =>
   import('./wind-particle').then((m) => m.VLayerDeckglWindParticle),
 );
-export type {
-  WindDataPoint,
-  WindTextureResult,
-  GenerateWindTextureOptions,
-  ColorStop,
+export {
+  createWindDataFromOpenWeatherMap,
+  type WindDataPoint,
+  type WindTextureResult,
+  type GenerateWindTextureOptions,
+  type ColorStop,
 } from './wind-particle';
 
 export {
