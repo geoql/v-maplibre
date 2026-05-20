@@ -59,8 +59,14 @@
     }
   });
 
-  // timestamps are in ms; max time = 240000ms
-  const maxTime = 240000;
+  // timestamps are in ms; max time = 6000ms
+  const maxTime = 6000;
+
+  // GeoArrow TripsLayer needs the timestamps column as an Arrow Data object
+  const getTimestamps = computed(() => {
+    if (!table.value) return null;
+    return table.value.getChild('timestamps')?.data[0] ?? null;
+  });
 
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
@@ -83,10 +89,12 @@
       <VLayerDeckglGeoArrowTrips
         v-if="table"
         :data="table"
+        :get-timestamps="table.getChild('timestamps').data[0]"
         :current-time="currentTime"
         :trail-length="80"
-        :get-timestamp="(d) => d.timestamps"
         :get-color="[180, 220, 255, 255]"
+        :get-width="3"
+        width-units="pixels"
       />
     </VMap>
   </template>`;
@@ -107,20 +115,15 @@
           <VControlScale position="bottom-left" />
 
           <VLayerDeckglGeoArrowTrips
-            v-if="table"
+            v-if="table && getTimestamps"
             id="geoarrow-trips"
             :data="table"
+            :get-timestamps="getTimestamps"
             :current-time="currentTime[0]"
-            :speed="speed[0]"
             :trail-length="trailLength[0]"
-            :get-timestamp="
-              (d: Record<string, unknown>) => {
-                const ts = d['timestamps'];
-                if (Array.isArray(ts)) return ts;
-                return [];
-              }
-            "
             :get-color="[180, 220, 255, 220]"
+            :get-width="3"
+            width-units="pixels"
           />
         </VMap>
       </ClientOnly>

@@ -103,9 +103,12 @@
             v-if="table"
             id="geoarrow-routes"
             :data="table"
-            :width-scale="widthScale[0]"
-            :opacity="(opacity[0] ?? 200) / 255"
             :get-color="[72, 209, 204, 220]"
+            :get-width="3"
+            width-units="pixels"
+            :width-scale="widthScale[0]"
+            :width-min-pixels="2"
+            :opacity="(opacity[0] ?? 200) / 255"
           />
         </VMap>
       </ClientOnly>

@@ -135,13 +135,12 @@
   };
 
   onMounted(() => {
-    // deck.gl layers (MapboxOverlay) don't need MapLibre style data but we
-    // wait for the style to be loaded as a safety belt — matches all other
-    // deck.gl wrappers in this library.
     if (map.value?.isStyleLoaded()) {
       initializeLayer();
     } else {
-      map.value?.once('style.load', () => initializeLayer());
+      map.value?.once('style.load', () => {
+        initializeLayer();
+      });
     }
   });
 

@@ -120,9 +120,25 @@
 
   <template>
     <VMap :options="mapOptions" class="size-full">
-      <VLayerDeckglGeoArrowPolygon v-if="polygonsTable" :data="polygonsTable" />
-      <VLayerDeckglGeoArrowPath v-if="linesTable" :data="linesTable" />
-      <VLayerDeckglGeoArrowScatterplot v-if="pointsTable" :data="pointsTable" />
+      <VLayerDeckglGeoArrowPolygon
+        v-if="polygonsTable"
+        :data="polygonsTable"
+        :get-fill-color="[255, 107, 107, 180]"
+      />
+      <VLayerDeckglGeoArrowPath
+        v-if="linesTable"
+        :data="linesTable"
+        :get-color="[255, 215, 0, 220]"
+        :get-width="2"
+        width-units="pixels"
+      />
+      <VLayerDeckglGeoArrowScatterplot
+        v-if="pointsTable"
+        :data="pointsTable"
+        :get-fill-color="[72, 209, 204, 220]"
+        :get-radius="10"
+        radius-units="pixels"
+      />
     </VMap>
   </template>`;
 </script>
@@ -152,19 +168,21 @@
             v-if="linesTable"
             id="geoarrow-mixed-lines"
             :data="linesTable"
-            :width-scale="lineWidth[0]"
             :get-color="[255, 215, 0, 220]"
+            :get-width="2"
+            width-units="pixels"
+            :width-scale="lineWidth[0]"
+            :width-min-pixels="1"
           />
 
           <VLayerDeckglGeoArrowScatterplot
             v-if="pointsTable"
             id="geoarrow-mixed-points"
             :data="pointsTable"
-            :get-position="
-              ([x, y]: [number, number]) => [x, y] as [number, number]
-            "
-            :get-color="[72, 209, 204, 220]"
-            :point-size="pointSize[0]"
+            :get-fill-color="[72, 209, 204, 220]"
+            :get-radius="pointSize[0] ?? 8"
+            radius-units="pixels"
+            :radius-min-pixels="2"
           />
 
           <VControlLegend

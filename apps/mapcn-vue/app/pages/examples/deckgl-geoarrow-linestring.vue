@@ -103,9 +103,12 @@
             v-if="table"
             id="geoarrow-bounds"
             :data="table"
-            :width-scale="widthScale[0]"
-            :opacity="(opacity[0] ?? 180) / 255"
             :get-color="[200, 220, 255, 255]"
+            :get-width="2"
+            width-units="pixels"
+            :width-scale="widthScale[0]"
+            :width-min-pixels="1"
+            :opacity="(opacity[0] ?? 180) / 255"
           />
         </VMap>
       </ClientOnly>

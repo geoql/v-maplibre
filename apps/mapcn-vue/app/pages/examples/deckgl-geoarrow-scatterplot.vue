@@ -90,9 +90,9 @@
       <VLayerDeckglGeoArrowScatterplot
         v-if="table"
         :data="table"
-        :get-position="([x, y]) => [x, y]"
-        :get-color="[72, 209, 204, 220]"
-        :point-size="30"
+        :get-fill-color="[72, 209, 204, 220]"
+        :get-radius="30"
+        radius-units="pixels"
       />
     </VMap>
   </template>`;
@@ -116,11 +116,10 @@
             v-if="table"
             id="geoarrow-cities"
             :data="table"
-            :get-position="
-              ([x, y]: [number, number]) => [x, y] as [number, number]
-            "
-            :get-color="pointColor"
-            :point-size="pointSize[0]"
+            :get-fill-color="pointColor"
+            :get-radius="pointSize[0] ?? 30"
+            radius-units="pixels"
+            :radius-min-pixels="2"
             :opacity="(opacity[0] ?? 220) / 255"
           />
 

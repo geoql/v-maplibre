@@ -33,6 +33,12 @@
 
   const fontSize = ref<number[]>([14]);
 
+  // GeoArrow Text expects getText as the Arrow Data of the string column
+  const getText = computed(() => {
+    if (!table.value) return null;
+    return table.value.getChild('name')?.data[0] ?? null;
+  });
+
   const mapOptions = computed(() => ({
     container: `geoarrow-example-${mapId}`,
     style: mapStyle.value,
@@ -77,9 +83,9 @@
       <VLayerDeckglGeoArrowText
         v-if="table"
         :data="table"
-        :get-text="(d) => String(d.name ?? '')"
-        :get-position="([x, y]) => [x, y]"
+        :get-text="table.getChild('name').data[0]"
         :get-size="14"
+        size-units="pixels"
         :get-color="[180, 220, 255, 255]"
       />
     </VMap>
@@ -101,15 +107,14 @@
           <VControlScale position="bottom-left" />
 
           <VLayerDeckglGeoArrowText
-            v-if="table"
+            v-if="table && getText"
             id="geoarrow-text"
             :data="table"
-            :get-text="(d: Record<string, unknown>) => String(d['name'] ?? '')"
-            :get-position="
-              ([x, y]: [number, number]) => [x, y] as [number, number]
-            "
+            :get-text="getText"
             :get-size="fontSize[0]"
+            size-units="pixels"
             :get-color="[200, 220, 255, 255]"
+            font-family="sans-serif"
           />
         </VMap>
       </ClientOnly>
