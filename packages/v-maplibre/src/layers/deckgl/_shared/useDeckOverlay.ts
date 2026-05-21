@@ -121,8 +121,6 @@ export function useDeckOverlay(
         mapInstance.addControl(overlay.value);
         registerClickHandler(mapInstance);
         isInitialized.value = true;
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (window as any).__DECK_OVERLAY__ = overlay.value;
       })
       .catch((error) => {
         console.error('[deck.gl] Error initializing overlay:', error);

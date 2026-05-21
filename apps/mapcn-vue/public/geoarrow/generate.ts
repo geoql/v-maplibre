@@ -8,7 +8,7 @@ import {
   Int64,
   List,
   RecordBatch,
-  RecordBatchFileWriter,
+  RecordBatchStreamWriter,
   Schema,
   Struct,
   Table,
@@ -183,7 +183,7 @@ function writeArrow(
     }),
   );
   const table = new Table(schema, [recordBatch]);
-  const writer = RecordBatchFileWriter.writeAll(table);
+  const writer = RecordBatchStreamWriter.writeAll(table);
   const buffer = Buffer.from(writer.toUint8Array(true));
   const out = join(OUT, filename);
   writeFileSync(out, buffer);
