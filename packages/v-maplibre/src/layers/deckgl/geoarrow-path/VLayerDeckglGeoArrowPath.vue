@@ -13,10 +13,11 @@
    * Install with:
    * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers @geoarrow/deck.gl-geoarrow apache-arrow`
    */
-  import { onMounted, onBeforeUnmount, watch, shallowRef, markRaw } from 'vue';
+  import { onBeforeUnmount, watch, shallowRef, markRaw } from 'vue';
   import type { PickingInfo } from '@deck.gl/core';
   import { injectStrict, MapKey, requirePeer } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
+  import { useMapReady } from '../_shared/useMapReady';
 
   const GEOARROW_PEER_INSTALL =
     'pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers @geoarrow/deck.gl-geoarrow apache-arrow';
@@ -83,15 +84,7 @@
     LayerClass.value = markRaw(mod.GeoArrowPathLayer);
   };
 
-  onMounted(() => {
-    if (map.value?.isStyleLoaded()) {
-      initializeLayer();
-    } else {
-      map.value?.once('style.load', () => {
-        initializeLayer();
-      });
-    }
-  });
+  useMapReady(map, initializeLayer);
 
   watch(LayerClass, (cls) => {
     if (!cls || !props.data) return;
@@ -101,6 +94,28 @@
 
   watch(
     () => props.data,
+    () => {
+      if (!LayerClass.value || !props.data) return;
+      const layer = createLayer();
+      if (layer) updateLayer(props.id, layer);
+    },
+  );
+
+  watch(
+    () => [
+      props.getColor,
+      props.getWidth,
+      props.widthUnits,
+      props.widthScale,
+      props.widthMinPixels,
+      props.widthMaxPixels,
+      props.jointRounded,
+      props.capRounded,
+      props.miterLimit,
+      props.opacity,
+      props.visible,
+      props.pickable,
+    ],
     () => {
       if (!LayerClass.value || !props.data) return;
       const layer = createLayer();

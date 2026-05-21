@@ -14,10 +14,11 @@
    * Install with:
    * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers @geoarrow/deck.gl-geoarrow apache-arrow @math.gl/polygon`
    */
-  import { onMounted, onBeforeUnmount, watch, shallowRef, markRaw } from 'vue';
+  import { onBeforeUnmount, watch, shallowRef, markRaw } from 'vue';
   import type { PickingInfo } from '@deck.gl/core';
   import { injectStrict, MapKey, requirePeer } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
+  import { useMapReady } from '../_shared/useMapReady';
 
   const GEOARROW_PEER_INSTALL =
     'pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers @geoarrow/deck.gl-geoarrow apache-arrow @math.gl/polygon';
@@ -138,37 +139,7 @@
     }
   };
 
-  // Wait until the map is ready, then init the layer class.
-  // MapLibre's `style.load` only fires once per style change — if the style is
-  // already loaded by the time we mount, the event never fires. Fall back to
-  // polling `isStyleLoaded()` to cover the late-mount case.
-  const waitForStyle = (m: import('maplibre-gl').Map) => {
-    if (m.isStyleLoaded()) {
-      initializeLayer();
-      return;
-    }
-    m.once('style.load', () => initializeLayer());
-    const interval = setInterval(() => {
-      if (m.isStyleLoaded()) {
-        clearInterval(interval);
-        initializeLayer();
-      }
-    }, 100);
-    setTimeout(() => clearInterval(interval), 10000);
-  };
-
-  onMounted(() => {
-    if (map.value) {
-      waitForStyle(map.value);
-    } else {
-      const stop = watch(map, (m) => {
-        if (m) {
-          stop();
-          waitForStyle(m);
-        }
-      });
-    }
-  });
+  useMapReady(map, initializeLayer);
 
   watch(LayerClass, (cls) => {
     if (!cls || !props.data) return;

@@ -9,10 +9,11 @@
    * @requires `@geoarrow/deck.gl-geoarrow`
    * @requires `apache-arrow`
    */
-  import { onMounted, onBeforeUnmount, watch, shallowRef, markRaw } from 'vue';
+  import { onBeforeUnmount, watch, shallowRef, markRaw } from 'vue';
   import type { PickingInfo } from '@deck.gl/core';
   import { injectStrict, MapKey, requirePeer } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
+  import { useMapReady } from '../_shared/useMapReady';
 
   const GEOARROW_PEER_INSTALL =
     'pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers @geoarrow/deck.gl-geoarrow apache-arrow';
@@ -96,16 +97,7 @@
     }
   };
 
-  onMounted(() => {
-    // deck.gl layers (MapboxOverlay) don't need MapLibre style data but we
-    // wait for the style to be loaded as a safety belt — matches all other
-    // deck.gl wrappers in this library.
-    if (map.value?.isStyleLoaded()) {
-      initializeLayer();
-    } else {
-      map.value?.once('style.load', () => initializeLayer());
-    }
-  });
+  useMapReady(map, initializeLayer);
 
   watch(LayerClass, (cls) => {
     if (!cls || !props.data) return;
@@ -115,6 +107,34 @@
 
   watch(
     () => props.data,
+    () => {
+      if (!LayerClass.value || !props.data) return;
+      const layer = createLayer();
+      if (layer) updateLayer(props.id, layer);
+    },
+  );
+
+  watch(
+    () => [
+      props.getText,
+      props.getPosition,
+      props.getColor,
+      props.getSize,
+      props.getAngle,
+      props.getTextAnchor,
+      props.getAlignmentBaseline,
+      props.sizeUnits,
+      props.sizeScale,
+      props.sizeMinPixels,
+      props.sizeMaxPixels,
+      props.billboard,
+      props.fontFamily,
+      props.fontWeight,
+      props.background,
+      props.opacity,
+      props.visible,
+      props.pickable,
+    ],
     () => {
       if (!LayerClass.value || !props.data) return;
       const layer = createLayer();

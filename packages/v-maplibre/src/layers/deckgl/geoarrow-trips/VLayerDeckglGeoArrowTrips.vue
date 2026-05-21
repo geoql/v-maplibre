@@ -10,10 +10,11 @@
    * @requires `@geoarrow/deck.gl-geoarrow`
    * @requires `apache-arrow`
    */
-  import { onMounted, onBeforeUnmount, watch, shallowRef, markRaw } from 'vue';
+  import { onBeforeUnmount, watch, shallowRef, markRaw } from 'vue';
   import type { PickingInfo } from '@deck.gl/core';
   import { injectStrict, MapKey, requirePeer } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
+  import { useMapReady } from '../_shared/useMapReady';
 
   const GEOARROW_PEER_INSTALL =
     'pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers @deck.gl/geo-layers @geoarrow/deck.gl-geoarrow apache-arrow';
@@ -96,16 +97,7 @@
     }
   };
 
-  onMounted(() => {
-    // deck.gl layers (MapboxOverlay) don't need MapLibre style data but we
-    // wait for the style to be loaded as a safety belt — matches all other
-    // deck.gl wrappers in this library.
-    if (map.value?.isStyleLoaded()) {
-      initializeLayer();
-    } else {
-      map.value?.once('style.load', () => initializeLayer());
-    }
-  });
+  useMapReady(map, initializeLayer);
 
   watch(LayerClass, (cls) => {
     if (!cls || !props.data) return;
@@ -114,7 +106,23 @@
   });
 
   watch(
-    () => [props.data, props.currentTime],
+    () => [
+      props.data,
+      props.currentTime,
+      props.trailLength,
+      props.fadeTrail,
+      props.getPath,
+      props.getTimestamps,
+      props.getColor,
+      props.getWidth,
+      props.widthUnits,
+      props.widthScale,
+      props.widthMinPixels,
+      props.widthMaxPixels,
+      props.opacity,
+      props.visible,
+      props.pickable,
+    ],
     () => {
       if (!LayerClass.value || !props.data) return;
       const layer = createLayer();
