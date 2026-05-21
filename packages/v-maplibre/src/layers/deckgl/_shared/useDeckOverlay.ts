@@ -189,15 +189,23 @@ export function useDeckOverlay(
   watch(
     map,
     (mapInstance) => {
-      if (mapInstance && !overlay.value) {
-        if (mapInstance.isStyleLoaded()) {
-          initOverlay();
-        } else {
-          mapInstance.once('style.load', () => {
-            initOverlay();
-          });
-        }
+      if (!mapInstance || overlay.value) return;
+      if (mapInstance.isStyleLoaded()) {
+        initOverlay();
+        return;
       }
+      mapInstance.once('style.load', () => initOverlay());
+      const interval = setInterval(() => {
+        if (overlay.value) {
+          clearInterval(interval);
+          return;
+        }
+        if (mapInstance.isStyleLoaded()) {
+          clearInterval(interval);
+          initOverlay();
+        }
+      }, 100);
+      setTimeout(() => clearInterval(interval), 10000);
     },
     { immediate: true },
   );
