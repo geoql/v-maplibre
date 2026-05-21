@@ -23,13 +23,10 @@
   import { injectStrict, MapKey, requirePeer } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
   import { useMapReady } from '../_shared/useMapReady';
+  import type { ArrowTableLike } from '../_shared/types';
 
   const SCATTERPLOT_PEER_INSTALL =
     'pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers apache-arrow';
-
-  type ArrowTableLike =
-    | import('apache-arrow').Table
-    | import('apache-arrow').RecordBatch;
 
   type Props = {
     id: string;

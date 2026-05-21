@@ -32,3 +32,7 @@ export interface DeckLayerEvent<D = unknown> {
   layer?: unknown;
   viewport?: unknown;
 }
+
+export type ArrowTableLike =
+  | import('apache-arrow').Table
+  | import('apache-arrow').RecordBatch;
