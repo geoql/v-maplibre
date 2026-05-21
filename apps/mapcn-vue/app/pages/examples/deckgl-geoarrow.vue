@@ -61,14 +61,6 @@
       if (!arrowTable.batches[0]) {
         throw new Error('Arrow IPC file contains no record batches');
       }
-      console.log(
-        '[GA-PAGE] table set, batches:',
-        arrowTable.batches.length,
-        'numRows:',
-        arrowTable.numRows,
-        'has geometry:',
-        !!arrowTable.getChild('geometry'),
-      );
       table.value = arrowTable;
     } catch (err) {
       error.value = err instanceof Error ? err.message : String(err);
