@@ -23,6 +23,7 @@
   import { injectStrict, MapKey, requirePeer } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
   import { useMapReady } from '../_shared/useMapReady';
+  import { extractPoints, filterDefined } from '../_shared/arrow';
   import type { ArrowTableLike } from '../_shared/types';
 
   const SCATTERPLOT_PEER_INSTALL =
@@ -77,62 +78,30 @@
     typeof import('@deck.gl/layers').ScatterplotLayer | null
   >(null);
 
-  const extractPositions = (table: ArrowTableLike): Float64Array | null => {
-    const vec = (
-      table as unknown as {
-        getChild: (k: string) => { data: { values?: Float64Array }[] } | null;
-      }
-    ).getChild('geometry');
-    if (!vec) return null;
-    const data = vec.data[0];
-    if (!data) return null;
-    const struct = data as unknown as {
-      children?: { values?: Float64Array }[];
-      length: number;
-    };
-    if (!struct.children || struct.children.length < 2) return null;
-    const xs = struct.children[0]?.values;
-    const ys = struct.children[1]?.values;
-    if (!xs || !ys) return null;
-    const n = struct.length;
-    const out = new Float64Array(n * 3);
-    for (let i = 0; i < n; i++) {
-      out[i * 3] = xs[i] ?? 0;
-      out[i * 3 + 1] = ys[i] ?? 0;
-      out[i * 3 + 2] = 0;
-    }
-    return out;
-  };
+  const EXCLUDE = new Set(['id', 'data']);
 
   const createLayer = () => {
     if (!LayerClass.value || !props.data) return null;
-    const positions = extractPositions(props.data);
-    if (!positions) {
+    const extracted = extractPoints(props.data);
+    if (!extracted) {
       console.error(
         '[VLayerDeckglGeoArrowScatterplot] no GeoArrow point geometry column found in data',
       );
       return null;
     }
-    const n = positions.length / 3;
     try {
-      const layerProps: Record<string, unknown> = {
+      const layer = new LayerClass.value({
+        ...filterDefined(props as unknown as Record<string, unknown>, EXCLUDE),
         id: props.id,
         data: {
-          length: n,
+          length: extracted.length,
           attributes: {
-            getPosition: { value: positions, size: 3 },
+            getPosition: { value: extracted.positions, size: 3 },
           },
         },
         onClick: (info: PickingInfo) => emit('click', info),
         onHover: (info: PickingInfo) => emit('hover', info),
-      };
-      for (const [key, value] of Object.entries(
-        props as unknown as Record<string, unknown>,
-      )) {
-        if (key === 'id' || key === 'data' || value === undefined) continue;
-        layerProps[key] = value;
-      }
-      const layer = new LayerClass.value(layerProps);
+      });
       return markRaw(layer);
     } catch (err) {
       console.error(

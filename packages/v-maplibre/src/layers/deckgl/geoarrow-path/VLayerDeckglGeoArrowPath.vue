@@ -18,13 +18,19 @@
   import { injectStrict, MapKey, requirePeer } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
   import { useMapReady } from '../_shared/useMapReady';
+  import {
+    extractLineStrings,
+    extractMultiLineStrings,
+    filterDefined,
+  } from '../_shared/arrow';
+  import type { ArrowTableLike } from '../_shared/types';
 
-  const GEOARROW_PEER_INSTALL =
-    'pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers @geoarrow/deck.gl-geoarrow apache-arrow';
+  const PATH_PEER_INSTALL =
+    'pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers apache-arrow';
 
   type Props = {
     id: string;
-    data: import('apache-arrow').RecordBatch | null | undefined;
+    data: ArrowTableLike | null | undefined;
     getPath?: unknown;
     getColor?: unknown;
     getWidth?: unknown;
@@ -61,27 +67,53 @@
   const { addLayer, removeLayer, updateLayer } = useDeckOverlay(map);
 
   const LayerClass = shallowRef<
-    typeof import('@geoarrow/deck.gl-geoarrow').GeoArrowPathLayer | null
+    typeof import('@deck.gl/layers').PathLayer | null
   >(null);
 
+  const EXCLUDE = new Set(['id', 'data', 'getPath']);
+
   const createLayer = () => {
-    if (!LayerClass.value) return null;
-    const layer = new LayerClass.value({
-      ...(props as object),
-      id: props.id,
-      onClick: (info: PickingInfo) => emit('click', info),
-      onHover: (info: PickingInfo) => emit('hover', info),
-    });
-    return markRaw(layer);
+    if (!LayerClass.value || !props.data) return null;
+    const extracted =
+      extractLineStrings(props.data) ?? extractMultiLineStrings(props.data);
+    if (!extracted) {
+      console.error(
+        '[VLayerDeckglGeoArrowPath] no GeoArrow linestring / multilinestring column found in data',
+      );
+      return null;
+    }
+    try {
+      const layer = new LayerClass.value({
+        ...filterDefined(props as unknown as Record<string, unknown>, EXCLUDE),
+        id: props.id,
+        data: {
+          length: extracted.length,
+          startIndices: extracted.startIndices,
+          attributes: {
+            getPath: { value: extracted.positions, size: 3 },
+          },
+        },
+        _pathType: 'open',
+        onClick: (info: PickingInfo) => emit('click', info),
+        onHover: (info: PickingInfo) => emit('hover', info),
+      });
+      return markRaw(layer);
+    } catch (err) {
+      console.error(
+        '[VLayerDeckglGeoArrowPath] failed to construct layer:',
+        err,
+      );
+      return null;
+    }
   };
 
   const initializeLayer = async () => {
     const mod = await requirePeer(
-      '@geoarrow/deck.gl-geoarrow',
-      () => import('@geoarrow/deck.gl-geoarrow'),
-      GEOARROW_PEER_INSTALL,
+      '@deck.gl/layers',
+      () => import('@deck.gl/layers'),
+      PATH_PEER_INSTALL,
     );
-    LayerClass.value = markRaw(mod.GeoArrowPathLayer);
+    LayerClass.value = markRaw(mod.PathLayer);
   };
 
   useMapReady(map, initializeLayer);
