@@ -173,6 +173,59 @@ export const extractMultiPolygons = (
   };
 };
 
+export type RingPolygons = number[][][];
+
+export const polygonsToRingArrays = (
+  geom: GeoArrowMultiPolygonExtract,
+): RingPolygons => {
+  const { positions, polygonIndices, primitivePolygonIndices } = geom;
+  const result: RingPolygons = [];
+  for (let p = 0; p < polygonIndices.length - 1; p++) {
+    const polyStart = polygonIndices[p] ?? 0;
+    const polyEnd = polygonIndices[p + 1] ?? 0;
+    for (let r = polyStart; r < polyEnd; r++) {
+      const ringStart = primitivePolygonIndices[r] ?? 0;
+      const ringEnd = primitivePolygonIndices[r + 1] ?? 0;
+      const ring: number[][] = [];
+      for (let v = ringStart; v < ringEnd; v++) {
+        const x = positions[v * 3] ?? 0;
+        const y = positions[v * 3 + 1] ?? 0;
+        ring.push([x, y]);
+      }
+      if (ring.length) result.push(ring);
+    }
+  }
+  return result;
+};
+
+export const linestringsToCoordArrays = (
+  geom: GeoArrowPathExtract,
+): number[][][] => {
+  const { positions, startIndices } = geom;
+  const result: number[][][] = [];
+  for (let i = 0; i < startIndices.length - 1; i++) {
+    const start = startIndices[i] ?? 0;
+    const end = startIndices[i + 1] ?? 0;
+    const line: number[][] = [];
+    for (let v = start; v < end; v++) {
+      const x = positions[v * 3] ?? 0;
+      const y = positions[v * 3 + 1] ?? 0;
+      line.push([x, y]);
+    }
+    if (line.length) result.push(line);
+  }
+  return result;
+};
+
+export const pointsToCoordArray = (geom: GeoArrowPointExtract): number[][] => {
+  const { positions, length } = geom;
+  const result: number[][] = [];
+  for (let i = 0; i < length; i++) {
+    result.push([positions[i * 3] ?? 0, positions[i * 3 + 1] ?? 0]);
+  }
+  return result;
+};
+
 export const filterDefined = (
   source: Record<string, unknown>,
   exclude: ReadonlySet<string>,

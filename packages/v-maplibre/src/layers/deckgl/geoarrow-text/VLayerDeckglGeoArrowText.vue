@@ -14,13 +14,16 @@
   import { injectStrict, MapKey, requirePeer } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
   import { useMapReady } from '../_shared/useMapReady';
+  import { extractPoints, filterDefined } from '../_shared/arrow';
+  import type { ArrowTableLike } from '../_shared/types';
 
-  const GEOARROW_PEER_INSTALL =
-    'pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers @geoarrow/deck.gl-geoarrow apache-arrow';
+  const TEXT_PEER_INSTALL =
+    'pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers apache-arrow';
 
   type Props = {
     id: string;
-    data: import('apache-arrow').RecordBatch | null | undefined;
+    data: ArrowTableLike | null | undefined;
+    textColumn?: string;
     getPosition?: unknown;
     getText?: unknown;
     getColor?: unknown;
@@ -65,36 +68,98 @@
   const { addLayer, removeLayer, updateLayer } = useDeckOverlay(map);
 
   const LayerClass = shallowRef<
-    typeof import('@geoarrow/deck.gl-geoarrow')._GeoArrowTextLayer | null
+    typeof import('@deck.gl/layers').TextLayer | null
   >(null);
+
+  const EXCLUDE = new Set([
+    'id',
+    'data',
+    'getPosition',
+    'getText',
+    'textColumn',
+  ]);
+
+  type ItemWithLabel = { position: [number, number]; label: string };
+
+  const buildItems = (
+    table: ArrowTableLike,
+    textColumn: string,
+  ): ItemWithLabel[] | null => {
+    const extracted = extractPoints(table);
+    if (!extracted) return null;
+    const labelColumn = (
+      table as unknown as {
+        getChild: (
+          k: string,
+        ) => { toArray?: () => unknown[]; get?: (i: number) => unknown } | null;
+      }
+    ).getChild(textColumn);
+    const labels: string[] = [];
+    if (labelColumn) {
+      const arr = labelColumn.toArray?.();
+      if (arr) {
+        for (let i = 0; i < extracted.length; i++) {
+          labels.push(String(arr[i] ?? ''));
+        }
+      } else if (labelColumn.get) {
+        for (let i = 0; i < extracted.length; i++) {
+          labels.push(String(labelColumn.get(i) ?? ''));
+        }
+      }
+    }
+    const items: ItemWithLabel[] = [];
+    for (let i = 0; i < extracted.length; i++) {
+      items.push({
+        position: [
+          extracted.positions[i * 3] ?? 0,
+          extracted.positions[i * 3 + 1] ?? 0,
+        ],
+        label: labels[i] ?? '',
+      });
+    }
+    return items;
+  };
 
   const createLayer = () => {
     if (!LayerClass.value || !props.data) return null;
+    const items = buildItems(props.data, props.textColumn ?? 'name');
+    if (!items) {
+      console.error(
+        '[VLayerDeckglGeoArrowText] no GeoArrow point geometry column found in data',
+      );
+      return null;
+    }
     try {
       return markRaw(
         new LayerClass.value({
-          ...(props as object),
+          ...filterDefined(
+            props as unknown as Record<string, unknown>,
+            EXCLUDE,
+          ),
           id: props.id,
+          data: items,
+          getPosition: (d: ItemWithLabel) => d.position,
+          getText: (d: ItemWithLabel) => d.label,
           onClick: (info: PickingInfo) => emit('click', info),
           onHover: (info: PickingInfo) => emit('hover', info),
         }),
       );
-    } catch {
+    } catch (err) {
+      console.error(
+        '[VLayerDeckglGeoArrowText] failed to construct layer:',
+        err,
+      );
       return null;
     }
   };
 
   const initializeLayer = async () => {
-    try {
-      const mod = await requirePeer(
-        '@geoarrow/deck.gl-geoarrow',
-        () => import('@geoarrow/deck.gl-geoarrow'),
-        GEOARROW_PEER_INSTALL,
-      );
-      LayerClass.value = markRaw(mod._GeoArrowTextLayer);
-    } catch {
-      // peer dep not installed — wrapper is inert
-    }
+    const mod = await requirePeer(
+      '@deck.gl/layers',
+      () => import('@deck.gl/layers'),
+      TEXT_PEER_INSTALL,
+    );
+    LayerClass.value = markRaw(mod.TextLayer);
   };
 
   useMapReady(map, initializeLayer);

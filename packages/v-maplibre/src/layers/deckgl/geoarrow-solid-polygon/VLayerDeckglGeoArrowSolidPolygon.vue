@@ -19,13 +19,20 @@
   import { injectStrict, MapKey, requirePeer } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
   import { useMapReady } from '../_shared/useMapReady';
+  import {
+    extractPolygons,
+    extractMultiPolygons,
+    polygonsToRingArrays,
+    filterDefined,
+  } from '../_shared/arrow';
+  import type { ArrowTableLike } from '../_shared/types';
 
-  const GEOARROW_PEER_INSTALL =
-    'pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers @geoarrow/deck.gl-geoarrow apache-arrow @math.gl/polygon';
+  const SOLID_POLYGON_PEER_INSTALL =
+    'pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers apache-arrow @math.gl/polygon';
 
   type Props = {
     id: string;
-    data: import('apache-arrow').RecordBatch | null | undefined;
+    data: ArrowTableLike | null | undefined;
     getPolygon?: unknown;
     getFillColor?: unknown;
     getLineColor?: unknown;
@@ -61,27 +68,50 @@
   const { addLayer, removeLayer, updateLayer } = useDeckOverlay(map);
 
   const LayerClass = shallowRef<
-    typeof import('@geoarrow/deck.gl-geoarrow').GeoArrowSolidPolygonLayer | null
+    typeof import('@deck.gl/layers').SolidPolygonLayer | null
   >(null);
 
+  const EXCLUDE = new Set(['id', 'data', 'getPolygon']);
+
   const createLayer = () => {
-    if (!LayerClass.value) return null;
-    const layer = new LayerClass.value({
-      ...(props as object),
-      id: props.id,
-      onClick: (info: PickingInfo) => emit('click', info),
-      onHover: (info: PickingInfo) => emit('hover', info),
-    });
-    return markRaw(layer);
+    if (!LayerClass.value || !props.data) return null;
+    const multi = extractMultiPolygons(props.data);
+    const single = multi ? null : extractPolygons(props.data);
+    const geom = multi ?? single;
+    if (!geom) {
+      console.error(
+        '[VLayerDeckglGeoArrowSolidPolygon] no GeoArrow polygon / multipolygon column found in data',
+      );
+      return null;
+    }
+    const rings = polygonsToRingArrays(geom);
+    try {
+      const layer = new LayerClass.value({
+        ...filterDefined(props as unknown as Record<string, unknown>, EXCLUDE),
+        id: props.id,
+        data: rings,
+        getPolygon: (ring: number[][]) => ring,
+        _normalize: false,
+        onClick: (info: PickingInfo) => emit('click', info),
+        onHover: (info: PickingInfo) => emit('hover', info),
+      });
+      return markRaw(layer);
+    } catch (err) {
+      console.error(
+        '[VLayerDeckglGeoArrowSolidPolygon] failed to construct layer:',
+        err,
+      );
+      return null;
+    }
   };
 
   const initializeLayer = async () => {
     const mod = await requirePeer(
-      '@geoarrow/deck.gl-geoarrow',
-      () => import('@geoarrow/deck.gl-geoarrow'),
-      GEOARROW_PEER_INSTALL,
+      '@deck.gl/layers',
+      () => import('@deck.gl/layers'),
+      SOLID_POLYGON_PEER_INSTALL,
     );
-    LayerClass.value = markRaw(mod.GeoArrowSolidPolygonLayer);
+    LayerClass.value = markRaw(mod.SolidPolygonLayer);
   };
 
   useMapReady(map, initializeLayer);

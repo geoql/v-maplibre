@@ -19,13 +19,20 @@
   import { injectStrict, MapKey, requirePeer } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
   import { useMapReady } from '../_shared/useMapReady';
+  import {
+    extractPolygons,
+    extractMultiPolygons,
+    polygonsToRingArrays,
+    filterDefined,
+  } from '../_shared/arrow';
+  import type { ArrowTableLike } from '../_shared/types';
 
-  const GEOARROW_PEER_INSTALL =
-    'pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers @geoarrow/deck.gl-geoarrow apache-arrow @math.gl/polygon';
+  const POLYGON_PEER_INSTALL =
+    'pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers apache-arrow @math.gl/polygon';
 
   type Props = {
     id: string;
-    data: import('apache-arrow').RecordBatch | null | undefined;
+    data: ArrowTableLike | null | undefined;
     getPolygon?: unknown;
     getFillColor?: unknown;
     getLineColor?: unknown;
@@ -74,49 +81,40 @@
   const { addLayer, removeLayer, updateLayer } = useDeckOverlay(map);
 
   const LayerClass = shallowRef<
-    typeof import('@geoarrow/deck.gl-geoarrow').GeoArrowPolygonLayer | null
+    typeof import('@deck.gl/layers').PolygonLayer | null
   >(null);
+
+  const EXCLUDE = new Set([
+    'id',
+    'data',
+    'getPolygon',
+    'earcutWorkerUrl',
+    '_normalize',
+  ]);
 
   const createLayer = () => {
     if (!LayerClass.value || !props.data) return null;
-    const cfg: Record<string, unknown> = {
-      id: props.id,
-      data: props.data,
-      onClick: (info: PickingInfo) => emit('click', info),
-      onHover: (info: PickingInfo) => emit('hover', info),
-    };
-    if (props.getPolygon !== undefined) cfg.getPolygon = props.getPolygon;
-    if (props.getFillColor !== undefined) cfg.getFillColor = props.getFillColor;
-    if (props.getLineColor !== undefined) cfg.getLineColor = props.getLineColor;
-    if (props.getLineWidth !== undefined) cfg.getLineWidth = props.getLineWidth;
-    if (props.getElevation !== undefined) cfg.getElevation = props.getElevation;
-    if (props.lineWidthUnits !== undefined)
-      cfg.lineWidthUnits = props.lineWidthUnits;
-    if (props.lineWidthScale !== undefined)
-      cfg.lineWidthScale = props.lineWidthScale;
-    if (props.lineWidthMinPixels !== undefined)
-      cfg.lineWidthMinPixels = props.lineWidthMinPixels;
-    if (props.lineWidthMaxPixels !== undefined)
-      cfg.lineWidthMaxPixels = props.lineWidthMaxPixels;
-    if (props.stroked !== undefined) cfg.stroked = props.stroked;
-    if (props.filled !== undefined) cfg.filled = props.filled;
-    if (props.extruded !== undefined) cfg.extruded = props.extruded;
-    if (props.wireframe !== undefined) cfg.wireframe = props.wireframe;
-    if (props._normalize !== undefined) cfg._normalize = props._normalize;
-    if (props.wrapLongitude !== undefined)
-      cfg.wrapLongitude = props.wrapLongitude;
-    if (props.elevationScale !== undefined)
-      cfg.elevationScale = props.elevationScale;
-    if (props.opacity !== undefined) cfg.opacity = props.opacity;
-    if (props.visible !== undefined) cfg.visible = props.visible;
-    if (props.pickable !== undefined) cfg.pickable = props.pickable;
-    if (props.autoHighlight !== undefined)
-      cfg.autoHighlight = props.autoHighlight;
-    if (props.beforeId !== undefined) cfg.beforeId = props.beforeId;
-    if (props.earcutWorkerUrl !== undefined)
-      cfg.earcutWorkerUrl = props.earcutWorkerUrl;
+    const multi = extractMultiPolygons(props.data);
+    const single = multi ? null : extractPolygons(props.data);
+    const geom = multi ?? single;
+    if (!geom) {
+      console.error(
+        '[VLayerDeckglGeoArrowPolygon] no GeoArrow polygon / multipolygon column found in data',
+      );
+      return null;
+    }
+    const rings = polygonsToRingArrays(geom);
     try {
-      return markRaw(new LayerClass.value(cfg));
+      const layer = new LayerClass.value({
+        ...filterDefined(props as unknown as Record<string, unknown>, EXCLUDE),
+        id: props.id,
+        data: rings,
+        getPolygon: (ring: number[][]) => ring,
+        _normalize: false,
+        onClick: (info: PickingInfo) => emit('click', info),
+        onHover: (info: PickingInfo) => emit('hover', info),
+      });
+      return markRaw(layer);
     } catch (err) {
       console.error(
         '[VLayerDeckglGeoArrowPolygon] failed to construct layer:',
@@ -127,16 +125,12 @@
   };
 
   const initializeLayer = async () => {
-    try {
-      const mod = await requirePeer(
-        '@geoarrow/deck.gl-geoarrow',
-        () => import('@geoarrow/deck.gl-geoarrow'),
-        GEOARROW_PEER_INSTALL,
-      );
-      LayerClass.value = markRaw(mod.GeoArrowPolygonLayer);
-    } catch {
-      // peer dep not installed — wrapper is inert
-    }
+    const mod = await requirePeer(
+      '@deck.gl/layers',
+      () => import('@deck.gl/layers'),
+      POLYGON_PEER_INSTALL,
+    );
+    LayerClass.value = markRaw(mod.PolygonLayer);
   };
 
   useMapReady(map, initializeLayer);
