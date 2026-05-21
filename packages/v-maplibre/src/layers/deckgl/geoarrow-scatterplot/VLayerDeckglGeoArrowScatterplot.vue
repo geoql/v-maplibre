@@ -52,6 +52,8 @@
     pickable?: boolean;
     autoHighlight?: boolean;
     beforeId?: string;
+    /** 'XY' for 2D GeoArrow point data, 'XYZ' for 3D. Default 'XY'. */
+    positionFormat?: 'XY' | 'XYZ';
   };
 
   const props = withDefaults(defineProps<Props>(), {
@@ -62,6 +64,7 @@
     filled: true,
     billboard: false,
     antialiasing: true,
+    positionFormat: 'XY',
   });
 
   const emit = defineEmits<{
