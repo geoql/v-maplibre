@@ -24,12 +24,16 @@
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
   import { useMapReady } from '../_shared/useMapReady';
 
-  const GEOARROW_PEER_INSTALL =
-    'pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers @geoarrow/deck.gl-geoarrow apache-arrow';
+  const SCATTERPLOT_PEER_INSTALL =
+    'pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers apache-arrow';
+
+  type ArrowTableLike =
+    | import('apache-arrow').Table
+    | import('apache-arrow').RecordBatch;
 
   type Props = {
     id: string;
-    data: import('apache-arrow').RecordBatch | null | undefined;
+    data: ArrowTableLike | null | undefined;
     getPosition?: unknown;
     getRadius?: unknown;
     getFillColor?: unknown;
@@ -73,15 +77,63 @@
   const { addLayer, removeLayer, updateLayer } = useDeckOverlay(map);
 
   const LayerClass = shallowRef<
-    typeof import('@geoarrow/deck.gl-geoarrow').GeoArrowScatterplotLayer | null
+    typeof import('@deck.gl/layers').ScatterplotLayer | null
   >(null);
+
+  const extractPositions = (table: ArrowTableLike): Float64Array | null => {
+    const vec = (
+      table as unknown as {
+        getChild: (k: string) => { data: { values?: Float64Array }[] } | null;
+      }
+    ).getChild('geometry');
+    if (!vec) return null;
+    const data = vec.data[0];
+    if (!data) return null;
+    const struct = data as unknown as {
+      children?: { values?: Float64Array }[];
+      length: number;
+    };
+    if (!struct.children || struct.children.length < 2) return null;
+    const xs = struct.children[0]?.values;
+    const ys = struct.children[1]?.values;
+    if (!xs || !ys) return null;
+    const n = struct.length;
+    const out = new Float64Array(n * 3);
+    for (let i = 0; i < n; i++) {
+      out[i * 3] = xs[i] ?? 0;
+      out[i * 3 + 1] = ys[i] ?? 0;
+      out[i * 3 + 2] = 0;
+    }
+    return out;
+  };
 
   const createLayer = () => {
     if (!LayerClass.value || !props.data) return null;
+    const positions = extractPositions(props.data);
+    if (!positions) {
+      console.error(
+        '[VLayerDeckglGeoArrowScatterplot] no GeoArrow point geometry column found in data',
+      );
+      return null;
+    }
+    const n = positions.length / 3;
     try {
+      const {
+        id: _id,
+        data: _data,
+        ...rest
+      } = props as unknown as Record<string, unknown>;
+      void _id;
+      void _data;
       const layer = new LayerClass.value({
-        ...(props as object),
+        ...rest,
         id: props.id,
+        data: {
+          length: n,
+          attributes: {
+            getPosition: { value: positions, size: 3 },
+          },
+        },
         onClick: (info: PickingInfo) => emit('click', info),
         onHover: (info: PickingInfo) => emit('hover', info),
       });
@@ -97,11 +149,11 @@
 
   const initializeLayer = async () => {
     const mod = await requirePeer(
-      '@geoarrow/deck.gl-geoarrow',
-      () => import('@geoarrow/deck.gl-geoarrow'),
-      GEOARROW_PEER_INSTALL,
+      '@deck.gl/layers',
+      () => import('@deck.gl/layers'),
+      SCATTERPLOT_PEER_INSTALL,
     );
-    LayerClass.value = markRaw(mod.GeoArrowScatterplotLayer);
+    LayerClass.value = markRaw(mod.ScatterplotLayer);
   };
 
   useMapReady(map, initializeLayer);
