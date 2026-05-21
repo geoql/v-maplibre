@@ -115,15 +115,7 @@
     }
     const n = positions.length / 3;
     try {
-      const {
-        id: _id,
-        data: _data,
-        ...rest
-      } = props as unknown as Record<string, unknown>;
-      void _id;
-      void _data;
-      const layer = new LayerClass.value({
-        ...rest,
+      const layerProps: Record<string, unknown> = {
         id: props.id,
         data: {
           length: n,
@@ -133,7 +125,14 @@
         },
         onClick: (info: PickingInfo) => emit('click', info),
         onHover: (info: PickingInfo) => emit('hover', info),
-      });
+      };
+      for (const [key, value] of Object.entries(
+        props as unknown as Record<string, unknown>,
+      )) {
+        if (key === 'id' || key === 'data' || value === undefined) continue;
+        layerProps[key] = value;
+      }
+      const layer = new LayerClass.value(layerProps);
       return markRaw(layer);
     } catch (err) {
       console.error(
