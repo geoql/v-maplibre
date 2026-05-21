@@ -115,6 +115,7 @@
           <VLayerDeckglGeoArrowScatterplot
             id="geoarrow-cities"
             :data="table"
+            :get-position="table?.getChild('geometry')"
             :get-fill-color="pointColor"
             :get-radius="pointSize[0] ?? 30"
             radius-units="pixels"
