@@ -1,5 +1,52 @@
 # Changelog
 
+## [1.10.0](https://github.com/geoql/v-maplibre/compare/v1.9.0...v1.10.0) (2026-05-21)
+
+
+### Features
+
+* add @geoarrow/deck.gl-geoarrow layers ([#102](https://github.com/geoql/v-maplibre/issues/102)) ([cbaf027](https://github.com/geoql/v-maplibre/commit/cbaf0271b743a74ff955dfcbc901818a0cd4c52c))
+
+
+### Bug Fixes
+
+* **mapcn-vue:** emit 3D point structs (z=0) in synthetic GeoArrow fixtures ([0001727](https://github.com/geoql/v-maplibre/commit/00017274772a6d8269d7e127b54a76a014bdfeec))
+* **mapcn-vue:** emit Arrow Stream IPC format in synthetic fixtures ([284931e](https://github.com/geoql/v-maplibre/commit/284931e162115ca51630f89114beb5ad9cbff4d1))
+* **mapcn-vue:** unify all 7 GeoArrow example pages on ComponentDemo + MapPanel layout ([e323f43](https://github.com/geoql/v-maplibre/commit/e323f43986b12a4385bbf8c7f0fbf984a9cb2cd9))
+* **mapcn,v-maplibre:** remove v-if guards on geoarrow layer wrappers ([d22ca4f](https://github.com/geoql/v-maplibre/commit/d22ca4fd3a74650c976af063a0f6c8e0ac4f9b7a))
+* **mapcn:** geoarrow demo pages render no layers on production ([165c034](https://github.com/geoql/v-maplibre/commit/165c034659ee9729306ed7ef93b9153ebd87ba93))
+* poll isStyleLoaded() with a 100ms interval (capped at 10s) alongside ([914766c](https://github.com/geoql/v-maplibre/commit/914766cbe2bff096f376046b54a3898d6be9d0e9))
+* **v-maplibre:** add geoarrow polygon wrapper trace logging ([e8406c9](https://github.com/geoql/v-maplibre/commit/e8406c913fd6f5276ed26a78abd2872f0041a7f2))
+* **v-maplibre:** apply style.load race fix to all 6 geoarrow wrappers ([668b2f1](https://github.com/geoql/v-maplibre/commit/668b2f10e9989435fe2ce255166f0cf9308fabd1))
+* **v-maplibre:** apply style.load race fix to useDeckOverlay itself ([4166b43](https://github.com/geoql/v-maplibre/commit/4166b43f188c8c55307d59c9d71cf30d5e0b360c))
+* **v-maplibre:** default scatterplot wrapper positionFormat=XY ([8622149](https://github.com/geoql/v-maplibre/commit/862214965d095d5452d10bfbf0434ce332f88129))
+* **v-maplibre:** drop _normalize: false from rewritten polygon wrappers ([4e164f6](https://github.com/geoql/v-maplibre/commit/4e164f6bd4684d8cc1bfbb4d8fd3e5937faad992))
+* **v-maplibre:** eager-load only the required peers, make optional layers truly opt-in ([#104](https://github.com/geoql/v-maplibre/issues/104)) ([b389271](https://github.com/geoql/v-maplibre/commit/b3892711c9d996d17f22c9560f2ddfe4c4b22967)), closes [#103](https://github.com/geoql/v-maplibre/issues/103)
+* **v-maplibre:** expose deck overlay via window.__DECK_OVERLAY__ for prod debug ([6ffac78](https://github.com/geoql/v-maplibre/commit/6ffac78838d5e5cab23b34c75ace6a3a470dec65))
+* **v-maplibre:** filter undefined props before constructing ScatterplotLayer ([9b0674d](https://github.com/geoql/v-maplibre/commit/9b0674d0b90a59d70ca4aa29e691b59f60b3c9ce))
+* **v-maplibre:** geoarrow polygon wrapper handles late-mount style race ([914766c](https://github.com/geoql/v-maplibre/commit/914766cbe2bff096f376046b54a3898d6be9d0e9))
+* **v-maplibre:** geoarrow polygon wrapper rebuilds on reactive prop changes ([1e4481b](https://github.com/geoql/v-maplibre/commit/1e4481b15603e115f0933a87b1f1706bac9b233f))
+* **v-maplibre:** re-add window.__DECK_OVERLAY__ debug hook ([0c59183](https://github.com/geoql/v-maplibre/commit/0c59183b4f3a50e6691080a518ef2afb02054a51))
+* **v-maplibre:** re-add window.__DECK_OVERLAY__ debug hook (temporary) ([f83f12b](https://github.com/geoql/v-maplibre/commit/f83f12bec2369a6b6b148029d3e579ebd650a997))
+* **v-maplibre:** rewrite GeoArrow path wrapper on stock PathLayer ([7f8670e](https://github.com/geoql/v-maplibre/commit/7f8670e02fa96484e0ce8d719302bae03fa39abb))
+* **v-maplibre:** rewrite Polygon/SolidPolygon/Text/Trips wrappers on stock deck.gl layers ([cb51e4b](https://github.com/geoql/v-maplibre/commit/cb51e4b7ff21aec460464c9fb730575a9f3ed853))
+* **v-maplibre:** rewrite scatterplot wrapper to use stock ScatterplotLayer ([5dc02fb](https://github.com/geoql/v-maplibre/commit/5dc02fbfd2a8c63559df2356001182563f8dd628))
+* **v-maplibre:** surface geoarrow polygon layer constructor errors ([783a9db](https://github.com/geoql/v-maplibre/commit/783a9dbaa8616f9a785a92faa4056bca4ec2b029))
+* **v-maplibre:** trace scatterplot wrapper lifecycle on production ([05ac3e0](https://github.com/geoql/v-maplibre/commit/05ac3e00053ae87f7204193c3f254714e85d80da))
+* **v-maplibre:** watch renderTile/getTileData on VLayerDeckglZarr ([09abfa7](https://github.com/geoql/v-maplibre/commit/09abfa748468b1d1d2b05b13abc5fe9cdf230f05))
+
+
+### Miscellaneous
+
+* **deps:** bump catalog and root devDeps via taze ([f7c728c](https://github.com/geoql/v-maplibre/commit/f7c728c02d2e209851acb9cf71a48dea3db5b5e1))
+* **deps:** bump dependencies via pnpm update:deps ([b7de5e5](https://github.com/geoql/v-maplibre/commit/b7de5e50524bb0480b3355cd93a520e6d8bfb23e))
+* drop @geoarrow/deck.gl-geoarrow + [@math](https://github.com/math).gl/polygon entirely ([1bba129](https://github.com/geoql/v-maplibre/commit/1bba129472486cbbdd4345d79eb32707675be984))
+
+
+### Code Refactoring
+
+* **v-maplibre:** hoist ArrowTableLike to _shared/types, drop debug any ([ba6be5e](https://github.com/geoql/v-maplibre/commit/ba6be5ed2e598360c59e0c8142413dba099efd66))
+
 ## [1.9.0](https://github.com/geoql/v-maplibre/compare/v1.8.1...v1.9.0) (2026-05-16)
 
 ### Features
