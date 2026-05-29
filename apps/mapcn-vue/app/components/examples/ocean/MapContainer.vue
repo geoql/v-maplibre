@@ -22,8 +22,10 @@
   const mapOptions = computed(() => ({
     container: `ocean-${mapId}`,
     style: mapStyle.value,
-    center: [69, 14] as [number, number],
-    zoom: 5,
+    // Centered on the Arabian Sea SST grid extent (lng 60-78, lat 6-22) so the
+    // thermal field fills the frame instead of sitting in a corner off India.
+    center: [68, 14] as [number, number],
+    zoom: 5.4,
     pitch: 0,
     bearing: 0,
   }));
