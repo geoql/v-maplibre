@@ -52,3 +52,4 @@ TODO.local.md
 # Git worktrees for parallel branch work
 .worktrees
 docs/*.pdf
+.omo
