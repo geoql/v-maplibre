@@ -153,6 +153,12 @@ export function useDeckOverlay(
         mapInstance.addControl(overlay.value);
         registerClickHandler(mapInstance);
         isInitialized.value = true;
+        // Flush any layers that registered before the overlay existed. Child
+        // layer components mount before the parent VMap assigns map.value, so
+        // their addLayer() calls land in the registry while overlay is null.
+        // Without this flush they are silently dropped on first load and only
+        // appear after a re-navigation warms the timing.
+        syncLayers();
       })
       .catch((error) => {
         console.error('[deck.gl] Error initializing overlay:', error);

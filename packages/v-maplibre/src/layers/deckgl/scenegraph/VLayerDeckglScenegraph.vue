@@ -9,7 +9,7 @@
    * Install with:
    * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/mesh-layers`
    */
-  import { onMounted, onBeforeUnmount, watch } from 'vue';
+  import { onBeforeUnmount, watch } from 'vue';
   import { ScenegraphLayer } from '@deck.gl/mesh-layers';
   import type { ScenegraphLayerProps } from '@deck.gl/mesh-layers';
   import type { Color, PickingInfo, Position } from '@deck.gl/core';
@@ -113,13 +113,18 @@
     addLayer(createLayer());
   };
 
-  onMounted(() => {
-    if (map.value?.isStyleLoaded()) {
-      initializeLayer();
-    } else {
-      map.value?.once('style.load', initializeLayer);
-    }
-  });
+  watch(
+    map,
+    (mapInstance) => {
+      if (!mapInstance) return;
+      if (mapInstance.isStyleLoaded()) {
+        initializeLayer();
+      } else {
+        mapInstance.once('style.load', initializeLayer);
+      }
+    },
+    { immediate: true },
+  );
 
   watch(
     () => [

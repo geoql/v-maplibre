@@ -9,7 +9,7 @@
    * Install with:
    * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/aggregation-layers`
    */
-  import { onMounted, onBeforeUnmount, watch } from 'vue';
+  import { onBeforeUnmount, watch } from 'vue';
   import { ContourLayer } from '@deck.gl/aggregation-layers';
   import type { Color, PickingInfo, Position } from '@deck.gl/core';
   import { injectStrict, MapKey } from '../../../utils';
@@ -87,13 +87,18 @@
     addLayer(createLayer());
   };
 
-  onMounted(() => {
-    if (map.value?.isStyleLoaded()) {
-      initializeLayer();
-    } else {
-      map.value?.once('style.load', initializeLayer);
-    }
-  });
+  watch(
+    map,
+    (mapInstance) => {
+      if (!mapInstance) return;
+      if (mapInstance.isStyleLoaded()) {
+        initializeLayer();
+      } else {
+        mapInstance.once('style.load', initializeLayer);
+      }
+    },
+    { immediate: true },
+  );
 
   watch(
     () => [

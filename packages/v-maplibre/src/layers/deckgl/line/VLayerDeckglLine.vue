@@ -9,7 +9,7 @@
    * Install with:
    * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers`
    */
-  import { onMounted, onBeforeUnmount, watch } from 'vue';
+  import { onBeforeUnmount, watch } from 'vue';
   import { LineLayer } from '@deck.gl/layers';
   import type { LineLayerProps } from '@deck.gl/layers';
   import type { PickingInfo, Position } from '@deck.gl/core';
@@ -84,13 +84,18 @@
     addLayer(createLayer());
   };
 
-  onMounted(() => {
-    if (map.value?.isStyleLoaded()) {
-      initializeLayer();
-    } else {
-      map.value?.once('style.load', initializeLayer);
-    }
-  });
+  watch(
+    map,
+    (mapInstance) => {
+      if (!mapInstance) return;
+      if (mapInstance.isStyleLoaded()) {
+        initializeLayer();
+      } else {
+        mapInstance.once('style.load', initializeLayer);
+      }
+    },
+    { immediate: true },
+  );
 
   watch(
     () => [

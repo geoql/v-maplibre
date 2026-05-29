@@ -8,7 +8,7 @@
    * Install with:
    * `pnpm add @deck.gl/core @deck.gl/mapbox`
    */
-  import { onMounted, onBeforeUnmount, watch } from 'vue';
+  import { onBeforeUnmount, watch } from 'vue';
   import type { PickingInfo } from '@deck.gl/core';
   import { injectStrict, MapKey } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
@@ -35,13 +35,18 @@
     addLayer(props.layer);
   };
 
-  onMounted(() => {
-    if (map.value?.isStyleLoaded()) {
-      initializeLayer();
-    } else {
-      map.value?.once('style.load', initializeLayer);
-    }
-  });
+  watch(
+    map,
+    (mapInstance) => {
+      if (!mapInstance) return;
+      if (mapInstance.isStyleLoaded()) {
+        initializeLayer();
+      } else {
+        mapInstance.once('style.load', initializeLayer);
+      }
+    },
+    { immediate: true },
+  );
 
   watch(
     () => props.layer,

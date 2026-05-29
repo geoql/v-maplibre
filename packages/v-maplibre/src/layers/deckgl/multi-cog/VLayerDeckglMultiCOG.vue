@@ -24,14 +24,7 @@
    *
    * @see https://github.com/developmentseed/deck.gl-raster/blob/main/examples/sentinel-2/src/App.tsx
    */
-  import {
-    onMounted,
-    onBeforeUnmount,
-    watch,
-    shallowRef,
-    markRaw,
-    toRaw,
-  } from 'vue';
+  import { onBeforeUnmount, watch, shallowRef, markRaw, toRaw } from 'vue';
   import type { PickingInfo } from '@deck.gl/core';
   import type { RasterModule } from '@developmentseed/deck.gl-raster';
   import type { MultiCOGSourceConfig } from '@developmentseed/deck.gl-geotiff';
@@ -227,13 +220,18 @@
     }
   };
 
-  onMounted(() => {
-    if (map.value?.isStyleLoaded()) {
-      initializeLayer();
-    } else {
-      map.value?.once('style.load', initializeLayer);
-    }
-  });
+  watch(
+    map,
+    (mapInstance) => {
+      if (!mapInstance) return;
+      if (mapInstance.isStyleLoaded()) {
+        initializeLayer();
+      } else {
+        mapInstance.once('style.load', initializeLayer);
+      }
+    },
+    { immediate: true },
+  );
 
   watch(
     () => [

@@ -21,14 +21,7 @@
    *
    * @see https://github.com/developmentseed/deck.gl-raster/blob/main/examples/naip-mosaic/src/App.tsx
    */
-  import {
-    onMounted,
-    onBeforeUnmount,
-    watch,
-    shallowRef,
-    markRaw,
-    toRaw,
-  } from 'vue';
+  import { onBeforeUnmount, watch, shallowRef, markRaw, toRaw } from 'vue';
   import type { Color, PickingInfo } from '@deck.gl/core';
   import type { GeoTIFF, Overview } from '@developmentseed/geotiff';
   import type { Texture } from '@luma.gl/core';
@@ -425,13 +418,18 @@ uniform ndviFilterUniforms {
     }
   }
 
-  onMounted(() => {
-    if (map.value?.isStyleLoaded()) {
-      initializeLayer();
-    } else {
-      map.value?.once('style.load', initializeLayer);
-    }
-  });
+  watch(
+    map,
+    (mapInstance) => {
+      if (!mapInstance) return;
+      if (mapInstance.isStyleLoaded()) {
+        initializeLayer();
+      } else {
+        mapInstance.once('style.load', initializeLayer);
+      }
+    },
+    { immediate: true },
+  );
 
   watch(
     () => [

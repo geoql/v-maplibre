@@ -9,7 +9,7 @@
    * Install with:
    * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/geo-layers`
    */
-  import { onMounted, onBeforeUnmount, watch } from 'vue';
+  import { onBeforeUnmount, watch } from 'vue';
   import { S2Layer } from '@deck.gl/geo-layers';
   import type { S2LayerProps } from '@deck.gl/geo-layers';
   import type { Color, PickingInfo } from '@deck.gl/core';
@@ -100,13 +100,18 @@
     addLayer(createLayer());
   };
 
-  onMounted(() => {
-    if (map.value?.isStyleLoaded()) {
-      initializeLayer();
-    } else {
-      map.value?.once('style.load', initializeLayer);
-    }
-  });
+  watch(
+    map,
+    (mapInstance) => {
+      if (!mapInstance) return;
+      if (mapInstance.isStyleLoaded()) {
+        initializeLayer();
+      } else {
+        mapInstance.once('style.load', initializeLayer);
+      }
+    },
+    { immediate: true },
+  );
 
   watch(
     () => [

@@ -13,14 +13,7 @@
    * Install with:
    * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers @developmentseed/deck.gl-geotiff @developmentseed/deck.gl-raster @developmentseed/geotiff @developmentseed/proj`
    */
-  import {
-    onMounted,
-    onBeforeUnmount,
-    watch,
-    shallowRef,
-    toRaw,
-    markRaw,
-  } from 'vue';
+  import { onBeforeUnmount, watch, shallowRef, toRaw, markRaw } from 'vue';
   import type { Color, PickingInfo } from '@deck.gl/core';
   import { injectStrict, MapKey, requirePeer } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
@@ -210,13 +203,18 @@
     }
   };
 
-  onMounted(() => {
-    if (map.value?.isStyleLoaded()) {
-      initializeLayer();
-    } else {
-      map.value?.once('style.load', initializeLayer);
-    }
-  });
+  watch(
+    map,
+    (mapInstance) => {
+      if (!mapInstance) return;
+      if (mapInstance.isStyleLoaded()) {
+        initializeLayer();
+      } else {
+        mapInstance.once('style.load', initializeLayer);
+      }
+    },
+    { immediate: true },
+  );
 
   watch(
     () => [
