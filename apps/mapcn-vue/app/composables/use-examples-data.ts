@@ -120,86 +120,67 @@ export function useExamplesData() {
       description:
         'Command, control, communications, computers, intelligence, surveillance, and reconnaissance',
       icon: 'lucide:shield',
+      subsectionOrder: [
+        'Maritime',
+        'Air & Air Defense',
+        'Land & Ground Ops',
+        'Comms & EW',
+        'Planning & Analysis',
+      ],
       examples: [
         {
-          title: 'Multi-Drone C2',
+          title: 'Coastal Surveillance',
           description:
-            'Command & Control dashboard tracking 4 drones and 2 UGVs with real-time telemetry.',
-          href: '/examples/defense-drone-c2',
-          icon: 'lucide:radar',
-          badge: 'C2',
+            'Indian Navy coastal surveillance with ship tracking, EEZ boundary, and coastal radar.',
+          href: '/examples/defense-maritime',
+          icon: 'lucide:anchor',
+          badge: 'Navy',
+          subsection: 'Maritime',
         },
         {
-          title: '3D Battlefield Terrain',
+          title: 'Global AIS + Dark Fleet',
           description:
-            '3D terrain visualization with animated troop movement replay in Ladakh.',
-          href: '/examples/defense-battlefield',
-          icon: 'lucide:mountain',
-          badge: '3D',
+            'Worldwide vessel tracking on a globe view with AIS-gap detection highlighting "dark" ships.',
+          href: '/examples/defense-maritime-ais-globe',
+          icon: 'lucide:globe',
+          badge: 'MDA',
+          subsection: 'Maritime',
         },
         {
-          title: 'Sensor Network & EW',
+          title: 'Chokepoint Density',
           description:
-            'Distributed sensor network with pulsating detection radii and EW coverage zones.',
-          href: '/examples/defense-sensor-network',
-          icon: 'lucide:radio-tower',
-          badge: 'EW',
+            'Vessel density hexagons over Hormuz, Suez, Malacca, and Bab-el-Mandeb with STS transfer flags.',
+          href: '/examples/defense-maritime-chokepoints',
+          icon: 'lucide:flame',
+          badge: 'Chokepoint',
+          subsection: 'Maritime',
         },
         {
-          title: 'Convoy Tracker',
+          title: 'Submarine Cables & EEZ',
           description:
-            'Military logistics convoy tracking with checkpoints, ETA, and cargo status.',
-          href: '/examples/defense-convoy',
-          icon: 'lucide:truck',
-          badge: 'Logistics',
+            'Critical undersea infrastructure mapped against EEZ boundaries with cable-segment risk scoring.',
+          href: '/examples/defense-maritime-cables',
+          icon: 'lucide:cable',
+          badge: 'Subsea',
+          subsection: 'Maritime',
         },
         {
-          title: 'Multi-Spectral Compare',
+          title: 'SAR / Spill Drift',
           description:
-            'Swipe comparison of visual, thermal, and night-vision imagery bands.',
-          href: '/examples/defense-spectral',
-          icon: 'lucide:scan-eye',
-          badge: 'ISR',
+            'Stochastic drift trajectories for search-and-rescue or oil-spill response with probability cone.',
+          href: '/examples/defense-maritime-drift',
+          icon: 'lucide:wind',
+          badge: 'SAR',
+          subsection: 'Maritime',
         },
         {
-          title: 'Zone Planner',
+          title: 'SST + Surface Currents',
           description:
-            'Draw danger zones (minefields, restricted areas) with safe corridor planning.',
-          href: '/examples/defense-zone-planner',
-          icon: 'lucide:triangle-alert',
-          badge: 'Planning',
-        },
-        {
-          title: 'Troop Navigation',
-          description:
-            'Multi-waypoint infantry route planning with Valhalla pedestrian routing and elevation profile.',
-          href: '/examples/defense-troop-nav',
-          icon: 'lucide:footprints',
-          badge: 'Routing',
-        },
-        {
-          title: 'Artillery Range',
-          description:
-            'Place gun positions with range fan arc polygons for howitzer, mortar, and MLRS.',
-          href: '/examples/defense-artillery',
-          icon: 'lucide:target',
-          badge: 'Fire Control',
-        },
-        {
-          title: 'Comms Network',
-          description:
-            'Tactical communication nodes with signal strength links and network simulation.',
-          href: '/examples/defense-comms',
-          icon: 'lucide:radio',
-          badge: 'C4',
-        },
-        {
-          title: 'Border Surveillance',
-          description:
-            'LAC border monitoring with camera coverage cones, patrol routes, and intrusion detection.',
-          href: '/examples/defense-border-surveillance',
-          icon: 'lucide:scan-line',
-          badge: 'ISR',
+            'Sea-surface temperature heatmap layered with animated ocean current vectors over the Arabian Sea.',
+          href: '/examples/defense-maritime-oceanographic',
+          icon: 'lucide:waves',
+          badge: 'Ocean',
+          subsection: 'Maritime',
         },
         {
           title: 'Air Defense Radar',
@@ -208,6 +189,97 @@ export function useExamplesData() {
           href: '/examples/defense-air-defense',
           icon: 'lucide:radar',
           badge: 'AD',
+          subsection: 'Air & Air Defense',
+        },
+        {
+          title: 'Multi-Drone C2',
+          description:
+            'Command & Control dashboard tracking 4 drones and 2 UGVs with real-time telemetry.',
+          href: '/examples/defense-drone-c2',
+          icon: 'lucide:radar',
+          badge: 'C2',
+          subsection: 'Air & Air Defense',
+        },
+        {
+          title: '3D Battlefield Terrain',
+          description:
+            '3D terrain visualization with animated troop movement replay in Ladakh.',
+          href: '/examples/defense-battlefield',
+          icon: 'lucide:mountain',
+          badge: '3D',
+          subsection: 'Land & Ground Ops',
+        },
+        {
+          title: 'Convoy Tracker',
+          description:
+            'Military logistics convoy tracking with checkpoints, ETA, and cargo status.',
+          href: '/examples/defense-convoy',
+          icon: 'lucide:truck',
+          badge: 'Logistics',
+          subsection: 'Land & Ground Ops',
+        },
+        {
+          title: 'Troop Navigation',
+          description:
+            'Multi-waypoint infantry route planning with Valhalla pedestrian routing and elevation profile.',
+          href: '/examples/defense-troop-nav',
+          icon: 'lucide:footprints',
+          badge: 'Routing',
+          subsection: 'Land & Ground Ops',
+        },
+        {
+          title: 'Border Surveillance',
+          description:
+            'LAC border monitoring with camera coverage cones, patrol routes, and intrusion detection.',
+          href: '/examples/defense-border-surveillance',
+          icon: 'lucide:scan-line',
+          badge: 'ISR',
+          subsection: 'Land & Ground Ops',
+        },
+        {
+          title: 'Artillery Range',
+          description:
+            'Place gun positions with range fan arc polygons for howitzer, mortar, and MLRS.',
+          href: '/examples/defense-artillery',
+          icon: 'lucide:target',
+          badge: 'Fire Control',
+          subsection: 'Land & Ground Ops',
+        },
+        {
+          title: 'Sensor Network & EW',
+          description:
+            'Distributed sensor network with pulsating detection radii and EW coverage zones.',
+          href: '/examples/defense-sensor-network',
+          icon: 'lucide:radio-tower',
+          badge: 'EW',
+          subsection: 'Comms & EW',
+        },
+        {
+          title: 'Comms Network',
+          description:
+            'Tactical communication nodes with signal strength links and network simulation.',
+          href: '/examples/defense-comms',
+          icon: 'lucide:radio',
+          badge: 'C4',
+          subsection: 'Comms & EW',
+        },
+        {
+          title: 'Multi-Spectral Compare',
+          description:
+            'Swipe comparison of visual, thermal, and night-vision imagery bands.',
+          href: '/examples/defense-spectral',
+          icon: 'lucide:scan-eye',
+          badge: 'ISR',
+          subsection: 'Comms & EW',
+        },
+        {
+          title: 'Zone Planner',
+          description:
+            'Draw danger zones (minefields, restricted areas) with safe corridor planning.',
+          href: '/examples/defense-zone-planner',
+          icon: 'lucide:triangle-alert',
+          badge: 'Planning',
+          subsection: 'Planning & Analysis',
         },
         {
           title: 'SAR Grid',
@@ -216,6 +288,7 @@ export function useExamplesData() {
           href: '/examples/defense-sar',
           icon: 'lucide:grid-3x3',
           badge: 'SAR',
+          subsection: 'Planning & Analysis',
         },
         {
           title: 'Terrain Viewshed',
@@ -224,6 +297,7 @@ export function useExamplesData() {
           href: '/examples/defense-viewshed',
           icon: 'lucide:eye',
           badge: 'Recon',
+          subsection: 'Planning & Analysis',
         },
         {
           title: 'NBC Plume',
@@ -232,14 +306,7 @@ export function useExamplesData() {
           href: '/examples/defense-nbc-plume',
           icon: 'lucide:biohazard',
           badge: 'NBC',
-        },
-        {
-          title: 'Maritime Domain',
-          description:
-            'Indian Navy coastal surveillance with ship tracking, EEZ boundary, and coastal radar.',
-          href: '/examples/defense-maritime',
-          icon: 'lucide:anchor',
-          badge: 'Navy',
+          subsection: 'Planning & Analysis',
         },
       ],
     },
