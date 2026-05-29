@@ -55,7 +55,7 @@
           class="flex-1 rounded-md px-3 py-2 text-xs font-medium transition-colors"
           :class="
             mode === 'sar'
-              ? 'bg-amber-500/20 text-amber-400 border border-amber-500/40'
+              ? 'bg-warning/15 text-warning border border-warning/40'
               : 'bg-muted text-muted-foreground border border-transparent hover:bg-accent'
           "
           @click="emit('update:mode', 'sar')"
@@ -66,7 +66,7 @@
           class="flex-1 rounded-md px-3 py-2 text-xs font-medium transition-colors"
           :class="
             mode === 'spill'
-              ? 'bg-stone-500/20 text-stone-300 border border-stone-500/40'
+              ? 'bg-muted-foreground/20 text-foreground border border-muted-foreground/40'
               : 'bg-muted text-muted-foreground border border-transparent hover:bg-accent'
           "
           @click="emit('update:mode', 'spill')"
@@ -148,7 +148,7 @@
           class="rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors"
           :class="
             currentBearingDeg === b.val
-              ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/40'
+              ? 'bg-primary/15 text-primary border border-primary/40'
               : 'bg-muted text-muted-foreground border border-transparent hover:bg-accent'
           "
           @click="emit('update:currentBearingDeg', b.val)"
@@ -192,7 +192,7 @@
           class="rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors"
           :class="
             windBearingDeg === b.val
-              ? 'bg-violet-500/20 text-violet-400 border border-violet-500/40'
+              ? 'bg-foreground/15 text-foreground border border-foreground/40'
               : 'bg-muted text-muted-foreground border border-transparent hover:bg-accent'
           "
           @click="emit('update:windBearingDeg', b.val)"
@@ -238,6 +238,36 @@
         <Icon name="lucide:flame" class="size-3.5 shrink-0" />
         <span class="font-medium">Density heatmap</span>
       </button>
+    </div>
+
+    <!-- Legend -->
+    <div class="space-y-2">
+      <h3 class="text-sm font-semibold">Legend</h3>
+      <div class="space-y-1.5 text-xs text-muted-foreground">
+        <div class="flex items-center gap-2">
+          <span
+            class="size-2.5 rounded-full bg-success ring-2 ring-foreground/70"
+          ></span>
+          <span>Last known position (datum)</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="h-0.5 w-4 rounded-full bg-primary"></span>
+          <span>Ocean current vector</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span class="h-0.5 w-4 rounded-full bg-foreground"></span>
+          <span>Wind drift vector</span>
+        </div>
+        <div class="flex items-center gap-2">
+          <span
+            class="size-2.5 rounded-full"
+            :class="mode === 'sar' ? 'bg-warning' : 'bg-muted-foreground'"
+          ></span>
+          <span>{{
+            mode === 'sar' ? 'Survivor particles' : 'Oil particles'
+          }}</span>
+        </div>
+      </div>
     </div>
 
     <!-- Stats -->

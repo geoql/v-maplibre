@@ -106,7 +106,7 @@
   function getVectorColor(d: unknown): Color {
     return (d as VectorDatum).label === 'Current'
       ? [0, 180, 255, 220]
-      : [200, 120, 255, 220];
+      : [230, 230, 235, 210];
   }
 </script>
 
