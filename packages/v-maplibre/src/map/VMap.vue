@@ -12,10 +12,12 @@
     defineProps<{
       options: MapOptions;
       supportPmtiles?: boolean;
+      projection?: 'globe' | 'mercator';
     }>(),
     {
       options: () => ({ container: 'map' }) as MapOptions,
       supportPmtiles: false,
+      projection: 'mercator',
     },
   );
   const emit = defineEmits(['loaded', ...mapEvents]);
@@ -35,7 +37,7 @@
 
   // Initialize deck.gl overlay at VMap level so all children can access it
   // This provides DeckOverlayKey and DeckLayersKey to all descendants
-  useDeckOverlay(map);
+  useDeckOverlay(map, { globe: props.projection === 'globe' });
 
   onMounted(() => {
     map.value = new Map(props.options);
