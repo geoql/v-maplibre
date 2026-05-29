@@ -70,6 +70,7 @@ The skills supplement this file with generic patterns not covered here:
 
 Hard bans specific to this app:
 
+- **NO hand-rolled deck.gl in example components.** NEVER write `import('@deck.gl/layers')` / `let XLayerClass = null` / a `syncLayers()` function / `useDeckLayers()` + `updateLayer`/`removeLayer` / a per-frame `watch(() => props.currentTime, …)` inside an example `Layers.vue`. The library already ships declarative wrappers for every deck.gl layer (`VLayerDeckglScatterplot`, `VLayerDeckglTrips`, `VLayerDeckglPath`, `VLayerDeckglPolygon`, `VLayerDeckglHexagon`, `VLayerDeckglText`, `VLayerDeckglHeatmap`, … and the generic `VLayerDeckgl :layer` escape hatch). Each wrapper owns its own deck.gl import, lifecycle, and a single scoped `watch`. Compose them declaratively in the template and pass `:data` + accessor props. Reinventing this is the #1 cause of the "why are there so many watchers" performance disaster. See Rule #2.
 - NO `.gradient-text` class (deleted from `main.css`)
 - NO `bg-clip-text` headlines with `bg-gradient-to-*`
 - NO `font-display` / `font-serif` Tailwind utilities — one family only (`Geist`)
@@ -148,6 +149,60 @@ import type { RoutePoint, MapState } from '~/types/map';
   </VMap>
 </template>
 ```
+
+### Rule #2b: deck.gl Layers — Declarative Wrappers ONLY
+
+**NEVER hand-roll deck.gl layer management in example components.** The library ships a declarative Vue wrapper for every deck.gl layer. Use them.
+
+```vue
+<!-- WRONG - hand-rolled imperative deck.gl (the "so many watchers" anti-pattern) -->
+<script setup lang="ts">
+  let TripsLayerClass: typeof import('@deck.gl/geo-layers').TripsLayer | null = null;
+  const { updateLayer, removeLayer } = useDeckLayers();
+  function syncLayers() {
+    for (const trip of props.tripData) {
+      updateLayer(`trail-${trip.id}`, new TripsLayerClass({ ... })); // N layers!
+    }
+  }
+  watch(() => [props.currentTime, props.tripData], syncLayers, { deep: true }); // fires 60×/sec
+</script>
+
+<!-- CORRECT - declarative library components, one scoped watch each (inside the lib) -->
+<script setup lang="ts">
+  import {
+    VLayerDeckglTrips,
+    VLayerDeckglScatterplot,
+  } from '@geoql/v-maplibre';
+  function getPath(d: TripDatum) {
+    return d.path;
+  }
+  function getTimestamps(d: TripDatum) {
+    return d.timestamps;
+  }
+</script>
+
+<template>
+  <VLayerDeckglTrips
+    id="trails"
+    :data="tripData"
+    :get-path="getPath"
+    :get-timestamps="getTimestamps"
+    :current-time="currentTime"
+  />
+  <VLayerDeckglScatterplot
+    id="vessels"
+    :data="positions"
+    :get-position="getPos"
+  />
+</template>
+```
+
+**Rules:**
+
+- One deck.gl layer = one `<VLayerDeckgl* >` element. Feed it the WHOLE dataset via `:data` — NEVER loop in script creating one layer per datum.
+- For a layer type with no dedicated wrapper, use the generic `<VLayerDeckgl :layer="layerInstance" />` escape hatch — still no `syncLayers`, no app-level animation `watch`.
+- Animated time (`currentTime`) is just a reactive prop on `<VLayerDeckglTrips>` — the wrapper's internal watch handles the update. Do NOT add your own watcher for it.
+- These components must live inside `<VMap>` (they `inject` the shared deck overlay). The example `Layers.vue` child is rendered inside `<VMap>` in its `MapContainer.vue`, so that holds.
 
 ### Rule #3: Follow Import Paths Strictly
 
