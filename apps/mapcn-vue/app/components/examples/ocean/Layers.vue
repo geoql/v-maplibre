@@ -76,8 +76,10 @@
     :data="oceanGrid"
     :get-position="getSstPosition"
     :get-fill-color="getSstColor"
-    :get-radius="25000"
+    :get-radius="28000"
     radius-units="meters"
+    :radius-min-pixels="2"
+    :radius-max-pixels="14"
     :opacity="sstOpacity"
     :pickable="false"
   />
@@ -92,10 +94,11 @@
     :current-time="loopedTime"
     :trail-length="20"
     :fade-trail="true"
-    :width-min-pixels="1.5"
+    :width-min-pixels="2.5"
+    :width-max-pixels="6"
     :cap-rounded="true"
     :joint-rounded="true"
-    :opacity="0.7"
+    :opacity="0.95"
   />
 
   <VLayerDeckglText

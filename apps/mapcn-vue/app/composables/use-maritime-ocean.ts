@@ -196,7 +196,7 @@ export function useMaritimeOcean() {
 
   const showSst = ref(true);
   const showCurrents = ref(true);
-  const sstOpacity = ref(0.85);
+  const sstOpacity = ref(0.6);
   const currentDensity = ref(0.7);
   const currentSpeed = ref(1);
 
