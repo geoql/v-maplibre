@@ -17,11 +17,9 @@
   const {
     vessels,
     positions,
-    tripData,
     activeVesselTypes,
     highlightDarkOnly,
     stats,
-    loopedTime,
     isPlaying,
     speed,
     toggleVesselType,
@@ -75,7 +73,7 @@
 <template>
   <ComponentDemo
     title="Global AIS + Dark Fleet Detection"
-    description="World-scale vessel tracking across 10 major shipping lanes. Dark fleet anomalies are identified via AIS signal gaps and highlighted with a red ring overlay. Animated TripsLayer trails show recent vessel movement."
+    description="World-scale vessel tracking across 10 major shipping lanes on a globe projection. Vessels move in real time; dark-fleet anomalies are identified via AIS signal gaps and highlighted with a red ring overlay."
     :code="codeExample"
     full-width
     class="h-full"
@@ -84,8 +82,6 @@
       <ExamplesAisGlobeMapContainer
         :vessels="vessels"
         :positions="positions"
-        :trip-data="tripData"
-        :looped-time="loopedTime"
         class="size-full"
       />
 

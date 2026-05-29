@@ -3,19 +3,13 @@
     Vessel,
     VesselPosition,
     VesselPositionDatum,
-    TripDatum,
   } from '~/types/maritime-ais';
   import type { Position, Color } from '@deck.gl/core';
-  import {
-    VLayerDeckglTrips,
-    VLayerDeckglScatterplot,
-  } from '@geoql/v-maplibre';
+  import { VLayerDeckglScatterplot } from '@geoql/v-maplibre';
 
   const props = defineProps<{
     vessels: Vessel[];
     positions: Record<string, VesselPosition>;
-    tripData: TripDatum[];
-    loopedTime: number;
   }>();
 
   const RADIUS_BY_TYPE: Record<string, number> = {
@@ -58,18 +52,6 @@
       .filter((d): d is VesselPositionDatum => d !== null),
   );
 
-  function getTripPath(d: unknown): Position[] {
-    return (d as TripDatum).path;
-  }
-
-  function getTripTimestamps(d: unknown): number[] {
-    return (d as TripDatum).timestamps;
-  }
-
-  function getTripColor(d: unknown): Color {
-    return colorById.value.get((d as TripDatum).vesselId) ?? [200, 200, 200];
-  }
-
   function getVesselPosition(d: unknown): Position {
     const datum = d as VesselPositionDatum;
     return [datum.lng, datum.lat];
@@ -88,21 +70,6 @@
 </script>
 
 <template>
-  <VLayerDeckglTrips
-    id="ais-trails"
-    :data="tripData"
-    :get-path="getTripPath"
-    :get-timestamps="getTripTimestamps"
-    :get-color="getTripColor"
-    :current-time="loopedTime"
-    :trail-length="10"
-    :fade-trail="true"
-    :width-min-pixels="2"
-    :cap-rounded="true"
-    :joint-rounded="true"
-    :opacity="0.5"
-  />
-
   <VLayerDeckglScatterplot
     id="ais-positions"
     :data="positionData"
