@@ -44,7 +44,7 @@
 
 <template>
   <div
-    class="pointer-events-none absolute top-3 left-3 z-10 flex items-center gap-1.5 rounded-md border border-border/60 bg-background/80 px-2 py-1 font-mono text-[11px] tabular-nums text-muted-foreground backdrop-blur"
+    class="pointer-events-none absolute top-28 right-3 z-10 flex items-center gap-1.5 rounded-md border border-border/60 bg-background/80 px-2 py-1 font-mono text-[11px] tabular-nums text-muted-foreground backdrop-blur"
   >
     <span
       class="size-1.5 rounded-full"
