@@ -39,13 +39,12 @@
   };
 
   onMounted(async () => {
-    // Fetch real NYC taxi trip data (limit to 100 trips for performance)
+    // Fetch the full NYC taxi trip dataset — the same source deck.gl's own
+    // trips-layer example uses. The single batched VLayerDeckglTrips renders
+    // the entire set on the GPU, so no client-side sampling is needed.
     try {
       const response = await fetch(DATA_URL);
-      const data: Trip[] = await response.json();
-      // Sample evenly distributed trips for visual coverage
-      const step = Math.floor(data.length / 100);
-      tripsData.value = data.filter((_, i) => i % step === 0).slice(0, 100);
+      tripsData.value = await response.json();
     } catch (error) {
       console.error('Failed to fetch trips data:', error);
     }
