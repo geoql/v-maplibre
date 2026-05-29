@@ -111,10 +111,14 @@
   });
 
   watch(
+    () => props.currentTime,
+    () => updateLayer(props.id, createLayer()),
+  );
+
+  watch(
     () => [
       props.data,
       props.getPath,
-      props.currentTime,
       props.trailLength,
       props.getColor,
       props.opacity,
