@@ -14,6 +14,8 @@
     positions: Record<string, VesselPosition>;
     tripData: TripDatum[];
     loopedTime: number;
+    cameraLng: number;
+    cameraLat: number;
   }>();
 
   const RADIUS_BY_TYPE: Record<string, number> = {
@@ -30,9 +32,39 @@
     return m;
   });
 
+  const DEG = Math.PI / 180;
+
+  // The depthCompare:'always' globe fix (visgl/deck.gl#10206) disables depth
+  // occlusion, so deck dots on the FAR hemisphere bleed through the sphere.
+  // deck.gl's own workaround (#9554) is a camera-space cull: a point is visible
+  // only if it shares the camera-facing hemisphere. cameraVec is the unit vector
+  // of the viewport-centre lng/lat; a vessel is on the near side when its unit
+  // vector dotted with cameraVec is positive (angle < 90° = in front of the
+  // globe's horizon).
+  const cameraVec = computed<[number, number, number]>(() => {
+    const latR = props.cameraLat * DEG;
+    const lngR = props.cameraLng * DEG;
+    const cl = Math.cos(latR);
+    return [cl * Math.cos(lngR), cl * Math.sin(lngR), Math.sin(latR)];
+  });
+
+  function isNearSide(lng: number, lat: number): boolean {
+    const latR = lat * DEG;
+    const lngR = lng * DEG;
+    const cl = Math.cos(latR);
+    const v = cameraVec.value;
+    return (
+      v[0] * cl * Math.cos(lngR) +
+        v[1] * cl * Math.sin(lngR) +
+        v[2] * Math.sin(latR) >
+      0
+    );
+  }
+
   function toDatum(v: Vessel): VesselPositionDatum | null {
     const pos = props.positions[v.id];
     if (!pos) return null;
+    if (!isNearSide(pos.lng, pos.lat)) return null;
     return {
       lng: pos.lng,
       lat: pos.lat,
@@ -107,10 +139,12 @@
     const colors = colorById.value;
     const arcs: WakeArcDatum[] = [];
     for (const trip of props.tripData) {
+      const target = interpAtTime(trip, t);
+      if (!isNearSide(target[0], target[1])) continue;
       const c = colors.get(trip.vesselId) ?? [200, 200, 200];
       arcs.push({
         source: interpAtTime(trip, t - TRAIL_SPAN),
-        target: interpAtTime(trip, t),
+        target,
         sourceColor: [c[0], c[1], c[2], 0],
         targetColor: [c[0], c[1], c[2], TRAIL_ALPHA],
       });

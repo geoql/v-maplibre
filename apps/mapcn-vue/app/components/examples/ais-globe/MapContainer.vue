@@ -15,8 +15,22 @@
 
   const mapInstance = shallowRef<MaplibreMap | null>(null);
 
+  // The point facing the camera on the globe = the viewport centre. Tracked so
+  // the layers can cull vessels on the far hemisphere (see Layers.vue): the
+  // depthCompare:'always' globe fix disables depth occlusion, so without this
+  // cull, dots on the back of the globe show through the sphere.
+  const cameraLng = ref(30);
+  const cameraLat = ref(25);
+
   function handleLoaded(map: MaplibreMap): void {
     mapInstance.value = map;
+    const sync = () => {
+      const c = map.getCenter();
+      cameraLng.value = c.lng;
+      cameraLat.value = c.lat;
+    };
+    sync();
+    map.on('move', sync);
   }
 
   const mapOptions = computed(() => ({
@@ -56,6 +70,8 @@
           :positions="positions"
           :trip-data="tripData"
           :looped-time="loopedTime"
+          :camera-lng="cameraLng"
+          :camera-lat="cameraLat"
         />
       </VMap>
       <template #fallback>
