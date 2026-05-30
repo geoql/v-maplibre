@@ -1,11 +1,13 @@
 <script setup lang="ts">
-  import type { Vessel, VesselPosition } from '~/types/maritime-ais';
+  import type { Vessel, VesselPosition, TripDatum } from '~/types/maritime-ais';
   import type { Map as MaplibreMap } from 'maplibre-gl';
   import { VMap, VControlNavigation, VControlScale } from '@geoql/v-maplibre';
 
   defineProps<{
     vessels: Vessel[];
     positions: Record<string, VesselPosition>;
+    tripData: TripDatum[];
+    loopedTime: number;
   }>();
 
   const mapId = useId();
@@ -49,7 +51,12 @@
         <VControlNavigation position="top-right" />
         <VControlScale position="bottom-left" />
         <ExamplesAisGlobeMapEnhancer :map="mapInstance" />
-        <ExamplesAisGlobeLayers :vessels="vessels" :positions="positions" />
+        <ExamplesAisGlobeLayers
+          :vessels="vessels"
+          :positions="positions"
+          :trip-data="tripData"
+          :looped-time="loopedTime"
+        />
       </VMap>
       <template #fallback>
         <div class="size-full bg-muted animate-pulse"></div>

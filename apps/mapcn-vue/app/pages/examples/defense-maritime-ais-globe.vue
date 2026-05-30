@@ -17,6 +17,8 @@
   const {
     vessels,
     positions,
+    tripData,
+    loopedTime,
     activeVesselTypes,
     highlightDarkOnly,
     stats,
@@ -82,6 +84,8 @@
       <ExamplesAisGlobeMapContainer
         :vessels="vessels"
         :positions="positions"
+        :trip-data="tripData"
+        :looped-time="isPlaying ? loopedTime : 0"
         class="size-full"
       />
 

@@ -3,13 +3,17 @@
     Vessel,
     VesselPosition,
     VesselPositionDatum,
+    TripDatum,
+    WakeArcDatum,
   } from '~/types/maritime-ais';
   import type { Position, Color } from '@deck.gl/core';
-  import { VLayerDeckglScatterplot } from '@geoql/v-maplibre';
+  import { VLayerDeckglScatterplot, VLayerDeckglArc } from '@geoql/v-maplibre';
 
   const props = defineProps<{
     vessels: Vessel[];
     positions: Record<string, VesselPosition>;
+    tripData: TripDatum[];
+    loopedTime: number;
   }>();
 
   const RADIUS_BY_TYPE: Record<string, number> = {
@@ -67,9 +71,85 @@
   function getVesselRadius(d: unknown): number {
     return RADIUS_BY_TYPE[(d as VesselPositionDatum).type] ?? 7;
   }
+
+  // deck.gl PathLayer/TripsLayer geometry does not render on a MapLibre globe
+  // (visgl/deck.gl#2302, #5143 — segments collapse to vertical lines / flipped
+  // faces). ArcLayer DOES render correctly on the globe (camera-facing 3D
+  // strips), so the wake is one ArcLayer arc per vessel from its position
+  // TRAIL_SPAN ago to its current position, with ArcLayer's built-in
+  // source→target colour gradient giving the transparent-tail → opaque-head
+  // fade for free. One arc per vessel keeps it at 250 arcs / 60fps; over this
+  // short span the great-circle approximation of the gently-curving track is
+  // visually indistinguishable from chaining many segments.
+  const TRAIL_SPAN = 6;
+  const TRAIL_ALPHA = 200;
+
+  // Clamp (do NOT wrap) the sampled time to [0, span]. The track is an open
+  // line, not a closed loop, so a negative time (just after the loop restarts)
+  // must NOT wrap to the track's end — that produced a giant arc spanning the
+  // whole track from end back to start. Clamping shortens the wake at the loop
+  // boundary instead, keeping it trailing correctly behind the vessel.
+  function interpAtTime(trip: TripDatum, time: number): [number, number] {
+    const path = trip.path;
+    const maxIdx = path.length - 1;
+    const span = trip.timestamps[maxIdx] || 1;
+    const clamped = time < 0 ? 0 : time > span ? span : time;
+    const f = (clamped / span) * maxIdx;
+    const idx = f | 0;
+    const frac = f - idx;
+    const p = path[idx]!;
+    const n = path[idx + 1 > maxIdx ? maxIdx : idx + 1]!;
+    return [p[0] + (n[0] - p[0]) * frac, p[1] + (n[1] - p[1]) * frac];
+  }
+
+  const wakeData = computed<WakeArcDatum[]>(() => {
+    const t = props.loopedTime;
+    const colors = colorById.value;
+    const arcs: WakeArcDatum[] = [];
+    for (const trip of props.tripData) {
+      const c = colors.get(trip.vesselId) ?? [200, 200, 200];
+      arcs.push({
+        source: interpAtTime(trip, t - TRAIL_SPAN),
+        target: interpAtTime(trip, t),
+        sourceColor: [c[0], c[1], c[2], 0],
+        targetColor: [c[0], c[1], c[2], TRAIL_ALPHA],
+      });
+    }
+    return arcs;
+  });
+
+  function getWakeSource(d: unknown): Position {
+    return (d as WakeArcDatum).source;
+  }
+
+  function getWakeTarget(d: unknown): Position {
+    return (d as WakeArcDatum).target;
+  }
+
+  function getWakeSourceColor(d: unknown): Color {
+    return (d as WakeArcDatum).sourceColor;
+  }
+
+  function getWakeTargetColor(d: unknown): Color {
+    return (d as WakeArcDatum).targetColor;
+  }
 </script>
 
 <template>
+  <VLayerDeckglArc
+    id="ais-trails"
+    :data="wakeData"
+    :get-source-position="getWakeSource"
+    :get-target-position="getWakeTarget"
+    :get-source-color="getWakeSourceColor"
+    :get-target-color="getWakeTargetColor"
+    :get-width="2"
+    :get-height="0"
+    :num-segments="2"
+    width-units="pixels"
+    :width-min-pixels="1.5"
+  />
+
   <VLayerDeckglScatterplot
     id="ais-positions"
     :data="positionData"

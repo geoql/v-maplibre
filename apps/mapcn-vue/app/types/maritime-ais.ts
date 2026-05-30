@@ -41,6 +41,13 @@ export interface TripDatum {
   timestamps: number[];
 }
 
+export interface WakeArcDatum {
+  source: [number, number];
+  target: [number, number];
+  sourceColor: [number, number, number, number];
+  targetColor: [number, number, number, number];
+}
+
 export interface MaritimeAisStats {
   totalTracked: number;
   darkVessels: number;
