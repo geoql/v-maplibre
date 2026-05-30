@@ -61,7 +61,7 @@
     const c = colorById.value.get((d as VesselPositionDatum).vesselId) ?? [
       200, 200, 200,
     ];
-    return [c[0], c[1], c[2], 220];
+    return [c[0], c[1], c[2], 255];
   }
 
   function getVesselRadius(d: unknown): number {
@@ -80,20 +80,18 @@
     :radius-min-pixels="2"
     :radius-max-pixels="5"
     :stroked="false"
-    :antialiasing="false"
   />
 
   <VLayerDeckglScatterplot
     id="ais-dark-positions"
     :data="darkData"
     :get-position="getVesselPosition"
-    :get-fill-color="[255, 60, 50, 240]"
+    :get-fill-color="[255, 60, 50, 255]"
     :get-radius="4"
     radius-units="pixels"
     :radius-min-pixels="3"
     :radius-max-pixels="6"
     :stroked="false"
-    :antialiasing="false"
   />
 
   <VLayerDeckglScatterplot
@@ -105,10 +103,9 @@
     :radius-min-pixels="8"
     :radius-max-pixels="11"
     :stroked="true"
-    :get-line-color="[255, 50, 45, 210]"
+    :get-line-color="[255, 50, 45, 255]"
     :line-width-min-pixels="1.5"
     :filled="false"
     :pickable="false"
-    :antialiasing="false"
   />
 </template>
