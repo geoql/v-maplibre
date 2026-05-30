@@ -13,11 +13,11 @@
   }>();
 
   const RADIUS_BY_TYPE: Record<string, number> = {
-    cargo: 8,
-    tanker: 9,
-    fishing: 6,
-    naval: 7,
-    passenger: 8,
+    cargo: 3.5,
+    tanker: 4,
+    fishing: 2.5,
+    naval: 3.5,
+    passenger: 3.5,
   };
 
   const colorById = computed(() => {
@@ -77,34 +77,38 @@
     :get-fill-color="getVesselFillColor"
     :get-radius="getVesselRadius"
     radius-units="pixels"
-    :stroked="true"
-    :get-line-color="[255, 255, 255, 160]"
-    :line-width-min-pixels="1.5"
+    :radius-min-pixels="2"
+    :radius-max-pixels="5"
+    :stroked="false"
+    :antialiasing="false"
   />
 
   <VLayerDeckglScatterplot
     id="ais-dark-positions"
     :data="darkData"
     :get-position="getVesselPosition"
-    :get-fill-color="[60, 10, 10, 220]"
-    :get-radius="7"
+    :get-fill-color="[255, 60, 50, 240]"
+    :get-radius="4"
     radius-units="pixels"
-    :stroked="true"
-    :get-line-color="[255, 50, 50, 200]"
-    :line-width-min-pixels="2"
+    :radius-min-pixels="3"
+    :radius-max-pixels="6"
+    :stroked="false"
+    :antialiasing="false"
   />
 
   <VLayerDeckglScatterplot
     id="ais-dark-ring"
     :data="darkData"
     :get-position="getVesselPosition"
-    :get-fill-color="[255, 30, 30, 0]"
-    :get-radius="16"
+    :get-radius="9"
     radius-units="pixels"
+    :radius-min-pixels="8"
+    :radius-max-pixels="11"
     :stroked="true"
-    :get-line-color="[255, 40, 40, 200]"
-    :line-width-min-pixels="2"
+    :get-line-color="[255, 50, 45, 210]"
+    :line-width-min-pixels="1.5"
     :filled="false"
     :pickable="false"
+    :antialiasing="false"
   />
 </template>
