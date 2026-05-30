@@ -59,20 +59,18 @@ export function useDeckOverlay(
       props?: { billboard?: boolean; parameters?: Record<string, unknown> };
     };
     if (typeof l.clone !== 'function') return layer;
-    // On an interleaved globe, deck layers share MapLibre's depth buffer with the
-    // globe sphere. Dots sit at the sphere surface depth, so depth comparisons are
-    // ambiguous: flat disks (billboard:false) z-fight the sphere as the camera
-    // moves, producing a motion-coupled diagonal hatch inside each dot. Disabling
-    // depthTest stops the comparison and depthWrite stops dots writing conflicting
-    // depth into the shared buffer — together they eliminate the hatch. On a globe
-    // with points spread across the surface no two dots share a pixel, so losing
-    // dot-vs-dot occlusion is invisible. cullMode 'back' for camera-facing
-    // billboards, 'none' for flat fills (polygons/paths) that need both faces.
+    // Interleaved globe layers share MapLibre's depth buffer with the globe
+    // sphere; deck billboards sit at the sphere-surface depth and z-fight it as
+    // the camera moves, producing a motion-coupled diagonal hatch inside each
+    // shape (deck.gl open bug visgl/deck.gl#10206). The maintainer-confirmed
+    // workaround is depthCompare:'always' (luma.gl v9 WebGPU-style key — NOT the
+    // legacy WebGL depthTest/depthWrite, which deck.gl 9 silently ignores) so
+    // fragments always pass the depth test instead of fighting the sphere.
+    // cullMode:'back' draws a single face. Both come straight from #10206.
     return l.clone({
       parameters: {
-        cullMode: l.props?.billboard ? 'back' : 'none',
-        depthTest: false,
-        depthWrite: false,
+        depthCompare: 'always',
+        cullMode: 'back',
         ...(l.props?.parameters ?? {}),
       },
     });
