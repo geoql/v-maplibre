@@ -194,14 +194,16 @@ export function useDeckOverlay(
     layers.value = [...layerRegistry.values()];
     if (overlay.value) {
       overlay.value.setProps({ layers: layers.value as never });
-      // With interleaved:false, deck.gl renders to a separate canvas. setProps()
-      // schedules a deck.gl redraw but does NOT tell MapLibre to composite that
-      // canvas onto the base map. Without this triggerRepaint(), the deck canvas
-      // stays blank on idle maps (no animation loop, no camera move).
-      // This fires on every syncLayers() call — including the queued ones from
-      // addLayer() made before overlay existed, and from removeLayer/updateLayer.
+      // Only non-interleaved overlays need a forced composite. With
+      // interleaved:false deck.gl renders to a SEPARATE canvas; setProps()
+      // schedules a deck redraw but does NOT tell MapLibre to composite it, so a
+      // fully-static overlay (no animation, no camera move) stays blank without
+      // this triggerRepaint(). Interleaved overlays (globe) already draw inside
+      // MapLibre's own render pass — forcing an extra repaint on every per-frame
+      // updateLayer() races the compositor and produces flicker/smear on
+      // animated layers, so it must be skipped there.
       // Guarded with typeof: test-env mock maps don't implement triggerRepaint.
-      if (typeof map.value?.triggerRepaint === 'function') {
+      if (!useInterleaved && typeof map.value?.triggerRepaint === 'function') {
         map.value.triggerRepaint();
       }
     }
