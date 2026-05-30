@@ -1,5 +1,17 @@
 # Changelog
 
+## [1.11.1](https://github.com/geoql/v-maplibre/compare/v1.11.0...v1.11.1) (2026-05-30)
+
+
+### Bug Fixes
+
+* **v-maplibre:** keep cullMode none for globe layers ([68ab034](https://github.com/geoql/v-maplibre/commit/68ab034c813113b3a969e8241c107b4903dd0001))
+* **v-maplibre:** paint static deck.gl overlays reliably on first load ([a1e5fe2](https://github.com/geoql/v-maplibre/commit/a1e5fe29277080d8583e1b54a278264a0ce75f20))
+* **v-maplibre:** register deck.gl layers via watch(map) to fix first-load race ([14e2a00](https://github.com/geoql/v-maplibre/commit/14e2a0006d1303950093fd14a33c63e5b8636a81))
+* **v-maplibre:** skip forced repaint on interleaved overlays ([18ac614](https://github.com/geoql/v-maplibre/commit/18ac61471169b3e4dd1eaaff89f12ba1c77790b5))
+* **v-maplibre:** stop globe deck layers z-fighting the sphere ([59b986a](https://github.com/geoql/v-maplibre/commit/59b986acdf54137c86104961716ea1d3924d6fc3))
+* **v-maplibre:** use depthCompare:'always' for globe layers (deck.gl[#10206](https://github.com/geoql/v-maplibre/issues/10206)) ([738ba52](https://github.com/geoql/v-maplibre/commit/738ba52d2c54b81136eb46dfede62c318039118b))
+
 ## [1.11.0](https://github.com/geoql/v-maplibre/compare/v1.10.0...v1.11.0) (2026-05-29)
 
 
