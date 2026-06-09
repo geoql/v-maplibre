@@ -29,8 +29,8 @@ allowBuilds:
 catalogs:
   default:
     maplibre-gl: ^5.24.0
-    oxfmt: ^0.53.0
-    oxlint: ^1.68.0
+    oxfmt: ^0.54.0
+    oxlint: ^1.69.0
     typescript: ^6.0.3
     vue: ^3.5.35
 
@@ -38,9 +38,9 @@ catalogs:
     shadcn-vue: ^2.7.4
 
   app:docs:
-    '@comark/nuxt': ^0.3.1
+    '@comark/nuxt': ^0.4.0
     '@nuxtjs/plausible': ^3.0.2
-    agents: ^0.14.2
+    agents: ^0.15.0
     better-sqlite3: ^12.10.0
     docus: ^5.12.0
     nuxt: ^4.4.7
@@ -54,7 +54,7 @@ catalogs:
 
   app:mapcn-vue:
     '@nuxtjs/robots': ^6.0.9
-    '@nuxtjs/sitemap': ^8.0.15
+    '@nuxtjs/sitemap': ^8.1.0
     'nuxt-schema-org': ^6.1.0
     '@deck.gl/aggregation-layers': ^9.3.3
     '@deck.gl/core': ^9.3.3
@@ -74,8 +74,8 @@ catalogs:
     '@geoql/maplibre-gl-snow': ^0.0.9
     '@geoql/maplibre-gl-compare': ^0.0.3
     '@iconify-json/lucide': ^1.2.111
-    '@iconify-json/simple-icons': ^1.2.85
-    '@iconify-json/vscode-icons': ^1.2.54
+    '@iconify-json/simple-icons': ^1.2.86
+    '@iconify-json/vscode-icons': ^1.2.55
     '@loaders.gl/3d-tiles': ^4.4.2
     '@loaders.gl/core': ^4.4.2
     '@loaders.gl/gltf': ^4.4.2

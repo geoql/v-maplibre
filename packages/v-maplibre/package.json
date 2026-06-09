@@ -90,12 +90,12 @@
     "@luma.gl/engine": "^9.3.3",
     "@luma.gl/shadertools": "^9.3.3",
     "@tsdown/css": "^0.22.2",
-    "@types/node": "^25.9.1",
+    "@types/node": "^25.9.2",
     "@vitejs/plugin-vue": "^6.0.7",
     "@vitest/coverage-v8": "^5.0.0-beta.4",
     "@vue/test-utils": "^2.4.11",
     "apache-arrow": "^21.1.0",
-    "happy-dom": "^20.10.1",
+    "happy-dom": "^20.10.2",
     "maplibre-gl-lidar": "^0.15.0",
     "maplibre-gl-wind": "^0.2.0",
     "three": "^0.184.0",
@@ -103,7 +103,7 @@
     "unplugin-vue": "^7.2.0",
     "vite-plus": "^0.1.24",
     "vue": "^3.5.35",
-    "vue-tsc": "^3.3.3",
+    "vue-tsc": "^3.3.4",
     "zarrita": "^0.7.3"
   },
   "peerDependencies": {
