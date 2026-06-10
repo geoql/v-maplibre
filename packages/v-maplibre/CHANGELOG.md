@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/geoql/v-maplibre/compare/v2.0.0...v2.0.1) (2026-06-10)
+
+
+### Miscellaneous
+
+* **deps:** bump dependencies ✨ ([0313869](https://github.com/geoql/v-maplibre/commit/031386946a8206f615159f57a4d2a9c3e7636bcc))
+
 ## [2.0.0](https://github.com/geoql/v-maplibre/compare/v1.11.0...v2.0.0) (2026-06-10)
 
 
