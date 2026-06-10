@@ -55,7 +55,7 @@ catalogs:
   app:mapcn-vue:
     '@nuxtjs/robots': ^6.0.9
     '@nuxtjs/sitemap': ^8.1.0
-    'nuxt-schema-org': ^6.1.3
+    'nuxt-schema-org': ^6.2.0
     '@deck.gl/aggregation-layers': ^9.3.3
     '@deck.gl/core': ^9.3.3
     '@deck.gl/geo-layers': ^9.3.3
