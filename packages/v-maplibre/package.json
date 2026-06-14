@@ -106,7 +106,7 @@
     "@developmentseed/geotiff": "^0.7.0",
     "@developmentseed/proj": "^0.7.0",
     "@geoql/maplibre-gl-starfield": "^0.1.1",
-    "@luma.gl/core": "^9.3.3",
+    "@luma.gl/core": "^9.3.4",
     "@luma.gl/engine": "^9.3.3",
     "@luma.gl/shadertools": "^9.3.3",
     "@tsdown/css": "^0.22.2",
