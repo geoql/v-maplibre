@@ -29,8 +29,8 @@ allowBuilds:
 catalogs:
   default:
     maplibre-gl: ^5.24.0
-    oxfmt: ^0.54.0
-    oxlint: ^1.69.0
+    oxfmt: ^0.58.0
+    oxlint: ^1.73.0
     typescript: ^6.0.3
     vue: ^3.5.38
 
@@ -56,12 +56,12 @@ catalogs:
     '@nuxtjs/robots': ^6.1.1
     '@nuxtjs/sitemap': ^8.2.1
     'nuxt-schema-org': ^6.2.1
-    '@deck.gl/aggregation-layers': ^9.3.4
-    '@deck.gl/core': ^9.3.4
-    '@deck.gl/geo-layers': ^9.3.4
-    '@deck.gl/layers': ^9.3.4
-    '@deck.gl/mapbox': ^9.3.4
-    '@deck.gl/mesh-layers': ^9.3.4
+    '@deck.gl/aggregation-layers': ^9.3.6
+    '@deck.gl/core': ^9.3.6
+    '@deck.gl/geo-layers': ^9.3.6
+    '@deck.gl/layers': ^9.3.6
+    '@deck.gl/mapbox': ^9.3.6
+    '@deck.gl/mesh-layers': ^9.3.6
     '@developmentseed/deck.gl-geotiff': ^0.7.0
     '@developmentseed/deck.gl-raster': ^0.7.0
     '@developmentseed/deck.gl-zarr': ^0.7.0
@@ -79,10 +79,10 @@ catalogs:
     '@loaders.gl/3d-tiles': ^4.4.2
     '@loaders.gl/core': ^4.4.2
     '@loaders.gl/gltf': ^4.4.2
-    '@luma.gl/core': ^9.3.3
-    '@luma.gl/engine': ^9.3.3
+    '@luma.gl/core': ^9.3.6
+    '@luma.gl/engine': ^9.3.6
     '@luma.gl/gltf': ^9.3.3
-    '@luma.gl/shadertools': ^9.3.3
+    '@luma.gl/shadertools': ^9.3.6
     '@math.gl/core': ^4.1.0
     '@math.gl/types': ^4.1.0
     '@resvg/resvg-js': ^2.6.2
