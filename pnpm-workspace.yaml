@@ -18,7 +18,7 @@ overrides:
   # docus@5.11 pulls @nuxt/content@3.13.0 (no zod3 chunk -> defineCollection
   # throws via the zod3 placeholder), while @nuxt/ui pulls @nuxt/content@3.14.0.
   # Pinning to 3.14 + zod 4 makes every path use the zod4 chunk.
-  '@nuxt/content': ^3.14.0
+  '@nuxt/content': ^3.15.2
   zod: ^4.4.3
 
 allowBuilds:
@@ -39,22 +39,22 @@ allowBuilds:
 catalogs:
   default:
     maplibre-gl: ^6.0.0
-    oxfmt: ^0.54.0
-    oxlint: ^1.69.0
+    oxfmt: ^0.60.0
+    oxlint: ^1.75.0
     typescript: ^6.0.3
-    vue: ^3.5.38
+    vue: ^3.5.40
 
   pkg:mapcn-vue:
-    shadcn-vue: ^2.7.4
+    shadcn-vue: ^2.8.0
 
   app:docs:
-    '@comark/nuxt': ^0.4.0
+    '@comark/nuxt': ^0.5.1
     '@nuxtjs/plausible': ^3.0.2
-    agents: ^0.16.0
-    better-sqlite3: ^12.10.0
+    agents: ^0.16.2
+    better-sqlite3: ^12.11.1
     docus: ^5.12.3
     nuxt: ^4.5.0
-    wrangler: ^4.100.0
+    wrangler: ^4.113.0
     # Required by docus → @nuxt/content collection schema generation.
     # CI fails on `nuxt prepare` without these because @nuxt/content 3.13.x
     # peer-requires zod (not bundled). Local installs sometimes resolve to
@@ -64,44 +64,44 @@ catalogs:
 
   app:mapcn-vue:
     '@nuxt/schema': ^4.5.0
-    '@nuxtjs/robots': ^6.1.1
-    '@nuxtjs/sitemap': ^8.2.1
+    '@nuxtjs/robots': ^6.1.3
+    '@nuxtjs/sitemap': ^8.3.0
     '@types/geojson': ^7946.0.16
     maplibre-gl-wind: ^0.2.0
-    'nuxt-schema-org': ^6.2.1
-    '@deck.gl/aggregation-layers': ^9.3.4
-    '@deck.gl/core': ^9.3.4
-    '@deck.gl/geo-layers': ^9.3.4
-    '@deck.gl/layers': ^9.3.4
-    '@deck.gl/mapbox': ^9.3.4
-    '@deck.gl/mesh-layers': ^9.3.4
+    'nuxt-schema-org': ^6.2.7
+    '@deck.gl/aggregation-layers': ^9.3.7
+    '@deck.gl/core': ^9.3.7
+    '@deck.gl/geo-layers': ^9.3.7
+    '@deck.gl/layers': ^9.3.7
+    '@deck.gl/mapbox': ^9.3.7
+    '@deck.gl/mesh-layers': ^9.3.7
     '@developmentseed/deck.gl-geotiff': ^0.7.0
     '@developmentseed/deck.gl-raster': ^0.7.0
     '@developmentseed/deck.gl-zarr': ^0.7.0
     '@developmentseed/geotiff': ^0.7.0
     '@developmentseed/proj': ^0.7.0
-    apache-arrow: ^21.1.0
+    apache-arrow: ^21.2.0
     zarrita: ^0.7.3
-    lerc: ^4.1.1
+    lerc: ^4.1.2
     '@geoql/maplibre-gl-starfield': ^0.1.1
     '@geoql/maplibre-gl-snow': ^0.0.9
     '@geoql/maplibre-gl-compare': ^0.0.3
-    '@iconify-json/lucide': ^1.2.112
-    '@iconify-json/simple-icons': ^1.2.86
-    '@iconify-json/vscode-icons': ^1.2.57
-    '@loaders.gl/3d-tiles': ^4.4.2
-    '@loaders.gl/core': ^4.4.2
-    '@loaders.gl/gltf': ^4.4.2
-    '@luma.gl/core': ^9.3.3
-    '@luma.gl/engine': ^9.3.3
-    '@luma.gl/gltf': ^9.3.3
-    '@luma.gl/shadertools': ^9.3.3
+    '@iconify-json/lucide': ^1.2.118
+    '@iconify-json/simple-icons': ^1.2.91
+    '@iconify-json/vscode-icons': ^1.2.67
+    '@loaders.gl/3d-tiles': ^4.4.3
+    '@loaders.gl/core': ^4.4.3
+    '@loaders.gl/gltf': ^4.4.3
+    '@luma.gl/core': ^9.3.6
+    '@luma.gl/engine': ^9.3.6
+    '@luma.gl/gltf': ^9.3.6
+    '@luma.gl/shadertools': ^9.3.6
     '@math.gl/core': ^4.1.0
     '@math.gl/types': ^4.1.0
     '@resvg/resvg-js': ^2.6.2
     '@resvg/resvg-wasm': ^2.6.2
-    '@nuxt/content': ^3.14.0
-    '@nuxt/icon': ^2.2.3
+    '@nuxt/content': ^3.15.2
+    '@nuxt/icon': ^2.3.1
     '@nuxt/fonts': ^0.14.0
     '@nuxtjs/color-mode': ^4.0.1
     '@nuxtjs/plausible': ^3.0.2
@@ -112,7 +112,7 @@ catalogs:
     '@tanstack/vue-table': ^8.21.3
     '@vueuse/core': ^14.3.0
     '@vueuse/nuxt': ^14.3.0
-    better-sqlite3: ^12.10.0
+    better-sqlite3: ^12.11.1
     class-variance-authority: ^0.7.1
     clsx: ^2.1.1
     flatbush: ^4.6.2
@@ -122,21 +122,21 @@ catalogs:
     motion-v: ^2.3.0
     nuxt: ^4.5.0
     nuxt-llms: ^0.2.0
-    nuxt-og-image: ^6.7.3
+    nuxt-og-image: ^6.7.4
     nuxt-security: ^2.6.0
     proj4: ^2.20.9
-    reka-ui: ^2.9.10
-    satori: ^0.26.0
-    shadcn-nuxt: ^2.7.4
-    shiki: ^4.2.0
+    reka-ui: ^2.10.1
+    satori: ^0.28.2
+    shadcn-nuxt: ^2.8.0
+    shiki: ^4.3.1
     tailwind-merge: ^3.6.0
-    tailwindcss: ^4.3.1
+    tailwindcss: ^4.3.3
     tailwindcss-animate: ^1.0.7
     three: ^0.185.1
     tw-animate-css: ^1.4.0
     vue-sonner: ^2.0.9
-    wrangler: ^4.100.0
-    terra-draw: ^1.31.1
+    wrangler: ^4.113.0
+    terra-draw: ^1.32.2
     terra-draw-maplibre-gl-adapter: ^1.4.1
     yoga-wasm-web: ^0.3.3
 
