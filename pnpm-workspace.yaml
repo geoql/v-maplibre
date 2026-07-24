@@ -3,7 +3,17 @@ packages:
   - 'apps/*'
 
 overrides:
-  vite: ^8.0.16
+  # Nuxt 4.5 declares unhead "^3.1.8", but Unhead 3.1.8 ships an invalid
+  # unhead/dist/stream/iife.mjs that the Cloudflare preset build cannot parse,
+  # aborting the CF Workers build (nuxt/nuxt#35670). Fixed in Unhead 3.2.0+;
+  # keep the floor above 3.2.1 so the Cloudflare build always resolves a good copy.
+  unhead: '>=3.2.3'
+  # docus -> @nuxtjs/mcp-toolkit + devframe pull h3@2.0.1-rc.x, which wins the
+  # shamefully-hoist for bare `h3` imports. @nuxt/content + nuxt-llms nitro
+  # handlers then mix h3 v1 events with v2 setHeader and every prerender route
+  # 500s ("Cannot read properties of undefined (reading 'set')"). mcp-toolkit
+  # only peers on h3 >=1.15.11, so pinning to v1 is safe.
+  h3: ^1.15.11
   # Single-version pins to avoid dual-resolution at docs `nuxt prepare`:
   # docus@5.11 pulls @nuxt/content@3.13.0 (no zod3 chunk -> defineCollection
   # throws via the zod3 placeholder), while @nuxt/ui pulls @nuxt/content@3.14.0.
@@ -42,8 +52,8 @@ catalogs:
     '@nuxtjs/plausible': ^3.0.2
     agents: ^0.16.0
     better-sqlite3: ^12.10.0
-    docus: ^5.12.1
-    nuxt: ^4.4.8
+    docus: ^5.12.3
+    nuxt: ^4.5.0
     wrangler: ^4.100.0
     # Required by docus → @nuxt/content collection schema generation.
     # CI fails on `nuxt prepare` without these because @nuxt/content 3.13.x
@@ -107,9 +117,9 @@ catalogs:
     maplibre-gl-interpolate-heatmap: 0.1.3
     maplibre-gl-lidar: ^0.16.2
     motion-v: ^2.3.0
-    nuxt: ^4.4.8
+    nuxt: ^4.5.0
     nuxt-llms: ^0.2.0
-    nuxt-og-image: ^6.6.0
+    nuxt-og-image: ^6.7.3
     proj4: ^2.20.9
     reka-ui: ^2.9.10
     satori: ^0.26.0
