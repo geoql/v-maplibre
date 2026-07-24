@@ -252,14 +252,13 @@ jobs:
         run: pnpm run build:mapcn
         env:
           NODE_OPTIONS: --max-old-space-size=8192
-          NITRO_PRESET: cloudflare-pages
           NUXT_PUBLIC_MAPSGURU_API_KEY: ${{ secrets.NUXT_PUBLIC_MAPSGURU_API_KEY }}
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v7
         with:
           name: mapcn-dist
-          path: apps/mapcn-vue/dist/
+          path: apps/mapcn-vue/.output/
           retention-days: 1
 
   build-docs:
@@ -288,11 +287,10 @@ jobs:
         run: pnpm run build:docs
         env:
           NODE_OPTIONS: --max-old-space-size=8192
-          NITRO_PRESET: cloudflare-pages
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v7
         with:
           name: docs-dist
-          path: apps/docs/dist/
+          path: apps/docs/.output/
           retention-days: 1
