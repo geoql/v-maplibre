@@ -110,7 +110,7 @@ export default defineNuxtConfig({
     //
     // Skip per-request cache storage during prerender (we generate all OG
     // images at build time, no runtime regeneration needed). Saves ~1s of
-    // worker bundle work and reduces peak heap by ~200MB on Cloudflare Pages.
+    // worker bundle work and reduces peak heap by ~200MB on Cloudflare Workers.
     runtimeCacheStorage: false,
   },
 
@@ -157,10 +157,10 @@ export default defineNuxtConfig({
     sitemap: '/sitemap.xml',
   },
 
-  // Generated at build time, served from Cloudflare Pages CDN. Discovered automatically
+  // Generated at build time, served from Cloudflare Workers static assets. Discovered automatically
   // by @nuxt/content + Nuxt pages router.
   sitemap: {
-    xsl: false, // Skip XSL stylesheet to keep CF Pages bundle small
+    xsl: false, // Skip XSL stylesheet to keep CF Workers bundle small
     defaults: {
       changefreq: 'weekly',
       priority: 0.8,

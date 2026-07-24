@@ -3,8 +3,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "nuxt dev --extends docus",
-    "build": "nuxt build --extends docus",
+    "dev": "nuxt dev",
+    "build": "nuxt build",
     "preview": "nuxt preview",
     "lint": "oxlint",
     "lint:fix": "oxlint --fix",
