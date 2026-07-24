@@ -264,6 +264,9 @@ jobs:
           name: mapcn-dist
           path: apps/mapcn-vue/.output/
           retention-days: 1
+          # .output is a dotfolder; without this the upload silently skips every
+          # file (hidden-file exclusion) and deploy jobs fail on empty artifacts.
+          include-hidden-files: true
 
   build-docs:
     name: 'Build Docs'
@@ -298,3 +301,5 @@ jobs:
           name: docs-dist
           path: apps/docs/.output/
           retention-days: 1
+          # Same dotfolder pitfall as mapcn-dist above.
+          include-hidden-files: true
