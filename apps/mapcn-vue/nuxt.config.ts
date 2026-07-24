@@ -261,6 +261,7 @@ export default defineNuxtConfig({
       nodeCompat: true,
       deployConfig: true,
       wrangler: {
+        compatibility_date: '2026-06-16',
         workers_dev: false,
         routes: [
           {
@@ -270,6 +271,9 @@ export default defineNuxtConfig({
         ],
         observability: {
           enabled: true,
+          traces: {
+            enabled: true,
+          },
         },
       },
     },
