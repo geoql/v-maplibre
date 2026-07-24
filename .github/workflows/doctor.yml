@@ -35,6 +35,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
 
+      # Without the workspace lib's dist/, knip cannot resolve the
+      # @geoql/v-maplibre package exports and reports it as an unlisted
+      # dependency (error severity), failing the gate.
+      - name: Build library
+        run: pnpm --filter @geoql/v-maplibre run build
+
       - name: Audit with nuxt-doctor
         uses: geoql/doctor-action@v2
         with:
