@@ -7,7 +7,7 @@
     VPopup,
   } from '@geoql/v-maplibre';
   import type { GradientLegendItem } from '@geoql/v-maplibre';
-  import type { Map, LngLatLike } from 'maplibre-gl';
+  import type { Map, LngLatLike, ExpressionSpecification } from 'maplibre-gl';
   import {
     Select,
     SelectContent,
@@ -200,7 +200,7 @@
       paint: {
         'fill-color': buildFillColor(
           columnName.value,
-        ) as maplibregl.ExpressionSpecification,
+        ) as ExpressionSpecification,
         'fill-opacity': 0.7,
       },
     });
