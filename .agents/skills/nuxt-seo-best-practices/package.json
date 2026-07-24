@@ -1,0 +1,19 @@
+{
+  "name": "nuxt-seo-best-practices",
+  "version": "1.0.0",
+  "description": "Nuxt SEO optimization best practices for AI agents",
+  "license": "MIT",
+  "author": {
+    "name": "Vinayak Kulkarni",
+    "email": "inbox.vinayak@gmail.com",
+    "url": "https://vinayakkulkarni.dev"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.ts",
+    "validate": "node scripts/validate.ts"
+  },
+  "devDependencies": {
+    "yaml": "^2.9.0"
+  }
+}
