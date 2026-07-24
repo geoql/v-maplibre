@@ -8,6 +8,7 @@
    * `pnpm add maplibre-gl-lidar`
    */
   import { onMounted, onUnmounted, ref } from 'vue';
+  import type { IControl } from 'maplibre-gl';
   import { MapKey, injectStrict, requirePeer } from '../../utils';
   import { lidarControlEvents as events } from './events';
   import type {
@@ -108,7 +109,7 @@
 
   onUnmounted(() => {
     if (control.value && map.value) {
-      map.value.removeControl(control.value as unknown as maplibregl.IControl);
+      map.value.removeControl(control.value as unknown as IControl);
       control.value = null;
     }
   });
@@ -123,10 +124,7 @@
       props.options || defaultOptions,
     ) as unknown as LidarControlInstance;
 
-    map.value!.addControl(
-      control.value as unknown as maplibregl.IControl,
-      props.position,
-    );
+    map.value!.addControl(control.value as unknown as IControl, props.position);
 
     events.forEach((event: string) => {
       control.value!.on(event, (data?: unknown) => {

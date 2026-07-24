@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import maplibregl, { Map } from 'maplibre-gl';
+  import { Map, addProtocol } from 'maplibre-gl';
   import { Protocol } from 'pmtiles';
   import { onMounted, provide, ref, shallowRef } from 'vue';
   import type { MapOptions, MapEventType } from 'maplibre-gl';
@@ -24,7 +24,7 @@
 
   if (props.supportPmtiles) {
     const protocol = new Protocol({ metadata: true });
-    maplibregl.addProtocol('pmtiles', protocol.tile);
+    addProtocol('pmtiles', protocol.tile);
     provide(PMTileProtocolKey, protocol);
   }
 
@@ -39,8 +39,27 @@
   // This provides DeckOverlayKey and DeckLayersKey to all descendants
   useDeckOverlay(map, { globe: props.projection === 'globe' });
 
+  // MapLibre v6 removed `map.transform` (now internal at `map._camera.transform`),
+  // but @deck.gl/mapbox (incl. 9.4 alpha) still reads `map.transform.height/_nearZ/_farZ`
+  // during every render. Without this getter the deck overlay throws inside the
+  // map's render loop and blanks the entire canvas.
+  const restoreTransformCompat = (instance: Map): void => {
+    const compat = instance as Map & {
+      transform?: unknown;
+      _camera?: { transform: unknown };
+    };
+    if (compat.transform === undefined && compat._camera) {
+      Object.defineProperty(instance, 'transform', {
+        get: () => compat._camera!.transform,
+        configurable: true,
+      });
+    }
+  };
+
   onMounted(() => {
-    map.value = new Map(props.options);
+    const instance = new Map(props.options);
+    restoreTransformCompat(instance);
+    map.value = instance;
     loaded.value = true;
     listenMapEvents();
   });
