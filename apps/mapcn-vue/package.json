@@ -45,6 +45,8 @@
     "@nuxtjs/plausible": "catalog:app:mapcn-vue",
     "@nuxtjs/robots": "catalog:app:mapcn-vue",
     "@nuxtjs/sitemap": "catalog:app:mapcn-vue",
+    "@openpanel/nuxt": "catalog:app:mapcn-vue",
+    "@openpanel/sdk": "catalog:app:mapcn-vue",
     "@resvg/resvg-js": "catalog:app:mapcn-vue",
     "@resvg/resvg-wasm": "catalog:app:mapcn-vue",
     "@tanstack/vue-table": "catalog:app:mapcn-vue",

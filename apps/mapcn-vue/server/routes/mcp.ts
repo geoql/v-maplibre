@@ -110,6 +110,10 @@ export default defineEventHandler(async (event: H3Event) => {
           isError: true,
         };
       }
+      await trackOpenPanelEvent(event, 'mcp_request', {
+        tool: toolName,
+        isError: result.isError === true,
+      }).catch(() => {});
       responses.push(success(id, result as unknown as Record<string, unknown>));
       continue;
     }
