@@ -109,7 +109,7 @@
     "@luma.gl/core": "^9.3.6",
     "@luma.gl/engine": "^9.3.6",
     "@luma.gl/shadertools": "^9.3.6",
-    "@tsdown/css": "^0.22.13",
+    "@tsdown/css": "^0.22.14",
     "@types/node": "^25.9.5",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vitest/coverage-v8": "4.1.10",
