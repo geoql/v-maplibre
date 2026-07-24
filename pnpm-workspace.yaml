@@ -63,8 +63,11 @@ catalogs:
     zod-to-json-schema: ^3.25.2
 
   app:mapcn-vue:
+    '@nuxt/schema': ^4.5.0
     '@nuxtjs/robots': ^6.1.1
     '@nuxtjs/sitemap': ^8.2.1
+    '@types/geojson': ^7946.0.16
+    maplibre-gl-wind: ^0.2.0
     'nuxt-schema-org': ^6.2.1
     '@deck.gl/aggregation-layers': ^9.3.4
     '@deck.gl/core': ^9.3.4

@@ -34,5 +34,11 @@ export default {
     // knip can't see CLI-invoked binaries: vue-tsc backs `nuxt typecheck` and
     // wrangler backs the Cloudflare deploy — both real, neither imported.
     'dead-code/unused-dependency': 'off',
+    // Every v-html in this app renders shiki-generated highlight markup from
+    // our own build-time code snippets — never user input, so no XSS sink.
+    'vue-doctor/security/no-v-html': 'off',
+    // mapsguruApiKey is a domain-restricted public map-tile key (like a
+    // Mapbox/MapTiler public token): it MUST reach the client to fetch styles.
+    'nuxt-doctor/security/no-secret-in-public-runtime-config': 'off',
   },
 };
