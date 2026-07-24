@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.agentskills.io/discovery/0.2.0/schema.json",
+  "skills": [
+    {
+      "name": "install-map-component",
+      "type": "skill-md",
+      "description": "Install any mapcn-vue registry map component (MapLibre, deck.gl, or LiDAR) into a Vue project via the shadcn-vue CLI.",
+      "url": "https://mapcn-vue.geoql.in/.well-known/agent-skills/install-map-component/SKILL.md",
+      "digest": "sha256:3711d312365c01ea372d4fa3d2a76e71f0c2bdef331aead3c2737569db8d4800"
+    },
+    {
+      "name": "search-map-components",
+      "type": "skill-md",
+      "description": "Search the mapcn-vue registry by name, title, or description using the public registry.json API or the remote MCP server.",
+      "url": "https://mapcn-vue.geoql.in/.well-known/agent-skills/search-map-components/SKILL.md",
+      "digest": "sha256:e6569d52d1b278b9a33e3bfe67a46ac6f80a36aecd049b62e016e20ff6e1344a"
+    }
+  ]
+}
