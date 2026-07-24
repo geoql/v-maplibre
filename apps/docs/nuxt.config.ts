@@ -28,19 +28,22 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-18',
 
   nitro: {
-    preset: 'cloudflare-pages',
+    preset: 'cloudflare_module',
     cloudflare: {
       nodeCompat: true,
-    },
-    rollupConfig: {
-      output: {
-        generatedCode: {
-          constBindings: true,
+      deployConfig: true,
+      wrangler: {
+        workers_dev: false,
+        routes: [
+          {
+            pattern: 'v-maplibre.geoql.in',
+            custom_domain: true,
+          },
+        ],
+        observability: {
+          enabled: true,
         },
       },
-    },
-    replace: {
-      'process.stdout': 'undefined',
     },
   },
 

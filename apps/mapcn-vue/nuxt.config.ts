@@ -243,12 +243,8 @@ export default defineNuxtConfig({
     },
   },
 
-  postcss: {
-    plugins: {},
-  },
-
   nitro: {
-    preset: 'cloudflare-pages',
+    preset: 'cloudflare_module',
     prerender: {
       crawlLinks: true,
       routes: ['/'],
@@ -263,41 +259,24 @@ export default defineNuxtConfig({
     },
     cloudflare: {
       nodeCompat: true,
-    },
-
-    rollupConfig: {
-      output: {
-        generatedCode: {
-          constBindings: true,
+      deployConfig: true,
+      wrangler: {
+        workers_dev: false,
+        routes: [
+          {
+            pattern: 'mapcn-vue.geoql.in',
+            custom_domain: true,
+          },
+        ],
+        observability: {
+          enabled: true,
         },
       },
-    },
-    replace: {
-      'process.stdout': 'undefined',
-    },
-
-    experimental: {
-      openAPI: false,
     },
   },
 
   shadcn: {
     prefix: '',
     componentDir: './app/components/ui',
-  },
-
-  hooks: {
-    'vite:extendConfig'(viteInlineConfig, env) {
-      if (env.isClient && viteInlineConfig.optimizeDeps?.include) {
-        const dropPrefixes = ['@nuxtjs/mdc >'];
-        const dropExact = new Set(['@plausible-analytics/tracker']);
-        viteInlineConfig.optimizeDeps.include =
-          viteInlineConfig.optimizeDeps.include.filter((entry) => {
-            if (typeof entry !== 'string') return true;
-            if (dropExact.has(entry)) return false;
-            return !dropPrefixes.some((p) => entry.startsWith(p));
-          });
-      }
-    },
   },
 });
