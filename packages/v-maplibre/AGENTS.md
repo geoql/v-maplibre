@@ -204,7 +204,7 @@ All `dependencies`, `devDependencies`, and `peerDependencies` in **this file** M
 ```jsonc
 // CORRECT - real semver in every dep block
 "dependencies": {
-  "maplibre-gl": "^5.24.0",
+  "maplibre-gl": "^6.0.0",
   "pmtiles": "^4.4.1"
 },
 "devDependencies": {
@@ -249,7 +249,7 @@ All `dependencies`, `devDependencies`, and `peerDependencies` in **this file** M
 | **Types**      | TypeScript 5.8+                                  |
 | **Linting**    | oxlint                                           |
 | **Formatting** | Prettier                                         |
-| **Core Dep**   | MapLibre GL JS 5.x                               |
+| **Core Dep**   | MapLibre GL JS 6.x                               |
 | **Optional**   | deck.gl 9.x, maplibre-gl-lidar, maplibre-gl-wind |
 
 ---
@@ -338,7 +338,12 @@ packages/v-maplibre/
 ```vue
 <script setup lang="ts">
   import { ref, onMounted, onUnmounted, provide, watch } from 'vue';
-  import maplibregl, { type Map, type MapOptions } from 'maplibre-gl';
+  import {
+    Map as MaplibreMap,
+    type Map,
+    type MapMouseEvent,
+    type MapOptions,
+  } from 'maplibre-gl';
   import { MAP_INJECTION_KEY } from '../utils/symbols';
 
   interface Props {
@@ -348,7 +353,7 @@ packages/v-maplibre/
   const props = defineProps<Props>();
   const emit = defineEmits<{
     load: [map: Map];
-    click: [e: maplibregl.MapMouseEvent];
+    click: [e: MapMouseEvent];
   }>();
 
   const mapContainer = ref<HTMLDivElement | null>(null);
@@ -359,7 +364,7 @@ packages/v-maplibre/
   onMounted(() => {
     if (!mapContainer.value) return;
 
-    map.value = new maplibregl.Map({
+    map.value = new MaplibreMap({
       container: mapContainer.value,
       ...props.options,
     });
@@ -446,7 +451,7 @@ packages/v-maplibre/
 ```vue
 <script setup lang="ts">
   import { onMounted, onUnmounted } from 'vue';
-  import maplibregl from 'maplibre-gl';
+  import { NavigationControl } from 'maplibre-gl';
   import { injectMap } from '../../utils/injects';
 
   interface Props {
@@ -458,13 +463,13 @@ packages/v-maplibre/
   });
 
   const map = injectMap();
-  let control: maplibregl.NavigationControl | null = null;
+  let control: NavigationControl | null = null;
 
   onMounted(() => {
     const mapInstance = map.value;
     if (!mapInstance) return;
 
-    control = new maplibregl.NavigationControl();
+    control = new NavigationControl();
     mapInstance.addControl(control, props.position);
   });
 

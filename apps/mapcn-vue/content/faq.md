@@ -16,7 +16,7 @@ mapcn-vue is a copy-and-paste component registry for Vue 3 map UI, built on top 
 mapcn-vue components require four peers in your host project:
 
 - **Vue 3.4+** (Composition API, `<script setup>` syntax)
-- **MapLibre GL JS 5.x** (the rendering engine)
+- **MapLibre GL JS 6.x** (the rendering engine)
 - **@geoql/v-maplibre 1.x** (the Vue wrappers consumed by every component — install the latest release from [npm](https://www.npmjs.com/package/@geoql/v-maplibre))
 - **Tailwind CSS v4** (for styling, with the shadcn-vue token system)
 
