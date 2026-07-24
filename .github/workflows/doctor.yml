@@ -1,0 +1,82 @@
+name: 'Doctor'
+
+on:
+  workflow_call:
+    secrets:
+      DOCTOR_API_KEY:
+        description: 'API key for pushing scores to app.the-doctor.report'
+        required: false
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  nuxt-doctor:
+    name: 'Nuxt Doctor (mapcn-vue app)'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      # Generates .nuxt/tsconfig.json via the `postinstall: nuxt prepare`
+      # hook. Without it, knip can't resolve nuxt.config.ts (it extends
+      # ./.nuxt/tsconfig.json) and the audit errors out.
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Audit with nuxt-doctor
+        uses: geoql/doctor-action@v2
+        with:
+          framework: nuxt
+          preset: recommended
+          threshold: ${{ vars.DOCTOR_THRESHOLD || '0' }}
+          fail-on: error
+          working-directory: apps/mapcn-vue
+          api-key: ${{ secrets.DOCTOR_API_KEY }}
+          project: ${{ github.repository }}
+          pr-comment: true
+          comment-mode: both
+
+  vue-doctor:
+    name: 'Vue Doctor (v-maplibre lib)'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Audit with vue-doctor
+        uses: geoql/doctor-action@v2
+        with:
+          framework: vue
+          preset: recommended
+          threshold: ${{ vars.DOCTOR_THRESHOLD || '0' }}
+          fail-on: error
+          working-directory: packages/v-maplibre
+          api-key: ${{ secrets.DOCTOR_API_KEY }}
+          project: ${{ github.repository }}
+          pr-comment: true
+          comment-mode: both

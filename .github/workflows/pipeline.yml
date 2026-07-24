@@ -32,6 +32,14 @@ jobs:
     uses: ./.github/workflows/lint-pr.yml
     secrets: inherit
 
+  # --- Doctor: Vue/Nuxt code audit with PR comments ---
+
+  doctor:
+    name: 'Doctor'
+    if: github.event_name == 'pull_request' && github.event.action != 'edited'
+    uses: ./.github/workflows/doctor.yml
+    secrets: inherit
+
   # --- CI: lint, test, build, upload artifacts ---
 
   ci:
