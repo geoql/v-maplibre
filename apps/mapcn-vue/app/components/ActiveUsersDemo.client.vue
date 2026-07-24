@@ -5,6 +5,7 @@
   import type { PickingInfo } from '@deck.gl/core';
 
   const { mapStyle } = useMapStyle();
+  const { isAutomated } = useIsAutomated();
 
   const mapOptions = computed(() => ({
     container: 'active-users-map',
@@ -98,7 +99,13 @@
 </script>
 
 <template>
-  <div class="size-full">
+  <div
+    v-if="isAutomated"
+    class="flex size-full items-center justify-center bg-muted font-mono text-xs text-muted-foreground"
+  >
+    Active users demo
+  </div>
+  <div v-else class="size-full">
     <VMap :key="mapStyle" :options="mapOptions" class="size-full">
       <VLayerDeckglScatterplot
         id="active-users-pulse"

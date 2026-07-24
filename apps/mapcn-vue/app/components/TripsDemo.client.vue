@@ -3,6 +3,7 @@
   import { VLayerDeckglTrips } from '@geoql/v-maplibre/deck.gl';
 
   const { mapStyle } = useMapStyle();
+  const { isAutomated } = useIsAutomated();
 
   const mapOptions = computed(() => ({
     container: 'trips-map',
@@ -73,7 +74,13 @@
 </script>
 
 <template>
-  <div class="size-full">
+  <div
+    v-if="isAutomated"
+    class="flex size-full items-center justify-center bg-muted font-mono text-xs text-muted-foreground"
+  >
+    Animated trips demo
+  </div>
+  <div v-else class="size-full">
     <VMap :key="mapStyle" :options="mapOptions" class="size-full">
       <VLayerDeckglTrips
         id="trips-layer"
