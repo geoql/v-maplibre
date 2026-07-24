@@ -60,6 +60,9 @@ jobs:
         env:
           NODE_OPTIONS: --max-old-space-size=8192
           NUXT_PUBLIC_MAPSGURU_API_KEY: ${{ secrets.NUXT_PUBLIC_MAPSGURU_API_KEY }}
+          # Same as ci.yml: bakes the public OpenPanel client ID into the
+          # prerendered client bundle; empty means analytics silently dead.
+          NUXT_PUBLIC_OPENPANEL_CLIENT_ID: ${{ secrets.NUXT_PUBLIC_OPENPANEL_CLIENT_ID }}
 
       - name: Deploy to Cloudflare Workers
         working-directory: apps/mapcn-vue
