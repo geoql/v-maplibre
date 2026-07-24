@@ -30,17 +30,22 @@ The section ID (in parentheses) is the filename prefix used to group rules.
 **Impact:** MEDIUM-HIGH  
 **Description:** SSR-safe state management requires specific patterns. useState and Pinia integration must be configured correctly to avoid hydration issues.
 
-## 6. Type Safety (types)
+## 6. Pages, Layouts & Navigation (pages)
+
+**Impact:** MEDIUM  
+**Description:** File-based routing conventions (named views), layout resolution (useLayout), and NuxtLink behaviors introduced or changed in Nuxt 4.5.
+
+## 7. Type Safety (types)
 
 **Impact:** MEDIUM  
 **Description:** Proper type organization and import paths ensure maintainability and leverage Nuxt's TypeScript integration.
 
-## 7. Modules & Plugins (modules)
+## 8. Modules & Plugins (modules)
 
 **Impact:** LOW-MEDIUM  
 **Description:** Module configuration and plugin creation follow specific patterns that affect build time, runtime, and feature availability.
 
-## 8. Performance & Deployment (perf)
+## 9. Performance & Deployment (perf)
 
 **Impact:** LOW  
 **Description:** Build optimization, caching strategies, and deployment configuration for production Nuxt applications.

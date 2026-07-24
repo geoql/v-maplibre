@@ -131,9 +131,9 @@ import type { RoutePoint, MapState } from '~/types/map';
 ```vue
 <!-- WRONG - Raw MapLibre setup -->
 <script setup>
-  import maplibregl from 'maplibre-gl';
+  import { Map } from 'maplibre-gl';
   onMounted(() => {
-    const map = new maplibregl.Map({ ... });
+    const map = new Map({ ... });
   });
 </script>
 

@@ -1,11 +1,3 @@
-import { readFileSync, existsSync } from 'node:fs';
-import { join, resolve } from 'node:path';
-
-const REGISTRY_DIR = resolve(
-  process.cwd(),
-  '../../packages/mapcn-vue/public/r',
-);
-
 export default defineEventHandler((event) => {
   const rawName = getRouterParam(event, 'name');
   const name = rawName?.replace(/\.json$/, '');
@@ -17,15 +9,18 @@ export default defineEventHandler((event) => {
     });
   }
 
-  const filePath = join(REGISTRY_DIR, `${name}.json`);
+  if (name === 'registry') {
+    return getRegistryIndex();
+  }
 
-  if (!existsSync(filePath)) {
+  const item = getRegistryItem(name);
+
+  if (!item) {
     throw createError({
       statusCode: 404,
       message: `Registry item "${name}" not found`,
     });
   }
 
-  const content = readFileSync(filePath, 'utf-8');
-  return JSON.parse(content);
+  return item;
 });

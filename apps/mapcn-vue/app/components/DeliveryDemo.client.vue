@@ -7,6 +7,7 @@
   import AnimatedArcLayer from '~/utils/animated-arc-layer';
 
   const colorMode = useColorMode();
+  const { isAutomated } = useIsAutomated();
   const mapRef = shallowRef<Map | null>(null);
   const overlayRef = shallowRef<MapboxOverlay | null>(null);
   const currentTime = ref(0);
@@ -308,7 +309,13 @@
 </script>
 
 <template>
-  <VMap :options="mapOptions" class="size-full" @loaded="onMapLoaded">
+  <div
+    v-if="isAutomated"
+    class="flex size-full items-center justify-center bg-muted font-mono text-xs text-muted-foreground"
+  >
+    Global delivery arcs demo
+  </div>
+  <VMap v-else :options="mapOptions" class="size-full" @loaded="onMapLoaded">
     <VLayerStarfield
       galaxy-texture-url="/milkyway.jpg"
       :star-count="4000"

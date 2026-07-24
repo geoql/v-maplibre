@@ -3,6 +3,7 @@
   import type {
     GeoJSONSourceSpecification,
     LayerSpecification,
+    MapLayerMouseEvent,
   } from 'maplibre-gl';
 
   export interface MapLayerGeojsonProps {
@@ -15,9 +16,9 @@
   const props = defineProps<MapLayerGeojsonProps>();
 
   const emit = defineEmits<{
-    click: [e: maplibregl.MapLayerMouseEvent];
-    mouseenter: [e: maplibregl.MapLayerMouseEvent];
-    mouseleave: [e: maplibregl.MapLayerMouseEvent];
+    click: [e: MapLayerMouseEvent];
+    mouseenter: [e: MapLayerMouseEvent];
+    mouseleave: [e: MapLayerMouseEvent];
   }>();
 </script>
 

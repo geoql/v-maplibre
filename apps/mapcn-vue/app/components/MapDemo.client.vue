@@ -15,6 +15,7 @@
 
   const mapId = useId();
   const { mapStyle } = useMapStyle();
+  const { isAutomated } = useIsAutomated();
 
   const mapOptions = computed(() => ({
     container: `map-demo-${mapId}`,
@@ -25,7 +26,13 @@
 </script>
 
 <template>
-  <div class="map-container size-full">
+  <div
+    v-if="isAutomated"
+    class="flex size-full items-center justify-center bg-muted font-mono text-xs text-muted-foreground"
+  >
+    Interactive map demo
+  </div>
+  <div v-else class="map-container size-full">
     <VMap :key="mapStyle" :options="mapOptions" class="size-full">
       <VControlNavigation position="top-right" />
       <VControlScale v-if="showScale" position="bottom-left" />

@@ -2,7 +2,12 @@
   import { VMap } from '@geoql/v-maplibre';
   import { useColorMode } from '@vueuse/core';
   import { computed, type StyleValue } from 'vue';
-  import type { MapOptions, StyleSpecification } from 'maplibre-gl';
+  import type {
+    Map as MaplibreMap,
+    MapMouseEvent,
+    MapOptions,
+    StyleSpecification,
+  } from 'maplibre-gl';
   import 'maplibre-gl/dist/maplibre-gl.css';
 
   export interface MapProps {
@@ -29,10 +34,10 @@
   });
 
   const emit = defineEmits<{
-    load: [map: maplibregl.Map];
-    click: [e: maplibregl.MapMouseEvent];
-    move: [e: maplibregl.MapMouseEvent];
-    zoom: [e: maplibregl.MapMouseEvent];
+    load: [map: MaplibreMap];
+    click: [e: MapMouseEvent];
+    move: [e: MapMouseEvent];
+    zoom: [e: MapMouseEvent];
   }>();
 
   const { isDark } = useColorMode();
@@ -62,7 +67,7 @@
     ...props.options,
   }));
 
-  function handleLoad(map: maplibregl.Map) {
+  function handleLoad(map: MaplibreMap) {
     emit('load', map);
   }
 </script>

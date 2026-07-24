@@ -316,19 +316,8 @@ class MockAttributionControl {
   onRemove() {}
 }
 
-// Mock maplibre-gl module
+// Mock maplibre-gl module (v6 is ESM-only with named exports; no default export)
 vi.mock('maplibre-gl', () => ({
-  default: {
-    Map: MockMap,
-    Marker: MockMarker,
-    Popup: MockPopup,
-    NavigationControl: MockNavigationControl,
-    ScaleControl: MockScaleControl,
-    GeolocateControl: MockGeolocateControl,
-    FullscreenControl: MockFullscreenControl,
-    AttributionControl: MockAttributionControl,
-    addProtocol: vi.fn(),
-  },
   Map: MockMap,
   Marker: MockMarker,
   Popup: MockPopup,

@@ -33,16 +33,21 @@ required.
 # 1. From the repo root, install deps if you haven't already
 pnpm install
 
-# 2. Seed the local D1 emulator (one-time)
+# 2. Build once — generates .output/server/wrangler.json, the single source
+#    of truth for bindings (there is no hand-maintained wrangler.json; the
+#    config lives in nuxt.config.ts under nitro.cloudflare.wrangler)
 cd apps/mapcn-vue
-pnpm exec wrangler d1 execute mapcn-vue-db --local --file=server/db/promap-schema.sql
-pnpm exec wrangler d1 execute mapcn-vue-db --local --file=server/db/promap-seed.sql
+pnpm run build
 
-# 3. Verify it worked
-pnpm exec wrangler d1 execute mapcn-vue-db --local --command 'SELECT COUNT(*) AS total FROM promap'
+# 3. Seed the local D1 emulator (one-time)
+pnpm exec wrangler d1 execute mapcn-vue-db --local --config .output/server/wrangler.json --file=server/db/promap-schema.sql
+pnpm exec wrangler d1 execute mapcn-vue-db --local --config .output/server/wrangler.json --file=server/db/promap-seed.sql
+
+# 4. Verify it worked
+pnpm exec wrangler d1 execute mapcn-vue-db --local --config .output/server/wrangler.json --command 'SELECT COUNT(*) AS total FROM promap'
 # → total: 26243
 
-# 4. Run the dev server
+# 5. Run the dev server
 pnpm run dev:host    # http://localhost:3000/examples/promap
 ```
 
@@ -63,22 +68,21 @@ pnpm exec wrangler d1 create mapcn-vue-db
 
 Wrangler will print a `database_id`. Copy it.
 
-### Step 2 — Update `wrangler.json`
+### Step 2 — Update `nuxt.config.ts`
 
-Replace the `database_id` in `apps/mapcn-vue/wrangler.json` under
-`d1_databases[0]` with the value you just got. **Do not commit this change
-back to the upstream repo** — it points your fork to your D1, not GeoQL's.
+Replace the `database_id` in `apps/mapcn-vue/nuxt.config.ts` under
+`nitro.cloudflare.wrangler.d1_databases[0]` with the value you just got.
+**Do not commit this change back to the upstream repo** — it points your
+fork to your D1, not GeoQL's.
 
-```jsonc
-{
-  "d1_databases": [
-    {
-      "binding": "DB",
-      "database_name": "mapcn-vue-db",
-      "database_id": "<your-uuid-here>",
-    },
-  ],
-}
+```ts
+d1_databases: [
+  {
+    binding: 'DB',
+    database_name: 'mapcn-vue-db',
+    database_id: '<your-uuid-here>',
+  },
+],
 ```
 
 ### Step 3 — Apply the schema + seed to your remote D1
@@ -114,7 +118,8 @@ You should see Katy TX, Lakewood NJ, Katy TX as the top three (by population).
 ```bash
 cd ../..    # back to repo root
 pnpm run build:mapcn
-# wrangler / Cloudflare Pages picks up the binding from your wrangler.json
+cd apps/mapcn-vue
+pnpm exec wrangler deploy --config .output/server/wrangler.json
 ```
 
 ---

@@ -11,6 +11,8 @@ metadata:
 
 Comprehensive SEO optimization guide for Nuxt 4 applications deployed to Cloudflare Pages/Workers. Contains 11 rules across 4 categories, prioritized by impact to guide automated refactoring and code generation.
 
+> **Nuxt 4.5 note:** head management now runs on `unhead` v3 — `useHead` typing is stricter (type errors after upgrading are usually genuine tightening, not regressions) and promise input is no longer supported. All `useHead`/`useSeoMeta` examples in this skill use plain synchronous values and are v3-compatible.
+
 ## When to Apply
 
 Reference these guidelines when:
@@ -39,6 +41,7 @@ Reference these guidelines when:
 - `og-cf-workers` - Generate dynamic OG images on Cloudflare Workers with @cf-wasm/og
 - `og-no-react` - Use plain JS objects for Satori elements, NEVER React
 - `og-cache-headers` - Cache OG images with immutable headers for CDN
+- `og-corp-cross-origin` - Serve OG images with CORP cross-origin or every social card silently breaks
 
 ### 2. Page SEO & Meta (HIGH)
 

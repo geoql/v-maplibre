@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import { VLayerMaplibrePmtile } from '@geoql/v-maplibre';
-  import type { LayerSpecification } from 'maplibre-gl';
+  import type { LayerSpecification, MapLayerMouseEvent } from 'maplibre-gl';
 
   export interface MapLayerPmtilesProps {
     id: string;
@@ -12,9 +12,9 @@
   const props = defineProps<MapLayerPmtilesProps>();
 
   const emit = defineEmits<{
-    click: [e: maplibregl.MapLayerMouseEvent];
-    mouseenter: [e: maplibregl.MapLayerMouseEvent];
-    mouseleave: [e: maplibregl.MapLayerMouseEvent];
+    click: [e: MapLayerMouseEvent];
+    mouseenter: [e: MapLayerMouseEvent];
+    mouseleave: [e: MapLayerMouseEvent];
   }>();
 </script>
 

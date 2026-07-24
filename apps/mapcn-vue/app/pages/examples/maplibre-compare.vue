@@ -19,7 +19,7 @@
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
   const codeExample = `${SCRIPT_START}
-                  import maplibregl from 'maplibre-gl';
+                  import * as maplibregl from 'maplibre-gl';
                   import { Compare } from '@geoql/maplibre-gl-compare';
                   import '@geoql/maplibre-gl-compare/style.css';
 

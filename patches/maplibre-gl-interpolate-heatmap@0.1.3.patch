@@ -1,0 +1,21 @@
+diff --git a/dist/index.d.mts b/dist/index.d.mts
+index 39dda7d48e92fb786da7527151f4a8475b051d6a..8b31a1a37511ab5adaa1160856107c09a2e6c403 100644
+--- a/dist/index.d.mts
++++ b/dist/index.d.mts
+@@ -1,4 +1,5 @@
+-import maplibregl, { CustomLayerInterface, CustomRenderMethodInput } from "maplibre-gl";
++import * as maplibregl from "maplibre-gl";
++import { CustomLayerInterface, CustomRenderMethodInput } from "maplibre-gl";
+ 
+ //#region src/layer.d.ts
+ type MaplibreInterpolateHeatmapLayerOptions = {
+diff --git a/dist/index.mjs b/dist/index.mjs
+index 704426890e1d13ad950f4f5c177e523c0131383d..c7579516e6fe4fbcfa830d14202d2d1a411cdce0 100644
+--- a/dist/index.mjs
++++ b/dist/index.mjs
+@@ -1,4 +1,4 @@
+-import maplibregl from "maplibre-gl";
++import * as maplibregl from "maplibre-gl";
+ 
+ //#region node_modules/earcut/src/earcut.js
+ function earcut(data, holeIndices, dim = 2) {
