@@ -36,7 +36,10 @@ jobs:
 
   doctor:
     name: 'Doctor'
-    if: github.event_name == 'pull_request' && github.event.action != 'edited'
+    if: |
+      (github.event_name == 'pull_request' && github.event.action != 'edited') ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'push' && github.ref == 'refs/heads/main')
     uses: ./.github/workflows/doctor.yml
     secrets: inherit
 
