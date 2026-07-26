@@ -68,8 +68,8 @@ catalogs:
       specifier: ^0.1.1
       version: 0.1.1
     '@iconify-json/lucide':
-      specifier: ^1.2.119
-      version: 1.2.119
+      specifier: ^1.2.120
+      version: 1.2.120
     '@iconify-json/simple-icons':
       specifier: ^1.2.91
       version: 1.2.91
@@ -392,7 +392,7 @@ importers:
         version: link:../../packages/v-maplibre
       '@iconify-json/lucide':
         specifier: catalog:app:mapcn-vue
-        version: 1.2.119
+        version: 1.2.120
       '@iconify-json/simple-icons':
         specifier: catalog:app:mapcn-vue
         version: 1.2.91
@@ -1977,6 +1977,9 @@ packages:
 
   '@iconify-json/lucide@1.2.119':
     resolution: {integrity: sha512-KbrC7fT5wPshV1KLRM0k91poP0OH4eKEVywEOH0FCczKb+qth8Pcq1Hy9kS2tXeF52s23qzLnG8AJsExPSupeA==}
+
+  '@iconify-json/lucide@1.2.120':
+    resolution: {integrity: sha512-4ECF24fxag1n5tZlPGrbWuCGqhkwD0rvAzfCXretqQb4KEC8Y6ja3khF8qmvpR1Mk0NQDhBTRK3Fr/YoV8QyJw==}
 
   '@iconify-json/simple-icons@1.2.91':
     resolution: {integrity: sha512-plQJHZxzpkIXaeYjJF0Sc9nkzYF32EDX9olx7j1hcKYFaiTrQXbcngZmvzuV0pG6uZPU3ZuA/GIsgxSHOm6jrQ==}
@@ -12616,6 +12619,10 @@ snapshots:
   '@humanwhocodes/retry@0.4.3': {}
 
   '@iconify-json/lucide@1.2.119':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/lucide@1.2.120':
     dependencies:
       '@iconify/types': 2.0.0
 
