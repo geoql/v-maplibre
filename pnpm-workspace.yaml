@@ -39,7 +39,7 @@ allowBuilds:
 catalogs:
   default:
     maplibre-gl: ^6.0.0
-    oxfmt: ^0.60.0
+    oxfmt: ^0.61.0
     oxlint: ^1.75.0
     typescript: ^6.0.3
     vue: ^3.5.40
