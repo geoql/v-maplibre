@@ -24,3 +24,8 @@ The section ID (in parentheses) is the filename prefix used to group rules.
 
 **Impact:** HIGH
 **Description:** Per-page GEO meta should be applied through a single composable (`usePageGeo`) the same way `usePageSeo` is used in the Nuxt SEO skill. Canonical URL, freshness signals (`dateModified`), and content-type hints (`Article`, `FAQPage`, `HowTo`) all make individual pages more GEO-friendly.
+
+## 5. Measurement & Verification (measure)
+
+**Impact:** CRITICAL
+**Description:** Every other category tells you what to build; this one tells you whether it worked. Generative engines are stochastic — the same query can be cited on one sweep and not the next with zero content change — so a single before/after comparison measures sampling noise, not your work. This category covers repeated sampling, share-of-voice over absolute citation rate, Wilson confidence intervals with honest `within-noise` verdicts, comparable query baskets, model-continuity gating, and the minimum sweep cadence below which no directional claim is defensible. It also covers the distinction between a _mention_ (brand named in the answer) and a _citation_ (your URL used as a source), which move independently and are routinely conflated.

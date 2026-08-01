@@ -5,7 +5,7 @@
 
 # Nuxt GEO Best Practices
 
-Comprehensive Generative Engine Optimization guide for Nuxt 4 applications. Designed to maximize your brand's citation rate inside AI-generated answers from ChatGPT, Google AI Overviews / AI Mode, Perplexity, Claude, and Gemini. Contains 14 rules across 4 categories, prioritized by evidence-backed impact.
+Comprehensive Generative Engine Optimization guide for Nuxt 4 applications. Designed to maximize your brand's citation rate inside AI-generated answers from ChatGPT, Google AI Overviews / AI Mode, Perplexity, Claude, and Gemini. Contains 16 rules across 5 categories, prioritized by evidence-backed impact.
 
 ## When to Apply
 
@@ -51,6 +51,7 @@ These rules synthesize:
    - Authoritative tone and Fluency optimization show moderate gains
    - **Keyword stuffing (classic SEO) FAILS on generative engines** — do not bring SEO keyword density habits into GEO
 2. **Industry GEO playbooks** (Search Engine Land, Semrush AI Visibility Index, Backlinko) — entity clarity, multi-platform presence, sentiment, and measurement frameworks observed across 2,500+ tracked prompts on Google AI Mode and ChatGPT.
+3. **Production AEO audit data (2026)** — a 41-page Nuxt site audited by an automated AEO scoring engine, plus multi-sweep visibility tracking across four answer engines. Source of the factor-weight table below, the three consistently-failing factors, and the statistical guardrails in `measure-aeo-visibility`. Key observation: the site had _complete_ GEO infrastructure (`llms.txt`, valid schema, sitemap, 90% Google index coverage) and was still cited in **0 of 10** category queries — infrastructure is necessary, not sufficient.
 
 ## Rule Categories by Priority
 
@@ -60,6 +61,34 @@ These rules synthesize:
 | 2        | AI Crawler & Discovery                   | CRITICAL | `ai-`      |
 | 3        | Entity Clarity                           | HIGH     | `entity-`  |
 | 4        | Page-Level GEO                           | HIGH     | `page-`    |
+| 5        | Measurement & Verification               | CRITICAL | `measure-` |
+
+### Observed audit weights (production AEO audit tool, 2026)
+
+Where the arxiv paper gives you _which levers move visibility_, an automated AEO audit gives you _how a scoring engine actually weights a page_. These weights come from a production audit of a 41-page Nuxt site and are useful for **prioritising remediation** when everything is failing at once:
+
+| Factor                        | Weight | Typical score | Notes                                                 |
+| ----------------------------- | -----: | ------------: | ----------------------------------------------------- |
+| Structured Data (JSON-LD)     |    12% |       Partial | `entity-organization-schema`                          |
+| Content Depth                 |    10% |          Pass | `content-statistics`, `content-self-contained-chunks` |
+| Citations & Authority Signals |     8% |       Partial | `content-citations`                                   |
+| **E-E-A-T Signals**           | **8%** | **Fail (26)** | `entity-author-schema` — worst common failure         |
+| **FAQ Content**               | **8%** | **Fail (31)** | `entity-faq-howto-schema`                             |
+| Schema Completeness           |     8% |          Pass | `entity-faq-howto-schema`                             |
+| Content Freshness             |     7% |       Partial | `page-canonical-and-fresh`                            |
+| Entity Consistency            |     7% |       Partial | title / `og:title` / schema `name` must align         |
+| Content Extractability        |     6% |       Partial | `content-self-contained-chunks`                       |
+| **Definition Blocks**         | **6%** | **Fail (12)** | `content-definition-blocks` — _lowest scoring_        |
+| Named Entities                |     6% |          Pass | `entity-organization-schema`                          |
+| Snippet Eligibility           |     6% |          Pass | —                                                     |
+| AI Access Files (llms.txt)    |     5% |          Pass | `ai-llms-txt`                                         |
+| Schema Validity               |     5% |          Pass | —                                                     |
+| Technical SEO                 |     5% |          Pass | sibling skill `nuxt-seo-best-practices`               |
+| AI Crawler Access             |     4% |       Partial | `ai-robots-allowlist`                                 |
+
+**The three consistently-failing factors — E-E-A-T (8%), FAQ Content (8%), Definition Blocks (6%) — total 22% of the score and are among the cheapest to fix.** Sites routinely ship perfect `llms.txt`, valid schema, and 90% Google index coverage while scoring 0 on all three. Start there.
+
+> **Classic SEO health does not imply AEO visibility.** The audited site ranked **#3.9 for its own brand name** with **90% index coverage**, and was cited in **zero of ten** category queries. Brand search and category discovery are separate problems — see `measure-aeo-visibility`.
 
 ## Quick Reference
 
@@ -71,6 +100,7 @@ These are the evidence-backed +30-40% visibility levers from the GEO arxiv paper
 - `content-citations` — Add inline citations to credible sources (Sources component pattern)
 - `content-quotations` — Add quotations from authoritative figures
 - `content-self-contained-chunks` — Write paragraphs that retain meaning when extracted (RAG retrieval)
+- `content-definition-blocks` — "What is X" / "How to X" shapes; lowest-scoring factor in real audits (12/100)
 - `content-no-keyword-stuffing` — DO NOT bring SEO keyword stuffing into GEO; it actively hurts visibility
 
 ### 2. AI Crawler & Discovery (CRITICAL)
@@ -94,6 +124,12 @@ Help AI systems disambiguate WHO you are, WHAT category you belong to, and WHAT 
 
 - `page-use-page-geo` — Reusable `usePageGeo` composable for per-page GEO meta
 - `page-canonical-and-fresh` — Canonical URL + `dateModified` for content freshness signals
+
+### 5. Measurement & Verification (CRITICAL)
+
+Everything above is unfalsifiable without this. Generative engines are stochastic — the same query can be cited on one sweep and not the next with zero content change.
+
+- `measure-aeo-visibility` — Repeated sampling, share-of-voice, Wilson intervals, the ≥5-sweeps/month floor, and mention-vs-citation
 
 ## How to Use
 
@@ -1040,6 +1076,185 @@ curl -sI https://web.dev/vitals-business-impact/ | head -1
 ```
 
 Reference: [GEO Paper §3.3 "GEO Methods"](https://arxiv.org/abs/2311.09735) · [Schema.org `citation`](https://schema.org/citation) · [`nuxt-schema-org`](https://nuxtseo.com/docs/schema-org)
+
+---
+
+### Add Definition Blocks — "What is X" and "How to X" Content Shapes
+
+**Impact:** HIGH - Lowest-scoring factor in production AEO audits (12/100 average, 95% of pages failing) despite being trivially cheap to fix
+
+## Add Definition Blocks — "What is X" and "How to X" Content Shapes
+
+A large share of AI queries are **definitional** or **procedural**: _"what is a vector database"_, _"how do I deploy Nuxt to Cloudflare"_, _"what does hydration mean"_. Generative engines answer these by lifting a compact, self-contained definition or an ordered step list.
+
+In production AEO audits this is consistently the **worst-scoring factor** — one 41-page Nuxt site scored **12/100 with 39 of 41 pages failing outright**, despite already having valid schema, `llms.txt`, and 90% Google index coverage. It is also among the cheapest to fix, which makes it the highest-leverage gap on most sites.
+
+This rule is about **content shape**, not markup. `entity-faq-howto-schema` covers the JSON-LD; a HowTo schema wrapped around prose that never states a definition still fails.
+
+**Incorrect (concept used but never defined):**
+
+```vue
+<!-- ❌ WRONG — assumes the reader already knows what the thing IS.
+     An engine answering "what is edge rendering" finds nothing liftable. -->
+<template>
+  <article>
+    <h1>Edge Rendering in Nuxt 4</h1>
+    <p>
+      We moved our rendering to the edge last quarter and saw great results. The
+      team found it much easier to work with than our previous setup, and our
+      users are happier with the performance.
+    </p>
+  </article>
+</template>
+```
+
+**Correct (explicit definition + ordered procedure):**
+
+```vue
+<!-- ✅ CORRECT — definition-first, then a numbered procedure. Both survive
+     RAG chunk extraction and map onto question-shaped prompts. -->
+<template>
+  <article>
+    <h1>Edge Rendering in Nuxt 4</h1>
+
+    <section>
+      <h2>What is edge rendering?</h2>
+      <p>
+        <strong>Edge rendering</strong> is server-side rendering executed in a
+        CDN point of presence near the user, rather than in a single origin
+        region. In Nuxt 4 this means the Nitro server bundle runs as a
+        Cloudflare Worker or Vercel Edge Function, typically returning HTML in
+        <strong>~50ms</strong> versus <strong>~250ms</strong> from a
+        single-region Node origin.
+      </p>
+    </section>
+
+    <section>
+      <h2>How to deploy Nuxt 4 to the edge</h2>
+      <ol>
+        <li>
+          <strong>Set the Nitro preset.</strong> In <code>nuxt.config.ts</code>,
+          set <code>nitro.preset</code> to <code>cloudflare-pages</code> and pin
+          a <code>compatibilityDate</code>.
+        </li>
+        <li>
+          <strong>Build the bundle.</strong> Run <code>nuxi build</code>. Static
+          assets land in <code>.output/public</code>; Worker code in
+          <code>.output/server</code>.
+        </li>
+        <li>
+          <strong>Deploy.</strong> Run
+          <code>wrangler pages deploy .output/public</code>. First deploy takes
+          ~30s, subsequent ones ~10s.
+        </li>
+      </ol>
+    </section>
+  </article>
+</template>
+```
+
+### The definition-block formula
+
+A liftable definition is one sentence, and it follows a rigid shape:
+
+> **`<Term>`** is a **`<category>`** that **`<distinguishing property>`**.
+
+| Weak                                      | Liftable                                                                                   |
+| ----------------------------------------- | ------------------------------------------------------------------------------------------ |
+| "Hydration is important for performance." | "**Hydration** is the process where Vue attaches event listeners to server-rendered HTML." |
+| "D1 is great for edge apps."              | "**Cloudflare D1** is a SQLite-based database that runs at the edge with sub-10ms reads."  |
+| "Our API is fast."                        | "**The Maps API** is a REST geocoding service returning results in **<40ms** at p95."      |
+
+Put it in the **first sentence** after the heading. Engines heavily weight lead position within a chunk.
+
+### Use `<dl>` for glossaries — it is machine-parseable
+
+For pages defining several terms, the description-list element gives the chunker explicit term↔definition boundaries that `<p>` soup does not:
+
+```vue
+<template>
+  <dl>
+    <dt>Hydration</dt>
+    <dd>
+      The process where Vue attaches event listeners and reactive state to
+      server-rendered HTML, making a static page interactive.
+    </dd>
+
+    <dt>Islands</dt>
+    <dd>
+      A rendering pattern where only selected components hydrate on the client
+      while the rest stay static HTML, reducing JavaScript payload.
+    </dd>
+  </dl>
+</template>
+```
+
+Pair a glossary page with `DefinedTermSet` JSON-LD:
+
+```ts
+useHead({
+  script: [
+    {
+      type: 'application/ld+json',
+      innerHTML: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'DefinedTermSet',
+        name: 'Nuxt Rendering Glossary',
+        hasDefinedTerm: [
+          {
+            '@type': 'DefinedTerm',
+            name: 'Hydration',
+            description:
+              'The process where Vue attaches event listeners and reactive state to server-rendered HTML.',
+          },
+        ],
+      }),
+    },
+  ],
+});
+```
+
+### Question-shaped headings beat clever ones
+
+Engines match the user's prompt against your heading text. Mirror the prompt literally:
+
+| Clever heading            | Question-shaped heading              |
+| ------------------------- | ------------------------------------ |
+| `## The Magic of Islands` | `## What are Nuxt Islands?`          |
+| `## Getting Started`      | `## How to install Nuxt 4`           |
+| `## Under the Hood`       | `## How does Nuxt hydration work?`   |
+| `## Pricing`              | `## How much does Nuxt Studio cost?` |
+
+This is not keyword stuffing (see `content-no-keyword-stuffing`) — you write the question **once**, in the heading, and answer it immediately. Stuffing is repeating the phrase throughout the body.
+
+### Procedures need ordered, self-contained steps
+
+Each `<li>` must survive extraction on its own — name the file, the command, and the expected result. "Then deploy it" is useless once chunked away from step 2.
+
+| Weak step             | Liftable step                                                          |
+| --------------------- | ---------------------------------------------------------------------- |
+| "Configure the file." | "In `nuxt.config.ts`, set `nitro.preset` to `cloudflare-pages`."       |
+| "Then deploy it."     | "Run `wrangler pages deploy .output/public`. First deploy takes ~30s." |
+
+Wrap real procedures in `HowTo` JSON-LD as well — see `entity-faq-howto-schema`.
+
+### Audit your own pages
+
+```bash
+# 1. Do any headings ask a question? (definitional/procedural coverage)
+curl -s https://example.com/docs/rendering | \
+  pup 'h2 text{}' | grep -ciE '^(what|how|why|when|where|is|does|can)'
+# 0 = you have no question-shaped headings on this page
+
+# 2. Does a definition-shaped sentence exist?
+curl -s https://example.com/docs/rendering | \
+  pup 'article text{}' | grep -oE '\b[A-Z][A-Za-z0-9 ]{2,30} is (a|an|the) [a-z]' | head
+# empty = nothing an engine can lift as a definition
+```
+
+Target: every significant concept page carries **at least one** `What is X?` section, and every tutorial carries **at least one** ordered `How to X` list.
+
+Reference: [Schema.org `DefinedTerm`](https://schema.org/DefinedTerm) · [Schema.org `HowTo`](https://schema.org/HowTo) · [MDN `<dl>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dl) · sibling rules `entity-faq-howto-schema`, `content-self-contained-chunks`
 
 ---
 
@@ -2201,6 +2416,132 @@ defineWebSite({
 ```
 
 Reference: [Schema.org `Organization`](https://schema.org/Organization) · [Schema.org `sameAs`](https://schema.org/sameAs) · [`nuxt-schema-org`](https://nuxtseo.com/docs/schema-org) · [Google's Organization markup guide](https://developers.google.com/search/docs/appearance/structured-data/organization) · sibling skill `nuxt-seo-best-practices` rule `schema-json-ld`
+
+---
+
+### Measure AEO Visibility with Statistical Rigor — Never Trust a Single Sweep
+
+**Impact:** CRITICAL - Without repeated sampling, LLM stochasticity makes before/after comparisons meaningless — you cannot tell a real ranking change from noise
+
+## Measure AEO Visibility with Statistical Rigor — Never Trust a Single Sweep
+
+Every other rule in this skill tells you what to **build**. This one tells you how to know whether it **worked** — and it is the rule most teams skip.
+
+The core problem: **generative engines are stochastic**. Ask ChatGPT "best maps API for India" ten times and you may be cited six times, then four, then seven — with no content change at all. A naive "run it before the fix, run it after" comparison measures sampling noise, not your work.
+
+Worse, two different things get conflated constantly:
+
+| Metric       | Meaning                                                    |
+| ------------ | ---------------------------------------------------------- |
+| **Mention**  | Your brand/domain appears in the **answer text**           |
+| **Citation** | The engine used a page on your domain as a **source link** |
+
+They move independently. A brand can be mentioned constantly and never cited (no link equity), or cited without being named (buried source). Track both or you will misread your own progress.
+
+**Incorrect (the comparison almost everyone makes):**
+
+```bash
+# ❌ WRONG — single sample before, single sample after.
+# LLM output variance alone is larger than most real content-driven changes,
+# so this "result" is indistinguishable from a coin flip.
+# Monday:   ask ChatGPT "best maps API for India" -> not cited
+# (ship E-E-A-T schema, FAQ blocks, robots.txt allowlist)
+# Friday:   ask ChatGPT "best maps API for India" -> cited!
+# Conclusion: "the schema fix worked" <- UNSUPPORTED
+```
+
+**Correct (repeated sampling + share-of-voice + confidence intervals):**
+
+```bash
+# ✅ CORRECT — pooled sampling across many sweeps, compared month-over-month
+#    with an explicit noise verdict. Canonry is one implementation; the
+#    method matters more than the tool.
+
+# Track a stable query basket + your real competitors
+cnry query add my-site "best maps API for India" "Mapbox alternative for India"
+cnry competitor add my-site mapbox.com google.com openstreetmap.org
+
+# Sweep repeatedly — cadence is what buys statistical power
+cnry run my-site --wait          # repeat on a schedule, >=5x/month
+
+# Month-over-month comparison with Wilson 95% intervals
+cnry visibility-compare my-site --from 2026-05 --to 2026-06 --format json
+```
+
+```jsonc
+// What a statistically honest comparison returns
+{
+  "shareOfVoice": {
+    "from": { "percent": 0.0, "interval": [0.0, 8.2] },
+    "to": { "percent": 12.5, "interval": [4.1, 28.0] },
+    "verdict": "within-noise", // <- intervals overlap: NOT a confirmed gain
+    "driftRobust": true,
+  },
+  "continuity": { "status": "ok" },
+  "lowRunCount": false,
+}
+```
+
+### The four guardrails that make a comparison trustworthy
+
+1. **Share-of-voice over absolute rate.** `yourMentions / (yourMentions + competitorMentions)`. An engine can become broadly chattier or more reticent about naming _any_ vendor between months; absolute citation rate moves with that drift, share-of-voice largely cancels it.
+2. **Confidence intervals, not point estimates.** A Wilson 95% interval on a proportion tells you whether 0% → 12% is a real move or two overlapping clouds. Report `within-noise` honestly — **never present it as a decline or a win**.
+3. **Comparable baskets only.** Compare only the query × provider pairs present in **both** periods. Adding five queries mid-month silently changes the denominator and invents movement that never happened.
+4. **Model-continuity gating.** If the engine's underlying model changed between periods (or the provider label covers a moving target), you cannot attribute the swing to your site. Mark it `model-discontinuous` and make no directional claim.
+
+### Sampling floor — below this, don't claim anything
+
+| Sweeps / month / project | What you can honestly say                                   |
+| ------------------------ | ----------------------------------------------------------- |
+| 1                        | Nothing. This is a spot check, not a measurement.           |
+| 2-4                      | Direction only, with explicit "not statistically resolved". |
+| **>= 5**                 | **Minimum for a `moved` vs `within-noise` verdict**         |
+| 10+                      | Tight enough intervals to resolve moderate changes          |
+
+Fewer than ~5 sweeps makes the interval so wide that almost every real change reads as noise. This is why AEO monitoring must be **scheduled and unattended** — a tool you run by hand when you remember will never clear the floor.
+
+### Cost control — sampling is the expensive axis
+
+Every sweep is `queries × providers` LLM calls. Ten queries across four engines, five times a month, is 200 billed calls/month **per project**. Practical approach:
+
+- Start with **one** grounded engine and a **free tier** to establish the baseline and prove the signal is useful
+- Add engines deliberately, once you know which ones actually cite your category
+- Keep the query basket **small and stable** — basket churn destroys comparability (guardrail 3) _and_ multiplies cost
+
+### Beware measurement surfaces that can't fail
+
+If you put an AEO dashboard behind interactive edge auth (Cloudflare Access, SSO) and then point an uptime monitor at `/`, the auth layer returns **200 for the login page** whether your app is alive or dead. The monitor is green through a total outage. Probe an endpoint that reaches the real origin — see sibling skill `nuxt-agent-ready-best-practices`, rule `security-edge-auth-agent-bypass`.
+
+### What a real baseline looks like
+
+A production audit of a mid-size Nuxt site (41 pages, all GEO infrastructure already shipped — `llms.txt`, sitemap, valid schema):
+
+```
+queries: 10 | cited: 0 | mentioned: 0
+share of voice: 0 of 36 brand mentions
+competitors: google.com=10, mapbox.com=10, openstreetmap.org=10
+index coverage: 90% (38/42 indexed in Google Search Console)
+```
+
+The lesson: **classic SEO health does not imply AEO visibility**. That site ranked #3.9 for its own brand name in Google and had 90% index coverage — while being cited in _zero_ of ten category queries. Brand search and category discovery are different games. Measure the one you actually care about.
+
+### Verify your measurement is real, not a false green
+
+```bash
+# 1. The API you monitor must reach the ORIGIN, not an auth wall
+curl -s -o /dev/null -w "%{http_code}\n" https://aeo.example.com/api/v1/projects
+# 401 from your app = good (real origin, auth enforced)
+# 200 HTML login page = your monitor is measuring the auth layer
+
+# 2. Sweeps actually completed (not stuck "running")
+cnry status my-site | grep -E "Status|Total runs"
+
+# 3. Sample size cleared the floor before you quote any delta
+cnry visibility-compare my-site --from 2026-05 --to 2026-06 --format json | jq '.lowRunCount'
+# false = enough sweeps; true = do not make directional claims
+```
+
+Reference: [GEO Paper §2.2 "Visibility Metrics"](https://arxiv.org/abs/2311.09735) · [Wilson score interval](https://en.wikipedia.org/wiki/Binomial_proportion_confidence_interval#Wilson_score_interval) · [Canonry](https://github.com/Canonry/canonry) (open-source AEO monitoring; `visibility-compare` implements the four guardrails above) · sibling rule `content-statistics`
 
 ---
 

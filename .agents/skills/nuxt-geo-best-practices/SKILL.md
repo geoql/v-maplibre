@@ -9,7 +9,7 @@ metadata:
 
 # Nuxt GEO Best Practices
 
-Comprehensive Generative Engine Optimization guide for Nuxt 4 applications. Designed to maximize your brand's citation rate inside AI-generated answers from ChatGPT, Google AI Overviews / AI Mode, Perplexity, Claude, and Gemini. Contains 14 rules across 4 categories, prioritized by evidence-backed impact.
+Comprehensive Generative Engine Optimization guide for Nuxt 4 applications. Designed to maximize your brand's citation rate inside AI-generated answers from ChatGPT, Google AI Overviews / AI Mode, Perplexity, Claude, and Gemini. Contains 16 rules across 5 categories, prioritized by evidence-backed impact.
 
 ## When to Apply
 
@@ -55,6 +55,7 @@ These rules synthesize:
    - Authoritative tone and Fluency optimization show moderate gains
    - **Keyword stuffing (classic SEO) FAILS on generative engines** — do not bring SEO keyword density habits into GEO
 2. **Industry GEO playbooks** (Search Engine Land, Semrush AI Visibility Index, Backlinko) — entity clarity, multi-platform presence, sentiment, and measurement frameworks observed across 2,500+ tracked prompts on Google AI Mode and ChatGPT.
+3. **Production AEO audit data (2026)** — a 41-page Nuxt site audited by an automated AEO scoring engine, plus multi-sweep visibility tracking across four answer engines. Source of the factor-weight table below, the three consistently-failing factors, and the statistical guardrails in `measure-aeo-visibility`. Key observation: the site had _complete_ GEO infrastructure (`llms.txt`, valid schema, sitemap, 90% Google index coverage) and was still cited in **0 of 10** category queries — infrastructure is necessary, not sufficient.
 
 ## Rule Categories by Priority
 
@@ -64,6 +65,34 @@ These rules synthesize:
 | 2        | AI Crawler & Discovery                   | CRITICAL | `ai-`      |
 | 3        | Entity Clarity                           | HIGH     | `entity-`  |
 | 4        | Page-Level GEO                           | HIGH     | `page-`    |
+| 5        | Measurement & Verification               | CRITICAL | `measure-` |
+
+### Observed audit weights (production AEO audit tool, 2026)
+
+Where the arxiv paper gives you _which levers move visibility_, an automated AEO audit gives you _how a scoring engine actually weights a page_. These weights come from a production audit of a 41-page Nuxt site and are useful for **prioritising remediation** when everything is failing at once:
+
+| Factor                        | Weight | Typical score | Notes                                                 |
+| ----------------------------- | -----: | ------------: | ----------------------------------------------------- |
+| Structured Data (JSON-LD)     |    12% |       Partial | `entity-organization-schema`                          |
+| Content Depth                 |    10% |          Pass | `content-statistics`, `content-self-contained-chunks` |
+| Citations & Authority Signals |     8% |       Partial | `content-citations`                                   |
+| **E-E-A-T Signals**           | **8%** | **Fail (26)** | `entity-author-schema` — worst common failure         |
+| **FAQ Content**               | **8%** | **Fail (31)** | `entity-faq-howto-schema`                             |
+| Schema Completeness           |     8% |          Pass | `entity-faq-howto-schema`                             |
+| Content Freshness             |     7% |       Partial | `page-canonical-and-fresh`                            |
+| Entity Consistency            |     7% |       Partial | title / `og:title` / schema `name` must align         |
+| Content Extractability        |     6% |       Partial | `content-self-contained-chunks`                       |
+| **Definition Blocks**         | **6%** | **Fail (12)** | `content-definition-blocks` — _lowest scoring_        |
+| Named Entities                |     6% |          Pass | `entity-organization-schema`                          |
+| Snippet Eligibility           |     6% |          Pass | —                                                     |
+| AI Access Files (llms.txt)    |     5% |          Pass | `ai-llms-txt`                                         |
+| Schema Validity               |     5% |          Pass | —                                                     |
+| Technical SEO                 |     5% |          Pass | sibling skill `nuxt-seo-best-practices`               |
+| AI Crawler Access             |     4% |       Partial | `ai-robots-allowlist`                                 |
+
+**The three consistently-failing factors — E-E-A-T (8%), FAQ Content (8%), Definition Blocks (6%) — total 22% of the score and are among the cheapest to fix.** Sites routinely ship perfect `llms.txt`, valid schema, and 90% Google index coverage while scoring 0 on all three. Start there.
+
+> **Classic SEO health does not imply AEO visibility.** The audited site ranked **#3.9 for its own brand name** with **90% index coverage**, and was cited in **zero of ten** category queries. Brand search and category discovery are separate problems — see `measure-aeo-visibility`.
 
 ## Quick Reference
 
@@ -75,6 +104,7 @@ These are the evidence-backed +30-40% visibility levers from the GEO arxiv paper
 - `content-citations` — Add inline citations to credible sources (Sources component pattern)
 - `content-quotations` — Add quotations from authoritative figures
 - `content-self-contained-chunks` — Write paragraphs that retain meaning when extracted (RAG retrieval)
+- `content-definition-blocks` — "What is X" / "How to X" shapes; lowest-scoring factor in real audits (12/100)
 - `content-no-keyword-stuffing` — DO NOT bring SEO keyword stuffing into GEO; it actively hurts visibility
 
 ### 2. AI Crawler & Discovery (CRITICAL)
@@ -98,6 +128,12 @@ Help AI systems disambiguate WHO you are, WHAT category you belong to, and WHAT 
 
 - `page-use-page-geo` — Reusable `usePageGeo` composable for per-page GEO meta
 - `page-canonical-and-fresh` — Canonical URL + `dateModified` for content freshness signals
+
+### 5. Measurement & Verification (CRITICAL)
+
+Everything above is unfalsifiable without this. Generative engines are stochastic — the same query can be cited on one sweep and not the next with zero content change.
+
+- `measure-aeo-visibility` — Repeated sampling, share-of-voice, Wilson intervals, the ≥5-sweeps/month floor, and mention-vs-citation
 
 ## How to Use
 

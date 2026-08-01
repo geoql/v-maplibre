@@ -90,7 +90,7 @@
     "prepublishOnly": "pnpm run lint && pnpm run format:check && pnpm run test:coverage && pnpm run build"
   },
   "dependencies": {
-    "maplibre-gl": "^6.0.0",
+    "maplibre-gl": "^6.1.0",
     "pmtiles": "^4.4.1"
   },
   "devDependencies": {
@@ -110,7 +110,7 @@
     "@luma.gl/engine": "^9.3.6",
     "@luma.gl/shadertools": "^9.3.6",
     "@tsdown/css": "^0.22.14",
-    "@types/node": "^26.1.1",
+    "@types/node": "^26.1.2",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vitest/coverage-v8": "4.1.10",
     "@vue/test-utils": "^2.4.11",
@@ -121,9 +121,9 @@
     "three": "^0.185.1",
     "typescript": "^6.0.3",
     "unplugin-vue": "^7.2.0",
-    "vite-plus": "^0.2.6",
+    "vite-plus": "^0.2.7",
     "vue": "^3.5.40",
-    "vue-tsc": "^3.3.8",
+    "vue-tsc": "^3.3.9",
     "zarrita": "^0.7.3"
   },
   "peerDependencies": {
