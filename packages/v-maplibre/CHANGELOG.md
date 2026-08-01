@@ -1,5 +1,31 @@
 # Changelog
 
+## [3.0.0](https://github.com/geoql/v-maplibre/compare/v2.0.1...v3.0.0) (2026-08-01)
+
+
+### ⚠ BREAKING CHANGES
+
+* **v-maplibre:** migrate core to maplibre-gl v6
+* **deps:** bump maplibre-gl to ^6.0.0
+
+### Bug Fixes
+
+* **test:** match coverage provider to vite-plus vitest ([598b3b5](https://github.com/geoql/v-maplibre/commit/598b3b54259d76248e69d2a3cfdae081c8faff95))
+* **v-maplibre:** migrate core to maplibre-gl v6 ([9aab80d](https://github.com/geoql/v-maplibre/commit/9aab80d886b9fd10dc2a252b549471fe46d44c13))
+
+
+### Documentation
+
+* update MapLibre GL JS references to 6.x ([c564df2](https://github.com/geoql/v-maplibre/commit/c564df27d722c67a3e7854fea896cd33539cb66e))
+
+
+### Miscellaneous
+
+* bump dependencies ([4ea244e](https://github.com/geoql/v-maplibre/commit/4ea244ec9cdae495a263e9487ae2d0ac4a77b188))
+* bump dependencies ✨ ([5763e20](https://github.com/geoql/v-maplibre/commit/5763e200e1d57619c0005dbefabceea75ad40cc5))
+* bump skills and dependencies 🤷‍♂️ ([0444f86](https://github.com/geoql/v-maplibre/commit/0444f86704fee00a6a1394548563260fcd6bc50f))
+* **deps:** bump maplibre-gl to ^6.0.0 ([23b9e30](https://github.com/geoql/v-maplibre/commit/23b9e303f0f4d800dc470f137d5f88ad32002335))
+
 ## [2.0.1](https://github.com/geoql/v-maplibre/compare/v2.0.0...v2.0.1) (2026-06-14)
 
 
