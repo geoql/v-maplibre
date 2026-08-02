@@ -645,6 +645,30 @@ export function useExamplesData() {
       ],
     },
     {
+      id: 'three',
+      title: '3D Splats & Tiles',
+      description: 'Gaussian splats and OGC 3D Tiles streamed through three.js',
+      icon: 'lucide:box',
+      examples: [
+        {
+          title: 'Gaussian Splat',
+          description:
+            'Georeferenced .spz splat rendered via Spark on the map.',
+          href: '/examples/splat',
+          icon: 'lucide:sparkles',
+          badge: 'New',
+        },
+        {
+          title: '3D Tiles Splats',
+          description:
+            'OGC 3D Tiles tileset with KHR_gaussian_splatting SPZ tiles.',
+          href: '/examples/3d-tiles',
+          icon: 'lucide:boxes',
+          badge: 'New',
+        },
+      ],
+    },
+    {
       id: 'lidar',
       title: 'LiDAR Point Clouds',
       description: 'LAS/LAZ/COPC/EPT streaming visualization',

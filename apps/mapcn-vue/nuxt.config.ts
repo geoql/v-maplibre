@@ -121,6 +121,11 @@ export default defineNuxtConfig({
     },
     public: {
       mapsguruApiKey: '',
+      // Base URL of the R2 bucket hosting geolith-generated demo assets
+      // (Gaussian splats, 3D Tiles tilesets, Terrain-RGB PMTiles). Injected
+      // at build time via NUXT_PUBLIC_R2_ASSETS_BASE (GH secret) so the
+      // bucket can be rotated without a code change.
+      r2AssetsBase: '',
       library: {
         version: libraryPkg.version,
         releasedAt: LIBRARY_RELEASED_AT,

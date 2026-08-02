@@ -157,20 +157,25 @@
     }
   };
 
+  // Poll for style readiness instead of waiting for 'style.load': that event
+  // may have ALREADY fired before this component binds (fast/cached styles)
+  // while isStyleLoaded() still reports false because sprites/glyphs are in
+  // flight — in which case a style.load-only listener never triggers.
   const setupMap = (mapInstance: Map) => {
     if (!mapInstance) return;
 
-    mapInstance.on('style.load', () => {
-      const styleTimeout = () => {
-        if (!mapInstance.isStyleLoaded()) {
-          loaded.value = false;
-          setTimeout(styleTimeout, 200);
-        } else {
-          loaded.value = true;
-        }
-      };
-      styleTimeout();
-    });
+    const styleTimeout = () => {
+      if (map.value !== mapInstance) return; // map swapped/unmounted
+      if (!mapInstance.isStyleLoaded()) {
+        setTimeout(styleTimeout, 200);
+      } else {
+        loaded.value = true;
+      }
+    };
+    styleTimeout();
+
+    // Re-arm after style swaps (theme switch replaces the style object).
+    mapInstance.on('style.load', styleTimeout);
   };
 
   watch(
@@ -178,9 +183,6 @@
     (newMap) => {
       if (newMap) {
         setupMap(newMap);
-        if (newMap.isStyleLoaded()) {
-          loaded.value = true;
-        }
       }
     },
     { immediate: true },
