@@ -7,7 +7,9 @@
     "./geotiff": "./dist/geotiff.js",
     "./wind": "./dist/wind.js",
     "./starfield": "./dist/starfield.js",
-    "./lidar": "./dist/lidar.js"
+    "./lidar": "./dist/lidar.js",
+    "./splat": "./dist/splat.js",
+    "./3d-tiles": "./dist/3d-tiles.js"
   },
   "imports": {
     "vue": "npm:vue@^3.5.0",
@@ -30,15 +32,15 @@
     "maplibre-gl-lidar": "npm:maplibre-gl-lidar@^0.16.0",
     "maplibre-gl-wind": "npm:maplibre-gl-wind@^0.2.0",
     "three": "npm:three@>=0.176.0",
+    "@sparkjsdev/spark": "npm:@sparkjsdev/spark@^2.1.0",
+    "@dvt3d/maplibre-three-plugin": "npm:@dvt3d/maplibre-three-plugin@^1.7.0",
+    "3d-tiles-renderer": "npm:3d-tiles-renderer@^0.5.0",
+    "3d-tiles-rendererjs-3dgs-plugin": "npm:3d-tiles-rendererjs-3dgs-plugin@^0.1.15",
     "@luma.gl/core": "npm:@luma.gl/core@^9.3.0",
     "@luma.gl/engine": "npm:@luma.gl/engine@^9.3.0",
     "@luma.gl/shadertools": "npm:@luma.gl/shadertools@^9.3.0"
   },
   "publish": {
-    "exclude": [
-      "!dist",
-      "!README.md",
-      "!LICENSE"
-    ]
+    "exclude": ["!dist", "!README.md", "!LICENSE"]
   }
 }

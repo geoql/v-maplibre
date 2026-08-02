@@ -69,6 +69,14 @@
       "types": "./dist/lidar.d.ts",
       "import": "./dist/lidar.js"
     },
+    "./splat": {
+      "types": "./dist/splat.d.ts",
+      "import": "./dist/splat.js"
+    },
+    "./3d-tiles": {
+      "types": "./dist/3d-tiles.d.ts",
+      "import": "./dist/3d-tiles.js"
+    },
     "./style.css": "./dist/v-maplibre.css",
     "./v-maplibre.css": "./dist/v-maplibre.css",
     "./dist/style.css": "./dist/v-maplibre.css",
@@ -94,6 +102,8 @@
     "pmtiles": "^4.4.1"
   },
   "devDependencies": {
+    "3d-tiles-renderer": "^0.5.0",
+    "3d-tiles-rendererjs-3dgs-plugin": "^0.1.15",
     "@deck.gl/aggregation-layers": "^9.3.7",
     "@deck.gl/core": "^9.3.7",
     "@deck.gl/geo-layers": "^9.3.7",
@@ -105,12 +115,15 @@
     "@developmentseed/deck.gl-zarr": "^0.7.0",
     "@developmentseed/geotiff": "^0.7.0",
     "@developmentseed/proj": "^0.7.0",
+    "@dvt3d/maplibre-three-plugin": "^1.7.1",
     "@geoql/maplibre-gl-starfield": "^0.1.1",
     "@luma.gl/core": "^9.3.6",
     "@luma.gl/engine": "^9.3.6",
     "@luma.gl/shadertools": "^9.3.6",
+    "@sparkjsdev/spark": "^2.1.0",
     "@tsdown/css": "^0.22.14",
     "@types/node": "^26.1.2",
+    "@types/three": "^0.185.3",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vitest/coverage-v8": "4.1.10",
     "@vue/test-utils": "^2.4.11",
@@ -127,6 +140,8 @@
     "zarrita": "^0.7.3"
   },
   "peerDependencies": {
+    "3d-tiles-renderer": "^0.5.0",
+    "3d-tiles-rendererjs-3dgs-plugin": "^0.1.15",
     "@deck.gl/aggregation-layers": "^9.3.0",
     "@deck.gl/core": "^9.3.0",
     "@deck.gl/geo-layers": "^9.3.0",
@@ -138,7 +153,9 @@
     "@developmentseed/deck.gl-zarr": "^0.7.0",
     "@developmentseed/geotiff": "^0.7.0",
     "@developmentseed/proj": "^0.7.0",
+    "@dvt3d/maplibre-three-plugin": "^1.7.0",
     "@geoql/maplibre-gl-starfield": "^0.1.0",
+    "@sparkjsdev/spark": "^2.1.0",
     "apache-arrow": "^17.0.0",
     "maplibre-gl-lidar": "^0.16.0",
     "maplibre-gl-wind": "^0.2.0",
@@ -147,6 +164,18 @@
     "zarrita": "^0.7.0"
   },
   "peerDependenciesMeta": {
+    "3d-tiles-renderer": {
+      "optional": true
+    },
+    "3d-tiles-rendererjs-3dgs-plugin": {
+      "optional": true
+    },
+    "@dvt3d/maplibre-three-plugin": {
+      "optional": true
+    },
+    "@sparkjsdev/spark": {
+      "optional": true
+    },
     "@deck.gl/core": {
       "optional": true
     },

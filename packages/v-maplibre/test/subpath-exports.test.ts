@@ -4,6 +4,8 @@ import * as geotiff from '../src/geotiff';
 import * as wind from '../src/wind';
 import * as starfield from '../src/starfield';
 import * as lidar from '../src/lidar';
+import * as splat from '../src/splat';
+import * as tiles3d from '../src/3d-tiles';
 import * as root from '../src/index';
 
 describe('Subpath Exports (issue #114)', () => {
@@ -50,6 +52,18 @@ describe('Subpath Exports (issue #114)', () => {
     });
   });
 
+  describe('@geoql/v-maplibre/splat (issue #140)', () => {
+    it('exports the gaussian splat layer', () => {
+      expect(splat.VLayerSplat).toBeDefined();
+    });
+  });
+
+  describe('@geoql/v-maplibre/3d-tiles (issue #140)', () => {
+    it('exports the 3d tiles layer', () => {
+      expect(tiles3d.VLayer3DTiles).toBeDefined();
+    });
+  });
+
   describe('root entry (@geoql/v-maplibre)', () => {
     it('exports core map components and controls', () => {
       expect(root.VMap).toBeDefined();
@@ -66,6 +80,8 @@ describe('Subpath Exports (issue #114)', () => {
       expect(r.VLayerWindParticle).toBeUndefined();
       expect(r.VLayerStarfield).toBeUndefined();
       expect(r.VControlLidar).toBeUndefined();
+      expect(r.VLayerSplat).toBeUndefined();
+      expect(r.VLayer3DTiles).toBeUndefined();
     });
   });
 });
