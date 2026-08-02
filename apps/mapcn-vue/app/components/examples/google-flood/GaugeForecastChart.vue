@@ -21,8 +21,12 @@
       return [];
     return props.forecast.forecastSummary.forecastTimeIntervalSummaries.map(
       (s) => ({
+        startTime: s.forecastInterval.startTime,
         severity: s.severity,
-        color: SEVERITY_BAR_COLORS[s.severity] ?? '#94a3b8',
+        barStyle: {
+          backgroundColor: SEVERITY_BAR_COLORS[s.severity] ?? '#94a3b8',
+          height: '28px',
+        },
         label: new Date(s.forecastInterval.startTime).toLocaleDateString([], {
           month: 'short',
           day: 'numeric',
@@ -109,22 +113,22 @@
           </div>
           <span
             v-if="forecastIssuedTime"
-            class="text-[10px] text-muted-foreground/60"
+            class="text-2xs text-muted-foreground/60"
           >
             {{ forecastIssuedTime }}
           </span>
         </div>
         <div class="flex items-end gap-0.5">
           <div
-            v-for="(interval, i) in intervals"
-            :key="i"
+            v-for="interval in intervals"
+            :key="interval.startTime"
             class="group relative flex flex-1 flex-col items-center"
           >
             <div
               class="w-full rounded-t-sm transition-opacity hover:opacity-80"
-              :style="{ backgroundColor: interval.color, height: '28px' }"
+              :style="interval.barStyle"
             />
-            <span class="mt-1 text-[8px] text-muted-foreground">
+            <span class="mt-1 text-4xs text-muted-foreground">
               {{ interval.label }}
             </span>
           </div>
@@ -141,7 +145,7 @@
             <p class="text-xs font-medium text-foreground">
               No flooding expected
             </p>
-            <p class="text-[10px] text-muted-foreground">
+            <p class="text-2xs text-muted-foreground">
               {{ forecastRangeLabel }}
               <span v-if="forecastIssuedTime">
                 · Updated {{ forecastIssuedTime }}</span

@@ -127,7 +127,7 @@
 
   const addLayer = (): void => {
     const mapInstance = getMapInstance();
-    if (!mapInstance || !mapInstance.isStyleLoaded() || entry) return;
+    if (!mapInstance || entry) return;
 
     try {
       entry = acquireThreeScene(mapInstance);
@@ -159,11 +159,12 @@
 
   // Style readiness, robust against two MapLibre quirks:
   //  1. 'style.load' may have fired BEFORE this component binds (fast or
-  //     cached styles), so an event-only listener would never trigger.
-  //  2. isStyleLoaded() can stay false FOREVER when the style references a
-  //     missing sprite image (MapLibre keeps waiting for it) — the 'idle'
-  //     event still fires once rendering settles, and addLayer() is safe
-  //     from that point on.
+  //     cached styles), so an event-only listener would never trigger —
+  //     poll isStyleLoaded() instead (it oscillates while tiles stream, so
+  //     a one-shot check is not enough either).
+  //  2. isStyleLoaded() can stay false indefinitely when the style
+  //     references a missing sprite image; 'idle' still fires once
+  //     rendering settles, and attaching is safe from that point on.
   const setupMap = (mapInstance: Map) => {
     if (!mapInstance) return;
 
@@ -171,11 +172,16 @@
       if (map.value !== mapInstance) return;
       loaded.value = true;
     };
-    if (mapInstance.isStyleLoaded()) {
-      markReady();
-    } else {
-      mapInstance.once('idle', markReady);
-    }
+    const styleTimeout = () => {
+      if (map.value !== mapInstance || loaded.value) return;
+      if (mapInstance.isStyleLoaded()) {
+        markReady();
+      } else {
+        setTimeout(styleTimeout, 200);
+      }
+    };
+    styleTimeout();
+    mapInstance.once('idle', markReady);
     mapInstance.on('style.load', markReady);
   };
 

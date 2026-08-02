@@ -226,6 +226,7 @@ ${SCRIPT_END}
             <a
               href="https://dynamical.org"
               target="_blank"
+              rel="noopener noreferrer"
               class="text-primary hover:underline"
               >ECMWF Open Data</a
             >
@@ -233,6 +234,7 @@ ${SCRIPT_END}
             <a
               href="https://github.com/manzt/zarrita.js"
               target="_blank"
+              rel="noopener noreferrer"
               class="font-mono text-primary hover:underline"
               >zarrita</a
             >. {{ initTimeCount }} forecast runs available.
@@ -244,6 +246,7 @@ ${SCRIPT_END}
           <a
             href="https://github.com/developmentseed/deck.gl-raster"
             target="_blank"
+            rel="noopener noreferrer"
             class="font-mono text-primary hover:underline"
             >@developmentseed/deck.gl-zarr</a
           >. GPU rescale: 200 K → 320 K (grayscale).
@@ -251,7 +254,7 @@ ${SCRIPT_END}
 
         <div v-if="initTimeCount > 0">
           <label
-            class="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
+            class="mb-1.5 block font-mono text-2xs uppercase tracking-caps text-muted-foreground"
             >Forecast Run</label
           >
           <input
@@ -262,7 +265,7 @@ ${SCRIPT_END}
             class="w-full"
           />
           <div
-            class="mt-1.5 flex justify-between font-mono text-[10px] tabular-nums text-muted-foreground"
+            class="mt-1.5 flex justify-between font-mono text-2xs tabular-nums text-muted-foreground"
           >
             <span>0</span>
             <span>{{ initTimeIdx }}</span>

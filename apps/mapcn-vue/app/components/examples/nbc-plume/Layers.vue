@@ -139,11 +139,9 @@
     updateLayer('nbc-zone-labels', labelLayer);
   }
 
-  watch(
-    () => [props.plumeZones, props.source],
-    () => syncLayers(),
-    { deep: true },
-  );
+  watch([() => props.plumeZones, () => props.source], () => syncLayers(), {
+    deep: true,
+  });
 
   onMounted(() => {
     initLayers();

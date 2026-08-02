@@ -256,6 +256,9 @@ catalogs:
     vue-sonner:
       specifier: ^2.0.9
       version: 2.0.9
+    vue-tsc:
+      specifier: ^3.3.9
+      version: 3.3.9
     wrangler:
       specifier: ^4.118.0
       version: 4.118.0
@@ -614,6 +617,9 @@ importers:
       vue:
         specifier: catalog:default
         version: 3.5.40(typescript@6.0.3)
+      vue-tsc:
+        specifier: catalog:app:mapcn-vue
+        version: 3.3.9(typescript@6.0.3)
       wrangler:
         specifier: catalog:app:mapcn-vue
         version: 4.118.0(@cloudflare/workers-types@5.20260731.1)

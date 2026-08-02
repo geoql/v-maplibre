@@ -52,7 +52,7 @@
           <span class="font-medium">{{ item.label }}</span>
           <span
             v-if="item.key === 'cameras'"
-            class="ml-auto text-[10px] text-muted-foreground"
+            class="ml-auto text-2xs text-muted-foreground"
           >
             {{ cameraCount }}
           </span>
@@ -103,7 +103,7 @@
           class="flex items-center gap-2 rounded-md px-2.5 py-1.5 text-xs"
         >
           <span
-            class="inline-flex rounded-full px-1.5 py-0.5 text-[10px] font-bold uppercase"
+            class="inline-flex rounded-full px-1.5 py-0.5 text-2xs font-bold uppercase"
             :class="getAlertBadgeClass(zone.alertLevel)"
           >
             {{ zone.alertLevel }}

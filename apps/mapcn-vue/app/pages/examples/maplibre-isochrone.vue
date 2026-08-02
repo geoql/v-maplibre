@@ -56,6 +56,12 @@
 
   const selectedMode = ref<TransportMode>('auto');
 
+  function getModeClass(mode: TransportMode): string {
+    return selectedMode.value === mode
+      ? 'bg-primary text-primary-foreground'
+      : 'bg-muted hover:bg-muted/80';
+  }
+
   const timeContours = [
     { time: 5, color: '#dc2626', label: '5 min' },
     { time: 10, color: '#2563eb', label: '10 min' },
@@ -349,11 +355,7 @@
               v-for="mode in transportModes"
               :key="mode.value"
               class="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs transition-colors"
-              :class="[
-                selectedMode === mode.value
-                  ? 'bg-primary text-primary-foreground'
-                  : 'bg-muted hover:bg-muted/80',
-              ]"
+              :class="getModeClass(mode.value)"
               :disabled="isLoading"
               @click="handleModeChange(mode.value)"
             >

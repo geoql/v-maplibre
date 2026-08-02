@@ -67,7 +67,7 @@
           {{ config.label }}
         </button>
       </div>
-      <p class="text-[10px] text-muted-foreground">
+      <p class="text-2xs text-muted-foreground">
         Range: {{ (activeConfig.minRange / 1000).toFixed(1) }}–{{
           (activeConfig.maxRange / 1000).toFixed(0)
         }}
@@ -98,7 +98,7 @@
           ></span>
           <span class="font-mono font-bold">{{ pos.label }}</span>
           <span
-            class="ml-auto rounded-full bg-muted px-1.5 py-0.5 text-[10px] uppercase"
+            class="ml-auto rounded-full bg-muted px-1.5 py-0.5 text-2xs uppercase"
           >
             {{ pos.weaponType }}
           </span>

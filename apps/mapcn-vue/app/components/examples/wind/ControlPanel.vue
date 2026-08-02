@@ -70,6 +70,7 @@
         <a
           href="https://openweathermap.org/api"
           target="_blank"
+          rel="noopener noreferrer"
           class="text-primary hover:underline"
           >OpenWeatherMap</a
         >. Auto-refreshes every hour.

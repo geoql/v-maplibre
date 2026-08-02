@@ -111,12 +111,13 @@ export function useNbcPlume() {
   );
 
   const plumeZones = computed<PlumeZone[]>(() => {
-    if (!source.value || expansion.value <= 0) return [];
+    const origin = source.value;
+    if (!origin || expansion.value <= 0) return [];
 
     return ZONE_CONFIGS.map((zone) => ({
       level: zone.level,
       polygon: generatePlumeZone(
-        source.value!.position,
+        origin.position,
         windDirection.value,
         zone.maxRange,
         zone.coneWidth,

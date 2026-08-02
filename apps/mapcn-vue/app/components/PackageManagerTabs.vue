@@ -22,6 +22,15 @@
   });
 
   const { copy, copied } = useClipboard({ source: installCommand });
+
+  const TAB_BASE =
+    'rounded-md px-2 py-0.5 text-xs font-medium transition-colors';
+  const TAB_SELECTED = 'bg-muted text-foreground';
+  const TAB_IDLE = 'text-muted-foreground hover:text-foreground';
+
+  function getTabClass(id: string): string {
+    return `${TAB_BASE} ${selected.value === id ? TAB_SELECTED : TAB_IDLE}`;
+  }
 </script>
 
 <template>
@@ -36,17 +45,10 @@
         <button
           v-for="mgr in managers"
           :key="mgr.id"
-          :class="[
-            'rounded-md px-2 py-0.5 text-xs font-medium transition-colors',
-            selected === mgr.id
-              ? 'bg-muted text-foreground'
-              : 'text-muted-foreground hover:text-foreground',
-          ]"
+          :class="getTabClass(mgr.id)"
           @click="selected = mgr.id"
         >
-          <span class="font-mono text-[10px] text-muted-foreground/60"
-            >&gt;_</span
-          >
+          <span class="font-mono text-2xs text-muted-foreground/60">&gt;_</span>
           {{ mgr.label }}
         </button>
       </div>

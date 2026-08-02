@@ -57,6 +57,12 @@
       color: 'rgb(0, 210, 210)',
     },
   ];
+
+  // Stable per-item style objects so the v-for does not allocate on re-render
+  const vesselTypeItems = vesselTypeConfig.map((cfg) => ({
+    ...cfg,
+    dotStyle: { backgroundColor: cfg.color },
+  }));
 </script>
 
 <template>
@@ -66,7 +72,7 @@
       <h3 class="text-sm font-semibold">Vessel Types</h3>
       <div class="space-y-1">
         <button
-          v-for="cfg in vesselTypeConfig"
+          v-for="cfg in vesselTypeItems"
           :key="cfg.type"
           class="flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-xs transition-colors"
           :class="
@@ -78,7 +84,7 @@
         >
           <span
             class="size-2.5 shrink-0 rounded-full"
-            :style="{ backgroundColor: cfg.color }"
+            :style="cfg.dotStyle"
           ></span>
           <Icon :name="cfg.icon" class="size-3.5 shrink-0" />
           <span class="font-medium">{{ cfg.label }}</span>
@@ -159,7 +165,7 @@
           <div class="text-lg font-bold tabular-nums">
             {{ stats.totalTracked }}
           </div>
-          <div class="text-[10px] text-muted-foreground">Tracked</div>
+          <div class="text-2xs text-muted-foreground">Tracked</div>
         </div>
         <div
           class="rounded-lg border p-2 text-center"
@@ -175,13 +181,13 @@
           >
             {{ stats.darkVessels }}
           </div>
-          <div class="text-[10px] text-muted-foreground">Dark Fleet</div>
+          <div class="text-2xs text-muted-foreground">Dark Fleet</div>
         </div>
         <div
           class="rounded-lg border border-border bg-muted/50 p-2 text-center"
         >
           <div class="text-lg font-bold tabular-nums">{{ stats.naval }}</div>
-          <div class="text-[10px] text-muted-foreground">Naval</div>
+          <div class="text-2xs text-muted-foreground">Naval</div>
         </div>
         <div
           class="rounded-lg border border-border bg-muted/50 p-2 text-center"
@@ -189,7 +195,7 @@
           <div class="text-lg font-bold tabular-nums">
             {{ stats.avgSpeed }}kn
           </div>
-          <div class="text-[10px] text-muted-foreground">Avg Speed</div>
+          <div class="text-2xs text-muted-foreground">Avg Speed</div>
         </div>
       </div>
     </div>

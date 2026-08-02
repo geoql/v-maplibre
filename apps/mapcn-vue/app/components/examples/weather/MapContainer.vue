@@ -73,6 +73,30 @@
     return props.citiesAirQuality.get(cityName);
   }
 
+  // Stable per-city coordinate/style objects so the v-for does not allocate on re-render
+  const cityMarkers = computed(() =>
+    props.citiesWeather.map((city) => {
+      const aqi = getCityAqi(city.name);
+      const aqiColor = aqi ? props.getAqiLevel(aqi.us_aqi).color : '';
+      return {
+        city,
+        coordinates: [city.lon, city.lat] as [number, number],
+        tempStyle: {
+          color: props.getTemperatureColor(city.current.temperature_2m),
+        },
+        aqi,
+        aqiStyle: {
+          backgroundColor: `${aqiColor}20`,
+          color: aqiColor,
+        },
+      };
+    }),
+  );
+
+  function getMarkerButtonClass(city: CityWeather): string {
+    return props.selectedCity?.name === city.name ? 'ring-2 ring-primary' : '';
+  }
+
   const temperatureLegend: GradientLegendItem = {
     min: -20,
     max: 35,
@@ -154,47 +178,34 @@
         @loaded="handleMapLoad"
       >
         <VMarker
-          v-for="city in citiesWeather"
-          :key="city.name"
-          :coordinates="[city.lon, city.lat]"
+          v-for="marker in cityMarkers"
+          :key="marker.city.name"
+          :coordinates="marker.coordinates"
         >
           <template #markers="{ setRef }">
             <div :ref="wrapMarkerRef(setRef)">
               <button
                 class="flex cursor-pointer flex-col items-center gap-0.5 rounded-lg border border-border/50 bg-background/90 px-2 py-1 shadow-sm backdrop-blur-sm transition-transform hover:scale-110"
-                :class="{
-                  'ring-2 ring-primary': selectedCity?.name === city.name,
-                }"
-                @click="handleMarkerClick(city)"
+                :class="getMarkerButtonClass(marker.city)"
+                @click="handleMarkerClick(marker.city)"
               >
                 <div class="flex items-center gap-1">
                   <Icon
-                    :name="props.getWeatherIcon(city.current.weather_code)"
+                    :name="
+                      props.getWeatherIcon(marker.city.current.weather_code)
+                    "
                     class="size-3.5"
                   />
-                  <span
-                    class="text-xs font-semibold"
-                    :style="{
-                      color: props.getTemperatureColor(
-                        city.current.temperature_2m,
-                      ),
-                    }"
-                  >
-                    {{ Math.round(city.current.temperature_2m) }}°
+                  <span class="text-xs font-semibold" :style="marker.tempStyle">
+                    {{ Math.round(marker.city.current.temperature_2m) }}°
                   </span>
                 </div>
                 <span
-                  v-if="getCityAqi(city.name)"
-                  class="rounded-sm px-1 text-[10px] font-medium leading-tight"
-                  :style="{
-                    backgroundColor:
-                      props.getAqiLevel(getCityAqi(city.name)!.us_aqi).color +
-                      '20',
-                    color: props.getAqiLevel(getCityAqi(city.name)!.us_aqi)
-                      .color,
-                  }"
+                  v-if="marker.aqi"
+                  class="rounded-sm px-1 text-2xs font-medium leading-tight"
+                  :style="marker.aqiStyle"
                 >
-                  AQI {{ getCityAqi(city.name)!.us_aqi }}
+                  AQI {{ marker.aqi.us_aqi }}
                 </span>
               </button>
             </div>

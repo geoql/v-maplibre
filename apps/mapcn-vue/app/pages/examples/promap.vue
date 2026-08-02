@@ -5,7 +5,7 @@
   usePageGeo({
     title: 'Home Price Explorer - mapcn-vue Examples',
     description:
-      'Interactive US home price bubble map at the ZIP code level with LocalView — viewport-based quintile re-bucketing that reveals local variation.',
+      'Interactive US home price bubble map at the ZIP code level with LocalView: viewport-based quintile re-bucketing that reveals local variation.',
   });
 
   defineOgImage('MapcnDoc', {

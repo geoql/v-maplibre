@@ -109,6 +109,22 @@
     return getActivityBadge(type);
   }
 
+  const CHEVRON_BASE =
+    'size-4 text-muted-foreground transition-transform duration-200';
+  const ACTIVITY_BADGE_BASE =
+    'inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-2xs font-medium';
+
+  function getChevronClass(day: number): string {
+    return expandedDays.value.has(day)
+      ? `${CHEVRON_BASE} rotate-180`
+      : CHEVRON_BASE;
+  }
+
+  function getActivityBadgeClass(type: TripActivityType): string {
+    const badge = getActivityBadge(type);
+    return `${ACTIVITY_BADGE_BASE} ${badge.bg} ${badge.text}`;
+  }
+
   const legendItems: CategoryLegendItem[] = [
     { value: 'route', label: 'Driving Route', color: '#6366f1' },
     { value: 'waypoint', label: 'Waypoint / Highlight', color: '#6366f1' },
@@ -202,7 +218,7 @@
           :animate="{ opacity: 1, x: 0, scale: 1 }"
           :exit="{ opacity: 0, x: -20, scale: 0.95 }"
           :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
-          class="absolute top-16 left-4 z-10 w-80 max-h-[calc(100%-5rem)] overflow-auto rounded-xl bg-background/95 shadow-lg backdrop-blur-sm"
+          class="absolute top-16 left-4 z-10 w-80 max-h-float-panel overflow-auto rounded-xl bg-background/95 shadow-lg backdrop-blur-sm"
         >
           <div class="p-4">
             <div class="flex items-start justify-between gap-2">
@@ -270,10 +286,7 @@
                 </div>
                 <Icon
                   name="lucide:chevron-down"
-                  :class="[
-                    'size-4 text-muted-foreground transition-transform duration-200',
-                    expandedDays.has(day.day) && 'rotate-180',
-                  ]"
+                  :class="getChevronClass(day.day)"
                 />
               </button>
 
@@ -292,13 +305,7 @@
                       class="size-3 shrink-0 text-muted-foreground"
                     />
                     <span class="flex-1 text-xs">{{ activity.name }}</span>
-                    <span
-                      :class="[
-                        'inline-flex items-center gap-0.5 rounded-full px-1.5 py-0.5 text-[10px] font-medium',
-                        getActivityBadgeClasses(activity.type).bg,
-                        getActivityBadgeClasses(activity.type).text,
-                      ]"
-                    >
+                    <span :class="getActivityBadgeClass(activity.type)">
                       <Icon
                         :name="getActivityBadgeClasses(activity.type).icon"
                         class="size-2.5"
@@ -306,7 +313,7 @@
                       {{ activity.type }}
                     </span>
                     <span
-                      class="shrink-0 text-[10px] text-muted-foreground tabular-nums"
+                      class="shrink-0 text-2xs text-muted-foreground tabular-nums"
                     >
                       {{ activity.time }}
                     </span>

@@ -121,7 +121,7 @@
   }
 
   watch(
-    () => [props.viewshedPolygons, props.observers],
+    [() => props.viewshedPolygons, () => props.observers],
     () => syncLayers(),
     { deep: true },
   );

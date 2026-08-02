@@ -51,7 +51,7 @@
   <div class="space-y-4 p-4">
     <div class="space-y-1">
       <h3 class="text-sm font-semibold">Waypoints</h3>
-      <p class="text-[11px] text-muted-foreground">
+      <p class="text-caption text-muted-foreground">
         Click on the map to add waypoints (max 8)
       </p>
     </div>
@@ -63,7 +63,7 @@
         class="flex items-center gap-2 rounded-md px-2 py-1.5 text-xs hover:bg-accent"
       >
         <span
-          class="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/20 text-[10px] font-bold text-primary"
+          class="flex size-5 shrink-0 items-center justify-center rounded-full bg-primary/20 text-2xs font-bold text-primary"
         >
           {{ wp.label.split('-')[1] }}
         </span>
@@ -91,26 +91,28 @@
       <Separator />
       <h3 class="text-sm font-semibold">Route Stats</h3>
       <div class="grid grid-cols-2 gap-2">
-        <div class="rounded-md bg-muted/50 px-2.5 py-2">
-          <div class="text-[10px] text-muted-foreground">Distance</div>
-          <div class="text-sm font-semibold">
+        <div
+          class="rounded-md bg-primary/10 px-2.5 py-2 ring-1 ring-primary/20"
+        >
+          <div class="text-2xs text-muted-foreground">Distance</div>
+          <div class="text-sm font-semibold text-primary">
             {{ routeStats.distanceKm.toFixed(1) }} km
           </div>
         </div>
         <div class="rounded-md bg-muted/50 px-2.5 py-2">
-          <div class="text-[10px] text-muted-foreground">Est. Time</div>
+          <div class="text-2xs text-muted-foreground">Est. Time</div>
           <div class="text-sm font-semibold">
             {{ routeStats.timeHours.toFixed(1) }} hrs
           </div>
         </div>
         <div class="rounded-md bg-muted/50 px-2.5 py-2">
-          <div class="text-[10px] text-muted-foreground">Elev. Gain</div>
+          <div class="text-2xs text-muted-foreground">Elev. Gain</div>
           <div class="text-sm font-semibold text-success">
             +{{ routeStats.elevationGain }} m
           </div>
         </div>
         <div class="rounded-md bg-muted/50 px-2.5 py-2">
-          <div class="text-[10px] text-muted-foreground">Elev. Loss</div>
+          <div class="text-2xs text-muted-foreground">Elev. Loss</div>
           <div class="text-sm font-semibold text-destructive">
             -{{ routeStats.elevationLoss }} m
           </div>

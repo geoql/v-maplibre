@@ -126,6 +126,22 @@
     return index === selectedRouteIndex.value ? 0 : 0.5;
   }
 
+  const ROUTE_OPTION_BASE =
+    'w-full rounded-lg border p-3 text-left transition-all';
+  const ROUTE_OPTION_SELECTED = 'border-primary bg-card shadow-sm';
+  const ROUTE_OPTION_IDLE = `
+    border-border bg-card/50
+    hover:border-border/80 hover:bg-card
+  `;
+
+  function getRouteOptionClass(index: number): string {
+    return `${ROUTE_OPTION_BASE} ${
+      index === selectedRouteIndex.value
+        ? ROUTE_OPTION_SELECTED
+        : ROUTE_OPTION_IDLE
+    }`;
+  }
+
   const legendItems: CategoryLegendItem[] = [
     { value: 'selected', label: 'Selected Route', color: '#6366f1' },
     { value: 'alternate', label: 'Alternate Route', color: '#6b7280' },
@@ -228,7 +244,7 @@
         :animate="{ opacity: 1, x: 0, scale: 1 }"
         :exit="{ opacity: 0, x: -20, scale: 0.95 }"
         :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
-        class="absolute top-16 left-4 z-10 w-80 max-h-[calc(100%-5rem)] overflow-auto rounded-lg bg-background/95 shadow-lg backdrop-blur-sm"
+        class="absolute top-16 left-4 z-10 w-80 max-h-float-panel overflow-auto rounded-lg bg-background/95 shadow-lg backdrop-blur-sm"
       >
         <div class="p-3">
           <div
@@ -243,16 +259,8 @@
             <div class="space-y-2">
               <button
                 v-for="(route, index) in routeOptions"
-                :key="index"
-                :class="[
-                  'w-full rounded-lg border p-3 text-left transition-all',
-                  selectedRouteIndex === index
-                    ? 'border-primary bg-card shadow-sm'
-                    : `
-                      border-border bg-card/50
-                      hover:border-border/80 hover:bg-card
-                    `,
-                ]"
+                :key="`${route.duration}-${route.distance}`"
+                :class="getRouteOptionClass(index)"
                 @click="selectRoute(index)"
               >
                 <div class="flex items-center gap-2">

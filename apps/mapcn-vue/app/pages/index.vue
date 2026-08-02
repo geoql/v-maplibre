@@ -43,14 +43,14 @@
   <div class="hide-scrollbar min-h-dvh overflow-y-auto">
     <!-- Hero — asymmetric 8/4 grid, viewport-filling, CTA above fold -->
     <section
-      class="relative grid min-h-dvh grid-cols-1 border-b border-border/60 lg:grid-cols-[8fr_4fr]"
+      class="relative grid min-h-dvh grid-cols-1 border-b border-border/60 lg:grid-cols-split-8-4"
     >
       <div
         class="flex flex-col justify-between px-6 pt-16 pb-12 md:px-12 md:pt-24 lg:px-16 lg:pb-16"
       >
         <div>
           <div
-            class="mb-8 inline-flex items-center gap-3 font-mono text-[11px] tracking-[0.18em] text-primary uppercase"
+            class="mb-8 inline-flex items-center gap-3 font-mono text-caption tracking-caps text-primary uppercase"
           >
             <span class="relative flex size-1.5">
               <span
@@ -73,14 +73,14 @@
           </div>
 
           <h1
-            class="text-5xl leading-[0.92] font-extrabold tracking-[-0.045em] text-foreground sm:text-6xl md:text-7xl lg:text-[clamp(64px,8vw,120px)]"
+            class="text-5xl leading-display font-extrabold tracking-display-tight text-foreground sm:text-6xl md:text-7xl lg:text-display"
           >
             Maps for Vue.<br />
             <span class="text-muted-foreground">Without the boilerplate.</span>
           </h1>
 
           <p
-            class="mt-8 max-w-[52ch] text-base leading-[1.55] text-muted-foreground md:text-lg"
+            class="mt-8 max-w-measure-sm text-base leading-copy text-muted-foreground md:text-lg"
           >
             Production map components built on
             <a
@@ -100,7 +100,7 @@
           <div class="mt-10 flex flex-wrap items-center gap-3">
             <NuxtLink
               to="/docs/introduction"
-              class="inline-flex h-10 items-center gap-2 rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground transition-[filter] hover:brightness-110"
+              class="inline-flex h-10 items-center gap-2 rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground transition-filter hover:brightness-110"
             >
               Read the docs
               <Icon name="lucide:arrow-right" class="size-4" />
@@ -114,7 +114,7 @@
           </div>
 
           <button
-            class="mt-8 inline-flex max-w-full items-center gap-3 rounded-md border border-border bg-card px-4 py-3 font-mono text-xs transition-colors hover:bg-muted sm:text-[13px]"
+            class="mt-8 inline-flex max-w-full items-center gap-3 rounded-md border border-border bg-card px-4 py-3 font-mono text-xs transition-colors hover:bg-muted sm:text-note"
             @click="copy()"
           >
             <span class="text-primary">$</span>
@@ -122,7 +122,7 @@
               >npx shadcn-vue@latest add https://mapcn-vue.geoql.in/r/map</code
             >
             <span
-              class="ml-auto inline-flex items-center gap-1 font-mono text-[10px] tracking-[0.12em] text-muted-foreground uppercase"
+              class="ml-auto inline-flex items-center gap-1 font-mono text-2xs tracking-caps-xs text-muted-foreground uppercase"
             >
               <Icon
                 :name="copied ? 'lucide:check' : 'lucide:copy'"
@@ -136,9 +136,9 @@
 
         <!-- Hero metric row — tabular numerals, mono labels -->
         <dl class="mt-16 grid grid-cols-3 gap-8 border-t border-border/60 pt-8">
-          <div class="flex flex-col gap-1">
+          <div class="flex flex-col gap-1 border-l-2 border-primary/60 pl-4">
             <dt
-              class="font-mono text-[10px] tracking-[0.15em] text-muted-foreground uppercase"
+              class="font-mono text-2xs tracking-caps-sm text-muted-foreground uppercase"
             >
               Live examples
             </dt>
@@ -150,7 +150,7 @@
           </div>
           <div class="flex flex-col gap-1">
             <dt
-              class="font-mono text-[10px] tracking-[0.15em] text-muted-foreground uppercase"
+              class="font-mono text-2xs tracking-caps-sm text-muted-foreground uppercase"
             >
               Components
             </dt>
@@ -162,7 +162,7 @@
           </div>
           <div class="flex flex-col gap-1">
             <dt
-              class="font-mono text-[10px] tracking-[0.15em] text-muted-foreground uppercase"
+              class="font-mono text-2xs tracking-caps-sm text-muted-foreground uppercase"
             >
               Runtime deps
             </dt>
@@ -194,7 +194,7 @@
         </div>
 
         <div
-          class="relative flex-1 min-h-[320px] overflow-hidden rounded-md border border-border bg-muted"
+          class="relative flex-1 min-h-80 overflow-hidden rounded-md border border-border bg-muted"
         >
           <ClientOnly>
             <LazyMapDemo
@@ -211,7 +211,7 @@
             </template>
           </ClientOnly>
           <div
-            class="pointer-events-none absolute top-3 left-3 inline-flex items-center gap-2 rounded-sm border border-border bg-background/85 px-2.5 py-1.5 font-mono text-[10px] tracking-[0.12em] text-muted-foreground uppercase backdrop-blur-sm"
+            class="pointer-events-none absolute top-3 left-3 inline-flex items-center gap-2 rounded-sm border border-border bg-background/85 px-2.5 py-1.5 font-mono text-2xs tracking-caps-xs text-muted-foreground uppercase backdrop-blur-sm"
           >
             <span class="relative flex size-1.5">
               <span
@@ -227,7 +227,7 @@
         </div>
 
         <div
-          class="flex justify-between font-mono text-[10px] tracking-[0.1em] text-muted-foreground uppercase"
+          class="flex justify-between font-mono text-2xs tracking-widest text-muted-foreground uppercase"
         >
           <span>@geoql/v-maplibre</span>
           <span class="text-foreground">{{ '<VMap />' }}</span>
@@ -245,7 +245,7 @@
             Live demos
           </h2>
           <span
-            class="font-mono text-[11px] tracking-[0.18em] text-muted-foreground uppercase"
+            class="font-mono text-caption tracking-caps text-muted-foreground uppercase"
           >
             / 02 — Production patterns
           </span>
@@ -268,7 +268,7 @@
               class="absolute top-3 left-3 z-10 rounded-sm border border-border bg-background/85 p-3 backdrop-blur-sm"
             >
               <div
-                class="mb-1 font-mono text-[10px] tracking-[0.15em] text-muted-foreground uppercase"
+                class="mb-1 font-mono text-2xs tracking-caps-sm text-muted-foreground uppercase"
               >
                 Active Users — VLayerDeckglScatterplot
               </div>
@@ -290,7 +290,7 @@
             class="relative aspect-4/3 overflow-hidden rounded-md border border-border bg-muted"
           >
             <div
-              class="absolute top-3 left-3 z-10 rounded-sm border border-border bg-background/85 px-2 py-1 font-mono text-[10px] tracking-[0.15em] text-muted-foreground uppercase backdrop-blur-sm"
+              class="absolute top-3 left-3 z-10 rounded-sm border border-border bg-background/85 px-2 py-1 font-mono text-2xs tracking-caps-sm text-muted-foreground uppercase backdrop-blur-sm"
             >
               Global Delivery — VLayerDeckglArc
             </div>
@@ -310,7 +310,7 @@
             class="relative aspect-4/3 overflow-hidden rounded-md border border-border bg-muted"
           >
             <div
-              class="absolute top-3 left-3 z-10 rounded-sm border border-border bg-background/85 px-2 py-1 font-mono text-[10px] tracking-[0.15em] text-muted-foreground uppercase backdrop-blur-sm"
+              class="absolute top-3 left-3 z-10 rounded-sm border border-border bg-background/85 px-2 py-1 font-mono text-2xs tracking-caps-sm text-muted-foreground uppercase backdrop-blur-sm"
             >
               Trips — VLayerDeckglTrips
             </div>
@@ -336,12 +336,12 @@
       <div class="mx-auto max-w-6xl">
         <div class="mb-12 flex items-baseline justify-between">
           <h2
-            class="max-w-[20ch] text-2xl font-extrabold tracking-tight text-foreground md:text-3xl"
+            class="max-w-headline-lg text-2xl font-extrabold tracking-tight text-foreground md:text-3xl"
           >
             Everything you need for maps
           </h2>
           <span
-            class="font-mono text-[11px] tracking-[0.18em] text-muted-foreground uppercase"
+            class="font-mono text-caption tracking-caps text-muted-foreground uppercase"
           >
             / 03 — Components
           </span>
@@ -387,17 +387,17 @@
       <div class="mx-auto max-w-6xl">
         <div class="mb-12 flex items-baseline justify-between">
           <h2
-            class="max-w-[18ch] text-2xl font-extrabold tracking-tight text-foreground md:text-3xl"
+            class="max-w-headline text-2xl font-extrabold tracking-tight text-foreground md:text-3xl"
           >
             Get started in seconds
           </h2>
           <span
-            class="font-mono text-[11px] tracking-[0.18em] text-muted-foreground uppercase"
+            class="font-mono text-caption tracking-caps text-muted-foreground uppercase"
           >
             / 04 — Install
           </span>
         </div>
-        <div class="grid grid-cols-1 items-end gap-8 md:grid-cols-[5fr_7fr]">
+        <div class="grid grid-cols-1 items-end gap-8 md:grid-cols-split-5-7">
           <p class="text-base text-muted-foreground md:text-lg">
             Add map components to your project with the shadcn-vue CLI. They
             land in your repo, typed end-to-end. Yours to own.
@@ -421,7 +421,7 @@
                 aria-hidden="true"
               ></div>
               <span
-                class="ml-2 font-mono text-[10px] tracking-[0.15em] text-muted-foreground uppercase"
+                class="ml-2 font-mono text-2xs tracking-caps-sm text-muted-foreground uppercase"
                 >Terminal</span
               >
             </div>

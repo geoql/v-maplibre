@@ -183,12 +183,12 @@
           </p>
           <p
             v-if="selectedGauge.stationName !== selectedGauge.gaugeId"
-            class="text-[10px] font-mono text-muted-foreground/60"
+            class="text-2xs font-mono text-muted-foreground/60"
           >
             {{ selectedGauge.gaugeId }}
           </p>
           <div
-            class="border-t border-border pt-1 text-[11px] text-muted-foreground"
+            class="border-t border-border pt-1 text-caption text-muted-foreground"
           >
             <Icon name="lucide:clock" class="mr-1 inline size-3" />
             {{ formatTime(selectedGauge.issuedTime) }}

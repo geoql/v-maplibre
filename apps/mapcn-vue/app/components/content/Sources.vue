@@ -20,7 +20,7 @@
 </script>
 
 <template>
-  <div class="sources-list font-mono text-[11px] text-muted-foreground">
+  <div class="sources-list font-mono text-caption text-muted-foreground">
     <div
       v-for="(source, index) in sources"
       :key="source.url"
@@ -40,7 +40,7 @@
       >
       <span
         v-if="source.type"
-        class="text-[10px] uppercase tracking-wider opacity-60"
+        class="text-2xs uppercase tracking-wider opacity-60"
         >({{ source.type }})</span
       >
       <span v-if="index < sources.length - 1" class="ml-1 opacity-40">·</span>

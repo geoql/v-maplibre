@@ -146,7 +146,7 @@
           <template #markers="{ setRef }">
             <div :ref="wrapMarkerRef(setRef)" class="relative">
               <div
-                class="absolute -top-7 left-1/2 -translate-x-1/2 rounded-sm bg-zinc-900/80 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-white"
+                class="absolute -top-7 left-1/2 -translate-x-1/2 rounded-sm bg-foreground/80 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-background"
               >
                 Store
               </div>
@@ -164,7 +164,7 @@
             <div :ref="wrapMarkerRef(setRef)" class="relative">
               <div
                 v-if="deliveryRouteInfo"
-                class="absolute -top-9 left-1/2 -translate-x-1/2 rounded-sm bg-zinc-900/90 px-2 py-1 text-xs font-medium whitespace-nowrap text-white shadow-lg"
+                class="absolute -top-9 left-1/2 -translate-x-1/2 rounded-sm bg-foreground/90 px-2 py-1 text-xs font-medium whitespace-nowrap text-background shadow-lg"
               >
                 <span class="text-success">{{
                   formatDuration(deliveryRouteInfo.duration)
@@ -184,7 +184,7 @@
           <template #markers="{ setRef }">
             <div :ref="wrapMarkerRef(setRef)" class="relative">
               <div
-                class="absolute -top-7 left-1/2 -translate-x-1/2 rounded-sm bg-zinc-900/80 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-white"
+                class="absolute -top-7 left-1/2 -translate-x-1/2 rounded-sm bg-foreground/80 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-background"
               >
                 Home
               </div>

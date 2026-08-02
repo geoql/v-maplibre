@@ -215,11 +215,11 @@
   }
 
   watch(
-    () => [
-      props.loopedTime,
-      props.positions,
-      props.selectedConvoyId,
-      props.activeCheckpoints,
+    [
+      () => props.loopedTime,
+      () => props.positions,
+      () => props.selectedConvoyId,
+      () => props.activeCheckpoints,
     ],
     () => syncLayers(),
     { deep: true },

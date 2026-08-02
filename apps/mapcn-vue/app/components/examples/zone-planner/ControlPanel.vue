@@ -108,7 +108,7 @@
         ></span>
         <div class="min-w-0 flex-1">
           <div class="truncate text-xs font-medium">{{ zone.label }}</div>
-          <div class="text-[10px] text-muted-foreground">
+          <div class="text-2xs text-muted-foreground">
             {{ zone.areaKm2.toFixed(1) }} km²
           </div>
         </div>
@@ -123,7 +123,7 @@
 
     <Separator />
 
-    <div class="text-[10px] leading-relaxed text-muted-foreground">
+    <div class="text-2xs leading-relaxed text-muted-foreground">
       Draw danger zones (minefields, restricted areas, hazards) on the map. Use
       polygon or rectangle mode to place zones, then switch to select mode to
       edit.

@@ -110,11 +110,9 @@
     updateLayer('troop-labels', labelLayer);
   }
 
-  watch(
-    () => [props.routeCoords, props.waypoints],
-    () => syncLayers(),
-    { deep: true },
-  );
+  watch([() => props.routeCoords, () => props.waypoints], () => syncLayers(), {
+    deep: true,
+  });
 
   onMounted(() => {
     initLayers();

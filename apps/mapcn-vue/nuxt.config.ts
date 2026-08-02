@@ -70,6 +70,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
+      htmlAttrs: { lang: 'en' },
       title: 'mapcn-vue - Beautiful maps for Vue',
       meta: [
         {
@@ -121,6 +122,13 @@ export default defineNuxtConfig({
     },
     public: {
       mapsguruApiKey: '',
+      // Free-tier OpenWeatherMap key powering the wind + interpolate-heatmap
+      // demos. Public by design (the browser calls api.openweathermap.org
+      // directly), so the literal ships as the default and deployments can
+      // override it with NUXT_PUBLIC_OPENWEATHERMAP_API_KEY.
+      openweathermapApiKey:
+        process.env.NUXT_PUBLIC_OPENWEATHERMAP_API_KEY ??
+        '385df3d81f3a89c1c99c115735540c6d',
       // Base URL of the R2 bucket hosting geolith-generated demo assets
       // (Gaussian splats, 3D Tiles tilesets, Terrain-RGB PMTiles). Injected
       // at build time via NUXT_PUBLIC_R2_ASSETS_BASE (GH secret) so the
@@ -224,7 +232,7 @@ export default defineNuxtConfig({
     domain: 'https://mapcn-vue.geoql.in',
     title: 'mapcn-vue',
     description:
-      'Beautiful, theme-aware map components for Vue 3 powered by MapLibre GL and deck.gl. shadcn-vue compatible — copy components directly into your project, no black-box package.',
+      'Beautiful, theme-aware map components for Vue 3 powered by MapLibre GL and deck.gl. shadcn-vue compatible: copy components directly into your project, no black-box package.',
     full: {
       title: 'mapcn-vue full documentation',
       description:

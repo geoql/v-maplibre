@@ -225,6 +225,7 @@
             <a
               href="https://stacspec.org/en"
               target="_blank"
+              rel="noopener noreferrer"
               class="text-primary hover:underline"
               >STAC</a
             >
@@ -232,6 +233,7 @@
             <a
               href="https://planetarycomputer.microsoft.com"
               target="_blank"
+              rel="noopener noreferrer"
               class="text-primary hover:underline"
               >Microsoft Planetary Computer</a
             >.
@@ -243,6 +245,7 @@
           <a
             href="https://github.com/developmentseed/deck.gl-raster"
             target="_blank"
+            rel="noopener noreferrer"
             class="font-mono text-primary hover:underline"
             >@developmentseed/deck.gl-raster</a
           >.
@@ -278,7 +281,7 @@
             @update:model-value="handleNdviRangeUpdate"
           />
           <div
-            class="mt-1.5 flex justify-between text-[10px] text-muted-foreground"
+            class="mt-1.5 flex justify-between text-2xs text-muted-foreground"
           >
             <span>-1</span>
             <span

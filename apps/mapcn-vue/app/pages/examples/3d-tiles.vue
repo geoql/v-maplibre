@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { VMap, VControlNavigation, VControlScale } from '@geoql/v-maplibre';
   import { VLayer3DTiles } from '@geoql/v-maplibre/3d-tiles';
+  import type { Map } from 'maplibre-gl';
 
   usePageGeo({
     title: '3D Tiles Splat Layer - mapcn-vue Examples',
@@ -39,6 +40,11 @@
 
   const onLoadTileset = () => {
     loading.value = false;
+  };
+
+  const onMapLoaded = (map: Map) => {
+    if (import.meta.dev)
+      (window as unknown as Record<string, unknown>).__qaMap = map;
   };
 
   const SCRIPT_END = '</' + 'script>';
@@ -85,14 +91,18 @@
   >
     <div class="relative size-full min-w-0 overflow-hidden">
       <ClientOnly>
-        <VMap :key="mapStyle" :options="mapOptions" class="size-full">
+        <VMap
+          :key="mapStyle"
+          :options="mapOptions"
+          class="size-full"
+          @loaded="onMapLoaded"
+        >
           <VControlNavigation position="top-right" />
           <VControlScale position="bottom-left" />
           <VLayer3DTiles
             id="splat-tileset"
             :url="tilesetUrl"
             :error-target="8"
-            :altitude="0"
             :fade="true"
             :splats="true"
             @load-tileset="onLoadTileset"

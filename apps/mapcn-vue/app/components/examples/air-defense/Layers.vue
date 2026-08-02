@@ -163,12 +163,12 @@
   }
 
   watch(
-    () => [
-      props.coveragePolygons,
-      props.sweepLines,
-      props.siteData,
-      props.labelData,
-      props.sweepAngle,
+    [
+      () => props.coveragePolygons,
+      () => props.sweepLines,
+      () => props.siteData,
+      () => props.labelData,
+      () => props.sweepAngle,
     ],
     () => syncLayers(),
     { deep: true },

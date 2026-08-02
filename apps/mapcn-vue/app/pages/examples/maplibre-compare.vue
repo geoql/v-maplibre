@@ -15,6 +15,16 @@
   });
 
   const orientation = ref<Orientation>('vertical');
+
+  const ORIENTATIONS = ['vertical', 'horizontal'] as const;
+  const ORIENTATION_ACTIVE =
+    'border-primary bg-primary text-primary-foreground';
+  const ORIENTATION_IDLE = 'border-border bg-background hover:bg-muted';
+
+  function getOrientationClass(opt: Orientation): string {
+    return orientation.value === opt ? ORIENTATION_ACTIVE : ORIENTATION_IDLE;
+  }
+
   const SCRIPT_END = '</' + 'script>';
   const SCRIPT_START = '<' + 'script setup lang="ts">';
 
@@ -87,14 +97,10 @@
       <MapPanel title="Orientation" panel-width="w-auto">
         <div class="flex gap-2">
           <button
-            v-for="opt in ['vertical', 'horizontal'] as const"
+            v-for="opt in ORIENTATIONS"
             :key="opt"
             class="rounded-md border px-3 py-1.5 text-sm transition-colors"
-            :class="[
-              orientation === opt
-                ? 'border-primary bg-primary text-primary-foreground'
-                : 'border-border bg-background hover:bg-muted',
-            ]"
+            :class="getOrientationClass(opt)"
             @click="orientation = opt"
           >
             <Icon

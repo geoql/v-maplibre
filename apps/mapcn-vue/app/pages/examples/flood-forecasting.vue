@@ -21,7 +21,7 @@
   usePageGeo({
     title: 'Flood Forecasting - mapcn-vue Examples',
     description:
-      'Global flood visualization powered by Google Groundsource — 2.6M+ historical flash flood events from 2000 to 2026.',
+      'Global flood visualization powered by Google Groundsource: 2.6M+ historical flash flood events from 2000 to 2026.',
   });
 
   defineOgImage('MapcnDoc', {
@@ -365,7 +365,7 @@
                   href="https://sites.research.google/floods/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  class="inline-flex items-center gap-1 text-[11px] text-primary transition-colors hover:text-primary/80"
+                  class="inline-flex items-center gap-1 text-caption text-primary transition-colors hover:text-primary/80"
                 >
                   <Icon name="lucide:external-link" class="size-3" />
                   Google Flood Hub
@@ -404,7 +404,7 @@
       </Transition>
 
       <div
-        class="absolute bottom-4 left-1/2 z-10 w-[min(90%,420px)] -translate-x-1/2"
+        class="absolute bottom-4 left-1/2 z-10 w-9/10 max-w-105 -translate-x-1/2"
       >
         <ExamplesFloodTimeSlider
           v-model="yearRange"

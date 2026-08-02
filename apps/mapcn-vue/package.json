@@ -102,6 +102,7 @@
     "tailwindcss": "catalog:app:mapcn-vue",
     "typescript": "catalog:default",
     "vue": "catalog:default",
+    "vue-tsc": "catalog:app:mapcn-vue",
     "wrangler": "catalog:app:mapcn-vue"
   }
 }

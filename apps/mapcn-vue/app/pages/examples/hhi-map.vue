@@ -16,7 +16,9 @@
     SelectValue,
   } from '~/components/ui/select';
   import { Slider } from '~/components/ui/slider';
-  import type { HhiConfig } from '~/types/hhi';
+  import type { HhiConfig, Level } from '~/types/hhi';
+
+  const EMPTY_LEVELS: Level[] = [];
 
   // SEO & OG Image
   usePageGeo({
@@ -137,7 +139,7 @@
     const group = hhiConfig.value.groupVars.find(
       (g) => g.code === selectedGroup.value,
     );
-    return group?.levels || [];
+    return group?.levels || EMPTY_LEVELS;
   });
 
   // Computed current HHI vars (exclude self-referential)

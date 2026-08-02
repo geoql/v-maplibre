@@ -145,7 +145,7 @@
         <button
           v-for="b in bearingLabels"
           :key="b.val"
-          class="rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors"
+          class="rounded px-1.5 py-0.5 text-2xs font-medium transition-colors"
           :class="
             currentBearingDeg === b.val
               ? 'bg-primary/15 text-primary border border-primary/40'
@@ -189,7 +189,7 @@
         <button
           v-for="b in bearingLabels"
           :key="b.val"
-          class="rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors"
+          class="rounded px-1.5 py-0.5 text-2xs font-medium transition-colors"
           :class="
             windBearingDeg === b.val
               ? 'bg-foreground/15 text-foreground border border-foreground/40'
@@ -275,12 +275,12 @@
       <h3 class="text-sm font-semibold">Statistics</h3>
       <div class="grid grid-cols-2 gap-2">
         <div
-          class="rounded-lg border border-border bg-muted/50 p-2 text-center"
+          class="rounded-lg border border-primary/40 bg-primary/5 p-2 text-center"
         >
-          <div class="text-lg font-bold tabular-nums">
+          <div class="text-lg font-bold tabular-nums text-primary">
             {{ stats.particleCount }}
           </div>
-          <div class="text-[10px] text-muted-foreground">Particles</div>
+          <div class="text-2xs text-muted-foreground">Particles</div>
         </div>
         <div
           class="rounded-lg border border-border bg-muted/50 p-2 text-center"
@@ -288,7 +288,7 @@
           <div class="text-lg font-bold tabular-nums">
             {{ stats.searchAreaKm2.toLocaleString() }}
           </div>
-          <div class="text-[10px] text-muted-foreground">Area (km²)</div>
+          <div class="text-2xs text-muted-foreground">Area (km²)</div>
         </div>
         <div
           class="rounded-lg border border-border bg-muted/50 p-2 text-center"
@@ -296,7 +296,7 @@
           <div class="text-lg font-bold tabular-nums">
             {{ stats.driftDistanceKm }}
           </div>
-          <div class="text-[10px] text-muted-foreground">Drift (km)</div>
+          <div class="text-2xs text-muted-foreground">Drift (km)</div>
         </div>
         <div
           class="rounded-lg border border-border bg-muted/50 p-2 text-center"
@@ -304,7 +304,7 @@
           <div class="text-lg font-bold tabular-nums">
             {{ stats.elapsedHours }}h
           </div>
-          <div class="text-[10px] text-muted-foreground">Elapsed</div>
+          <div class="text-2xs text-muted-foreground">Elapsed</div>
         </div>
       </div>
     </div>

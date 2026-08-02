@@ -25,6 +25,20 @@ const POST_ENDPOINTS = new Set([
   'significantEvents:search',
 ]);
 
+/**
+ * POST bodies are proxied verbatim to Google (the shape varies per endpoint),
+ * so validation only asserts a plain JSON object before forwarding.
+ */
+function parseProxyBody(data: unknown): Record<string, unknown> {
+  if (typeof data !== 'object' || data === null || Array.isArray(data)) {
+    throw createError({
+      statusCode: 400,
+      message: 'Request body must be a JSON object',
+    });
+  }
+  return data as Record<string, unknown>;
+}
+
 function isValidEndpoint(endpoint: string): boolean {
   return VALID_ENDPOINT_PREFIXES.some(
     (prefix) =>
@@ -59,10 +73,9 @@ export default defineCachedEventHandler(
 
     if (POST_ENDPOINTS.has(endpoint)) {
       // Read JSON body from the incoming request for POST endpoints
-      const body = (await readBody(event).catch(() => ({}))) as Record<
-        string,
-        unknown
-      >;
+      const body = await readValidatedBody(event, parseProxyBody).catch(
+        (): Record<string, unknown> => ({}),
+      );
 
       const data = await $fetch(apiUrl, {
         method: 'POST',
@@ -101,7 +114,9 @@ export default defineCachedEventHandler(
 
       // Include POST body in cache key so different regions/params don't collide
       if (POST_ENDPOINTS.has(endpoint)) {
-        const body = await readBody(event).catch(() => ({}));
+        const body = await readValidatedBody(event, parseProxyBody).catch(
+          (): Record<string, unknown> => ({}),
+        );
         return `flood-forecasting:${endpoint}:${JSON.stringify(query)}:${JSON.stringify(body)}`;
       }
 

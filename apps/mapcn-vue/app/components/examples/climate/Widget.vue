@@ -10,7 +10,7 @@
     formatPct,
   } from '~/composables/use-koppen-classes';
 
-  defineProps<{
+  const props = defineProps<{
     countryName: string;
     treemapCells: TreemapCell[];
     detailView: { klass: KoppenClassId } | null;
@@ -45,6 +45,31 @@
   function handleShuffleDetail(klass: KoppenClassId): void {
     emit('shuffleOne', klass);
   }
+
+  // Stable per-cell style/title objects so the v-for does not allocate on re-render
+  const treemapItems = computed(() =>
+    props.treemapCells.map((cell) => {
+      const meta = KOPPEN_CLASSES[cell.klass];
+      return {
+        ...cell,
+        cellClass: cell.tiny ? 'items-center justify-center p-0' : '',
+        cellStyle: {
+          left: `${cell.x}px`,
+          top: `${cell.y}px`,
+          width: `${Math.max(0, cell.w - 2)}px`,
+          height: `${Math.max(0, cell.h - 2)}px`,
+          background: meta?.color ?? '#ccc',
+          color: pickTextColor(meta?.color ?? 'rgb(200,200,200)'),
+        },
+        title: `${meta?.symbol} · ${meta?.name} · ${formatPct(cell.fraction)}%`,
+      };
+    }),
+  );
+
+  const containerStyle = computed(() => ({
+    width: `${props.containerW}px`,
+    height: `${props.containerH}px`,
+  }));
 </script>
 
 <template>
@@ -112,41 +137,28 @@
       >
         No climate data.
       </div>
-      <div
-        v-else
-        class="relative"
-        :style="{ width: containerW + 'px', height: containerH + 'px' }"
-      >
+      <div v-else class="relative" :style="containerStyle">
         <button
-          v-for="cell in treemapCells"
+          v-for="cell in treemapItems"
           :key="cell.klass"
           type="button"
-          class="absolute flex flex-col justify-between gap-0.5 overflow-hidden p-1 rounded-sm border border-black/10 cursor-pointer transition-transform hover:z-10 hover:shadow-[inset_0_0_0_2px_rgba(0,0,0,0.5)] leading-tight"
-          :class="cell.tiny ? 'items-center justify-center p-0' : ''"
-          :style="{
-            left: cell.x + 'px',
-            top: cell.y + 'px',
-            width: Math.max(0, cell.w - 2) + 'px',
-            height: Math.max(0, cell.h - 2) + 'px',
-            background: KOPPEN_CLASSES[cell.klass]?.color ?? '#ccc',
-            color: pickTextColor(
-              KOPPEN_CLASSES[cell.klass]?.color ?? 'rgb(200,200,200)',
-            ),
-          }"
-          :title="`${KOPPEN_CLASSES[cell.klass]?.symbol} · ${KOPPEN_CLASSES[cell.klass]?.name} · ${formatPct(cell.fraction)}%`"
+          class="absolute flex flex-col justify-between gap-0.5 overflow-hidden p-1 rounded-sm border border-black/10 cursor-pointer transition-transform hover:z-10 hover:shadow-inset-ring leading-tight"
+          :class="cell.cellClass"
+          :style="cell.cellStyle"
+          :title="cell.title"
           @click="handleCellClick(cell.klass)"
           @mouseenter="handleCellEnter(cell.klass)"
           @mouseleave="handleCellLeave"
         >
           <span
             class="block w-full truncate font-mono font-bold leading-none"
-            :class="cell.tiny ? 'text-center text-[9px]' : 'text-[13px]'"
+            :class="cell.tiny ? 'text-center text-3xs' : 'text-note'"
           >
             {{ KOPPEN_CLASSES[cell.klass]?.symbol }}
           </span>
           <span
             v-if="!cell.tiny"
-            class="block w-full truncate text-right text-[11px] font-medium tabular-nums opacity-85"
+            class="block w-full truncate text-right text-caption font-medium tabular-nums opacity-85"
           >
             {{ formatPct(cell.fraction) }}%
           </span>

@@ -45,7 +45,7 @@
     <!-- Title -->
     <div>
       <h3 class="text-sm font-semibold">US Home Price Explorer</h3>
-      <p class="mt-0.5 text-[11px] text-muted-foreground">
+      <p class="mt-0.5 text-caption text-muted-foreground">
         {{ totalPoints.toLocaleString() }} ZIP codes · Quintile-bucketed
       </p>
     </div>
@@ -89,7 +89,7 @@
     >
       <div>
         <p class="text-xs font-medium">LocalView</p>
-        <p class="text-[10px] text-muted-foreground">
+        <p class="text-2xs text-muted-foreground">
           Re-bucket colors for visible area
         </p>
       </div>
@@ -150,31 +150,33 @@
     <!-- Viewport stats -->
     <div class="border-t border-border/50 pt-3">
       <p
-        class="mb-2 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground"
+        class="mb-2 text-2xs font-semibold uppercase tracking-wider text-muted-foreground"
       >
         Viewport Stats
       </p>
       <div class="grid grid-cols-2 gap-2">
         <div class="rounded-md bg-muted/40 px-2.5 py-1.5">
-          <p class="text-[10px] text-muted-foreground">ZIP Codes</p>
+          <p class="text-2xs text-muted-foreground">ZIP Codes</p>
           <p class="text-sm font-semibold">
             {{ stats.count.toLocaleString() }}
           </p>
         </div>
-        <div class="rounded-md bg-muted/40 px-2.5 py-1.5">
-          <p class="text-[10px] text-muted-foreground">Median Price</p>
-          <p class="text-sm font-semibold">
+        <div
+          class="rounded-md bg-primary/10 px-2.5 py-1.5 ring-1 ring-primary/20"
+        >
+          <p class="text-2xs text-muted-foreground">Median Price</p>
+          <p class="text-sm font-semibold text-primary">
             {{ formatPrice(stats.medianPrice) }}
           </p>
         </div>
         <div class="rounded-md bg-muted/40 px-2.5 py-1.5">
-          <p class="text-[10px] text-muted-foreground">Avg Change</p>
+          <p class="text-2xs text-muted-foreground">Avg Change</p>
           <p class="text-sm font-semibold">
             {{ formatChange(stats.avgChange) }}
           </p>
         </div>
         <div class="rounded-md bg-muted/40 px-2.5 py-1.5">
-          <p class="text-[10px] text-muted-foreground">Price Range</p>
+          <p class="text-2xs text-muted-foreground">Price Range</p>
           <p class="text-sm font-semibold">
             {{ formatPrice(stats.minPrice) }}–{{ formatPrice(stats.maxPrice) }}
           </p>
@@ -184,7 +186,7 @@
 
     <!-- Data attribution (required by Zillow CC BY 4.0 + SimpleMaps CC BY 4.0) -->
     <div class="border-t border-border/50 pt-3">
-      <p class="text-[10px] leading-relaxed text-muted-foreground/60">
+      <p class="text-2xs leading-relaxed text-muted-foreground/60">
         Data:
         <a
           href="https://www.zillow.com/research/data/"

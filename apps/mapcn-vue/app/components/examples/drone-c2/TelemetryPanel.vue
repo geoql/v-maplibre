@@ -43,7 +43,7 @@
     </div>
     <div class="h-3 w-px bg-border"></div>
     <span
-      class="rounded-full bg-muted px-1.5 py-0.5 text-[10px] uppercase text-muted-foreground"
+      class="rounded-full bg-muted px-1.5 py-0.5 text-2xs uppercase text-muted-foreground"
     >
       {{ unit.status }}
     </span>

@@ -2,31 +2,44 @@
   /**
    * OGC 3D Tiles layer — streams a tileset (mesh tiles and/or
    * `KHR_gaussian_splatting` + SPZ splat tiles) through
-   * NASA-AMMOS/3DTilesRendererJS inside a shared three.js scene drawing
-   * into MapLibre's WebGL2 context.
+   * NASA-AMMOS/3DTilesRendererJS, drawn into MapLibre's WebGL2 context via a
+   * dedicated custom layer.
    *
-   * @requires `three`, `3d-tiles-renderer`, `@dvt3d/maplibre-three-plugin`
+   * Uses the two-camera architecture from MapLibre's official
+   * `add-3d-tiles-using-threejs` example: a rendering camera carries the
+   * combined MapLibre MVP, while a separate traversal camera (pure projection
+   * + extracted view matrix) drives `TilesRenderer.update()`. Reusing one
+   * camera for both corrupts the frustum because MapLibre's projection matrix
+   * already bakes in the view transform.
+   *
+   * @requires `three`, `3d-tiles-renderer`
    * @requires `@sparkjsdev/spark` + `3d-tiles-rendererjs-3dgs-plugin` (splat tiles)
    *
    * Install with:
-   * `pnpm add three 3d-tiles-renderer @dvt3d/maplibre-three-plugin @sparkjsdev/spark 3d-tiles-rendererjs-3dgs-plugin`
+   * `pnpm add three 3d-tiles-renderer @sparkjsdev/spark 3d-tiles-rendererjs-3dgs-plugin`
    */
   import { ref, watch, onBeforeUnmount } from 'vue';
   import { TilesRenderer } from '3d-tiles-renderer';
   import { TilesFadePlugin } from '3d-tiles-renderer/plugins';
   import { GaussianSplatPlugin } from '3d-tiles-rendererjs-3dgs-plugin';
-  import { Creator, SceneTransform } from '@dvt3d/maplibre-three-plugin';
-  import { MathUtils, Sphere, type Group } from 'three';
-  import type { Map } from 'maplibre-gl';
-  import { injectStrict, MapKey } from '../../../utils';
   import {
-    acquireThreeScene,
-    releaseThreeScene,
-    type ThreeSceneEntry,
-  } from '../_shared/useThreeScene';
+    Matrix4,
+    PerspectiveCamera,
+    Scene,
+    Sphere,
+    Vector3,
+    WebGLRenderer,
+  } from 'three';
+  import {
+    MercatorCoordinate,
+    type CustomLayerInterface,
+    type CustomRenderMethodInput,
+    type Map,
+  } from 'maplibre-gl';
+  import { injectStrict, MapKey } from '../../../utils';
 
   interface Props {
-    /** Unique identifier (informational; tiles share one scene layer). */
+    /** Unique identifier used for the MapLibre custom layer. */
     id?: string;
     /** URL of the root `tileset.json`. */
     url: string;
@@ -51,12 +64,12 @@
     altitude?: number;
     /** `fetch` options forwarded to every tileset/tile request. */
     fetchOptions?: RequestInit;
-    /** Move the shared three.js scene layer before this MapLibre layer id. */
+    /** Insert the custom layer before this MapLibre layer id. */
     before?: string;
   }
 
   const props = withDefaults(defineProps<Props>(), {
-    id: '3d-tiles',
+    id: 'v-3d-tiles',
     errorTarget: 8,
     fade: true,
     splats: true,
@@ -73,14 +86,16 @@
 
   const map = injectStrict(MapKey);
   const loaded = ref(false);
-  let entry: ThreeSceneEntry | null = null;
-  let rtcGroup: Group | null = null;
-  let tiles: TilesRenderer | null = null;
-  let anchored = false;
 
-  const getMapInstance = (): Map | null => {
-    return map.value || null;
-  };
+  let renderer: WebGLRenderer | null = null;
+  let scene: Scene | null = null;
+  let camera: PerspectiveCamera | null = null;
+  let tilesCamera: PerspectiveCamera | null = null;
+  let tiles: TilesRenderer | null = null;
+  let localTransform: Matrix4 | null = null;
+  let addedMap: Map | null = null;
+
+  const getMapInstance = (): Map | null => map.value || null;
 
   const triggerRepaint = (): void => {
     const mapInstance = getMapInstance();
@@ -90,55 +105,29 @@
   };
 
   /**
-   * Re-root the ECEF tileset at a local Y-up frame anchored at
-   * lat/lon/height (same math as 3d-tiles-renderer's ReorientationPlugin)
-   * and place/scale the RTC group at that geographic anchor.
+   * Build the ECEF→mercator model transform for the tileset anchor and
+   * re-center the tileset group on that anchor. Called once the root tileset
+   * is available (or immediately when an explicit `anchor` prop is set).
    */
-  const applyAnchor = (
-    latRad: number,
-    lonRad: number,
+  const buildLocalTransform = (
+    lng: number,
+    lat: number,
     height: number,
   ): void => {
-    if (!tiles || !rtcGroup) return;
-    const group = tiles.group;
-    // Frame arg omitted — getObjectFrame defaults to OBJECT_FRAME (+Y up,
-    // +Z forward), which is also not re-exported from the package root.
-    tiles.ellipsoid.getObjectFrame(
-      latRad,
-      lonRad,
-      height,
-      0,
-      0,
-      0,
-      group.matrix,
-    );
-    group.matrix
-      .invert()
-      .decompose(group.position, group.quaternion, group.scale);
-    group.updateMatrixWorld(true);
-
-    const lng = MathUtils.radToDeg(lonRad);
-    const lat = MathUtils.radToDeg(latRad);
-    const altitude = props.altitude ?? height;
-    rtcGroup.position.copy(
-      SceneTransform.lngLatToVector3([lng, lat, altitude]),
-    );
-    // Re-rooted tileset space is Y-up / X-west / Z-north; the RTC parent
-    // frame (before the world transform) is x-west / y-south / z-up.
-    // Rx(+90°) maps Y-up onto z-up and Z-north onto -y (= north).
-    rtcGroup.rotation.set(Math.PI / 2, 0, 0);
-    const upm = SceneTransform.projectedUnitsPerMeter(lat);
-    rtcGroup.scale.setScalar(upm);
-    anchored = true;
-    triggerRepaint();
+    const coord = MercatorCoordinate.fromLngLat([lng, lat], height);
+    const scale = coord.meterInMercatorCoordinateUnits();
+    localTransform = new Matrix4()
+      .makeTranslation(coord.x, coord.y, coord.z)
+      .scale(new Vector3(scale, -scale, scale))
+      .multiply(new Matrix4().makeRotationX(Math.PI / 2));
   };
 
   const onLoadRootTileset = (event: { tileset: object; url: string }): void => {
     if (!tiles) return;
     if (props.anchor) {
-      applyAnchor(
-        MathUtils.degToRad(props.anchor[1]),
-        MathUtils.degToRad(props.anchor[0]),
+      buildLocalTransform(
+        props.anchor[0],
+        props.anchor[1],
         props.altitude ?? 0,
       );
     } else {
@@ -146,80 +135,132 @@
       if (tiles.getBoundingSphere(sphere)) {
         const cart = { lat: 0, lon: 0, height: 0 };
         tiles.ellipsoid.getPositionToCartographic(sphere.center, cart);
-        applyAnchor(cart.lat, cart.lon, cart.height);
+        // Re-root the ECEF tileset into a local ENU frame (Y-up, X-west,
+        // Z-north) anchored at its surface point — the same math as
+        // 3d-tiles-renderer's ReorientationPlugin. Content then sits near the
+        // group origin in meters and localTransform places it on the map.
+        tiles.ellipsoid.getObjectFrame(
+          cart.lat,
+          cart.lon,
+          cart.height,
+          0,
+          0,
+          0,
+          tiles.group.matrix,
+        );
+        tiles.group.matrix
+          .invert()
+          .decompose(
+            tiles.group.position,
+            tiles.group.quaternion,
+            tiles.group.scale,
+          );
+        tiles.group.updateMatrixWorld(true);
+        buildLocalTransform(
+          (cart.lon * 180) / Math.PI,
+          (cart.lat * 180) / Math.PI,
+          props.altitude ?? cart.height,
+        );
       }
     }
+    triggerRepaint();
     emit('loadTileset', event.tileset, event.url);
   };
 
-  const onPreRender = (): void => {
-    if (!entry || !tiles || !anchored) return;
-    tiles.setResolutionFromRenderer(
-      entry.mapScene.camera,
-      entry.mapScene.renderer,
-    );
-    tiles.update();
-    // Keep frames coming while downloads are in flight; a static map stops
-    // rendering (and therefore stops ticking update()) otherwise.
-    if (tiles.loadProgress < 1) {
-      triggerRepaint();
-    }
+  const customLayer: CustomLayerInterface = {
+    id: props.id,
+    type: 'custom',
+    renderingMode: '3d',
+
+    onAdd(
+      mapInstance: Map,
+      gl: WebGLRenderingContext | WebGL2RenderingContext,
+    ) {
+      try {
+        renderer = new WebGLRenderer({
+          canvas: mapInstance.getCanvas(),
+          context: gl as WebGL2RenderingContext,
+          antialias: false,
+        });
+        renderer.autoClear = false;
+
+        scene = new Scene();
+        camera = new PerspectiveCamera();
+        tilesCamera = new PerspectiveCamera();
+
+        tiles = new TilesRenderer(props.url);
+        tiles.errorTarget = props.errorTarget;
+        if (props.fetchOptions) tiles.fetchOptions = props.fetchOptions;
+        if (props.fade) tiles.registerPlugin(new TilesFadePlugin());
+        if (props.splats) {
+          tiles.registerPlugin(new GaussianSplatPlugin({ renderer, scene }));
+        }
+        tiles.setCamera(tilesCamera);
+        tiles.setResolutionFromRenderer(tilesCamera, renderer);
+        scene.add(tiles.group);
+
+        tiles.addEventListener('load-root-tileset', ((event: unknown) => {
+          onLoadRootTileset(event as { tileset: object; url: string });
+        }) as never);
+        tiles.addEventListener('load-error', ((event: unknown) => {
+          const e = event as { error: Error };
+          emit('error', e.error);
+        }) as never);
+        // Fade transitions and async splat sorts need extra composites.
+        tiles.addEventListener(
+          'needs-render' as never,
+          triggerRepaint as never,
+        );
+        tiles.addEventListener(
+          'needs-update' as never,
+          triggerRepaint as never,
+        );
+      } catch (error) {
+        console.error('Error initializing 3d-tiles layer:', error);
+      }
+    },
+
+    render(_gl: WebGLRenderingContext, args: CustomRenderMethodInput) {
+      if (!renderer || !scene || !camera || !tilesCamera || !tiles) return;
+
+      // Use the full world→clip MVP (modelViewProjectionMatrix), NOT
+      // defaultProjectionData.mainMatrix — the latter only projects tile-local
+      // 0..EXTENT coordinates to screen and would leave our mercator content
+      // off-frustum. The official add-3d-tiles example uses this same
+      // world→clip matrix for the render camera.
+      const m = new Matrix4().fromArray(
+        args.modelViewProjectionMatrix as unknown as number[],
+      );
+      if (localTransform) {
+        camera.projectionMatrix.copy(m).multiply(localTransform);
+      } else {
+        camera.projectionMatrix.copy(m);
+      }
+
+      // Extract the pure view matrix V = P^-1 * MVP for the traversal camera.
+      const p = new Matrix4().fromArray(
+        args.projectionMatrix as unknown as number[],
+      );
+      const v = new Matrix4()
+        .copy(p)
+        .invert()
+        .multiply(camera.projectionMatrix);
+      tilesCamera.projectionMatrix.copy(p);
+      tilesCamera.matrixWorldInverse.copy(v);
+      tilesCamera.matrixWorld.copy(v).invert();
+
+      renderer.resetState();
+      renderer.render(scene, camera);
+      tiles.update();
+    },
   };
 
   const addLayer = (): void => {
     const mapInstance = getMapInstance();
-    if (!mapInstance || !mapInstance.isStyleLoaded() || entry) return;
-
+    if (!mapInstance || addedMap === mapInstance) return;
     try {
-      entry = acquireThreeScene(mapInstance);
-      const { mapScene } = entry;
-
-      rtcGroup = Creator.createRTCGroup(
-        [0, 0, 0],
-        [Math.PI / 2, 0, 0],
-        [1, 1, 1],
-      );
-      rtcGroup.visible = false;
-
-      tiles = new TilesRenderer(props.url);
-      tiles.errorTarget = props.errorTarget;
-      if (props.fetchOptions) {
-        tiles.fetchOptions = props.fetchOptions;
-      }
-      if (props.fade) {
-        tiles.registerPlugin(new TilesFadePlugin());
-      }
-      if (props.splats) {
-        tiles.registerPlugin(
-          new GaussianSplatPlugin({
-            renderer: mapScene.renderer,
-            scene: mapScene.scene,
-          }),
-        );
-      }
-      tiles.setCamera(mapScene.camera);
-      tiles.setResolutionFromRenderer(mapScene.camera, mapScene.renderer);
-
-      tiles.addEventListener('load-root-tileset', ((event: unknown) => {
-        const e = event as { tileset: object; url: string };
-        if (rtcGroup) rtcGroup.visible = true;
-        onLoadRootTileset(e);
-      }) as never);
-      tiles.addEventListener('load-error', ((event: unknown) => {
-        const e = event as { error: Error };
-        emit('error', e.error);
-      }) as never);
-      // Fade transitions and async splat sorts request extra composites.
-      tiles.addEventListener('needs-render' as never, triggerRepaint as never);
-      tiles.addEventListener('needs-update' as never, triggerRepaint as never);
-
-      rtcGroup.add(tiles.group);
-      mapScene.addObject(rtcGroup);
-      mapScene.on('preRender', onPreRender);
-
-      if (props.before) {
-        mapScene.layerBeforeTo(props.before);
-      }
+      mapInstance.addLayer(customLayer, props.before);
+      addedMap = mapInstance;
       triggerRepaint();
     } catch (error) {
       console.error('Error adding 3d-tiles layer:', error);
@@ -250,18 +291,21 @@
 
   watch(
     map,
-    (newMap) => {
-      if (newMap) {
-        setupMap(newMap);
+    (newMap, oldMap) => {
+      // The map instance is recreated when the style object identity changes
+      // (e.g. VMap :key="mapStyle" swap). Reset so addLayer() re-registers the
+      // custom layer (and rebuilds the renderer on the new GL context).
+      if (newMap !== oldMap) {
+        addedMap = null;
+        loaded.value = false;
       }
+      if (newMap) setupMap(newMap);
     },
     { immediate: true },
   );
 
   watch(loaded, (value) => {
-    if (value) {
-      addLayer();
-    }
+    if (value) addLayer();
   });
 
   watch(
@@ -274,43 +318,31 @@
     },
   );
 
-  watch(
-    () => [props.anchor, props.altitude],
-    () => {
-      if (tiles && props.anchor) {
-        applyAnchor(
-          MathUtils.degToRad(props.anchor[1]),
-          MathUtils.degToRad(props.anchor[0]),
-          props.altitude ?? 0,
-        );
-      }
-    },
-  );
-
   onBeforeUnmount(() => {
     const mapInstance = getMapInstance();
-
     try {
-      if (entry) {
-        entry.mapScene.off('preRender', onPreRender as never);
-      }
       if (tiles) {
-        rtcGroup?.remove(tiles.group);
+        scene?.remove(tiles.group);
         tiles.dispose();
         tiles = null;
       }
-      if (entry && rtcGroup) {
-        entry.mapScene.removeObject(rtcGroup);
+      renderer?.dispose();
+      renderer = null;
+      if (
+        mapInstance &&
+        addedMap === mapInstance &&
+        mapInstance.getLayer(props.id)
+      ) {
+        mapInstance.removeLayer(props.id);
       }
-      if (mapInstance && entry) {
-        releaseThreeScene(mapInstance);
-        triggerRepaint();
-      }
+      addedMap = null;
+      scene = null;
+      camera = null;
+      tilesCamera = null;
+      triggerRepaint();
     } catch (error) {
       console.error('Error cleaning up 3d-tiles layer:', error);
     }
-    rtcGroup = null;
-    entry = null;
   });
 </script>
 

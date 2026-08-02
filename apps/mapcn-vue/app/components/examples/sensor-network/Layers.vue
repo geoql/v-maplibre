@@ -199,12 +199,12 @@
   }
 
   watch(
-    () => [
-      props.sensors,
-      props.threats,
-      props.coverageZones,
-      props.radiusMultiplier,
-      props.pulseTime,
+    [
+      () => props.sensors,
+      () => props.threats,
+      () => props.coverageZones,
+      () => props.radiusMultiplier,
+      () => props.pulseTime,
     ],
     () => syncLayers(),
     { deep: true },

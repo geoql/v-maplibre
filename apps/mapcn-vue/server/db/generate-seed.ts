@@ -40,11 +40,11 @@ async function main() {
   out.push(
     '-- ─────────────────────────────────────────────────────────────────────────',
   );
-  out.push('-- ProMap seed — auto-generated from public/data/promap-data.json');
+  out.push('-- ProMap seed, auto-generated from public/data/promap-data.json');
   out.push('-- DO NOT EDIT BY HAND. Regenerate via:');
   out.push('--   node apps/mapcn-vue/server/db/generate-seed.mjs');
   out.push('--');
-  out.push('-- Apply (idempotent — clears existing rows before inserting):');
+  out.push('-- Apply (idempotent: clears existing rows before inserting):');
   out.push(
     '--   wrangler d1 execute mapcn-vue-db --local  --file=server/db/promap-seed.sql',
   );

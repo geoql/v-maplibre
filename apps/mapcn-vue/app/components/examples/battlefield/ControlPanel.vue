@@ -5,7 +5,7 @@
     MissionPhaseInfo,
   } from '~/types/defense-terrain';
 
-  defineProps<{
+  const props = defineProps<{
     isPlaying: boolean;
     speed: number;
     progress: number;
@@ -14,6 +14,14 @@
     units: BattlefieldUnit[];
     activeUnitTypes: Set<MilitaryUnitType>;
   }>();
+
+  // Stable per-unit style objects so the v-for does not allocate on re-render
+  const unitRows = computed(() =>
+    props.units.map((unit) => ({
+      ...unit,
+      dotStyle: { backgroundColor: `rgb(${unit.color.join(',')})` },
+    })),
+  );
 
   const emit = defineEmits<{
     play: [];
@@ -57,7 +65,7 @@
           v-for="phase in missionPhases"
           :key="phase.phase"
           :title="phase.label"
-          class="flex-1 truncate rounded-md px-1.5 py-1 text-center text-[10px] font-medium transition-colors"
+          class="flex-1 truncate rounded-md px-1.5 py-1 text-center text-2xs font-medium transition-colors"
           :class="
             currentPhase.phase === phase.phase
               ? 'bg-primary text-primary-foreground'
@@ -160,14 +168,11 @@
     <div class="space-y-1.5">
       <h3 class="text-sm font-semibold">Active Units</h3>
       <div
-        v-for="unit in units"
+        v-for="unit in unitRows"
         :key="unit.id"
         class="flex items-center gap-2 text-xs text-muted-foreground"
       >
-        <div
-          class="size-2 rounded-full"
-          :style="{ backgroundColor: `rgb(${unit.color.join(',')})` }"
-        ></div>
+        <div class="size-2 rounded-full" :style="unit.dotStyle"></div>
         <span class="font-medium">{{ unit.callsign }}</span>
         <span class="ml-auto">{{ unit.strength }} pax</span>
       </div>

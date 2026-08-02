@@ -208,7 +208,7 @@ ${SCRIPT_END}
 
         <div class="mb-4">
           <label
-            class="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
+            class="mb-1.5 block font-mono text-2xs uppercase tracking-caps text-muted-foreground"
             >Scene</label
           >
           <Select v-model="sceneId">
@@ -229,7 +229,7 @@ ${SCRIPT_END}
 
         <div>
           <label
-            class="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
+            class="mb-1.5 block font-mono text-2xs uppercase tracking-caps text-muted-foreground"
             >Composite</label
           >
           <Select v-model="presetId">

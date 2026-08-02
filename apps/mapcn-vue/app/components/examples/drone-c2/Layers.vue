@@ -166,7 +166,7 @@
   }
 
   watch(
-    () => [props.loopedTime, props.positions, props.selectedUnitId],
+    [() => props.loopedTime, () => props.positions, () => props.selectedUnitId],
     () => syncLayers(),
     { deep: true },
   );

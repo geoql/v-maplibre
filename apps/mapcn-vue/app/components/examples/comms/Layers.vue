@@ -191,11 +191,9 @@
     );
   }
 
-  watch(
-    () => [props.nodes, props.links],
-    () => syncLayers(),
-    { deep: true },
-  );
+  watch([() => props.nodes, () => props.links], () => syncLayers(), {
+    deep: true,
+  });
 
   onMounted(() => {
     initLayers();

@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import type { ConvoyUnit, CargoType } from '~/types/defense-convoy';
 
-  defineProps<{
+  const props = defineProps<{
     convoys: ConvoyUnit[];
     isPlaying: boolean;
     speed: number;
@@ -36,6 +36,14 @@
         return 'bg-muted text-muted-foreground';
     }
   }
+
+  // Stable per-convoy style objects so the v-for does not allocate on re-render
+  const convoyRows = computed(() =>
+    props.convoys.map((convoy) => ({
+      ...convoy,
+      dotStyle: { backgroundColor: `rgb(${convoy.color.join(',')})` },
+    })),
+  );
 </script>
 
 <template>
@@ -44,7 +52,7 @@
       <h3 class="text-sm font-semibold">Convoys</h3>
       <div class="space-y-1">
         <button
-          v-for="convoy in convoys"
+          v-for="convoy in convoyRows"
           :key="convoy.id"
           class="flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-xs transition-colors"
           :class="
@@ -56,7 +64,7 @@
         >
           <span
             class="size-2.5 shrink-0 rounded-full"
-            :style="{ backgroundColor: `rgb(${convoy.color.join(',')})` }"
+            :style="convoy.dotStyle"
           ></span>
           <Icon
             :name="CARGO_ICONS[convoy.cargoType]"
@@ -64,7 +72,7 @@
           />
           <span class="font-mono font-bold">{{ convoy.callsign }}</span>
           <span
-            class="ml-auto rounded-full px-1.5 py-0.5 text-[10px] uppercase"
+            class="ml-auto rounded-full px-1.5 py-0.5 text-2xs uppercase"
             :class="getStatusBadgeClass(convoy.status)"
           >
             {{ convoy.status }}

@@ -84,7 +84,7 @@
           ></span>
           <Icon :name="config.icon" class="size-3.5" />
           <span class="font-mono font-bold">{{ config.label }}</span>
-          <span class="ml-auto rounded-full bg-muted px-1.5 py-0.5 text-[10px]">
+          <span class="ml-auto rounded-full bg-muted px-1.5 py-0.5 text-2xs">
             {{ config.range }} km
           </span>
         </button>

@@ -30,6 +30,12 @@
     handleSelect(code);
     open.value = false;
   }
+
+  function getRegionClass(code: string): string {
+    return code === props.modelValue
+      ? 'text-primary font-medium'
+      : 'text-foreground';
+  }
 </script>
 
 <template>
@@ -70,13 +76,10 @@
           v-for="region in FLOOD_REGIONS"
           :key="region.code"
           class="flex w-full items-center gap-2 px-3 py-2 text-sm transition-colors hover:bg-accent"
-          :class="{
-            'text-primary font-medium': region.code === modelValue,
-            'text-foreground': region.code !== modelValue,
-          }"
+          :class="getRegionClass(region.code)"
           @click="selectAndClose(region.code)"
         >
-          <span class="font-mono text-[10px] text-muted-foreground">{{
+          <span class="font-mono text-2xs text-muted-foreground">{{
             region.code
           }}</span>
           {{ region.name }}

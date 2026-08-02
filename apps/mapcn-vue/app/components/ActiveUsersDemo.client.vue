@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { ref, onMounted, onBeforeUnmount } from 'vue';
   import { VMap, VPopup, VControlScale } from '@geoql/v-maplibre';
   import { VLayerDeckglScatterplot } from '@geoql/v-maplibre/deck.gl';
   import type { PickingInfo } from '@deck.gl/core';
@@ -154,7 +153,7 @@
       >
         <div class="text-center">
           <div
-            class="text-[10px] font-medium tracking-wider text-muted-foreground uppercase"
+            class="text-2xs font-medium tracking-wider text-muted-foreground uppercase"
           >
             {{ hoveredCity.city }}
           </div>
@@ -163,7 +162,7 @@
           >
             {{ hoveredCity.weight.toLocaleString() }}
           </div>
-          <div class="text-[10px] tracking-wider text-muted-foreground">
+          <div class="text-2xs tracking-wider text-muted-foreground">
             active users
           </div>
         </div>

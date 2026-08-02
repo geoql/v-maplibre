@@ -15,7 +15,7 @@
 <template>
   <div
     v-if="open"
-    class="absolute bottom-10 left-1/2 z-20 -translate-x-1/2 w-[380px] max-w-[calc(100vw-2rem)] rounded-lg border border-border bg-background/95 backdrop-blur-sm p-4 text-xs leading-relaxed text-foreground hidden md:block"
+    class="absolute bottom-10 left-1/2 z-20 -translate-x-1/2 w-95 max-w-viewport-padded rounded-lg border border-border bg-background/95 backdrop-blur-sm p-4 text-xs leading-relaxed text-foreground hidden md:block"
     role="dialog"
     aria-label="Methodology"
   >
@@ -29,7 +29,7 @@
     </button>
 
     <h3
-      class="mt-0 mb-2 text-[11px] font-medium uppercase tracking-[0.18em] font-mono text-muted-foreground"
+      class="mt-0 mb-2 text-caption font-medium uppercase tracking-caps font-mono text-muted-foreground"
     >
       Methodology
     </h3>

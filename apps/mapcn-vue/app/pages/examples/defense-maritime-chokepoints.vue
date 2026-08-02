@@ -8,7 +8,7 @@
   defineOgImage('MapcnDoc', {
     title: 'Chokepoint Density & STS Detection',
     description:
-      'deck.gl-over-MapLibre visualization for maritime defense — vessel-density hotspots and STS transfer detection at global chokepoints.',
+      'deck.gl-over-MapLibre visualization for maritime defense: vessel-density hotspots and STS transfer detection at global chokepoints.',
     category: 'Examples',
   });
 

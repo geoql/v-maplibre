@@ -575,7 +575,7 @@ export function useExamplesData() {
       id: 'geoarrow',
       title: 'GeoArrow / Apache Arrow',
       description:
-        'Native Arrow IPC rendering with deck.gl-geoarrow — Point, LineString, Polygon, MultiPolygon, Text, Trips',
+        'Native Arrow IPC rendering with deck.gl-geoarrow: Point, LineString, Polygon, MultiPolygon, Text, Trips',
       icon: 'lucide:network',
       examples: [
         {
@@ -637,7 +637,7 @@ export function useExamplesData() {
         {
           title: 'All Geometry Types',
           description:
-            'Point, LineString, and Polygon in a single view — three GeoArrow IPC files rendered together.',
+            'Point, LineString, and Polygon in a single view: three GeoArrow IPC files rendered together.',
           href: '/examples/deckgl-geoarrow-mixed',
           icon: 'lucide:layers',
           badge: 'Combined',

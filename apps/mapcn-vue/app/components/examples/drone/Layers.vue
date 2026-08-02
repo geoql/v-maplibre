@@ -129,11 +129,11 @@
   }
 
   watch(
-    () => [
-      props.tripData,
-      props.currentTime,
-      props.dronePosition,
-      props.mapBearing,
+    [
+      () => props.tripData,
+      () => props.currentTime,
+      () => props.dronePosition,
+      () => props.mapBearing,
     ],
     () => syncLayers(),
     { deep: true },

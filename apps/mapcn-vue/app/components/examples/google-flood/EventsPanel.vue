@@ -64,8 +64,8 @@
 
     <div v-else class="space-y-1.5">
       <div
-        v-for="(event, i) in visibleEvents"
-        :key="i"
+        v-for="event in visibleEvents"
+        :key="event.eventPolygonId"
         class="rounded-lg border border-border bg-card/50 p-2"
       >
         <div class="mb-1 flex items-start justify-between gap-2">
@@ -73,22 +73,22 @@
             <span
               v-for="code in event.affectedCountryCodes.slice(0, 3)"
               :key="code"
-              class="rounded bg-primary/10 px-1.5 py-0.5 text-[10px] font-medium text-primary"
+              class="rounded bg-primary/10 px-1.5 py-0.5 text-2xs font-medium text-primary"
             >
               {{ code }}
             </span>
             <span
               v-if="event.affectedCountryCodes.length > 3"
-              class="rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground"
+              class="rounded bg-muted px-1.5 py-0.5 text-2xs text-muted-foreground"
             >
               +{{ event.affectedCountryCodes.length - 3 }}
             </span>
           </div>
-          <span class="shrink-0 text-[10px] text-muted-foreground">
+          <span class="shrink-0 text-2xs text-muted-foreground">
             {{ formatDate(event.eventInterval.startTime) }}
           </span>
         </div>
-        <div class="flex items-center gap-3 text-[10px] text-muted-foreground">
+        <div class="flex items-center gap-3 text-2xs text-muted-foreground">
           <span>
             <Icon name="lucide:users" class="mr-0.5 inline size-2.5" />
             {{ formatPopulation(event.affectedPopulation) }}

@@ -9,14 +9,13 @@
   import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import { tableFromIPC } from 'apache-arrow';
   import type { Table } from 'apache-arrow';
-  import { markRaw, shallowRef, watch } from 'vue';
   import { Button } from '~/components/ui/button';
   import { Slider } from '~/components/ui/slider';
 
   usePageGeo({
     title: 'GeoArrow Polygons (deck.gl-geoarrow) - mapcn-vue Examples',
     description:
-      'Country boundaries from a native GeoArrow IPC file rendered with VLayerDeckglGeoArrowPolygon. Zero GeoJSON parsing — Arrow RecordBatch goes straight to the GPU.',
+      'Country boundaries from a native GeoArrow IPC file rendered with VLayerDeckglGeoArrowPolygon. Zero GeoJSON parsing: Arrow RecordBatch goes straight to the GPU.',
   });
 
   defineOgImage('MapcnDoc', {
@@ -162,6 +161,7 @@
           <a
             href="https://geoarrow.org"
             target="_blank"
+            rel="noopener noreferrer"
             class="font-mono text-primary hover:underline"
             >GeoArrow</a
           >
@@ -169,18 +169,17 @@
           <a
             href="https://github.com/geoarrow/deck.gl-geoarrow"
             target="_blank"
+            rel="noopener noreferrer"
             class="font-mono text-primary hover:underline"
             >deck.gl-geoarrow</a
           >. Arrow RecordBatch goes straight to the GPU — no GeoJSON parsing.
         </p>
 
-        <div class="mb-4 grid grid-cols-2 gap-2 font-mono text-[11px]">
+        <div class="mb-4 grid grid-cols-2 gap-2 font-mono text-caption">
           <div
             class="rounded-sm border border-border bg-background/40 px-2 py-1.5"
           >
-            <div
-              class="text-[9px] uppercase tracking-[0.18em] text-muted-foreground"
-            >
+            <div class="text-3xs uppercase tracking-caps text-muted-foreground">
               Rows
             </div>
             <div class="tabular-nums text-foreground">
@@ -192,9 +191,7 @@
           <div
             class="rounded-sm border border-border bg-background/40 px-2 py-1.5"
           >
-            <div
-              class="text-[9px] uppercase tracking-[0.18em] text-muted-foreground"
-            >
+            <div class="text-3xs uppercase tracking-caps text-muted-foreground">
               Payload
             </div>
             <div class="tabular-nums text-foreground">174.7 KB</div>
@@ -203,7 +200,7 @@
 
         <div class="mb-4">
           <label
-            class="mb-1.5 block font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
+            class="mb-1.5 block font-mono text-2xs uppercase tracking-caps text-muted-foreground"
           >
             Mode
           </label>
@@ -219,7 +216,7 @@
 
         <div class="mb-4">
           <label
-            class="mb-1.5 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
+            class="mb-1.5 flex items-center justify-between font-mono text-2xs uppercase tracking-caps text-muted-foreground"
           >
             <span>Fill opacity</span>
             <span class="tabular-nums text-foreground">{{ opacity[0] }}</span>
@@ -235,7 +232,7 @@
 
         <div v-show="extruded" class="mb-1">
           <label
-            class="mb-1.5 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
+            class="mb-1.5 flex items-center justify-between font-mono text-2xs uppercase tracking-caps text-muted-foreground"
           >
             <span>Elevation scale</span>
             <span class="tabular-nums text-foreground"
@@ -253,13 +250,13 @@
 
         <p
           v-if="loading"
-          class="mt-2 font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
+          class="mt-2 font-mono text-2xs uppercase tracking-caps text-muted-foreground"
         >
           Loading natural-earth.arrows…
         </p>
         <p
           v-else-if="error"
-          class="mt-2 font-mono text-[10px] uppercase tracking-[0.18em] text-destructive"
+          class="mt-2 font-mono text-2xs uppercase tracking-caps text-destructive"
         >
           {{ error }}
         </p>

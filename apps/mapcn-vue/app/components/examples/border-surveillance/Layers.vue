@@ -220,7 +220,7 @@
   }
 
   watch(
-    () => [props.loopedTime, props.positions, props.visibleLayers],
+    [() => props.loopedTime, () => props.positions, () => props.visibleLayers],
     () => syncLayers(),
     { deep: true },
   );
