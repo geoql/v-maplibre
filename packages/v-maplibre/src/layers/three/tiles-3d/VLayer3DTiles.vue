@@ -2,45 +2,40 @@
   /**
    * OGC 3D Tiles layer — streams a tileset (mesh tiles and/or
    * `KHR_gaussian_splatting` + SPZ splat tiles) through
-   * NASA-AMMOS/3DTilesRendererJS, drawn into MapLibre's WebGL2 context via a
-   * dedicated custom layer.
+   * NASA-AMMOS/3DTilesRendererJS inside a shared three.js scene drawing
+   * into MapLibre's WebGL2 context (the same MapScene pipeline the splat
+   * layer uses).
    *
-   * Uses the two-camera architecture from MapLibre's official
-   * `add-3d-tiles-using-threejs` example: a rendering camera carries the
-   * combined MapLibre MVP, while a separate traversal camera (pure projection
-   * + extracted view matrix) drives `TilesRenderer.update()`. Reusing one
-   * camera for both corrupts the frustum because MapLibre's projection matrix
-   * already bakes in the view transform.
+   * The ECEF tileset is re-rooted to its local frame with the inverse of its
+   * root transform, placed at the geographic anchor via the plugin's RTC
+   * group, and `TilesRenderer.update()` is driven each frame from MapScene's
+   * preRender hook with a traversal camera positioned at the map camera.
    *
-   * @requires `three`, `3d-tiles-renderer`
+   * @requires `three`, `3d-tiles-renderer`, `@dvt3d/maplibre-three-plugin`
    * @requires `@sparkjsdev/spark` + `3d-tiles-rendererjs-3dgs-plugin` (splat tiles)
    *
    * Install with:
-   * `pnpm add three 3d-tiles-renderer @sparkjsdev/spark 3d-tiles-rendererjs-3dgs-plugin`
+   * `pnpm add three 3d-tiles-renderer @dvt3d/maplibre-three-plugin @sparkjsdev/spark 3d-tiles-rendererjs-3dgs-plugin`
    */
   import { ref, watch, onBeforeUnmount } from 'vue';
   import { TilesRenderer } from '3d-tiles-renderer';
   import { TilesFadePlugin } from '3d-tiles-renderer/plugins';
   import { GaussianSplatPlugin } from '3d-tiles-rendererjs-3dgs-plugin';
-  import {
-    Matrix3,
-    Matrix4,
-    PerspectiveCamera,
-    Scene,
-    Sphere,
-    Vector3,
-    WebGLRenderer,
-  } from 'three';
-  import {
-    MercatorCoordinate,
-    type CustomLayerInterface,
-    type CustomRenderMethodInput,
-    type Map,
-  } from 'maplibre-gl';
+  import { SparkRenderer } from '@sparkjsdev/spark';
+  import { Creator, SceneTransform } from '@dvt3d/maplibre-three-plugin';
+  import { MathUtils, PerspectiveCamera, Vector3, type Group } from 'three';
+  import type { Map } from 'maplibre-gl';
   import { injectStrict, MapKey } from '../../../utils';
+  import {
+    acquireThreeScene,
+    releaseThreeScene,
+    retainSparkRenderer,
+    releaseSparkRenderer,
+    type ThreeSceneEntry,
+  } from '../_shared/useThreeScene';
 
   interface Props {
-    /** Unique identifier used for the MapLibre custom layer. */
+    /** Unique identifier (informational; tiles share one scene layer). */
     id?: string;
     /** URL of the root `tileset.json`. */
     url: string;
@@ -58,24 +53,33 @@
     splats?: boolean;
     /**
      * Geographic anchor override `[lng, lat]`. When omitted the anchor is
-     * derived from the tileset's bounding sphere on load.
+     * derived from the tileset's root transform on load.
      */
     anchor?: [number, number];
     /** Anchor altitude override in meters (defaults to derived height). */
     altitude?: number;
+    /**
+     * Rotation `[x, y, z]` in degrees mapping the tileset's local frame into
+     * the map frame (default `[-90, 0, 0]`, matching the geolith 3DGS scans).
+     */
+    rotation?: [number, number, number];
+    /** Uniform scale multiplier on top of the meters-at-latitude scaling. */
+    scale?: number;
     /** `fetch` options forwarded to every tileset/tile request. */
     fetchOptions?: RequestInit;
-    /** Insert the custom layer before this MapLibre layer id. */
+    /** Move the shared three.js scene layer before this MapLibre layer id. */
     before?: string;
   }
 
   const props = withDefaults(defineProps<Props>(), {
-    id: 'v-3d-tiles',
+    id: '3d-tiles',
     errorTarget: 8,
     fade: true,
     splats: true,
     anchor: undefined,
     altitude: undefined,
+    rotation: () => [-90, 0, 0],
+    scale: 1,
     fetchOptions: undefined,
     before: undefined,
   });
@@ -87,16 +91,15 @@
 
   const map = injectStrict(MapKey);
   const loaded = ref(false);
-
-  let renderer: WebGLRenderer | null = null;
-  let scene: Scene | null = null;
-  let camera: PerspectiveCamera | null = null;
-  let tilesCamera: PerspectiveCamera | null = null;
+  let entry: ThreeSceneEntry | null = null;
+  let rtcGroup: Group | null = null;
   let tiles: TilesRenderer | null = null;
-  let localTransform: Matrix4 | null = null;
-  let addedMap: Map | null = null;
+  let traversalCamera: PerspectiveCamera | null = null;
+  let anchorCoord: [number, number, number] | null = null;
 
-  const getMapInstance = (): Map | null => map.value || null;
+  const getMapInstance = (): Map | null => {
+    return map.value || null;
+  };
 
   const triggerRepaint = (): void => {
     const mapInstance = getMapInstance();
@@ -105,185 +108,152 @@
     }
   };
 
-  /**
-   * Build the ECEF→mercator model transform for the tileset anchor and
-   * re-center the tileset group on that anchor. Called once the root tileset
-   * is available (or immediately when an explicit `anchor` prop is set).
-   */
-  const buildLocalTransform = (
-    lng: number,
-    lat: number,
-    height: number,
-  ): void => {
-    const coord = MercatorCoordinate.fromLngLat([lng, lat], height);
-    const scale = coord.meterInMercatorCoordinateUnits();
-    localTransform = new Matrix4()
-      .makeTranslation(coord.x, coord.y, coord.z)
-      .scale(new Vector3(scale, -scale, scale))
-      .multiply(new Matrix4().makeRotationX(Math.PI / 2));
+  const toRadians = (
+    deg: [number, number, number],
+  ): [number, number, number] => [
+    MathUtils.degToRad(deg[0]),
+    MathUtils.degToRad(deg[1]),
+    MathUtils.degToRad(deg[2]),
+  ];
+
+  const applyTransform = (): void => {
+    if (!rtcGroup || !anchorCoord) return;
+    rtcGroup.position.copy(SceneTransform.lngLatToVector3(anchorCoord));
+    const [rx, ry, rz] = toRadians(props.rotation);
+    rtcGroup.rotation.set(rx, ry, rz);
+    const upm = SceneTransform.projectedUnitsPerMeter(anchorCoord[1]);
+    rtcGroup.scale.setScalar(upm * props.scale);
   };
 
+  /**
+   * Re-root the ECEF tileset to its local frame with the inverse root
+   * transform, derive the geographic anchor, and place the RTC group there.
+   */
   const onLoadRootTileset = (event: { tileset: object; url: string }): void => {
-    if (!tiles) return;
-    if (props.anchor) {
-      buildLocalTransform(
-        props.anchor[0],
-        props.anchor[1],
-        props.altitude ?? 0,
-      );
-    } else {
-      const sphere = new Sphere();
-      if (tiles.getBoundingSphere(sphere)) {
-        const center = sphere.center.clone();
-        // Match MapLibre's official add-3d-tiles example: recenter the group
-        // with the root tile's own transform rotation (second column negated
-        // for the ECEF→three Y-up conversion) times a -center translation —
-        // NOT an ellipsoid getObjectFrame re-root, which double-transforms.
-        const rootTransform = (tiles.root as { transform?: number[] } | null)
-          ?.transform ?? [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
-        const m = rootTransform;
-        const rotationMat3 = new Matrix3().set(
-          m[0],
-          m[1],
-          m[2],
-          m[8],
-          m[9],
-          m[10],
-          -m[4],
-          -m[5],
-          -m[6],
-        );
-        const rotationMat4 = new Matrix4().setFromMatrix3(rotationMat3);
-        const moveToOrigin = new Matrix4().makeTranslation(
-          -center.x,
-          -center.y,
-          -center.z,
-        );
-        const finalMatrix = new Matrix4().multiplyMatrices(
-          rotationMat4,
-          moveToOrigin,
-        );
-        tiles.group.matrix.copy(finalMatrix);
-        tiles.group.matrixAutoUpdate = false;
-        tiles.group.updateMatrixWorld(true);
+    if (!tiles || !entry) return;
 
-        const cart = { lat: 0, lon: 0, height: 0 };
-        tiles.ellipsoid.getPositionToCartographic(center, cart);
-        buildLocalTransform(
-          (cart.lon * 180) / Math.PI,
-          (cart.lat * 180) / Math.PI,
-          props.altitude ?? cart.height,
-        );
-      }
+    const rootTransform = (tiles.root as { transform?: number[] } | null)
+      ?.transform ?? [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+
+    // Cancel the ECEF root transform so tile content sits in its local frame.
+    tiles.group.matrix.fromArray(rootTransform).invert();
+    tiles.group.matrixAutoUpdate = false;
+    tiles.group.updateMatrixWorld(true);
+
+    // Anchor: explicit prop, else the root transform's ECEF translation.
+    if (props.anchor) {
+      anchorCoord = [props.anchor[0], props.anchor[1], props.altitude ?? 0];
+    } else {
+      const cart = { lat: 0, lon: 0, height: 0 };
+      tiles.ellipsoid.getPositionToCartographic(
+        new Vector3(rootTransform[12], rootTransform[13], rootTransform[14]),
+        cart,
+      );
+      anchorCoord = [
+        MathUtils.radToDeg(cart.lon),
+        MathUtils.radToDeg(cart.lat),
+        props.altitude ?? cart.height,
+      ];
+    }
+
+    rtcGroup = Creator.createRTCGroup(
+      anchorCoord,
+      toRadians(props.rotation),
+      [1, 1, 1],
+    );
+    applyTransform();
+    rtcGroup.add(tiles.group);
+    entry.mapScene.addObject(rtcGroup);
+
+    if (props.before) {
+      entry.mapScene.layerBeforeTo(props.before);
     }
     triggerRepaint();
     emit('loadTileset', event.tileset, event.url);
   };
 
-  const customLayer: CustomLayerInterface = {
-    id: props.id,
-    type: 'custom',
-    renderingMode: '3d',
+  // `tiles.update()` is what kicks off the root-tileset fetch and drives LOD,
+  // so it must run every frame once the layer is up. The traversal camera
+  // tracks the map camera so screen-space-error distances stay sane.
+  const onPreRender = (): void => {
+    if (!entry || !tiles || !traversalCamera) return;
+    const sceneCam = entry.mapScene.camera;
 
-    onAdd(
-      mapInstance: Map,
-      gl: WebGLRenderingContext | WebGL2RenderingContext,
-    ) {
-      try {
-        renderer = new WebGLRenderer({
-          canvas: mapInstance.getCanvas(),
-          context: gl as WebGL2RenderingContext,
-          antialias: false,
-        });
-        renderer.autoClear = false;
+    // Keep the traversal camera's projection in sync with the scene camera.
+    traversalCamera.fov = sceneCam.fov;
+    traversalCamera.aspect = sceneCam.aspect;
+    traversalCamera.near = sceneCam.near;
+    traversalCamera.far = sceneCam.far;
+    traversalCamera.updateProjectionMatrix();
 
-        scene = new Scene();
-        camera = new PerspectiveCamera();
-        tilesCamera = new PerspectiveCamera();
+    // Identity view: the traversal frustum then equals the scene camera's
+    // projection × the tiles group's own world matrix — the exact transform
+    // the MapScene renders with, so content that draws at the anchor is in
+    // the frustum. (Deriving the camera position from the free camera mixed
+    // normalized-mercator and world-frame units, shifting the frustum off
+    // the content and culling every tile.)
+    traversalCamera.matrixWorld.identity();
+    traversalCamera.matrixWorldInverse.identity();
 
-        tiles = new TilesRenderer(props.url);
-        tiles.errorTarget = props.errorTarget;
-        if (props.fetchOptions) tiles.fetchOptions = props.fetchOptions;
-        if (props.fade) tiles.registerPlugin(new TilesFadePlugin());
-        if (props.splats) {
-          tiles.registerPlugin(new GaussianSplatPlugin({ renderer, scene }));
-        }
-        tiles.setCamera(tilesCamera);
-        tiles.setResolutionFromRenderer(tilesCamera, renderer);
-        scene.add(tiles.group);
+    tiles.setResolutionFromRenderer(traversalCamera, entry.mapScene.renderer);
+    tiles.update();
 
-        tiles.addEventListener('load-root-tileset', ((event: unknown) => {
-          onLoadRootTileset(event as { tileset: object; url: string });
-        }) as never);
-        tiles.addEventListener('load-error', ((event: unknown) => {
-          const e = event as { error: Error };
-          emit('error', e.error);
-        }) as never);
-        // Fade transitions and async splat sorts need extra composites.
-        tiles.addEventListener(
-          'needs-render' as never,
-          triggerRepaint as never,
-        );
-        tiles.addEventListener(
-          'needs-update' as never,
-          triggerRepaint as never,
-        );
-      } catch (error) {
-        console.error('Error initializing 3d-tiles layer:', error);
-      }
-    },
-
-    render(_gl: WebGLRenderingContext, args: CustomRenderMethodInput) {
-      if (!renderer || !scene || !camera || !tilesCamera || !tiles) return;
-
-      // Use defaultProjectionData.mainMatrix (the mercator→clip matrix for
-      // custom layers) per MapLibre's official add-3d-tiles example — NOT
-      // modelViewProjectionMatrix, whose frame doesn't match.
-      const m = new Matrix4().fromArray(
-        args.defaultProjectionData.mainMatrix as unknown as number[],
-      );
-      if (localTransform) {
-        camera.projectionMatrix.copy(m).multiply(localTransform);
-      } else {
-        camera.projectionMatrix.copy(m);
-      }
-
-      // For the traversal frustum, use the SAME combined MVP the render
-      // camera uses (mainMatrix × localTransform) as the traversal camera's
-      // projection matrix with an identity view — so the frustum is built from
-      // the exact view-projection that renders the content. Splitting into a
-      // separate projection P + extracted view V (the desktop-three pattern)
-      // produced a degenerate frustum against MapLibre v6's matrix layout and
-      // culled every tile. The camera's world position for SSE is derived
-      // separately from the map's free camera below.
-      tilesCamera.projectionMatrix.copy(camera.projectionMatrix);
-      tilesCamera.matrixWorldInverse.identity();
-      tilesCamera.matrixWorld.identity();
-      // Position the traversal camera at the map camera's real location in
-      // the tileset's local frame so screen-space-error distances are sane.
-      const freeCam = mapInstance?.getFreeCameraOptions?.();
-      if (freeCam && tiles.group) {
-        const camPos = freeCam.position;
-        tiles.group.updateMatrixWorld(true);
-        const worldPos = new Vector3(camPos.x, camPos.y, camPos.z).applyMatrix4(
-          tiles.group.matrixWorldInverse,
-        );
-        tilesCamera.matrixWorld.setPosition(worldPos);
-        tilesCamera.matrixWorldInverse.copy(tilesCamera.matrixWorld).invert();
-      }
-
-      renderer.resetState();
-      renderer.render(scene, camera);
-      tiles.update();
-    },
+    // Keep frames coming while downloads are in flight; a static map stops
+    // rendering (and therefore stops ticking update()) otherwise.
+    if (tiles.loadProgress < 1) {
+      triggerRepaint();
+    }
   };
 
   const addLayer = (): void => {
     const mapInstance = getMapInstance();
-    if (!mapInstance || addedMap === mapInstance) return;
+    if (!mapInstance || entry) return;
+
     try {
-      mapInstance.addLayer(customLayer, props.before);
-      addedMap = mapInstance;
+      entry = acquireThreeScene(mapInstance);
+      const { mapScene } = entry;
+
+      // Retain a plain SparkRenderer (the same one the splat layer uses).
+      // The plugin's CameraRelativeSparkRenderer re-bases splats around the
+      // camera, but MapScene overwrites the camera's matrixWorld to identity
+      // each render, breaking that rebasing so nothing draws. A plain
+      // SparkRenderer relies on the world-group view transform instead and
+      // renders the tiles' SplatMesh content like the standalone splat.
+      const spark = retainSparkRenderer(
+        entry,
+        () => new SparkRenderer({ renderer: mapScene.renderer }),
+      );
+      spark.onDirty = () => triggerRepaint();
+
+      traversalCamera = new PerspectiveCamera();
+
+      tiles = new TilesRenderer(props.url);
+      tiles.errorTarget = props.errorTarget;
+      if (props.fetchOptions) tiles.fetchOptions = props.fetchOptions;
+      if (props.fade) tiles.registerPlugin(new TilesFadePlugin());
+      if (props.splats) {
+        tiles.registerPlugin(
+          new GaussianSplatPlugin({
+            renderer: mapScene.renderer,
+            scene: mapScene.scene,
+          }),
+        );
+      }
+      tiles.setCamera(traversalCamera);
+      tiles.setResolutionFromRenderer(traversalCamera, mapScene.renderer);
+
+      tiles.addEventListener('load-root-tileset', ((event: unknown) => {
+        onLoadRootTileset(event as { tileset: object; url: string });
+      }) as never);
+      tiles.addEventListener('load-error', ((event: unknown) => {
+        const e = event as { error: Error };
+        emit('error', e.error);
+      }) as never);
+      // Fade transitions and async splat sorts request extra composites.
+      tiles.addEventListener('needs-render' as never, triggerRepaint as never);
+      tiles.addEventListener('needs-update' as never, triggerRepaint as never);
+
+      mapScene.on('preRender', onPreRender);
       triggerRepaint();
     } catch (error) {
       console.error('Error adding 3d-tiles layer:', error);
@@ -292,11 +262,12 @@
 
   // Style readiness, robust against two MapLibre quirks:
   //  1. 'style.load' may have fired BEFORE this component binds (fast or
-  //     cached styles), so an event-only listener would never trigger.
-  //  2. isStyleLoaded() can stay false FOREVER when the style references a
-  //     missing sprite image (MapLibre keeps waiting for it) — the 'idle'
-  //     event still fires once rendering settles, and addLayer() is safe
-  //     from that point on.
+  //     cached styles), so an event-only listener would never trigger —
+  //     poll isStyleLoaded() instead (it oscillates while tiles stream, so
+  //     a one-shot check is not enough either).
+  //  2. isStyleLoaded() can stay false indefinitely when the style
+  //     references a missing sprite image; 'idle' still fires once
+  //     rendering settles, and attaching is safe from that point on.
   const setupMap = (mapInstance: Map) => {
     if (!mapInstance) return;
 
@@ -304,31 +275,33 @@
       if (map.value !== mapInstance) return;
       loaded.value = true;
     };
-    if (mapInstance.isStyleLoaded()) {
-      markReady();
-    } else {
-      mapInstance.once('idle', markReady);
-    }
+    const styleTimeout = () => {
+      if (map.value !== mapInstance || loaded.value) return;
+      if (mapInstance.isStyleLoaded()) {
+        markReady();
+      } else {
+        setTimeout(styleTimeout, 200);
+      }
+    };
+    styleTimeout();
+    mapInstance.once('idle', markReady);
     mapInstance.on('style.load', markReady);
   };
 
   watch(
     map,
-    (newMap, oldMap) => {
-      // The map instance is recreated when the style object identity changes
-      // (e.g. VMap :key="mapStyle" swap). Reset so addLayer() re-registers the
-      // custom layer (and rebuilds the renderer on the new GL context).
-      if (newMap !== oldMap) {
-        addedMap = null;
-        loaded.value = false;
+    (newMap) => {
+      if (newMap) {
+        setupMap(newMap);
       }
-      if (newMap) setupMap(newMap);
     },
     { immediate: true },
   );
 
   watch(loaded, (value) => {
-    if (value) addLayer();
+    if (value) {
+      addLayer();
+    }
   });
 
   watch(
@@ -341,31 +314,43 @@
     },
   );
 
+  watch(
+    () => [props.rotation, props.scale, props.altitude],
+    () => {
+      applyTransform();
+      triggerRepaint();
+    },
+  );
+
   onBeforeUnmount(() => {
     const mapInstance = getMapInstance();
+
     try {
+      if (entry) {
+        entry.mapScene.off('preRender', onPreRender as never);
+      }
       if (tiles) {
-        scene?.remove(tiles.group);
+        rtcGroup?.remove(tiles.group);
         tiles.dispose();
         tiles = null;
       }
-      renderer?.dispose();
-      renderer = null;
-      if (
-        mapInstance &&
-        addedMap === mapInstance &&
-        mapInstance.getLayer(props.id)
-      ) {
-        mapInstance.removeLayer(props.id);
+      if (entry && rtcGroup) {
+        entry.mapScene.removeObject(rtcGroup);
       }
-      addedMap = null;
-      scene = null;
-      camera = null;
-      tilesCamera = null;
-      triggerRepaint();
+      if (entry) {
+        releaseSparkRenderer(entry);
+      }
+      if (mapInstance && entry) {
+        releaseThreeScene(mapInstance);
+        triggerRepaint();
+      }
     } catch (error) {
       console.error('Error cleaning up 3d-tiles layer:', error);
     }
+    rtcGroup = null;
+    traversalCamera = null;
+    anchorCoord = null;
+    entry = null;
   });
 </script>
 
