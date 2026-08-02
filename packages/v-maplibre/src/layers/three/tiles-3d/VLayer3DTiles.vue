@@ -23,6 +23,7 @@
   import { TilesFadePlugin } from '3d-tiles-renderer/plugins';
   import { GaussianSplatPlugin } from '3d-tiles-rendererjs-3dgs-plugin';
   import {
+    Matrix3,
     Matrix4,
     PerspectiveCamera,
     Scene,
@@ -133,29 +134,41 @@
     } else {
       const sphere = new Sphere();
       if (tiles.getBoundingSphere(sphere)) {
-        const cart = { lat: 0, lon: 0, height: 0 };
-        tiles.ellipsoid.getPositionToCartographic(sphere.center, cart);
-        // Re-root the ECEF tileset into a local ENU frame (Y-up, X-west,
-        // Z-north) anchored at its surface point — the same math as
-        // 3d-tiles-renderer's ReorientationPlugin. Content then sits near the
-        // group origin in meters and localTransform places it on the map.
-        tiles.ellipsoid.getObjectFrame(
-          cart.lat,
-          cart.lon,
-          cart.height,
-          0,
-          0,
-          0,
-          tiles.group.matrix,
+        const center = sphere.center.clone();
+        // Match MapLibre's official add-3d-tiles example: recenter the group
+        // with the root tile's own transform rotation (second column negated
+        // for the ECEF→three Y-up conversion) times a -center translation —
+        // NOT an ellipsoid getObjectFrame re-root, which double-transforms.
+        const rootTransform = (tiles.root as { transform?: number[] } | null)
+          ?.transform ?? [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
+        const m = rootTransform;
+        const rotationMat3 = new Matrix3().set(
+          m[0],
+          m[1],
+          m[2],
+          m[8],
+          m[9],
+          m[10],
+          -m[4],
+          -m[5],
+          -m[6],
         );
-        tiles.group.matrix
-          .invert()
-          .decompose(
-            tiles.group.position,
-            tiles.group.quaternion,
-            tiles.group.scale,
-          );
+        const rotationMat4 = new Matrix4().setFromMatrix3(rotationMat3);
+        const moveToOrigin = new Matrix4().makeTranslation(
+          -center.x,
+          -center.y,
+          -center.z,
+        );
+        const finalMatrix = new Matrix4().multiplyMatrices(
+          rotationMat4,
+          moveToOrigin,
+        );
+        tiles.group.matrix.copy(finalMatrix);
+        tiles.group.matrixAutoUpdate = false;
         tiles.group.updateMatrixWorld(true);
+
+        const cart = { lat: 0, lon: 0, height: 0 };
+        tiles.ellipsoid.getPositionToCartographic(center, cart);
         buildLocalTransform(
           (cart.lon * 180) / Math.PI,
           (cart.lat * 180) / Math.PI,
@@ -223,13 +236,11 @@
     render(_gl: WebGLRenderingContext, args: CustomRenderMethodInput) {
       if (!renderer || !scene || !camera || !tilesCamera || !tiles) return;
 
-      // Use the full world→clip MVP (modelViewProjectionMatrix), NOT
-      // defaultProjectionData.mainMatrix — the latter only projects tile-local
-      // 0..EXTENT coordinates to screen and would leave our mercator content
-      // off-frustum. The official add-3d-tiles example uses this same
-      // world→clip matrix for the render camera.
+      // Use defaultProjectionData.mainMatrix (the mercator→clip matrix for
+      // custom layers) per MapLibre's official add-3d-tiles example — NOT
+      // modelViewProjectionMatrix, whose frame doesn't match.
       const m = new Matrix4().fromArray(
-        args.modelViewProjectionMatrix as unknown as number[],
+        args.defaultProjectionData.mainMatrix as unknown as number[],
       );
       if (localTransform) {
         camera.projectionMatrix.copy(m).multiply(localTransform);
@@ -237,17 +248,29 @@
         camera.projectionMatrix.copy(m);
       }
 
-      // Extract the pure view matrix V = P^-1 * MVP for the traversal camera.
-      const p = new Matrix4().fromArray(
-        args.projectionMatrix as unknown as number[],
-      );
-      const v = new Matrix4()
-        .copy(p)
-        .invert()
-        .multiply(camera.projectionMatrix);
-      tilesCamera.projectionMatrix.copy(p);
-      tilesCamera.matrixWorldInverse.copy(v);
-      tilesCamera.matrixWorld.copy(v).invert();
+      // For the traversal frustum, use the SAME combined MVP the render
+      // camera uses (mainMatrix × localTransform) as the traversal camera's
+      // projection matrix with an identity view — so the frustum is built from
+      // the exact view-projection that renders the content. Splitting into a
+      // separate projection P + extracted view V (the desktop-three pattern)
+      // produced a degenerate frustum against MapLibre v6's matrix layout and
+      // culled every tile. The camera's world position for SSE is derived
+      // separately from the map's free camera below.
+      tilesCamera.projectionMatrix.copy(camera.projectionMatrix);
+      tilesCamera.matrixWorldInverse.identity();
+      tilesCamera.matrixWorld.identity();
+      // Position the traversal camera at the map camera's real location in
+      // the tileset's local frame so screen-space-error distances are sane.
+      const freeCam = mapInstance?.getFreeCameraOptions?.();
+      if (freeCam && tiles.group) {
+        const camPos = freeCam.position;
+        tiles.group.updateMatrixWorld(true);
+        const worldPos = new Vector3(camPos.x, camPos.y, camPos.z).applyMatrix4(
+          tiles.group.matrixWorldInverse,
+        );
+        tilesCamera.matrixWorld.setPosition(worldPos);
+        tilesCamera.matrixWorldInverse.copy(tilesCamera.matrixWorld).invert();
+      }
 
       renderer.resetState();
       renderer.render(scene, camera);
