@@ -22,9 +22,11 @@
   const assetsBase = config.public.r2AssetsBase;
 
   // geolith pipeline outputs (geolith/geolith#15): a 3DGS scan + Terrain-RGB
-  // PMTiles of the Belvedere Glacier (Macugnaga, IT). The splat is anchored
-  // on the glacier tongue; terrain elevation there is ~1830 m.
-  const anchor = { lng: 7.9173, lat: 45.9592, altitude: 1830 };
+  // PMTiles of the Belvedere Glacier (Macugnaga, IT), anchored at the
+  // terrain tileset's center. Altitude snaps to the real DEM elevation via
+  // queryTerrainElevation once tiles are in.
+  const anchor = { lng: 7.9173, lat: 45.9592 };
+  const altitude = ref(1830);
 
   const splatUrl = `${assetsBase}/splat/bonsai/scene.spz`;
   const terrainUrl = `${assetsBase}/terrain/belvedere-glacier.pmtiles`;
@@ -33,7 +35,7 @@
     container: `splat-example-${mapId}`,
     style: mapStyle.value,
     center: [anchor.lng, anchor.lat] as [number, number],
-    zoom: 16.2,
+    zoom: 18.8,
     pitch: 62,
     bearing: 25,
     maxPitch: 85,
@@ -52,6 +54,10 @@
     loading.value = false;
   };
 
+  const onError = (error: Error) => {
+    console.error('[splat-demo] load error:', error);
+  };
+
   const onMapLoaded = (map: Map) => {
     map.addSource('belvedere-dem', {
       type: 'raster-dem',
@@ -60,6 +66,12 @@
       tileSize: 512,
     });
     map.setTerrain({ source: 'belvedere-dem', exaggeration: 1 });
+    map.once('idle', () => {
+      const elevation = map.queryTerrainElevation([anchor.lng, anchor.lat]);
+      if (typeof elevation === 'number' && Number.isFinite(elevation)) {
+        altitude.value = Math.round(elevation);
+      }
+    });
   };
 
   const SCRIPT_END = '</' + 'script>';
@@ -134,11 +146,13 @@
             :url="splatUrl"
             :longitude="anchor.lng"
             :latitude="anchor.lat"
-            :altitude="anchor.altitude"
+            :altitude="altitude"
             :rotation="[-90, 0, 0]"
+            :scale="25"
             :lod="true"
             @load="onLoad"
             @progress="onProgress"
+            @error="onError"
           />
         </VMap>
       </ClientOnly>

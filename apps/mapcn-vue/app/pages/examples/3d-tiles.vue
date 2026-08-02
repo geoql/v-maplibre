@@ -92,6 +92,7 @@
             id="splat-tileset"
             :url="tilesetUrl"
             :error-target="8"
+            :altitude="0"
             :fade="true"
             :splats="true"
             @load-tileset="onLoadTileset"
