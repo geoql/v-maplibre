@@ -226,25 +226,26 @@
     }
   };
 
-  // Poll for style readiness instead of waiting for 'style.load': that event
-  // may have ALREADY fired before this component binds (fast/cached styles)
-  // while isStyleLoaded() still reports false because sprites/glyphs are in
-  // flight — in which case a style.load-only listener never triggers.
+  // Style readiness, robust against two MapLibre quirks:
+  //  1. 'style.load' may have fired BEFORE this component binds (fast or
+  //     cached styles), so an event-only listener would never trigger.
+  //  2. isStyleLoaded() can stay false FOREVER when the style references a
+  //     missing sprite image (MapLibre keeps waiting for it) — the 'idle'
+  //     event still fires once rendering settles, and addLayer() is safe
+  //     from that point on.
   const setupMap = (mapInstance: Map) => {
     if (!mapInstance) return;
 
-    const styleTimeout = () => {
-      if (map.value !== mapInstance) return; // map swapped/unmounted
-      if (!mapInstance.isStyleLoaded()) {
-        setTimeout(styleTimeout, 200);
-      } else {
-        loaded.value = true;
-      }
+    const markReady = () => {
+      if (map.value !== mapInstance) return;
+      loaded.value = true;
     };
-    styleTimeout();
-
-    // Re-arm after style swaps (theme switch replaces the style object).
-    mapInstance.on('style.load', styleTimeout);
+    if (mapInstance.isStyleLoaded()) {
+      markReady();
+    } else {
+      mapInstance.once('idle', markReady);
+    }
+    mapInstance.on('style.load', markReady);
   };
 
   watch(

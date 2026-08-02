@@ -35,7 +35,7 @@
     container: `splat-example-${mapId}`,
     style: mapStyle.value,
     center: [anchor.lng, anchor.lat] as [number, number],
-    zoom: 18.8,
+    zoom: 17.8,
     pitch: 62,
     bearing: 25,
     maxPitch: 85,
@@ -59,6 +59,8 @@
   };
 
   const onMapLoaded = (map: Map) => {
+    if (import.meta.dev)
+      (window as unknown as Record<string, unknown>).__qaMap = map;
     map.addSource('belvedere-dem', {
       type: 'raster-dem',
       url: `pmtiles://${terrainUrl}`,
@@ -66,12 +68,18 @@
       tileSize: 512,
     });
     map.setTerrain({ source: 'belvedere-dem', exaggeration: 1 });
-    map.once('idle', () => {
+    // DEM tiles stream in after style 'idle'; poll until the anchor has a
+    // real elevation so the splat sits ON the glacier instead of 120 m
+    // under it (terrain depth-occludes anything below the surface).
+    const snapToTerrain = () => {
       const elevation = map.queryTerrainElevation([anchor.lng, anchor.lat]);
       if (typeof elevation === 'number' && Number.isFinite(elevation)) {
         altitude.value = Math.round(elevation);
+      } else {
+        setTimeout(snapToTerrain, 500);
       }
-    });
+    };
+    map.once('idle', snapToTerrain);
   };
 
   const SCRIPT_END = '</' + 'script>';
@@ -148,7 +156,6 @@
             :latitude="anchor.lat"
             :altitude="altitude"
             :rotation="[-90, 0, 0]"
-            :scale="25"
             :lod="true"
             @load="onLoad"
             @progress="onProgress"

@@ -156,4 +156,5 @@ minimumReleaseAgeExclude:
   - '@vue/*'
 
 patchedDependencies:
+  '@sparkjsdev/spark@2.1.0': patches/@sparkjsdev__spark@2.1.0.patch
   maplibre-gl-interpolate-heatmap@0.1.3: patches/maplibre-gl-interpolate-heatmap@0.1.3.patch
