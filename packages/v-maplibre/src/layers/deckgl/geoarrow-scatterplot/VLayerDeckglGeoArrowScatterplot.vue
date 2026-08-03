@@ -138,22 +138,22 @@
   );
 
   watch(
-    () => [
-      props.getFillColor,
-      props.getLineColor,
-      props.getRadius,
-      props.getLineWidth,
-      props.radiusUnits,
-      props.radiusScale,
-      props.radiusMinPixels,
-      props.radiusMaxPixels,
-      props.lineWidthUnits,
-      props.lineWidthScale,
-      props.stroked,
-      props.filled,
-      props.opacity,
-      props.visible,
-      props.pickable,
+    [
+      () => props.getFillColor,
+      () => props.getLineColor,
+      () => props.getRadius,
+      () => props.getLineWidth,
+      () => props.radiusUnits,
+      () => props.radiusScale,
+      () => props.radiusMinPixels,
+      () => props.radiusMaxPixels,
+      () => props.lineWidthUnits,
+      () => props.lineWidthScale,
+      () => props.stroked,
+      () => props.filled,
+      () => props.opacity,
+      () => props.visible,
+      () => props.pickable,
     ],
     () => {
       if (!LayerClass.value || !props.data) return;

@@ -122,13 +122,13 @@
   );
 
   watch(
-    () => [
-      props.data,
-      props.getPath,
-      props.trailLength,
-      props.getColor,
-      props.opacity,
-      props.visible,
+    [
+      () => props.data,
+      () => props.getPath,
+      () => props.trailLength,
+      () => props.getColor,
+      () => props.opacity,
+      () => props.visible,
     ],
     () => updateLayer(props.id, createLayer()),
     { deep: true },

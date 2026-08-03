@@ -10,7 +10,6 @@ export type {
   ControlPosition,
   LayerConfig,
 } from './layer';
-export { layerControlEvents } from './layer';
 export { VControlLegend } from './legend';
 export type {
   LegendType,
@@ -23,4 +22,3 @@ export type {
   ExpressionValue,
   DeckLayerWithExtensions,
 } from './legend';
-export { LEGEND_EVENTS } from './legend';

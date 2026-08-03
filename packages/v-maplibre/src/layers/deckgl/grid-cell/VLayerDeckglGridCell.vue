@@ -98,15 +98,15 @@
   );
 
   watch(
-    () => [
-      props.data,
-      props.getPosition,
-      props.getFillColor,
-      props.getElevation,
-      props.cellSize,
-      props.elevationScale,
-      props.opacity,
-      props.visible,
+    [
+      () => props.data,
+      () => props.getPosition,
+      () => props.getFillColor,
+      () => props.getElevation,
+      () => props.cellSize,
+      () => props.elevationScale,
+      () => props.opacity,
+      () => props.visible,
     ],
     () => updateLayer(props.id, createLayer()),
     { deep: true },

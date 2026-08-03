@@ -4,6 +4,5 @@ export {
   DeckOverlayKey,
   DeckLayersKey,
 } from './useDeckOverlay';
-export { useMapReady } from './useMapReady';
 export * from './types';
 export * from './arrow';

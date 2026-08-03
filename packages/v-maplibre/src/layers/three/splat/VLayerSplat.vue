@@ -185,12 +185,12 @@
   );
 
   watch(
-    () => [
-      props.longitude,
-      props.latitude,
-      props.altitude,
-      props.rotation,
-      props.scale,
+    [
+      () => props.longitude,
+      () => props.latitude,
+      () => props.altitude,
+      () => props.rotation,
+      () => props.scale,
     ],
     () => {
       applyTransform();

@@ -8,8 +8,8 @@
 
   const props = withDefaults(
     defineProps<{
-      options: PopupOptions;
-      coordinates: LngLatLike;
+      options?: PopupOptions;
+      coordinates?: LngLatLike;
       marker?: Marker;
     }>(),
     {

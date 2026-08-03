@@ -10,7 +10,7 @@
 
   const props = withDefaults(
     defineProps<{
-      options: MapOptions;
+      options?: MapOptions;
       supportPmtiles?: boolean;
       projection?: 'globe' | 'mercator';
     }>(),

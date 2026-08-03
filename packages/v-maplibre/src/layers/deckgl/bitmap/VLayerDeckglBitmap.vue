@@ -96,13 +96,13 @@
   );
 
   watch(
-    () => [
-      props.image,
-      props.bounds,
-      props.desaturate,
-      props.tintColor,
-      props.opacity,
-      props.visible,
+    [
+      () => props.image,
+      () => props.bounds,
+      () => props.desaturate,
+      () => props.tintColor,
+      () => props.opacity,
+      () => props.visible,
     ],
     () => updateLayer(props.id, createLayer()),
     { deep: true },

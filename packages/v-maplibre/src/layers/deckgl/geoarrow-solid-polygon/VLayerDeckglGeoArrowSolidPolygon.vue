@@ -133,17 +133,17 @@
   );
 
   watch(
-    () => [
-      props.getFillColor,
-      props.getLineColor,
-      props.getElevation,
-      props.extruded,
-      props.wireframe,
-      props.filled,
-      props.elevationScale,
-      props.opacity,
-      props.visible,
-      props.pickable,
+    [
+      () => props.getFillColor,
+      () => props.getLineColor,
+      () => props.getElevation,
+      () => props.extruded,
+      () => props.wireframe,
+      () => props.filled,
+      () => props.elevationScale,
+      () => props.opacity,
+      () => props.visible,
+      () => props.pickable,
     ],
     () => {
       if (!LayerClass.value || !props.data) return;

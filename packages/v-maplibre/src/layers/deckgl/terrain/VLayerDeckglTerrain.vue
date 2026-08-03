@@ -104,12 +104,12 @@
   );
 
   watch(
-    () => [
-      props.elevationData,
-      props.texture,
-      props.meshMaxError,
-      props.opacity,
-      props.visible,
+    [
+      () => props.elevationData,
+      () => props.texture,
+      () => props.meshMaxError,
+      () => props.opacity,
+      () => props.visible,
     ],
     () => updateLayer(props.id, createLayer()),
     { deep: true },

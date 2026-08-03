@@ -433,12 +433,12 @@ uniform ndviFilterUniforms {
   );
 
   watch(
-    () => [
-      props.sources,
-      props.renderMode,
-      props.ndviRange,
-      props.opacity,
-      props.visible,
+    [
+      () => props.sources,
+      () => props.renderMode,
+      () => props.ndviRange,
+      () => props.opacity,
+      () => props.visible,
     ],
     () => {
       if (modules.value) {

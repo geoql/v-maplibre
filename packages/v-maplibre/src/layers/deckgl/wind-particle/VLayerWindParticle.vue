@@ -218,17 +218,17 @@
   );
 
   watch(
-    () => [
-      props.numParticles,
-      props.maxAge,
-      props.speedFactor,
-      props.color,
-      props.colorRamp,
-      props.speedRange,
-      props.width,
-      props.animate,
-      props.opacity,
-      props.visible,
+    [
+      () => props.numParticles,
+      () => props.maxAge,
+      () => props.speedFactor,
+      () => props.color,
+      () => props.colorRamp,
+      () => props.speedRange,
+      () => props.width,
+      () => props.animate,
+      () => props.opacity,
+      () => props.visible,
     ],
     () => {
       updateWindLayer();

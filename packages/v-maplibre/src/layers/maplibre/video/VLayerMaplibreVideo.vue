@@ -13,12 +13,10 @@
     sourceId: {
       type: String,
       default: 'maplibre.gl-video-source',
-      required: true,
     },
     layerId: {
       type: String,
       default: 'maplibre.gl-video-layer',
-      required: true,
     },
     source: {
       type: Object as PropType<VideoSourceSpecification>,
@@ -27,7 +25,6 @@
     layer: {
       type: Object as PropType<AnyLayer>,
       default: () => ({}),
-      required: true,
     },
     before: {
       type: String,

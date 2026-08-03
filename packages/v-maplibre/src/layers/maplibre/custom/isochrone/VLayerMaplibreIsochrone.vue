@@ -331,11 +331,11 @@
 
   // Watch for style changes
   watch(
-    () => [
-      props.fillOpacity,
-      props.lineWidth,
-      props.lineOpacity,
-      props.visible,
+    [
+      () => props.fillOpacity,
+      () => props.lineWidth,
+      () => props.lineOpacity,
+      () => props.visible,
     ],
     () => updateLayerStyle(),
     { deep: true },

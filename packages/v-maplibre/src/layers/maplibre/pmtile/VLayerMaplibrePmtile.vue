@@ -13,12 +13,10 @@
     sourceId: {
       type: String,
       default: 'maplibre.gl-pmtile-source',
-      required: true,
     },
     layerId: {
       type: String,
       default: 'maplibre.gl-pmtile-layer',
-      required: true,
     },
     url: {
       type: String,
@@ -27,7 +25,6 @@
     layer: {
       type: Object as PropType<RasterLayerSpecification>,
       default: () => ({}),
-      required: true,
     },
     before: {
       type: String,
