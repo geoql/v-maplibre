@@ -305,7 +305,12 @@
   );
 
   watch(
-    () => [props.rotation, props.scale, props.altitude, props.anchor],
+    [
+      () => props.rotation,
+      () => props.scale,
+      () => props.altitude,
+      () => props.anchor,
+    ],
     () => {
       applyTransform();
       entry?.requestRender();

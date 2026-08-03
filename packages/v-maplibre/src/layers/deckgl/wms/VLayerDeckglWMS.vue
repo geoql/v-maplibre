@@ -84,7 +84,13 @@
   );
 
   watch(
-    () => [props.data, props.layers, props.srs, props.opacity, props.visible],
+    [
+      () => props.data,
+      () => props.layers,
+      () => props.srs,
+      () => props.opacity,
+      () => props.visible,
+    ],
     () => updateLayer(props.id, createLayer()),
     { deep: true },
   );

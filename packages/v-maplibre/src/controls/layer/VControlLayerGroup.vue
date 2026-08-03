@@ -218,6 +218,10 @@
     return layerStates.value.get(layerId) ?? { visible: true, opacity: 1 };
   };
 
+  const toggleClass = (layerId: string) => ({
+    'is-hidden': !getState(layerId).visible,
+  });
+
   const toggleCollapse = () => {
     if (props.collapsible) {
       isCollapsed.value = !isCollapsed.value;
@@ -291,7 +295,7 @@
           <button
             type="button"
             class="v-layer-group-toggle"
-            :class="{ 'is-hidden': !getState(layer.id).visible }"
+            :class="toggleClass(layer.id)"
             :aria-pressed="getState(layer.id).visible"
             :title="getState(layer.id).visible ? 'Hide layer' : 'Show layer'"
             @click="toggleVisibility(layer)"

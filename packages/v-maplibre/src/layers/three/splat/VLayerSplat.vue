@@ -208,14 +208,11 @@
     },
   );
 
-  watch(
-    () => [props.url, props.lod],
-    () => {
-      destroyMesh();
-      createMesh();
-      entry?.requestRender();
-    },
-  );
+  watch([() => props.url, () => props.lod], () => {
+    destroyMesh();
+    createMesh();
+    entry?.requestRender();
+  });
 
   onBeforeUnmount(() => {
     const mapInstance = getMapInstance();

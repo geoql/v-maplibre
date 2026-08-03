@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { PMTiles } from 'pmtiles';
   import { inject, onMounted, ref } from 'vue';
-  import type { PropType } from 'vue';
   import type {
     RasterLayerSpecification,
     RasterSourceSpecification,
@@ -9,28 +8,19 @@
   import VLayerMaplibreRaster from '../raster/VLayerMaplibreRaster.vue';
   import { PMTileProtocolKey } from '../../../utils/symbols';
 
-  const props = defineProps({
-    sourceId: {
-      type: String,
-      default: 'maplibre.gl-pmtile-source',
-    },
-    layerId: {
-      type: String,
-      default: 'maplibre.gl-pmtile-layer',
-    },
-    url: {
-      type: String,
-      required: true,
-    },
-    layer: {
-      type: Object as PropType<RasterLayerSpecification>,
-      default: () => ({}),
-    },
-    before: {
-      type: String,
-      default: '',
-      required: false,
-    },
+  interface Props {
+    sourceId?: string;
+    layerId?: string;
+    url: string;
+    layer?: RasterLayerSpecification;
+    before?: string;
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    sourceId: 'maplibre.gl-pmtile-source',
+    layerId: 'maplibre.gl-pmtile-layer',
+    layer: () => ({}) as RasterLayerSpecification,
+    before: '',
   });
 
   const protocol = inject(PMTileProtocolKey);

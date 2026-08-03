@@ -150,7 +150,7 @@ function mountLayer(mapRef: { value: ControllableMap | null }) {
   });
 }
 
-describe('VLayerMaplibreGeojson — style-load race (prod regression)', () => {
+describe('VLayerMaplibreGeojson - style-load race (prod regression)', () => {
   beforeEach(() => {
     const container = document.createElement('div');
     container.id = 'map';

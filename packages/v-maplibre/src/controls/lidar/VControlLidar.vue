@@ -126,8 +126,9 @@
 
     map.value!.addControl(control.value as unknown as IControl, props.position);
 
+    const instance = control.value;
     events.forEach((event: string) => {
-      control.value!.on(event, (data?: unknown) => {
+      instance.on(event, (data?: unknown) => {
         emit(event, data);
       });
     });

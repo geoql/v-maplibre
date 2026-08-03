@@ -389,6 +389,18 @@
     return categoryItemVisibility.value.get(item.value) ?? true;
   };
 
+  const categoryItemClass = (item: CategoryLegendItem) => ({
+    'is-interactive': props.interactive,
+    'is-hidden': !isItemVisible(item),
+  });
+
+  const swatchStyle = (color: string) => ({ backgroundColor: color });
+
+  const sizeCircleStyle = (size: number) => {
+    const px = `${Math.min(size, 20)}px`;
+    return { width: px, height: px };
+  };
+
   const toggleCollapse = () => {
     isCollapsed.value = !isCollapsed.value;
   };
@@ -453,16 +465,13 @@
           :key="item.value"
           type="button"
           class="v-legend-control-item"
-          :class="{
-            'is-interactive': interactive,
-            'is-hidden': !isItemVisible(item),
-          }"
+          :class="categoryItemClass(item)"
           :disabled="!interactive"
           @click="toggleItem(item, index)"
         >
           <span
             class="v-legend-control-swatch"
-            :style="{ backgroundColor: item.color }"
+            :style="swatchStyle(item.color)"
           ></span>
           <span class="v-legend-control-label">{{ item.label }}</span>
           <span v-if="item.count !== undefined" class="v-legend-control-count">
@@ -491,10 +500,7 @@
           <div class="v-legend-control-size-circle-wrap">
             <div
               class="v-legend-control-size-circle"
-              :style="{
-                width: `${Math.min(item.size, 20)}px`,
-                height: `${Math.min(item.size, 20)}px`,
-              }"
+              :style="sizeCircleStyle(item.size)"
             ></div>
           </div>
           <span class="v-legend-control-label">{{ item.label }}</span>
@@ -511,7 +517,7 @@
           >
             <span
               class="v-legend-control-swatch"
-              :style="{ backgroundColor: item.color }"
+              :style="swatchStyle(item.color)"
             ></span>
             <span class="v-legend-control-table-label">{{ item.label }}</span>
             <span class="v-legend-control-table-value">
