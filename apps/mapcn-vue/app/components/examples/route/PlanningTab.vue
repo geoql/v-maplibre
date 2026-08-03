@@ -35,6 +35,9 @@
   const { mapStyle } = useRouteUtils();
   const mapId = useId();
   const panelOpen = ref(true);
+  const toggleClass = computed(() => ({
+    'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen.value,
+  }));
 
   const rotterdam = { coordinates: [4.4777, 51.9244] as [number, number] };
   const amsterdam = { coordinates: [4.9041, 52.3676] as [number, number] };
@@ -225,9 +228,7 @@
     <!-- Toggle button -->
     <button
       class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
-      :class="{
-        'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen,
-      }"
+      :class="toggleClass"
       @click="panelOpen = !panelOpen"
     >
       <Icon

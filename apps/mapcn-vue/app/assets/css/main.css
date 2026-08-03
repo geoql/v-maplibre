@@ -33,6 +33,23 @@
   max-height: 60vh;
 }
 
+/* Shiki emits its own <pre>/<code>; strip their default chrome so the
+ * highlighted block sits flush inside our bordered container. */
+@utility shiki-flush {
+  & pre {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    padding: 1rem;
+  }
+
+  & code {
+    font-size: var(--text-note);
+    line-height: 1.625;
+  }
+}
+
 @utility max-h-code-sm {
   max-height: 40vh;
 }

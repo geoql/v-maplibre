@@ -67,6 +67,9 @@
 
   const currentStyleId = ref('light');
   const isDropdownOpen = ref(false);
+  const chevronClass = computed(() => ({
+    'rotate-180': !isDropdownOpen.value,
+  }));
 
   const currentStyle = computed(() => {
     const found = mapStyles.value.find((s) => s.id === currentStyleId.value);
@@ -203,7 +206,7 @@
             <Icon
               name="lucide:chevron-up"
               class="size-4 transition-transform"
-              :class="{ 'rotate-180': !isDropdownOpen }"
+              :class="chevronClass"
             />
           </button>
 

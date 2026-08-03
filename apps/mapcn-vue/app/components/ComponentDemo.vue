@@ -118,7 +118,7 @@
             </button>
 
             <div
-              class="shiki-wrapper max-h-code-lg overflow-auto text-sm [&_pre]:m-0 [&_pre]:rounded-none [&_pre]:border-0 [&_pre]:bg-transparent [&_pre]:px-4 [&_pre]:py-4 [&_code]:text-note [&_code]:leading-relaxed"
+              class="shiki-wrapper shiki-flush max-h-code-lg overflow-auto text-sm"
               v-html="highlightedHtml"
             ></div>
           </div>
@@ -207,7 +207,7 @@
               />
             </button>
             <div
-              class="shiki-wrapper max-h-code-sm overflow-auto text-sm [&_pre]:m-0 [&_pre]:rounded-none [&_pre]:border-0 [&_pre]:bg-transparent [&_pre]:px-4 [&_pre]:py-4 [&_code]:text-note [&_code]:leading-relaxed"
+              class="shiki-wrapper shiki-flush max-h-code-sm overflow-auto text-sm"
               v-html="highlightedHtml"
             ></div>
           </div>

@@ -49,6 +49,9 @@
   const deliveryRouteInfo = ref<DeliveryRouteInfo | null>(null);
   const deliveryLoading = ref(false);
   const panelOpen = ref(true);
+  const toggleClass = computed(() => ({
+    'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen.value,
+  }));
 
   const truckPosition = computed(() => {
     if (deliveryRouteCoordinates.value.length < 2) return null;
@@ -202,9 +205,7 @@
     <!-- Toggle button - always visible -->
     <button
       class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
-      :class="{
-        'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen,
-      }"
+      :class="toggleClass"
       @click="panelOpen = !panelOpen"
     >
       <Icon

@@ -49,6 +49,9 @@
   const tripRouteCoordinates = ref<[number, number][]>([]);
   const tripLoading = ref(false);
   const panelOpen = ref(true);
+  const toggleClass = computed(() => ({
+    'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen.value,
+  }));
   const expandedDays = ref<Set<number>>(new Set([1]));
 
   function onMapLoaded(map: MaplibreMap) {
@@ -197,9 +200,7 @@
       <!-- Toggle button - always visible -->
       <button
         class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
-        :class="{
-          'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen,
-        }"
+        :class="toggleClass"
         @click="panelOpen = !panelOpen"
       >
         <Icon

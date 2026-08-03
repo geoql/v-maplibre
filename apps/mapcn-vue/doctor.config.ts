@@ -51,5 +51,12 @@ export default {
     // useSeoMeta() internally. The rule only greps for a direct useSeoMeta
     // call and can't see through this wrapper indirection.
     'nuxt-doctor/seo/useSeoMeta-on-public-page': 'off',
+    // The rule reads a grid background as stock AI marketing filler. Here it
+    // is the opposite: `bg-grid` / `bg-grid-faint` (main.css) are 3% grey
+    // hairlines on a 3.75rem pitch, part of the pinned Tech Utility direction
+    // (.agents/skills/mapcn-vue-design/SKILL.md) that Linear, Vercel and
+    // Stripe all use. Turning it off is a design decision, not a lint waiver —
+    // drop this override if the pinned direction ever changes.
+    'vue-doctor/design/no-decorative-grid-background': 'off',
   },
 };
