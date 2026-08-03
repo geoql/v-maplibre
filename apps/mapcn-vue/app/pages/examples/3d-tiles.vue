@@ -1,7 +1,6 @@
 <script setup lang="ts">
   import { VMap, VControlNavigation, VControlScale } from '@geoql/v-maplibre';
   import { VLayer3DTiles } from '@geoql/v-maplibre/3d-tiles';
-  import type { Map } from 'maplibre-gl';
 
   usePageGeo({
     title: '3D Tiles Splat Layer - mapcn-vue Examples',
@@ -23,7 +22,10 @@
 
   // geolith-generated tileset (geolith/geolith#15): SPZ splat tiles with
   // KHR_gaussian_splatting, self-anchored via its ECEF root transform near
-  // the Belvedere Glacier at ~2250 m.
+  // the Belvedere Glacier. The demo pins altitude to 0 so the content sits on
+  // the flat basemap: without a DEM the map's ground plane is 0 m, and the
+  // tileset's own ~2250 m ellipsoidal height would float it past the far
+  // plane (the frustum then culls every tile).
   const tilesetUrl = `${assetsBase}/splat/bonsai/tileset.json`;
 
   const mapOptions = computed(() => ({
@@ -40,11 +42,6 @@
 
   const onLoadTileset = () => {
     loading.value = false;
-  };
-
-  const onMapLoaded = (map: Map) => {
-    if (import.meta.dev)
-      (window as unknown as Record<string, unknown>).__qaMap = map;
   };
 
   const SCRIPT_END = '</' + 'script>';
@@ -73,6 +70,7 @@
                     id="splat-tileset"
                     url="https://your-bucket.example.com/tileset.json"
                     :error-target="8"
+                    :altitude="0"
                     :fade="true"
                     :splats="true"
                     @load-tileset="onLoadTileset"
@@ -91,18 +89,14 @@
   >
     <div class="relative size-full min-w-0 overflow-hidden">
       <ClientOnly>
-        <VMap
-          :key="mapStyle"
-          :options="mapOptions"
-          class="size-full"
-          @loaded="onMapLoaded"
-        >
+        <VMap :key="mapStyle" :options="mapOptions" class="size-full">
           <VControlNavigation position="top-right" />
           <VControlScale position="bottom-left" />
           <VLayer3DTiles
             id="splat-tileset"
             :url="tilesetUrl"
             :error-target="8"
+            :altitude="0"
             :fade="true"
             :splats="true"
             @load-tileset="onLoadTileset"

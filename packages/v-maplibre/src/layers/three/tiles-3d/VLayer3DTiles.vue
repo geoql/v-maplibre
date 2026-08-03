@@ -23,7 +23,13 @@
   import { GaussianSplatPlugin } from '3d-tiles-rendererjs-3dgs-plugin';
   import { SparkRenderer } from '@sparkjsdev/spark';
   import { Creator, SceneTransform } from '@dvt3d/maplibre-three-plugin';
-  import { MathUtils, PerspectiveCamera, Vector3, type Group } from 'three';
+  import {
+    MathUtils,
+    Matrix4,
+    PerspectiveCamera,
+    Vector3,
+    type Group,
+  } from 'three';
   import type { Map } from 'maplibre-gl';
   import { injectStrict, MapKey } from '../../../utils';
   import {
@@ -60,7 +66,9 @@
     altitude?: number;
     /**
      * Rotation `[x, y, z]` in degrees mapping the tileset's local frame into
-     * the map frame (default `[-90, 0, 0]`, matching the geolith 3DGS scans).
+     * the map frame. The recenter cancels the tileset's ECEF placement, so
+     * content sits in its raw glTF Y-up frame — the default `[90, 180, 0]`
+     * (same as VLayerSplat) turns that into the map's Z-up frame.
      */
     rotation?: [number, number, number];
     /** Uniform scale multiplier on top of the meters-at-latitude scaling. */
@@ -78,7 +86,7 @@
     splats: true,
     anchor: undefined,
     altitude: undefined,
-    rotation: () => [-90, 0, 0],
+    rotation: () => [90, 180, 0],
     scale: 1,
     fetchOptions: undefined,
     before: undefined,
@@ -126,8 +134,17 @@
   };
 
   /**
-   * Re-root the ECEF tileset to its local frame with the inverse root
-   * transform, derive the geographic anchor, and place the RTC group there.
+   * Re-root the ECEF tileset at its geographic anchor.
+   *
+   * The GaussianSplatPlugin places every tile's SplatMesh at its ECEF
+   * position via `sceneMatrix = upRotationMatrix × tileTransform` (verified:
+   * upRot = rotateX(-90°), translation = the ECEF anchor). That leaves the
+   * content ~15 km above the anchor in MapScene's mercator frame unless the
+   * group recenter counteracts BOTH factors. So we recenter the tiles group
+   * with `(upRot × rootTransform)^-1 = rootTransform^-1 × upRot^-1`, which
+   * makes `recenter × sceneMatrix = identity` for the root tile (and leaves
+   * child tiles at their correct relative offsets), placing the content at
+   * the anchor like the standalone splat.
    */
   const onLoadRootTileset = (event: { tileset: object; url: string }): void => {
     if (!tiles || !entry) return;
@@ -135,8 +152,18 @@
     const rootTransform = (tiles.root as { transform?: number[] } | null)
       ?.transform ?? [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1];
 
-    // Cancel the ECEF root transform so tile content sits in its local frame.
-    tiles.group.matrix.fromArray(rootTransform).invert();
+    // recenter = (rootTransform × upRot)^-1 = upRot^-1 × rootTransform^-1
+    // (undoes the plugin sceneMatrix, which is rootTransform × upRot — the
+    // plugin does target.premultiply(transform), NOT upRot × rootTransform;
+    // matrix inverses reverse order). premultiply applies upRot^-1 on the
+    // left so recenter × sceneMatrix = identity.
+    const recenter = new Matrix4().fromArray(rootTransform).invert();
+    const upRot = (tiles as unknown as { _upRotationMatrix?: Matrix4 })
+      ._upRotationMatrix;
+    if (upRot) {
+      recenter.premultiply(upRot.clone().invert());
+    }
+    tiles.group.matrix.copy(recenter);
     tiles.group.matrixAutoUpdate = false;
     tiles.group.updateMatrixWorld(true);
 
@@ -179,19 +206,19 @@
     if (!entry || !tiles || !traversalCamera) return;
     const sceneCam = entry.mapScene.camera;
 
-    // Keep the traversal camera's projection in sync with the scene camera.
-    traversalCamera.fov = sceneCam.fov;
-    traversalCamera.aspect = sceneCam.aspect;
-    traversalCamera.near = sceneCam.near;
-    traversalCamera.far = sceneCam.far;
-    traversalCamera.updateProjectionMatrix();
-
-    // Identity view: the traversal frustum then equals the scene camera's
-    // projection × the tiles group's own world matrix — the exact transform
-    // the MapScene renders with, so content that draws at the anchor is in
-    // the frustum. (Deriving the camera position from the free camera mixed
-    // normalized-mercator and world-frame units, shifting the frustum off
-    // the content and culling every tile.)
+    // Use the scene camera's EXACT projection matrix for the traversal, NOT a
+    // standard PerspectiveCamera recomputed from fov/aspect/near/far — the
+    // MapScene renders with CameraSync's custom makePerspectiveMatrix (with
+    // centerOffset and MapLibre's near/far mapping), which differs from a
+    // standard perspective, so a recomputed frustum doesn't match the render
+    // view and culls the content. Identity view: the frustum then equals the
+    // scene camera's projection × the tiles group's own world matrix — the
+    // exact transform the MapScene renders with, so content that draws at the
+    // anchor is in the frustum.
+    traversalCamera.projectionMatrix.copy(sceneCam.projectionMatrix);
+    traversalCamera.projectionMatrixInverse.copy(
+      sceneCam.projectionMatrixInverse,
+    );
     traversalCamera.matrixWorld.identity();
     traversalCamera.matrixWorldInverse.identity();
 
@@ -238,6 +265,21 @@
             scene: mapScene.scene,
           }),
         );
+        // The plugin adds a CameraRelativeSparkRenderer to the scene, which
+        // re-bases splats around camera.matrixWorld each frame. MapScene
+        // renders with an identity camera (the world group carries the view
+        // transform), so that rebasing pins the splats to the screen instead
+        // of the map. Hide it — the shared plain SparkRenderer above (the
+        // same mechanism VLayerSplat uses) renders the tile SplatMeshes
+        // through the scene graph correctly.
+        mapScene.scene.traverse((object) => {
+          if (
+            object !== spark &&
+            object.constructor.name === 'CameraRelativeSparkRenderer'
+          ) {
+            object.visible = false;
+          }
+        });
       }
       tiles.setCamera(traversalCamera);
       tiles.setResolutionFromRenderer(traversalCamera, mapScene.renderer);
