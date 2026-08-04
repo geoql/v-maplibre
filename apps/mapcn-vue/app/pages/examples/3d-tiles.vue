@@ -20,22 +20,23 @@
   const config = useRuntimeConfig();
   const assetsBase = config.public.r2AssetsBase;
 
-  // geolith-generated tileset (geolith/geolith#15): SPZ splat tiles with
-  // KHR_gaussian_splatting, self-anchored via its ECEF root transform near
-  // the Belvedere Glacier. The demo pins altitude to 0 so the content sits on
-  // the flat basemap: without a DEM the map's ground plane is 0 m, and the
-  // tileset's own ~2250 m ellipsoidal height would float it past the far
-  // plane (the frustum then culls every tile).
-  const tilesetUrl = `${assetsBase}/splat/bonsai/tileset.json`;
+  // geolith-generated tileset (geolith/geolith#17): SPZ splat tiles with
+  // KHR_gaussian_splatting — an outward-facing CC0 capture at true metric
+  // scale (steam-studio.jp), self-anchored via its ECEF root transform near
+  // Tokyo Tower. The demo pins altitude to 0 so the content sits on the flat
+  // basemap: without a DEM the map's ground plane is 0 m, and the tileset's
+  // own ellipsoidal height would float it above the ground.
+  const tilesetUrl = `${assetsBase}/splat/cactus/tileset.json`;
 
   const mapOptions = computed(() => ({
     container: `tiles-3d-example-${mapId}`,
     style: mapStyle.value,
-    center: [7.9797, 45.9756] as [number, number],
-    zoom: 18.5,
+    center: [139.7454, 35.6586] as [number, number],
+    zoom: 20.5,
     pitch: 60,
     bearing: -20,
     maxPitch: 85,
+    maxZoom: 23,
   }));
 
   const loading = ref(true);
@@ -56,8 +57,8 @@
 
                 const mapOptions = {
                   style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
-                  center: [7.9797, 45.9756],
-                  zoom: 18.5,
+                  center: [139.7454, 35.6586],
+                  zoom: 20.5,
                   pitch: 60,
                   maxPitch: 85,
                 };
@@ -71,6 +72,7 @@
                     url="https://your-bucket.example.com/tileset.json"
                     :error-target="8"
                     :altitude="0"
+                    :rotation="[90, 0, 0]"
                     :fade="true"
                     :splats="true"
                     @load-tileset="onLoadTileset"
@@ -97,6 +99,7 @@
             :url="tilesetUrl"
             :error-target="8"
             :altitude="0"
+            :rotation="[90, 0, 0]"
             :fade="true"
             :splats="true"
             @load-tileset="onLoadTileset"
