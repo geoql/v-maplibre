@@ -127,9 +127,12 @@
 
     try {
       entry = acquireThreeScene(mapInstance);
+      // focalAdjustment 2 matches the 3DGS tiles plugin default and the
+      // PlayCanvas renderer — at the stock 1.0 splats render visibly soft.
       const spark = retainSparkRenderer(
         entry,
-        () => new SparkRenderer({ renderer: entry!.renderer }),
+        () =>
+          new SparkRenderer({ renderer: entry!.renderer, focalAdjustment: 2 }),
       );
       // Async sorts complete off-frame; each completion needs a composite.
       spark.onDirty = () => entry?.requestRender();

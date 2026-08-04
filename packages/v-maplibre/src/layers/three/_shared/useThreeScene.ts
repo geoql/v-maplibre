@@ -7,27 +7,24 @@ import type { SparkRenderer } from '@sparkjsdev/spark';
  * Shared three.js scene context for a MapLibre map.
  *
  * One custom layer (`type: 'custom'`, `renderingMode: '3d'`) per map drives
- * a single WebGLRenderer bound to MapLibre's canvas/GL context. The draw
- * camera carries a REAL view/projection decomposition of MapLibre's fused
- * mercator matrix every frame: with `V = P^-1 × mainMatrix` (P from
- * `args.projectionMatrix`) and the camera set to
- * `(matrixWorldInverse = rotY180 × V, projectionMatrix = P × rotY180)`,
- * three.js composites `(P × rotY180) × (rotY180 × V) == mainMatrix` exactly,
- * while shaders see a genuine three.js view space. Spark's vertex shader
- * hard-culls any splat with `viewCenter.z >= 0`; MapLibre's embedded view
- * convention lands content at positive z, which silently dropped every
- * splat — the 180° Y rotation negates the view z without changing the
- * product (a rotation, not a reflection: reflections corrupt Spark's
- * quaternion decompose of the renderToView matrix).
+ * a single WebGLRenderer bound to MapLibre's canvas/GL context.
  *
- * Because the draw camera's pose follows the map (it dollies with zoom),
- * Spark's stock self-drive (`autoUpdate`) works unmodified: its view-change
- * detection sees every pan/zoom, and content updates land through its own
- * version bumps.
+ * The draw camera is a plain `PerspectiveCamera` rebuilt from the live map
+ * view each frame: MapLibre's own camera position, look-at target, fov and
+ * aspect, in the scene's local ENU metre frame. It is deliberately NOT
+ * MapLibre's fused mercator matrix — Spark reads `projectionMatrix[0]` /
+ * `[5]` as a focal length when sizing each splat's screen-space ellipse,
+ * and 3D-tiles screen-space-error maths reads the same elements, so a fused
+ * matrix (which folds the mercator scale into those slots) renders splats
+ * as sub-pixel specks or smeared blobs while still projecting their centres
+ * to the correct pixel.
  *
- * Content lives in mercator space: x/y are MercatorCoordinate fractions and
- * the group scale converts meters via `meterInMercatorCoordinateUnits()`
- * (see {@link mercatorGroupMatrix}).
+ * Because the camera pose follows the map (it dollies with zoom), Spark's
+ * stock self-drive (`autoUpdate`) works unmodified: its view-change
+ * detection sees every pan/zoom.
+ *
+ * Content lives in a local ENU metre frame anchored at the scene origin —
+ * 1 unit = 1 metre, x east, y north, z up (see {@link mercatorGroupMatrix}).
  */
 export interface ThreeSceneEntry {
   scene: Scene;
@@ -54,11 +51,6 @@ export interface ThreeSceneEntry {
   requestRender: () => void;
   /** Move the shared custom layer before the given MapLibre layer id. */
   setBefore: (beforeId?: string) => void;
-}
-
-interface CustomLayerRenderArgs {
-  projectionMatrix: ArrayLike<number>;
-  defaultProjectionData: { mainMatrix: ArrayLike<number> };
 }
 
 const registry = new WeakMap<Map, ThreeSceneEntry>();
@@ -162,9 +154,7 @@ export function acquireThreeScene(map: Map): ThreeSceneEntry {
 
   const frameHooks = new Set<() => void>();
 
-  const mainMatrix = new Matrix4();
   const viewInverse = new Matrix4();
-  const worldToMercator = new Matrix4();
 
   const layerId = `v-maplibre-three-${(layerSeq += 1)}`;
 
@@ -195,68 +185,78 @@ export function acquireThreeScene(map: Map): ThreeSceneEntry {
     id: layerId,
     type: 'custom',
     renderingMode: '3d',
-    render(_gl, args) {
-      const renderArgs = args as unknown as CustomLayerRenderArgs;
-      mainMatrix.fromArray(
-        renderArgs.defaultProjectionData.mainMatrix as number[],
-      );
-
-      // Rigid view of the map camera in mercator-fraction space, built
-      // from the live transform. Spark decomposes the view matrix it is
-      // given (dropping scale), so it must be rigid — P⁻¹ × mainMatrix is
-      // not, because mainMatrix deliberately scales z differently than
-      // x/y. The draw projection is then mainMatrix × rigidView⁻¹, which
-      // composes back to exactly mainMatrix for every object in the scene.
+    render() {
+      // Rigid view of the map camera, expressed in the scene's local ENU
+      // metre frame. Spark decomposes the view matrix it is handed
+      // (dropping scale), so it must stay rigid — rotation and translation
+      // only, never a fused mercator matrix.
       const { origin, metres } = sceneOriginFor(map);
-      worldToMercator
-        .makeTranslation(origin.x, origin.y, origin.z)
-        .multiply(new Matrix4().makeScale(metres, -metres, metres));
-
       const t = map.transform;
-      const invWorldSize = 1 / t.worldSize;
-      const cp = t.cameraPosition;
-      poseCamera.position.set(
-        (cp[0] * invWorldSize - origin.x) / metres,
-        -(cp[1] * invWorldSize - origin.y) / metres,
-        (cp[2] * invWorldSize - origin.z) / metres,
-      );
       const c = map.getCenter();
       const target = MercatorCoordinate.fromLngLat(
         [c.lng, c.lat],
         map.getCenterElevation(),
       );
-      poseCamera.up.set(0, 0, 1);
-      poseCamera.lookAt(
-        (target.x - origin.x) / metres,
-        -(target.y - origin.y) / metres,
-        (target.z - origin.z) / metres,
+      const targetX = (target.x - origin.x) / metres;
+      const targetY = -(target.y - origin.y) / metres;
+      const targetZ = (target.z - origin.z) / metres;
+
+      // Camera pose from MapLibre's own view geometry rather than
+      // `transform.cameraPosition`, whose z is measured from the mercator
+      // zero plane and ignores centre elevation — on terrain that puts the
+      // camera underground (a 1950 m glacier gets a 373 m camera) and the
+      // whole scene is culled. Orbiting the look-at target by pitch and
+      // bearing is elevation-agnostic and always lands the camera exactly
+      // `cameraToCenterDistance` away, matching MapLibre's own framing.
+      const pitch = (t.pitch * Math.PI) / 180;
+      const bearing = (t.bearing * Math.PI) / 180;
+      const camDistance = t.cameraToCenterDistance / t.worldSize / metres;
+      const ground = camDistance * Math.sin(pitch);
+      poseCamera.position.set(
+        targetX - ground * Math.sin(bearing),
+        targetY - ground * Math.cos(bearing),
+        targetZ + camDistance * Math.cos(pitch),
       );
+      poseCamera.up.set(0, 0, 1);
+      poseCamera.lookAt(targetX, targetY, targetZ);
       poseCamera.updateMatrixWorld(true);
 
-      // Real perspective projection in the metre frame. The draw camera's
-      // projection is MapLibre's fused mercator matrix, which is not a
-      // plain perspective — 3D-tiles screen-space-error maths reads
-      // projectionMatrix directly, so LOD selection needs this one.
+      // A TRUE perspective projection, rebuilt from the live map view. It
+      // must not be MapLibre's fused mercator matrix: Spark reads
+      // `projectionMatrix[0]` / `[5]` as the camera focal length to size
+      // each splat's screen-space ellipse, and 3D-tiles screen-space-error
+      // maths reads the same elements. A fused matrix folds the mercator
+      // scale into those slots, so splats render as sub-pixel specks or
+      // smeared blobs even though their centres project to the right pixel.
+      // Pose + fov + aspect are taken from MapLibre's own camera, so this
+      // projection lands content exactly where the fused one did.
+      const dpr = window.devicePixelRatio;
       poseCamera.fov = t.fov;
-      poseCamera.aspect = canvas.clientWidth / canvas.clientHeight;
-      poseCamera.near = 0.1;
-      poseCamera.far = 1e7;
+      poseCamera.aspect = canvas.width / canvas.height;
+      poseCamera.near = Math.max(camDistance / 1000, 0.1);
+      poseCamera.far = camDistance * 100;
       poseCamera.updateProjectionMatrix();
 
       viewInverse.copy(poseCamera.matrixWorldInverse);
       camera.matrixWorldInverse.copy(viewInverse);
       camera.matrixWorld.copy(poseCamera.matrixWorld);
-      camera.projectionMatrix
-        .copy(mainMatrix)
-        .multiply(worldToMercator)
-        .multiply(poseCamera.matrixWorld);
+      camera.near = poseCamera.near;
+      camera.far = poseCamera.far;
+      camera.projectionMatrix.copy(poseCamera.projectionMatrix);
       camera.projectionMatrixInverse.copy(camera.projectionMatrix).invert();
+      renderer.setPixelRatio(dpr);
 
       for (const hook of frameHooks) {
         hook();
       }
 
       renderer.resetState();
+      // MapLibre's depth buffer is written with its own projection's depth
+      // convention, which a standard perspective matrix does not share — so
+      // every fragment we draw would fail the depth test against terrain.
+      // Clearing depth (never colour) keeps correct ordering inside our own
+      // scene while compositing over the basemap.
+      renderer.clearDepth();
       renderer.render(scene, camera);
 
       // Spark streams and re-sorts splats across frames (async GPU readback),

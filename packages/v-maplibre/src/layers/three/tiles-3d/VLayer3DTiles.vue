@@ -189,9 +189,12 @@
       // registers. It stays HIDDEN: the shared plain SparkRenderer below
       // draws every SplatMesh (standalone and tile-borne alike) through one
       // accumulation pass, driven by the context's view camera.
+      // focalAdjustment 2 matches the 3DGS tiles plugin's own default for
+      // its internal renderer — at the stock 1.0 splats render visibly soft.
       const spark = retainSparkRenderer(
         entry,
-        () => new SparkRenderer({ renderer: entry!.renderer }),
+        () =>
+          new SparkRenderer({ renderer: entry!.renderer, focalAdjustment: 2 }),
       );
       spark.onDirty = () => entry?.requestRender();
 
