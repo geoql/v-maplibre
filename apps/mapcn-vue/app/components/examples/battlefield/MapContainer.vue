@@ -31,10 +31,15 @@
 
   const onMapLoaded = (m: Map) => {
     mapInstance.value = m;
-    // Re-run the elevation enrichment whenever the map settles: DEM tiles
-    // arrive asynchronously, so elevations start at 0 and fill in over time.
-    m.on('idle', () => {
-      elevationTick.value += 1;
+    // Re-run the elevation enrichment when DEM tiles land. This must NOT be
+    // 'idle': a recompute feeds new data arrays into the deck wrappers, which
+    // call updateLayer → triggerRepaint → another render → another idle,
+    // forming an infinite repaint loop (page becomes unresponsive, memory
+    // grows). sourcedata only fires on actual tile loads, so it is bounded.
+    m.on('sourcedata', (e) => {
+      if (e.sourceId === 'battlefield-dem' && e.isSourceLoaded) {
+        elevationTick.value += 1;
+      }
     });
     elevationTick.value += 1;
   };
