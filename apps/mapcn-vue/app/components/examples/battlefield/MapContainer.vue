@@ -9,6 +9,7 @@
     VMap,
     VControlNavigation,
     VControlScale,
+    VLayerMaplibreHillshade,
     VSky,
     VTerrain,
   } from '@geoql/v-maplibre';
@@ -155,6 +156,17 @@
     attribution:
       'Elevation: <a href="https://registry.opendata.aws/terrain-tiles/">AWS Terrain Tiles</a>',
   });
+
+  // Half-resolution sampling for the hillshade pass: it only tints the
+  // relief, so coarser DEM tiles (1/16 the count) are visually fine while
+  // cutting the per-tile main-thread raster work that stalled zooming.
+  const hillshadeSource = (): RasterDEMSourceSpecification => ({
+    type: 'raster-dem',
+    tiles: [TERRARIUM_TILES],
+    tileSize: 1024,
+    maxzoom: 12,
+    encoding: 'terrarium',
+  });
 </script>
 
 <template>
@@ -172,7 +184,13 @@
         <VTerrain
           source="battlefield-dem"
           :source-spec="demSource()"
-          :exaggeration="1.0"
+          :exaggeration="1.4"
+        />
+        <VLayerMaplibreHillshade
+          source-id="battlefield-hillshade-dem"
+          layer-id="battlefield-hillshade"
+          :source="hillshadeSource()"
+          :layer="{ paint: { 'hillshade-exaggeration': 0.55 } }"
         />
         <ExamplesBattlefieldLayers
           :paths="elevatedPaths"
