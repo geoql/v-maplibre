@@ -2,6 +2,8 @@
   import type {
     BattlefieldPath,
     BattlefieldPosition,
+    ElevatedPath,
+    ElevatedPosition,
   } from '~/types/defense-terrain';
   import {
     VMap,
@@ -12,6 +14,7 @@
     VTerrain,
   } from '@geoql/v-maplibre';
   import type {
+    Map,
     RasterDEMSourceSpecification,
     SkySpecification,
   } from 'maplibre-gl';
@@ -23,6 +26,43 @@
   }>();
 
   const mapId = useId();
+  const mapInstance = ref<Map | null>(null);
+  const elevationTick = ref(0);
+
+  const onMapLoaded = (m: Map) => {
+    mapInstance.value = m;
+    // Re-run the elevation enrichment whenever the map settles: DEM tiles
+    // arrive asynchronously, so elevations start at 0 and fill in over time.
+    m.on('idle', () => {
+      elevationTick.value += 1;
+    });
+    elevationTick.value += 1;
+  };
+
+  // deck.gl renders on a single elevation plane; without per-vertex z the
+  // units and trails sit at sea level while the terrain surface is thousands
+  // of metres up, so at high pitch they drift down-screen away from their
+  // geospatial position. queryTerrainElevation returns EXAGGERATED metres,
+  // which is exactly the mesh the map renders, so it can be used directly.
+  const terrainElevation = (ll: [number, number]): number => {
+    void elevationTick.value;
+    return mapInstance.value?.queryTerrainElevation(ll) ?? 0;
+  };
+
+  const elevatedPaths = computed<ElevatedPath[]>(() =>
+    props.paths.map((p) => ({
+      ...p,
+      path: p.path.map((ll) => [...ll, terrainElevation(ll)]),
+    })),
+  );
+
+  const elevatedPositions = computed<ElevatedPosition[]>(() =>
+    props.positions.map((p) => ({
+      ...p,
+      z: terrainElevation([p.lng, p.lat]),
+    })),
+  );
+
   // Terrain pages pin the LIGHT basemap in both colour modes: the dark
   // high-contrast style renders shaded relief as near-black on near-black,
   // so the 3D terrain is effectively invisible in dark mode.
@@ -68,7 +108,7 @@
 <template>
   <div class="relative size-full min-w-0 overflow-hidden">
     <ClientOnly>
-      <VMap :options="mapOptions" class="size-full">
+      <VMap :options="mapOptions" class="size-full" @loaded="onMapLoaded">
         <VControlNavigation position="top-right" />
         <VControlScale position="bottom-left" />
         <VSky :sky="sky" />
@@ -84,9 +124,9 @@
           :layer="{ paint: { 'hillshade-exaggeration': 0.55 } }"
         />
         <ExamplesBattlefieldLayers
-          :paths="props.paths"
+          :paths="elevatedPaths"
           :current-time="props.currentTime"
-          :positions="props.positions"
+          :positions="elevatedPositions"
         />
       </VMap>
       <template #fallback>

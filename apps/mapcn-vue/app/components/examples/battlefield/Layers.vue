@@ -1,15 +1,19 @@
 <script setup lang="ts">
   import type {
-    BattlefieldPath,
-    BattlefieldPosition,
     BattlefieldUnit,
+    ElevatedPath,
+    ElevatedPosition,
   } from '~/types/defense-terrain';
-  import { useDeckLayers } from '@geoql/v-maplibre/deck.gl';
+  import {
+    VLayerDeckglScatterplot,
+    VLayerDeckglText,
+    VLayerDeckglTrips,
+  } from '@geoql/v-maplibre/deck.gl';
 
   const props = defineProps<{
-    paths: BattlefieldPath[];
+    paths: ElevatedPath[];
     currentTime: number;
-    positions: BattlefieldPosition[];
+    positions: ElevatedPosition[];
   }>();
 
   const UNITS_MAP: Record<string, BattlefieldUnit> = {
@@ -57,150 +61,70 @@
     },
   };
 
-  function getPath(d: unknown): [number, number][] {
-    return (d as BattlefieldPath).path;
-  }
-
-  function getTimestamps(d: unknown): number[] {
-    return (d as BattlefieldPath).timestamps;
-  }
-
-  function getPathColor(d: unknown): [number, number, number] {
-    const unitId = (d as BattlefieldPath).unitId;
-    return UNITS_MAP[unitId]?.color ?? [255, 255, 255];
-  }
-
-  function getPositionCoords(d: unknown): [number, number] {
-    const pos = d as BattlefieldPosition;
-    return [pos.lng, pos.lat];
-  }
-
-  function getPositionColor(d: unknown): [number, number, number] {
-    const pos = d as BattlefieldPosition;
-    return UNITS_MAP[pos.unitId]?.color ?? [255, 255, 255];
-  }
-
-  function getCallsign(d: unknown): string {
-    const pos = d as BattlefieldPosition;
-    return UNITS_MAP[pos.unitId]?.callsign ?? '';
-  }
-
-  let TripsLayerClass: typeof import('@deck.gl/geo-layers').TripsLayer | null =
-    null;
-  let ScatterplotLayerClass:
-    | typeof import('@deck.gl/layers').ScatterplotLayer
-    | null = null;
-  let TextLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
-  let initialized = false;
-
-  const { updateLayer, removeLayer } = useDeckLayers();
-
-  async function initLayers(): Promise<void> {
-    if (initialized) return;
-    const [geoModule, layersModule] = await Promise.all([
-      import('@deck.gl/geo-layers'),
-      import('@deck.gl/layers'),
-    ]);
-    TripsLayerClass = geoModule.TripsLayer;
-    ScatterplotLayerClass = layersModule.ScatterplotLayer;
-    TextLayerClass = layersModule.TextLayer;
-    initialized = true;
-    syncLayers();
-  }
-
-  const ALL_UNIT_IDS = [
-    'alpha',
-    'bravo',
-    'charlie',
-    'delta',
-    'echo',
-    'foxtrot',
+  const getPath = (d: ElevatedPath): [number, number, number][] => d.path;
+  const getTimestamps = (d: ElevatedPath): number[] => d.timestamps;
+  const getPathColor = (d: ElevatedPath): [number, number, number] =>
+    UNITS_MAP[d.unitId]?.color ?? [255, 255, 255];
+  const getPositionCoords = (d: ElevatedPosition): [number, number, number] => [
+    d.lng,
+    d.lat,
+    d.z,
   ];
+  const getPositionColor = (d: ElevatedPosition): [number, number, number] =>
+    UNITS_MAP[d.unitId]?.color ?? [255, 255, 255];
+  const getCallsign = (d: ElevatedPosition): string =>
+    UNITS_MAP[d.unitId]?.callsign ?? '';
 
-  function syncLayers(): void {
-    if (!TripsLayerClass || !ScatterplotLayerClass || !TextLayerClass) return;
-
-    const activeIds = new Set(props.paths.map((p) => p.unitId));
-    for (const uid of ALL_UNIT_IDS) {
-      if (!activeIds.has(uid)) {
-        removeLayer(`trail-${uid}`);
-      }
-    }
-
-    for (const pathData of props.paths) {
-      const unit = UNITS_MAP[pathData.unitId];
-      if (!unit) continue;
-
-      const trail = new TripsLayerClass({
-        id: `trail-${pathData.unitId}`,
-        data: [pathData],
-        getPath,
-        getTimestamps,
-        getColor: getPathColor,
-        currentTime: props.currentTime,
-        trailLength: 60,
-        fadeTrail: true,
-        widthMinPixels: 4,
-        capRounded: true,
-        jointRounded: true,
-        opacity: 0.85,
-      });
-      updateLayer(`trail-${pathData.unitId}`, trail);
-    }
-
-    const scatter = new ScatterplotLayerClass({
-      id: 'unit-positions',
-      data: props.positions,
-      getPosition: getPositionCoords,
-      getFillColor: getPositionColor,
-      getRadius: 200,
-      radiusMinPixels: 6,
-      radiusMaxPixels: 20,
-      opacity: 0.9,
-      stroked: true,
-      getLineColor: [255, 255, 255] as [number, number, number],
-      lineWidthMinPixels: 2,
-    });
-    updateLayer('unit-positions', scatter);
-
-    const labels = new TextLayerClass({
-      id: 'unit-labels',
-      data: props.positions,
-      getPosition: getPositionCoords,
-      getText: getCallsign,
-      getSize: 14,
-      getColor: [255, 255, 255, 230] as [number, number, number, number],
-      getAngle: 0,
-      getTextAnchor: 'start' as const,
-      getAlignmentBaseline: 'center' as const,
-      getPixelOffset: [12, 0] as [number, number],
-      fontFamily: 'monospace',
-      billboard: true,
-      outlineWidth: 3,
-      outlineColor: [0, 0, 0, 200] as [number, number, number, number],
-    });
-    updateLayer('unit-labels', labels);
-  }
-
-  watch(
-    [() => props.paths, () => props.currentTime, () => props.positions],
-    () => syncLayers(),
-    { deep: true },
+  // Per-unit single-element arrays for the trips layers, hoisted out of the
+  // template so the :data reference stays stable across renders.
+  const tripData = computed(() =>
+    props.paths.map((p) => ({ path: p, data: [p] })),
   );
-
-  onMounted(() => {
-    initLayers();
-  });
-
-  onUnmounted(() => {
-    for (const p of props.paths) {
-      removeLayer(`trail-${p.unitId}`);
-    }
-    removeLayer('unit-positions');
-    removeLayer('unit-labels');
-  });
 </script>
 
 <template>
-  <slot></slot>
+  <VLayerDeckglTrips
+    v-for="trip in tripData"
+    :key="trip.path.unitId"
+    :id="`trail-${trip.path.unitId}`"
+    :data="trip.data"
+    :get-path="getPath"
+    :get-timestamps="getTimestamps"
+    :get-color="getPathColor"
+    :current-time="props.currentTime"
+    :trail-length="60"
+    :fade-trail="true"
+    :width-min-pixels="4"
+    :cap-rounded="true"
+    :joint-rounded="true"
+    :opacity="0.85"
+  />
+  <VLayerDeckglScatterplot
+    id="unit-positions"
+    :data="props.positions"
+    :get-position="getPositionCoords"
+    :get-fill-color="getPositionColor"
+    :get-radius="200"
+    :radius-min-pixels="6"
+    :radius-max-pixels="20"
+    :opacity="0.9"
+    :stroked="true"
+    :get-line-color="[255, 255, 255]"
+    :line-width-min-pixels="2"
+  />
+  <VLayerDeckglText
+    id="unit-labels"
+    :data="props.positions"
+    :get-position="getPositionCoords"
+    :get-text="getCallsign"
+    :get-size="14"
+    :get-color="[255, 255, 255, 230]"
+    :get-pixel-offset="[12, 0]"
+    get-text-anchor="start"
+    get-alignment-baseline="center"
+    font-family="monospace"
+    :billboard="true"
+    :outline-width="3"
+    :outline-color="[0, 0, 0, 200]"
+  />
 </template>
