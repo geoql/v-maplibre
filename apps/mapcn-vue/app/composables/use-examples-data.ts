@@ -505,6 +505,14 @@ export function useExamplesData() {
           icon: 'lucide:wind',
           badge: 'Animated',
         },
+        {
+          title: 'Himalaya 3D Terrain',
+          description:
+            'Native setTerrain + hillshade from a Terrain-RGB PMTiles archive.',
+          href: '/examples/himalaya-terrain',
+          icon: 'lucide:mountain-snow',
+          badge: 'New',
+        },
       ],
     },
     {

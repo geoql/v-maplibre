@@ -155,6 +155,8 @@ Component-specific TypeScript types (e.g. `MosaicSource`, `WindDataPoint`, `Lida
 - **`VLayerMaplibreCanvas`** - Canvas layers
 - **`VLayerMaplibreCluster`** - Clustered point layers
 - **`VLayerMaplibrePmtile`** - PMTiles layers
+- **`VLayerMaplibreHillshade`** - Hillshade relief from a raster-dem source
+- **`VTerrain`** - Native MapLibre 3D terrain (`map.setTerrain`)
 - **`VLayerMaplibreRoute`** - Route/delivery tracking visualization
 - **`VLayerStarfield`** - Three.js starfield skybox for globe projections (requires `@geoql/maplibre-gl-starfield`, `three`)
 

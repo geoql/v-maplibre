@@ -13,6 +13,7 @@ import {
   VLayerMaplibreCanvas,
   VLayerMaplibreGeojson,
   VLayerMaplibreCluster,
+  VLayerMaplibreHillshade,
   VLayerMaplibreImage,
   VLayerMaplibreRaster,
   VLayerMaplibreVector,
@@ -20,6 +21,7 @@ import {
   VLayerMaplibrePmtile,
   VLayerMaplibreRoute,
   VLayerMaplibreIsochrone,
+  VTerrain,
 } from './layers';
 
 import VMap from './map/VMap.vue';
@@ -35,6 +37,7 @@ export {
   VLayerMaplibreCanvas,
   VLayerMaplibreGeojson,
   VLayerMaplibreCluster,
+  VLayerMaplibreHillshade,
   VLayerMaplibreImage,
   VLayerMaplibreRaster,
   VLayerMaplibreVector,
@@ -42,6 +45,7 @@ export {
   VLayerMaplibrePmtile,
   VLayerMaplibreRoute,
   VLayerMaplibreIsochrone,
+  VTerrain,
   VControlAttribution,
   VControlFullscreen,
   VControlGeolocate,
