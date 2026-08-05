@@ -1,9 +1,13 @@
 <script setup lang="ts">
   import { SidebarTrigger, useSidebar } from '~/components/ui/sidebar';
+  import Tooltip from '~/components/ui/tooltip/Tooltip.vue';
+  import TooltipContent from '~/components/ui/tooltip/TooltipContent.vue';
+  import TooltipTrigger from '~/components/ui/tooltip/TooltipTrigger.vue';
 
   const { state, setOpen } = useSidebar();
   const colorMode = useColorMode();
   const route = useRoute();
+  const { showFps, toggle: toggleFps } = useFpsMeter();
 
   const isExpanded = computed(() => state.value === 'expanded');
 
@@ -49,24 +53,58 @@
     <SidebarTrigger
       class="pointer-events-auto rounded-lg bg-background/80 backdrop-blur-sm"
     />
-    <a
-      href="https://github.com/geoql/v-maplibre"
-      target="_blank"
-      rel="noopener noreferrer"
-      class="pointer-events-auto inline-flex size-7 items-center justify-center rounded-lg bg-background/80 text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
-    >
-      <Icon name="simple-icons:github" class="size-4" />
-      <span class="sr-only">GitHub</span>
-    </a>
-    <button
-      class="pointer-events-auto inline-flex size-7 items-center justify-center rounded-lg bg-background/80 text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
-      @click="toggleColorMode"
-    >
-      <Icon
-        :name="colorMode.value === 'dark' ? 'lucide:sun' : 'lucide:moon'"
-        class="size-4"
-      />
-      <span class="sr-only">Toggle theme</span>
-    </button>
+    <Tooltip>
+      <TooltipTrigger as-child>
+        <a
+          href="https://github.com/geoql/v-maplibre"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="pointer-events-auto inline-flex size-7 items-center justify-center rounded-lg bg-background/80 text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
+        >
+          <Icon name="simple-icons:github" class="size-4" />
+          <span class="sr-only">GitHub</span>
+        </a>
+      </TooltipTrigger>
+      <TooltipContent>GitHub</TooltipContent>
+    </Tooltip>
+    <Tooltip>
+      <TooltipTrigger as-child>
+        <button
+          class="pointer-events-auto inline-flex size-7 items-center justify-center rounded-lg bg-background/80 text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
+          @click="toggleColorMode"
+        >
+          <Icon
+            :name="colorMode.value === 'dark' ? 'lucide:sun' : 'lucide:moon'"
+            class="size-4"
+          />
+          <span class="sr-only">Toggle theme</span>
+        </button>
+      </TooltipTrigger>
+      <TooltipContent>
+        <ClientOnly>
+          {{ colorMode.value === 'dark' ? 'Light mode' : 'Dark mode' }}
+          <template #fallback>Dark mode</template>
+        </ClientOnly>
+      </TooltipContent>
+    </Tooltip>
+    <Tooltip>
+      <TooltipTrigger as-child>
+        <button
+          class="pointer-events-auto inline-flex size-7 items-center justify-center rounded-lg bg-background/80 backdrop-blur-sm transition-colors"
+          :class="
+            showFps
+              ? 'text-foreground'
+              : 'text-muted-foreground hover:text-foreground'
+          "
+          :aria-label="showFps ? 'Hide FPS meter' : 'Show FPS meter'"
+          :aria-pressed="showFps"
+          @click="toggleFps"
+        >
+          <Icon name="lucide:gauge" class="size-4" />
+          <span class="sr-only">Toggle FPS meter</span>
+        </button>
+      </TooltipTrigger>
+      <TooltipContent>{{ showFps ? 'Hide FPS' : 'Show FPS' }}</TooltipContent>
+    </Tooltip>
   </div>
 </template>

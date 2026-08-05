@@ -33,6 +33,14 @@ interface UseDeckOverlayOptions {
    * (Scatterplot / Trips / Icon / Text) don't clip off the sphere on pitch.
    */
   globe?: boolean;
+  /**
+   * Pixel ratio for the deck canvas. Non-interleaved overlays redraw the deck
+   * canvas synchronously on every map render, so a 2x device canvas costs 4x
+   * the fill rate and stalls camera moves on 3D scenes (measured multi-second
+   * frame stalls at 2x on a terrain page). Set to 1 to halve the resolution
+   * (slightly softer deck content on retina) for a large frame-time win.
+   */
+  useDevicePixels?: number | boolean;
 }
 
 interface UseDeckOverlayReturn {
@@ -50,7 +58,11 @@ export function useDeckOverlay(
   map: Ref<Map | null>,
   options: UseDeckOverlayOptions = {},
 ): UseDeckOverlayReturn {
-  const { interleaved = false, globe = false } = options;
+  const {
+    interleaved = false,
+    globe = false,
+    useDevicePixels = true,
+  } = options;
   const useInterleaved = interleaved || globe;
 
   const applyGlobeParams = (layer: unknown): unknown => {
@@ -174,6 +186,7 @@ export function useDeckOverlay(
         overlay.value = new MapboxOverlay({
           interleaved: useInterleaved,
           layers: [],
+          useDevicePixels,
           onError: (err: unknown) =>
             console.error('[useDeckOverlay] deck onError:', err),
         } as ConstructorParameters<typeof MapboxOverlay>[0]);
@@ -252,6 +265,24 @@ export function useDeckOverlay(
     }
   };
 
+  // Animated scenes update several layers in the same reactive flush (a
+  // currentTime tick touches every animated wrapper at once). Each update
+  // used to push its own overlay.setProps + triggerRepaint, which for an
+  // N-layer animated scene meant N full layer-array diffs per frame (measured
+  // 244 setProps/s on a 6-unit scene — the source of jank during camera
+  // moves). Coalescing to one syncLayers per flush keeps the overlay at a
+  // single diff per frame; addLayer/removeLayer stay synchronous because they
+  // are mount/unmount-time and rare.
+  let syncScheduled = false;
+  const scheduleSync = (): void => {
+    if (syncScheduled) return;
+    syncScheduled = true;
+    Promise.resolve().then(() => {
+      syncScheduled = false;
+      syncLayers();
+    });
+  };
+
   const removeLayer = (layerId: string): void => {
     layerRegistry.delete(layerId);
     syncLayers();
@@ -260,7 +291,7 @@ export function useDeckOverlay(
   const updateLayer = (layerId: string, rawLayer: unknown): void => {
     if (layerRegistry.has(layerId)) {
       layerRegistry.set(layerId, applyGlobeParams(rawLayer));
-      syncLayers();
+      scheduleSync();
     } else {
       addLayer(rawLayer);
     }

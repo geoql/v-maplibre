@@ -20,6 +20,8 @@
   import { motion, AnimatePresence } from 'motion-v';
   import { useMediaQuery } from '@vueuse/core';
 
+  const { showFps } = useFpsMeter();
+
   interface Props {
     title?: string;
     defaultOpen?: boolean;
@@ -136,7 +138,8 @@
       :exit="{ opacity: 0, x: -20, scale: 0.96 }"
       :transition="{ type: 'spring', stiffness: 320, damping: 26 }"
       :class="[
-        'absolute top-4 left-4 z-20 max-h-viewport-padded overflow-y-auto rounded-md border border-border bg-background p-4 shadow-lg',
+        'absolute left-4 z-20 max-h-viewport-padded overflow-y-auto rounded-md border border-border bg-background p-4 shadow-lg',
+        showFps ? 'top-14' : 'top-4',
         panelWidth,
       ]"
     >

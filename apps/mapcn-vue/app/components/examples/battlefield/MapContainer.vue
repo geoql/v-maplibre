@@ -9,7 +9,6 @@
     VMap,
     VControlNavigation,
     VControlScale,
-    VLayerMaplibreHillshade,
     VSky,
     VTerrain,
   } from '@geoql/v-maplibre';
@@ -28,6 +27,11 @@
   const mapId = useId();
   const mapInstance = ref<Map | null>(null);
   const elevationTick = ref(0);
+  let refreshTimer: ReturnType<typeof setTimeout> | null = null;
+
+  onBeforeUnmount(() => {
+    if (refreshTimer) clearTimeout(refreshTimer);
+  });
 
   const onMapLoaded = (m: Map) => {
     mapInstance.value = m;
@@ -37,9 +41,15 @@
     // forming an infinite repaint loop (page becomes unresponsive, memory
     // grows). sourcedata only fires on actual tile loads, so it is bounded.
     m.on('sourcedata', (e) => {
-      if (e.sourceId === 'battlefield-dem' && e.isSourceLoaded) {
+      if (e.sourceId !== 'battlefield-dem' || !e.isSourceLoaded) return;
+      // Debounce: a zoom streams tile-load events; recomputing on each one
+      // re-triggers the whole wrapper update -> triggerRepaint chain per event
+      // (measured 1219ms worst frame while zooming). One recompute shortly
+      // after the camera settles is visually identical and cheap.
+      if (refreshTimer) clearTimeout(refreshTimer);
+      refreshTimer = setTimeout(() => {
         elevationTick.value += 1;
-      }
+      }, 300);
     });
     elevationTick.value += 1;
   };
@@ -49,9 +59,24 @@
   // of metres up, so at high pitch they drift down-screen away from their
   // geospatial position. queryTerrainElevation returns EXAGGERATED metres,
   // which is exactly the mesh the map renders, so it can be used directly.
+  // The z cache keeps the per-tick cost to a handful of lookups instead of
+  // one per vertex per frame (paths have dozens of vertices).
+  const zCache = new Map<string, { z: number; at: number }>();
   const terrainElevation = (ll: [number, number]): number => {
     void elevationTick.value;
-    return mapInstance.value?.queryTerrainElevation(ll) ?? 0;
+    const key = `${ll[0].toFixed(4)},${ll[1].toFixed(4)}`;
+    const cached = zCache.get(key);
+    if (cached && performance.now() - cached.at < 500) {
+      return cached.z;
+    }
+    if (zCache.size > 500) {
+      // Interpolated positions generate a new coordinate key every tick;
+      // cap the cache so long playbacks don't grow memory unbounded.
+      zCache.clear();
+    }
+    const z = mapInstance.value?.queryTerrainElevation(ll) ?? 0;
+    zCache.set(key, { z, at: performance.now() });
+    return z;
   };
 
   const elevatedPaths = computed<ElevatedPath[]>(() =>
@@ -66,6 +91,28 @@
       ...p,
       z: terrainElevation([p.lng, p.lat]),
     })),
+  );
+
+  // Publish the animated data at 30fps instead of the simulation's 60fps:
+  // every published frame pushes fresh arrays through the deck wrappers
+  // (updateLayer + triggerRepaint), so halving the rate halves the per-tick
+  // map-render load during playback — especially while the camera moves and
+  // terrain rendering already saturates the frame budget. Trails animate
+  // from timestamps, so 30fps currentTime looks identical.
+  const publishedPositions = ref<ElevatedPosition[]>([]);
+  const publishedTime = ref(0);
+  let lastPublish = 0;
+  const publishFrame = () => {
+    const now = performance.now();
+    if (now - lastPublish < 33) return;
+    lastPublish = now;
+    publishedPositions.value = elevatedPositions.value;
+    publishedTime.value = props.currentTime;
+  };
+  watch(
+    [() => props.positions, () => props.currentTime, () => elevationTick.value],
+    () => publishFrame(),
+    { immediate: true },
   );
 
   // Terrain pages pin the LIGHT basemap in both colour modes: the dark
@@ -102,7 +149,7 @@
   const demSource = (): RasterDEMSourceSpecification => ({
     type: 'raster-dem',
     tiles: [TERRARIUM_TILES],
-    tileSize: 256,
+    tileSize: 512,
     maxzoom: 13,
     encoding: 'terrarium',
     attribution:
@@ -113,25 +160,24 @@
 <template>
   <div class="relative size-full min-w-0 overflow-hidden">
     <ClientOnly>
-      <VMap :options="mapOptions" class="size-full" @loaded="onMapLoaded">
+      <VMap
+        :options="mapOptions"
+        deck-use-device-pixels="1"
+        class="size-full"
+        @loaded="onMapLoaded"
+      >
         <VControlNavigation position="top-right" />
         <VControlScale position="bottom-left" />
         <VSky :sky="sky" />
         <VTerrain
           source="battlefield-dem"
           :source-spec="demSource()"
-          :exaggeration="1.4"
-        />
-        <VLayerMaplibreHillshade
-          source-id="battlefield-hillshade-dem"
-          layer-id="battlefield-hillshade"
-          :source="demSource()"
-          :layer="{ paint: { 'hillshade-exaggeration': 0.55 } }"
+          :exaggeration="1.0"
         />
         <ExamplesBattlefieldLayers
           :paths="elevatedPaths"
-          :current-time="props.currentTime"
-          :positions="elevatedPositions"
+          :current-time="publishedTime"
+          :positions="publishedPositions"
         />
       </VMap>
       <template #fallback>

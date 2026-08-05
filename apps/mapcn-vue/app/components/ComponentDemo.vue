@@ -150,6 +150,7 @@
       <!-- Map column: fills remaining vertical space above the peek-bar on mobile;
         on desktop fills full height since MapInfoSheet is md:hidden. -->
       <div class="relative min-h-0 flex-1 overflow-hidden">
+        <ExamplesFpsMeter />
         <slot></slot>
       </div>
 

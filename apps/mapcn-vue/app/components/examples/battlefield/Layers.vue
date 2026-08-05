@@ -61,6 +61,10 @@
     },
   };
 
+  // One TripsLayer for all units (not one per unit): the overlay redraws the
+  // whole deck synchronously on every map render, so six trail layers meant
+  // six times the draw cost per camera frame. A single layer renders all
+  // trails in one pass and keeps zooming usable.
   const getPath = (d: ElevatedPath): [number, number, number][] => d.path;
   const getTimestamps = (d: ElevatedPath): number[] => d.timestamps;
   const getPathColor = (d: ElevatedPath): [number, number, number] =>
@@ -74,20 +78,12 @@
     UNITS_MAP[d.unitId]?.color ?? [255, 255, 255];
   const getCallsign = (d: ElevatedPosition): string =>
     UNITS_MAP[d.unitId]?.callsign ?? '';
-
-  // Per-unit single-element arrays for the trips layers, hoisted out of the
-  // template so the :data reference stays stable across renders.
-  const tripData = computed(() =>
-    props.paths.map((p) => ({ path: p, data: [p] })),
-  );
 </script>
 
 <template>
   <VLayerDeckglTrips
-    v-for="trip in tripData"
-    :key="trip.path.unitId"
-    :id="`trail-${trip.path.unitId}`"
-    :data="trip.data"
+    id="unit-trails"
+    :data="props.paths"
     :get-path="getPath"
     :get-timestamps="getTimestamps"
     :get-color="getPathColor"
