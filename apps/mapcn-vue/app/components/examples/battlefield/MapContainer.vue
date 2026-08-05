@@ -128,7 +128,12 @@
     zoom: 11,
     pitch: 62,
     bearing: 24,
-    maxPitch: 85,
+    maxPitch: 80,
+    // Terrain + deck at full retina DPR is 4x the fragment fill; at high
+    // pitch the whole viewport is terrain. 1.5 keeps text crisp while
+    // nearly halving the render cost (this page was unplayable on weaker
+    // GPUs at DPR 2). MapLibre v6 renamed the option to `pixelRatio`.
+    pixelRatio: 1.5,
   }));
 
   // AWS Terrain Tiles (terrarium encoding) — global coverage, so it reaches
@@ -150,8 +155,10 @@
   const demSource = (): RasterDEMSourceSpecification => ({
     type: 'raster-dem',
     tiles: [TERRARIUM_TILES],
-    tileSize: 512,
-    maxzoom: 13,
+    // Native AWS resolution (256px): a 512 tileSize makes MapLibre build
+    // 4x the terrain-mesh vertices per tile, which is the cold-tile hitch.
+    tileSize: 256,
+    maxzoom: 12,
     encoding: 'terrarium',
     attribution:
       'Elevation: <a href="https://registry.opendata.aws/terrain-tiles/">AWS Terrain Tiles</a>',
