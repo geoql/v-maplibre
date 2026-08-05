@@ -21,6 +21,7 @@ import {
   VLayerMaplibrePmtile,
   VLayerMaplibreRoute,
   VLayerMaplibreIsochrone,
+  VSky,
   VTerrain,
 } from './layers';
 
@@ -45,6 +46,7 @@ export {
   VLayerMaplibrePmtile,
   VLayerMaplibreRoute,
   VLayerMaplibreIsochrone,
+  VSky,
   VTerrain,
   VControlAttribution,
   VControlFullscreen,

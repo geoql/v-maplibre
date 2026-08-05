@@ -3,8 +3,13 @@ import { mount } from '@vue/test-utils';
 import { ref, nextTick } from 'vue';
 import Terrain from '../../src/layers/maplibre/terrain/VTerrain.vue';
 import HillshadeLayer from '../../src/layers/maplibre/hillshade/VLayerMaplibreHillshade.vue';
+import Sky from '../../src/layers/maplibre/sky/VSky.vue';
 import { MapKey } from '../../src/utils/symbols';
-import type { Map, RasterDEMSourceSpecification } from 'maplibre-gl';
+import type {
+  Map,
+  RasterDEMSourceSpecification,
+  SkySpecification,
+} from 'maplibre-gl';
 
 const demSource: RasterDEMSourceSpecification = {
   type: 'raster-dem',
@@ -53,13 +58,14 @@ const createMockMap = (overrides: MockMapOverrides = {}) => {
       layers.delete(id);
     }),
     setTerrain: vi.fn(),
+    setSky: vi.fn(),
     setPaintProperty: vi.fn(),
     setLayoutProperty: vi.fn(),
   };
 };
 
 const mountWithMap = (
-  component: typeof Terrain | typeof HillshadeLayer,
+  component: typeof Terrain | typeof HillshadeLayer | typeof Sky,
   props: Record<string, unknown>,
   mockMap: ReturnType<typeof createMockMap>,
 ) =>
@@ -165,6 +171,44 @@ describe('VTerrain', () => {
       source: 'dem',
       exaggeration: 1,
     });
+  });
+});
+
+describe('VSky', () => {
+  const sky: SkySpecification = {
+    'sky-color': '#8fbdf0',
+    'horizon-color': '#dfeaf6',
+    'fog-color': '#eaf1f8',
+  };
+
+  it('applies the sky specification once the style is loaded', () => {
+    const mockMap = createMockMap();
+    mountWithMap(Sky, { sky }, mockMap);
+
+    expect(mockMap.setSky).toHaveBeenCalledWith(sky);
+  });
+
+  it('defers until the style is ready', () => {
+    const mockMap = createMockMap({ styleLoaded: false });
+    mountWithMap(Sky, { sky }, mockMap);
+    expect(mockMap.setSky).not.toHaveBeenCalled();
+
+    mockMap.isStyleLoaded.mockReturnValue(true);
+    mockMap.fire('idle');
+    expect(mockMap.setSky).toHaveBeenCalledWith(sky);
+  });
+
+  it('updates reactively and clears the sky on unmount', async () => {
+    const mockMap = createMockMap();
+    const wrapper = mountWithMap(Sky, { sky }, mockMap);
+
+    const next: SkySpecification = { ...sky, 'sky-color': '#123456' };
+    await wrapper.setProps({ sky: next });
+    await nextTick();
+    expect(mockMap.setSky).toHaveBeenCalledWith(next);
+
+    wrapper.unmount();
+    expect(mockMap.setSky).toHaveBeenLastCalledWith(undefined);
   });
 });
 

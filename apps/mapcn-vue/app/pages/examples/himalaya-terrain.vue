@@ -4,14 +4,19 @@
     VControlNavigation,
     VControlScale,
     VLayerMaplibreHillshade,
+    VSky,
     VTerrain,
   } from '@geoql/v-maplibre';
-  import type { Map, RasterDEMSourceSpecification } from 'maplibre-gl';
+  import type {
+    Map,
+    RasterDEMSourceSpecification,
+    SkySpecification,
+  } from 'maplibre-gl';
 
   usePageGeo({
     title: 'Himalaya 3D Terrain - mapcn-vue Examples',
     description:
-      'Native MapLibre 3D terrain from a Terrain-RGB PMTiles archive: Garhwal Himalaya relief with hillshade and an OSM drape.',
+      'Native MapLibre 3D terrain from a Terrain-RGB PMTiles archive: Garhwal Himalaya relief with hillshade and a maps.guru basemap drape.',
   });
 
   defineOgImage('MapcnDoc', {
@@ -21,6 +26,10 @@
     category: 'MapLibre Layers',
   });
 
+  // Terrain pages pin the LIGHT basemap in both colour modes: the dark
+  // high-contrast style renders shaded relief as near-black on near-black,
+  // so the 3D terrain is effectively invisible in dark mode.
+  const { mapsguruLightStyle } = useMapStyle();
   const mapId = useId();
   const config = useRuntimeConfig();
   const assetsBase = config.public.r2AssetsBase;
@@ -46,26 +55,20 @@
     encoding: 'mapbox',
   };
 
+  // At pitch 64 the terrain meets empty canvas without a sky, so the horizon
+  // reads as a hard black void. fog-color needs 3D terrain to have any effect.
+  const sky: SkySpecification = {
+    'sky-color': '#8fbdf0',
+    'sky-horizon-blend': 0.6,
+    'horizon-color': '#dfeaf6',
+    'horizon-fog-blend': 0.7,
+    'fog-color': '#eaf1f8',
+    'fog-ground-blend': 0.6,
+  };
+
   const mapOptions = computed(() => ({
     container: `himalaya-terrain-${mapId}`,
-    style: {
-      version: 8 as const,
-      sources: {
-        osm: {
-          type: 'raster' as const,
-          tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-          tileSize: 256,
-          attribution: '© OpenStreetMap contributors',
-        },
-      },
-      layers: [
-        {
-          id: 'osm-basemap',
-          type: 'raster' as const,
-          source: 'osm',
-        },
-      ],
-    },
+    style: mapsguruLightStyle.value,
     center: [79.35, 30.55] as [number, number],
     zoom: 10.3,
     pitch: 64,
@@ -116,6 +119,7 @@
                   VMap,
                   VControlNavigation,
                   VLayerMaplibreHillshade,
+                  VSky,
                   VTerrain,
                 } from '@geoql/v-maplibre';
                 import type { RasterDEMSourceSpecification } from 'maplibre-gl';
@@ -136,18 +140,7 @@
                 };
 
                 const mapOptions = {
-                  style: {
-                    version: 8,
-                    sources: {
-                      osm: {
-                        type: 'raster',
-                        tiles: ['https://tile.openstreetmap.org/{z}/{x}/{y}.png'],
-                        tileSize: 256,
-                        attribution: '© OpenStreetMap contributors',
-                      },
-                    },
-                    layers: [{ id: 'osm-basemap', type: 'raster', source: 'osm' }],
-                  },
+                  style: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
                   center: [79.35, 30.55],
                   zoom: 10.3,
                   pitch: 64,
@@ -159,6 +152,16 @@
               <template>
                 <VMap :options="mapOptions" support-pmtiles class="h-125 w-full">
                   <VControlNavigation position="top-right" />
+                  <VSky
+                    :sky="{
+                      'sky-color': '#8fbdf0',
+                      'sky-horizon-blend': 0.6,
+                      'horizon-color': '#dfeaf6',
+                      'horizon-fog-blend': 0.7,
+                      'fog-color': '#eaf1f8',
+                      'fog-ground-blend': 0.6,
+                    }"
+                  />
                   <VTerrain
                     source="terrain-dem"
                     :source-spec="terrainSource"
@@ -177,7 +180,7 @@
 <template>
   <ComponentDemo
     title="Himalaya 3D Terrain"
-    description="Native MapLibre 3D terrain — no three.js, no deck.gl. A geolith-built Terrain-RGB PMTiles archive of the Garhwal Himalaya (Kedarnath, Badrinath, Chaukhamba, Valley of Flowers) drives setTerrain plus a hillshade layer, with an OSM raster basemap draped over the relief."
+    description="Native MapLibre 3D terrain — no three.js, no deck.gl. A geolith-built Terrain-RGB PMTiles archive of the Garhwal Himalaya (Kedarnath, Badrinath, Chaukhamba, Valley of Flowers) drives setTerrain plus a hillshade layer, with the basemap draped over the relief."
     :code="codeExample"
     full-width
     class="h-full"
@@ -192,6 +195,7 @@
         >
           <VControlNavigation position="top-right" />
           <VControlScale position="bottom-left" />
+          <VSky :sky="sky" />
           <VTerrain
             source="terrain-dem"
             :source-spec="terrainSource"
