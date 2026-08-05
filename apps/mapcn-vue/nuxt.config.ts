@@ -131,10 +131,14 @@ export default defineNuxtConfig({
         process.env.NUXT_PUBLIC_OPENWEATHERMAP_API_KEY ??
         '385df3d81f3a89c1c99c115735540c6d',
       // Base URL of the R2 bucket hosting geolith-generated demo assets
-      // (Gaussian splats, 3D Tiles tilesets, Terrain-RGB PMTiles). Injected
-      // at build time via NUXT_PUBLIC_R2_ASSETS_BASE (GH secret) so the
-      // bucket can be rotated without a code change.
-      r2AssetsBase: '',
+      // (Gaussian splats, 3D Tiles tilesets, Terrain-RGB PMTiles). Baked at
+      // build time from NUXT_PUBLIC_R2_ASSETS_BASE (GH secret) so the bucket
+      // can be rotated without a code change. Must read process.env HERE:
+      // /examples/* is worker-routed (assets.run_worker_first), so those
+      // pages are SSR'd with the server bundle's baked default — a static ''
+      // would ship empty asset URLs even though prerendered payloads got the
+      // value (that was the bug behind broken live splat/3d-tiles demos).
+      r2AssetsBase: process.env.NUXT_PUBLIC_R2_ASSETS_BASE ?? '',
       library: {
         version: libraryPkg.version,
         releasedAt: LIBRARY_RELEASED_AT,
