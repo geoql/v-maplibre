@@ -183,19 +183,19 @@
   );
 
   watch(
-    () => [
-      props.node,
-      props.variable,
-      props.selection,
-      props.metadata,
-      props.opacity,
-      props.visible,
+    [
+      () => props.node,
+      () => props.variable,
+      () => props.selection,
+      () => props.metadata,
+      () => props.opacity,
+      () => props.visible,
       // Callbacks must be watched too: ZarrLayer captures `renderTile` and
       // `getTileData` at construction time, so consumers that swap closures
       // (e.g. AEF Mosaic rebuilding the SampleAefRgb shader pipeline with
       // new band indices) need the layer rebuilt to take effect.
-      props.renderTile,
-      props.getTileData,
+      () => props.renderTile,
+      () => props.getTileData,
     ],
     () => {
       const layer = createLayer();

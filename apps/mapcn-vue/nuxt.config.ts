@@ -70,6 +70,7 @@ export default defineNuxtConfig({
 
   app: {
     head: {
+      htmlAttrs: { lang: 'en' },
       title: 'mapcn-vue - Beautiful maps for Vue',
       meta: [
         {
@@ -120,7 +121,20 @@ export default defineNuxtConfig({
       clientSecret: process.env.NUXT_OPENPANEL_CLIENT_SECRET ?? '',
     },
     public: {
-      mapsguruApiKey: '',
+      mapsguruApiKey:
+        'mapx_xjfRpEuggdoqFSUQxgCpGHWSETwokQlHykEprhbPwwiOTaXdeGlqsGsxXldXhLFA',
+      // Free-tier OpenWeatherMap key powering the wind + interpolate-heatmap
+      // demos. Public by design (the browser calls api.openweathermap.org
+      // directly), so the literal ships as the default and deployments can
+      // override it with NUXT_PUBLIC_OPENWEATHERMAP_API_KEY.
+      openweathermapApiKey:
+        process.env.NUXT_PUBLIC_OPENWEATHERMAP_API_KEY ??
+        '385df3d81f3a89c1c99c115735540c6d',
+      // Base URL of the R2 bucket hosting geolith-generated demo assets
+      // (Gaussian splats, 3D Tiles tilesets, Terrain-RGB PMTiles). Injected
+      // at build time via NUXT_PUBLIC_R2_ASSETS_BASE (GH secret) so the
+      // bucket can be rotated without a code change.
+      r2AssetsBase: '',
       library: {
         version: libraryPkg.version,
         releasedAt: LIBRARY_RELEASED_AT,
@@ -219,7 +233,7 @@ export default defineNuxtConfig({
     domain: 'https://mapcn-vue.geoql.in',
     title: 'mapcn-vue',
     description:
-      'Beautiful, theme-aware map components for Vue 3 powered by MapLibre GL and deck.gl. shadcn-vue compatible — copy components directly into your project, no black-box package.',
+      'Beautiful, theme-aware map components for Vue 3 powered by MapLibre GL and deck.gl. shadcn-vue compatible: copy components directly into your project, no black-box package.',
     full: {
       title: 'mapcn-vue full documentation',
       description:
@@ -346,13 +360,36 @@ export default defineNuxtConfig({
         '@luma.gl/engine',
         '@luma.gl/shadertools',
         'apache-arrow',
+        // three MUST resolve to a single instance across the app, the linked
+        // @geoql/v-maplibre workspace package, spark and the 3d-tiles stack.
+        // Spark registers its `splatDefines` shader chunk on THREE.ShaderChunk
+        // of *its* three instance; if the WebGLRenderer comes from a second
+        // instance the splat program fails to compile with
+        // "Can not resolve #include <splatDefines>" and every splat renders
+        // invisible while plain three meshes still draw fine.
+        'three',
+        '@sparkjsdev/spark',
+        '3d-tiles-renderer',
+        '3d-tiles-rendererjs-3dgs-plugin',
       ],
     },
     worker: {
       format: 'es',
     },
     optimizeDeps: {
-      exclude: ['@geoql/v-maplibre'],
+      // @geoql/v-maplibre stays raw so the linked workspace package hot-
+      // reloads. The splat/tiles stack must stay raw too: pre-bundled dep
+      // chunks import shared modules (spark, three) via query-less relative
+      // URLs while raw files get the ?v=-hashed URL, and two URLs means two
+      // module instances — Spark's `instanceof SplatGenerator` then fails
+      // across the boundary and the 3dgs plugin's tile meshes are invisible
+      // to the shared renderer.
+      exclude: [
+        '@geoql/v-maplibre',
+        '@sparkjsdev/spark',
+        '3d-tiles-renderer',
+        '3d-tiles-rendererjs-3dgs-plugin',
+      ],
       include: [
         '@deck.gl/mapbox',
         'apache-arrow',

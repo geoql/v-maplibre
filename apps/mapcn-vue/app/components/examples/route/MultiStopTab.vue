@@ -41,6 +41,9 @@
 
   const { mapStyle } = useRouteUtils();
   const panelOpen = ref(true);
+  const toggleClass = computed(() => ({
+    'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen.value,
+  }));
 
   function togglePanel() {
     panelOpen.value = !panelOpen.value;
@@ -187,6 +190,31 @@
     return 'bg-blue-500';
   }
 
+  const MARKER_OPTIONS = { draggable: true } as const;
+
+  const MARKER_BASE = `
+    flex size-10 items-center justify-center rounded-full
+    border-2 border-white shadow-lg transition-transform
+    hover:scale-110
+  `;
+
+  const STOP_BADGE_BASE = `
+    relative z-10 flex size-7 shrink-0 items-center
+    justify-center rounded-full border-2
+  `;
+
+  function getMarkerClass(stop: RouteStop): string {
+    return `${MARKER_BASE} ${getMarkerBgClass(stop)}`;
+  }
+
+  function getStopBadgeClass(stop: RouteStop): string {
+    return `${STOP_BADGE_BASE} ${getStopBorderClass(stop)}`;
+  }
+
+  function getStopIconFullClass(stop: RouteStop): string {
+    return `size-3.5 ${getStopIconClass(stop)}`;
+  }
+
   function getLegDuration(index: number): number {
     return multiStopLegs.value[index]?.duration ?? 0;
   }
@@ -246,7 +274,7 @@
           v-for="(stop, index) in stops"
           :key="`stop-${index}`"
           :coordinates="stop.coordinates"
-          :options="{ draggable: true }"
+          :options="MARKER_OPTIONS"
           @update:coordinates="
             (coords: [number, number]) => handleStopDrag(index, coords)
           "
@@ -257,20 +285,11 @@
               class="relative cursor-grab active:cursor-grabbing"
             >
               <div
-                class="absolute -top-1 -right-1 z-10 flex size-4 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white shadow-sm"
+                class="absolute -top-1 -right-1 z-10 flex size-4 items-center justify-center rounded-full bg-primary text-2xs font-bold text-white shadow-sm"
               >
                 {{ index + 1 }}
               </div>
-              <div
-                :class="[
-                  `
-                    flex size-10 items-center justify-center rounded-full
-                    border-2 border-white shadow-lg transition-transform
-                    hover:scale-110
-                  `,
-                  getMarkerBgClass(stop),
-                ]"
-              >
+              <div :class="getMarkerClass(stop)">
                 <Icon :name="stop.icon" class="size-5 text-white" />
               </div>
             </div>
@@ -282,9 +301,7 @@
     <!-- Toggle button - always visible -->
     <button
       class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
-      :class="{
-        'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen,
-      }"
+      :class="toggleClass"
       @click="togglePanel"
     >
       <Icon
@@ -301,7 +318,7 @@
         :animate="{ opacity: 1, x: 0, scale: 1 }"
         :exit="{ opacity: 0, x: -20, scale: 0.95 }"
         :transition="{ type: 'spring', stiffness: 300, damping: 25 }"
-        class="absolute top-16 left-4 z-10 w-72 max-h-[calc(100%-5rem)] overflow-auto rounded-xl bg-background/95 shadow-lg backdrop-blur-sm"
+        class="absolute top-16 left-4 z-10 w-72 max-h-float-panel overflow-auto rounded-xl bg-background/95 shadow-lg backdrop-blur-sm"
       >
         <div class="p-4">
           <div class="mb-3 flex items-center justify-between">
@@ -355,26 +372,19 @@
           </div>
 
           <div class="divide-y divide-border">
-            <div v-for="(stop, index) in stops" :key="index" class="relative">
+            <div
+              v-for="(stop, index) in stops"
+              :key="stop.icon"
+              class="relative"
+            >
               <div
                 v-if="index < stops.length - 1"
                 class="absolute top-10 bottom-0 left-6 w-0.5 bg-linear-to-b from-border to-border/50"
               ></div>
 
               <div class="flex gap-3 p-3">
-                <div
-                  :class="[
-                    `
-                      relative z-10 flex size-7 shrink-0 items-center
-                      justify-center rounded-full border-2
-                    `,
-                    getStopBorderClass(stop),
-                  ]"
-                >
-                  <Icon
-                    :name="stop.icon"
-                    :class="['size-3.5', getStopIconClass(stop)]"
-                  />
+                <div :class="getStopBadgeClass(stop)">
+                  <Icon :name="stop.icon" :class="getStopIconFullClass(stop)" />
                 </div>
 
                 <div class="min-w-0 flex-1">

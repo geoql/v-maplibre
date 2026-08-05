@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import type { C2Unit } from '~/types/defense-drone-c2';
 
-  defineProps<{
+  const props = defineProps<{
     units: C2Unit[];
     isPlaying: boolean;
     speed: number;
@@ -32,6 +32,14 @@
         return 'bg-gray-500';
     }
   }
+
+  // Stable per-unit style objects so the v-for does not allocate on re-render
+  const unitRows = computed(() =>
+    props.units.map((unit) => ({
+      ...unit,
+      dotStyle: { backgroundColor: `rgb(${unit.color.join(',')})` },
+    })),
+  );
 </script>
 
 <template>
@@ -40,7 +48,7 @@
       <h3 class="text-sm font-semibold">Units</h3>
       <div class="space-y-1">
         <button
-          v-for="unit in units"
+          v-for="unit in unitRows"
           :key="unit.id"
           class="flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-xs transition-colors"
           :class="
@@ -56,11 +64,11 @@
           ></span>
           <span
             class="size-2 shrink-0 rounded-sm"
-            :style="{ backgroundColor: `rgb(${unit.color.join(',')})` }"
+            :style="unit.dotStyle"
           ></span>
           <span class="font-mono font-bold">{{ unit.callsign }}</span>
           <span
-            class="ml-auto rounded-full bg-muted px-1.5 py-0.5 text-[10px] uppercase"
+            class="ml-auto rounded-full bg-muted px-1.5 py-0.5 text-2xs uppercase"
           >
             {{ unit.type }}
           </span>

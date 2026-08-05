@@ -7,9 +7,3 @@
  * `pnpm add @deck.gl/core @deck.gl/mapbox @developmentseed/deck.gl-geotiff @developmentseed/deck.gl-raster @developmentseed/deck.gl-zarr @developmentseed/geotiff @developmentseed/proj zarrita`
  */
 export * from './layers/deckgl/geotiff';
-export {
-  useDeckOverlay,
-  useDeckLayers,
-  DeckOverlayKey,
-  DeckLayersKey,
-} from './layers/deckgl/_shared';

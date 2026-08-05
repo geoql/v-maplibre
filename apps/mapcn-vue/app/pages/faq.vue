@@ -51,12 +51,12 @@
     {
       question: 'How does mapcn-vue relate to @geoql/v-maplibre?',
       answer:
-        '@geoql/v-maplibre is the core library published to npm. It provides the low-level Vue 3 wrappers around MapLibre GL JS (VMap, VMarker, VPopup, controls, layer primitives) and the deck.gl integration; you install it with pnpm add @geoql/v-maplibre and import components directly. mapcn-vue is the shadcn-compatible registry layer built on top of @geoql/v-maplibre — instead of importing components from an npm package, you copy pre-styled, pre-themed component source files into your own project via the shadcn-vue CLI. Choose @geoql/v-maplibre for a versioned npm dependency; choose mapcn-vue to own and customize the component source in your repo.',
+        '@geoql/v-maplibre is the core library published to npm. It provides the low-level Vue 3 wrappers around MapLibre GL JS (VMap, VMarker, VPopup, controls, layer primitives) and the deck.gl integration; you install it with pnpm add @geoql/v-maplibre and import components directly. mapcn-vue is the shadcn-compatible registry layer built on top of @geoql/v-maplibre: instead of importing components from an npm package, you copy pre-styled, pre-themed component source files into your own project via the shadcn-vue CLI. Choose @geoql/v-maplibre for a versioned npm dependency; choose mapcn-vue to own and customize the component source in your repo.',
     },
   ];
 
   usePageGeo({
-    title: 'FAQ — mapcn-vue',
+    title: 'FAQ: mapcn-vue',
     description:
       'Frequently asked questions about mapcn-vue: installation, peer dependencies, deck.gl vs MapLibre layers, the shadcn-vue registry, Cloudflare Pages support, contributing, and how it relates to @geoql/v-maplibre.',
   });
@@ -86,9 +86,7 @@
   <div class="relative min-h-dvh">
     <div class="fixed inset-0 -z-10">
       <div class="absolute inset-0 bg-background"></div>
-      <div
-        class="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-size-[64px_64px] opacity-30"
-      ></div>
+      <div class="absolute inset-0 bg-grid opacity-30"></div>
     </div>
 
     <div class="container max-w-screen-2xl py-10">
@@ -97,20 +95,20 @@
           <!-- Header -->
           <div class="mb-12 border-b border-border pb-8">
             <div
-              class="mb-4 inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.18em] text-primary uppercase"
+              class="mb-4 inline-flex items-center gap-2 font-mono text-caption tracking-caps text-primary uppercase"
             >
               <Icon name="lucide:help-circle" class="size-3" />
               <span>Support</span>
             </div>
 
             <h1
-              class="text-3xl font-extrabold tracking-[-0.03em] text-foreground sm:text-4xl md:text-5xl"
+              class="text-3xl font-extrabold tracking-snug text-foreground sm:text-4xl md:text-5xl"
             >
               {{ page?.title ?? 'Frequently Asked Questions' }}
             </h1>
             <p
               v-if="page?.description"
-              class="mt-4 max-w-[60ch] text-lg/relaxed text-muted-foreground"
+              class="mt-4 max-w-measure-lg text-lg/relaxed text-muted-foreground"
             >
               {{ page.description }}
             </p>
@@ -123,7 +121,7 @@
 
           <!-- Footer / contribute -->
           <div
-            class="mt-12 flex items-center justify-between gap-2 border-t border-border pt-6 font-mono text-[11px] tracking-[0.15em] text-muted-foreground uppercase"
+            class="mt-12 flex items-center justify-between gap-2 border-t border-border pt-6 font-mono text-caption tracking-caps-sm text-muted-foreground uppercase"
           >
             <a
               href="https://github.com/geoql/v-maplibre/edit/main/apps/mapcn-vue/content/faq.md"

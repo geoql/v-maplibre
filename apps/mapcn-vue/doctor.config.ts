@@ -20,6 +20,12 @@ export default {
     // This config file itself: consumed by the doctor CLI via c12, never
     // imported by app code, so knip's dead-code pass flags it as unused.
     'doctor.config.ts',
+    // Collection schema for @nuxt/content: loaded by the module at build time
+    // via its own config resolver, never imported by app code.
+    'content.config.ts',
+    // One-off data-generation script: run by hand to rebuild the GeoArrow demo
+    // fixtures in public/geoarrow/, never bundled or imported at runtime.
+    'public/geoarrow/generate.ts',
     // Vendored shadcn-vue primitives — generated/owned by the shadcn-vue CLI
     // (`pnpm dlx shadcn-vue add ...`), not hand-authored app code. Excluded so
     // upgrades stay clean and their upstream patterns (props destructure in a
@@ -40,5 +46,17 @@ export default {
     // mapsguruApiKey is a domain-restricted public map-tile key (like a
     // Mapbox/MapTiler public token): it MUST reach the client to fetch styles.
     'nuxt-doctor/security/no-secret-in-public-runtime-config': 'off',
+    // Every public page calls usePageGeo() (app/composables/use-page-geo.ts),
+    // which calls usePageSeo() (app/composables/use-page-seo.ts), which calls
+    // useSeoMeta() internally. The rule only greps for a direct useSeoMeta
+    // call and can't see through this wrapper indirection.
+    'nuxt-doctor/seo/useSeoMeta-on-public-page': 'off',
+    // The rule reads a grid background as stock AI marketing filler. Here it
+    // is the opposite: `bg-grid` / `bg-grid-faint` (main.css) are 3% grey
+    // hairlines on a 3.75rem pitch, part of the pinned Tech Utility direction
+    // (.agents/skills/mapcn-vue-design/SKILL.md) that Linear, Vercel and
+    // Stripe all use. Turning it off is a design decision, not a lint waiver —
+    // drop this override if the pinned direction ever changes.
+    'vue-doctor/design/no-decorative-grid-background': 'off',
   },
 };

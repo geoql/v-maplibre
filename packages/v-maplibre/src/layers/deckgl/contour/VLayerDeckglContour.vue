@@ -102,13 +102,13 @@
   );
 
   watch(
-    () => [
-      props.data,
-      props.getPosition,
-      props.cellSize,
-      props.contours,
-      props.opacity,
-      props.visible,
+    [
+      () => props.data,
+      () => props.getPosition,
+      () => props.cellSize,
+      () => props.contours,
+      () => props.opacity,
+      () => props.visible,
     ],
     () => updateLayer(props.id, createLayer()),
     { deep: true },

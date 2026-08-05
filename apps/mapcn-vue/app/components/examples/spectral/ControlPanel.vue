@@ -5,7 +5,7 @@
     Orientation,
   } from '~/types/defense-spectral';
 
-  defineProps<{
+  const props = defineProps<{
     pairs: SpectralPair[];
     selectedPair: SpectralPair;
     orientation: Orientation;
@@ -27,6 +27,19 @@
     thermal: 'lucide:flame',
     nightvision: 'lucide:moon',
   };
+
+  const TOGGLE_ACTIVE = 'border-primary bg-primary text-primary-foreground';
+  const TOGGLE_IDLE = 'border-border bg-background hover:bg-muted';
+
+  const ORIENTATIONS = ['vertical', 'horizontal'] as const;
+
+  function getPairClass(pair: SpectralPair): string {
+    return props.selectedPair.id === pair.id ? TOGGLE_ACTIVE : TOGGLE_IDLE;
+  }
+
+  function getOrientationClass(opt: Orientation): string {
+    return props.orientation === opt ? TOGGLE_ACTIVE : TOGGLE_IDLE;
+  }
 </script>
 
 <template>
@@ -43,11 +56,7 @@
           v-for="pair in pairs"
           :key="pair.id"
           class="rounded-md border px-3 py-2 text-left text-sm transition-colors"
-          :class="[
-            selectedPair.id === pair.id
-              ? 'border-primary bg-primary text-primary-foreground'
-              : 'border-border bg-background hover:bg-muted',
-          ]"
+          :class="getPairClass(pair)"
           @click="emit('update:selectedPair', pair)"
         >
           {{ pair.label }}
@@ -64,14 +73,10 @@
       </h4>
       <div class="flex gap-2">
         <button
-          v-for="opt in ['vertical', 'horizontal'] as const"
+          v-for="opt in ORIENTATIONS"
           :key="opt"
           class="rounded-md border px-3 py-1.5 text-sm transition-colors"
-          :class="[
-            orientation === opt
-              ? 'border-primary bg-primary text-primary-foreground'
-              : 'border-border bg-background hover:bg-muted',
-          ]"
+          :class="getOrientationClass(opt)"
           @click="emit('update:orientation', opt)"
         >
           <Icon

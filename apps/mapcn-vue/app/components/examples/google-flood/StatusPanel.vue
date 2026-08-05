@@ -106,7 +106,7 @@
 
     <div
       v-if="lastFetchLabel"
-      class="mt-3 border-t border-border pt-2 text-[10px] text-muted-foreground"
+      class="mt-3 border-t border-border pt-2 text-2xs text-muted-foreground"
     >
       Updated {{ lastFetchLabel }}
     </div>

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { ref, shallowRef, onUnmounted, computed } from 'vue';
   import type { Map, MapOptions } from 'maplibre-gl';
   import { VMap, VControlScale } from '@geoql/v-maplibre';
   import { VLayerStarfield } from '@geoql/v-maplibre/starfield';

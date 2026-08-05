@@ -21,6 +21,18 @@
     links: CommLink[];
   }>();
 
+  function getNodeTypeClass(type: NodeType): string {
+    return props.activeNodeTypes.has(type) ? '' : 'opacity-40';
+  }
+
+  // Stable per-node style objects so the v-for does not allocate on re-render
+  const nodeTypeRows = computed(() =>
+    props.nodeTypes.map((nt) => ({
+      ...nt,
+      dotStyle: { backgroundColor: rgbToStyle(nt.color) },
+    })),
+  );
+
   const linkHealth = computed(() => {
     if (props.links.length === 0)
       return { strong: 0, degraded: 0, weak: 0, down: 0 };
@@ -49,16 +61,13 @@
       <h3 class="mb-3 text-sm font-semibold">Node Types</h3>
       <div class="space-y-2">
         <button
-          v-for="nt in nodeTypes"
+          v-for="nt in nodeTypeRows"
           :key="nt.type"
           class="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-accent"
-          :class="{ 'opacity-40': !activeNodeTypes.has(nt.type) }"
+          :class="getNodeTypeClass(nt.type)"
           @click="emit('toggleType', nt.type)"
         >
-          <span
-            class="size-2.5 rounded-full"
-            :style="{ backgroundColor: rgbToStyle(nt.color) }"
-          />
+          <span class="size-2.5 rounded-full" :style="nt.dotStyle" />
           <Icon :name="nt.icon" class="size-4" />
           <span class="flex-1 text-left">{{ nt.label }}</span>
           <Icon
@@ -80,7 +89,9 @@
           </div>
           <div class="text-muted-foreground">Nodes</div>
         </div>
-        <div class="rounded bg-muted/50 p-2 text-center">
+        <div
+          class="rounded bg-success/10 p-2 text-center ring-1 ring-success/20"
+        >
           <div class="text-lg font-bold text-success">
             {{ stats.activeLinks }}
           </div>
@@ -121,7 +132,7 @@
           :style="{ width: `${linkHealth.down}%` }"
         />
       </div>
-      <div class="mt-2 flex justify-between text-[10px] text-muted-foreground">
+      <div class="mt-2 flex justify-between text-2xs text-muted-foreground">
         <span class="flex items-center gap-1">
           <span class="size-1.5 rounded-full bg-success" /> Strong
         </span>

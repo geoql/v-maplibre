@@ -1,3 +1,4 @@
+import type { H3Event } from 'h3';
 import type { PromapApiResponse, PromapRow } from '~/types/promap';
 import type {
   D1Database,
@@ -104,7 +105,7 @@ async function querySqlite(
       statusCode: 503,
       statusMessage: 'Local D1 database not initialised',
       message:
-        'No local D1 sqlite file found. Apply the schema + seed first — see apps/mapcn-vue/server/db/README.md.',
+        'No local D1 sqlite file found. Apply the schema + seed first (see apps/mapcn-vue/server/db/README.md).',
     });
   }
 
@@ -134,22 +135,24 @@ function isHttpError(err: unknown): err is { statusCode: number } {
   );
 }
 
-export default defineEventHandler(async (event): Promise<PromapApiResponse> => {
-  const { bbox, limit } = await getValidatedQuery(event, validateQuery);
+export default defineEventHandler(
+  async (event: H3Event): Promise<PromapApiResponse> => {
+    const { bbox, limit } = await getValidatedQuery(event, validateQuery);
 
-  const d1 = event.context.cloudflare?.env?.DB as D1Database | undefined;
+    const d1 = event.context.cloudflare?.env?.DB as D1Database | undefined;
 
-  try {
-    if (d1) return await queryD1(d1, bbox, limit);
-    return await querySqlite(bbox, limit);
-  } catch (err) {
-    if (isHttpError(err)) throw err;
-    const message =
-      err instanceof Error ? err.message : 'Failed to query promap dataset';
-    throw createError({
-      statusCode: 500,
-      statusMessage: 'ProMap query failed',
-      message,
-    });
-  }
-});
+    try {
+      if (d1) return await queryD1(d1, bbox, limit);
+      return await querySqlite(bbox, limit);
+    } catch (err) {
+      if (isHttpError(err)) throw err;
+      const message =
+        err instanceof Error ? err.message : 'Failed to query promap dataset';
+      throw createError({
+        statusCode: 500,
+        statusMessage: 'ProMap query failed',
+        message,
+      });
+    }
+  },
+);

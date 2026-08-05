@@ -5,35 +5,22 @@
     ImageSource,
     Map,
   } from 'maplibre-gl';
-  import type { PropType } from 'vue';
   import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
   import { injectStrict, MapKey } from '../../../utils';
 
-  const props = defineProps({
-    sourceId: {
-      type: String,
-      default: 'maplibre.gl-image-source',
-      required: true,
-    },
-    layerId: {
-      type: String,
-      default: 'maplibre.gl-image-layer',
-      required: true,
-    },
-    source: {
-      type: Object as PropType<ImageSourceRaw>,
-      required: true,
-    },
-    layer: {
-      type: Object as PropType<AnyLayer>,
-      default: () => ({}),
-      required: true,
-    },
-    before: {
-      type: String,
-      default: '',
-      required: false,
-    },
+  interface Props {
+    sourceId?: string;
+    layerId?: string;
+    source: ImageSourceRaw;
+    layer?: AnyLayer;
+    before?: string;
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    sourceId: 'maplibre.gl-image-source',
+    layerId: 'maplibre.gl-image-layer',
+    layer: () => ({}) as AnyLayer,
+    before: '',
   });
 
   const map = injectStrict(MapKey);

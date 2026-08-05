@@ -13,7 +13,7 @@
   >
     <div
       v-if="example.badge"
-      class="absolute top-3 right-3 rounded-sm border border-border bg-background/70 px-2 py-0.5 font-mono text-[10px] tracking-[0.12em] text-muted-foreground uppercase backdrop-blur-sm"
+      class="absolute top-3 right-3 rounded-sm border border-border bg-background/70 px-2 py-0.5 font-mono text-2xs tracking-caps-xs text-muted-foreground uppercase backdrop-blur-sm"
     >
       {{ example.badge }}
     </div>
@@ -32,7 +32,7 @@
     </p>
 
     <div
-      class="mt-4 inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.15em] text-muted-foreground uppercase opacity-0 transition-opacity group-hover:opacity-100"
+      class="mt-4 inline-flex items-center gap-2 font-mono text-2xs tracking-caps-sm text-muted-foreground uppercase opacity-0 transition-opacity group-hover:opacity-100"
     >
       <span class="text-primary">Open</span>
       <Icon name="lucide:arrow-right" class="size-3 text-primary" />

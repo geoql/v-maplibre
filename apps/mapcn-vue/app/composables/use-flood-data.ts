@@ -145,16 +145,18 @@ export function useFloodData() {
       const geo = await $fetch<ReverseGeocodeResult>('/api/geocode', {
         query: { lat: point[1], lon: point[0] },
       });
-      if (isSamePoint()) {
+      const current = selectedPoint.value;
+      if (current && isSamePoint()) {
         const parts = geo.displayName?.split(', ') ?? [];
-        selectedPoint.value!.locationName =
+        current.locationName =
           parts.length > 2 ? parts.slice(0, 3).join(', ') : geo.name;
-        selectedPoint.value!.locationLoading = false;
+        current.locationLoading = false;
       }
     } catch {
-      if (isSamePoint()) {
-        selectedPoint.value!.locationName = null;
-        selectedPoint.value!.locationLoading = false;
+      const current = selectedPoint.value;
+      if (current && isSamePoint()) {
+        current.locationName = null;
+        current.locationLoading = false;
       }
     }
   }

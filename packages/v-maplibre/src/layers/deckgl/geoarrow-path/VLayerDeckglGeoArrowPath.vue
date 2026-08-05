@@ -137,19 +137,19 @@
   );
 
   watch(
-    () => [
-      props.getColor,
-      props.getWidth,
-      props.widthUnits,
-      props.widthScale,
-      props.widthMinPixels,
-      props.widthMaxPixels,
-      props.jointRounded,
-      props.capRounded,
-      props.miterLimit,
-      props.opacity,
-      props.visible,
-      props.pickable,
+    [
+      () => props.getColor,
+      () => props.getWidth,
+      () => props.widthUnits,
+      () => props.widthScale,
+      () => props.widthMinPixels,
+      () => props.widthMaxPixels,
+      () => props.jointRounded,
+      () => props.capRounded,
+      () => props.miterLimit,
+      () => props.opacity,
+      () => props.visible,
+      () => props.pickable,
     ],
     () => {
       if (!LayerClass.value || !props.data) return;

@@ -3,6 +3,7 @@ import { MaplibreInterpolateHeatmapLayer } from 'maplibre-gl-interpolate-heatmap
 import type { WeatherPoint } from '~/types/interpolate-heatmap';
 
 export function useInterpolateHeatmap() {
+  const config = useRuntimeConfig();
   const isLoading = ref(true);
   const error = ref<string | null>(null);
 
@@ -33,7 +34,7 @@ export function useInterpolateHeatmap() {
 
       const baseUrl =
         'https://api.openweathermap.org/data/2.5/weather?units=metric';
-      const apiKey = '385df3d81f3a89c1c99c115735540c6d';
+      const apiKey = config.public.openweathermapApiKey;
 
       const urls = points.map(
         ({ lat, lon }) => `${baseUrl}&lat=${lat}&lon=${lon}&appid=${apiKey}`,

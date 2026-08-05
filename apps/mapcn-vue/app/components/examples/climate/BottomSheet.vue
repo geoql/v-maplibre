@@ -36,7 +36,7 @@
       >
         <div class="absolute inset-0 bg-black/20" />
         <div
-          class="absolute bottom-0 left-0 right-0 max-h-[50vh] overflow-y-auto bg-background border-t border-border rounded-t-lg"
+          class="absolute bottom-0 left-0 right-0 max-h-bottom-sheet overflow-y-auto bg-background border-t border-border rounded-t-lg"
         >
           <div class="mx-auto mt-1.5 mb-2.5 h-1 w-9 rounded-full bg-border" />
           <button

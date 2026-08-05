@@ -121,7 +121,7 @@
   });
 
   watch(
-    () => [props.sunAzimuth, props.sunAltitude, props.fadeAltitude],
+    [() => props.sunAzimuth, () => props.sunAltitude, () => props.fadeAltitude],
     ([az, alt, fade]) => {
       layerInstance?.setSunPosition(
         az as number,

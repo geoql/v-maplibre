@@ -218,15 +218,15 @@
   );
 
   watch(
-    () => [
-      props.geotiff,
-      props.tileSize,
-      props.maxZoom,
-      props.minZoom,
-      props.opacity,
-      props.visible,
-      props.debug,
-      props.debugOpacity,
+    [
+      () => props.geotiff,
+      () => props.tileSize,
+      () => props.maxZoom,
+      () => props.minZoom,
+      () => props.opacity,
+      () => props.visible,
+      () => props.debug,
+      () => props.debugOpacity,
     ],
     () => {
       const layer = createLayer();

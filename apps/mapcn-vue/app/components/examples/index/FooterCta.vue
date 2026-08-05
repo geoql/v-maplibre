@@ -2,16 +2,16 @@
 
 <template>
   <div class="mt-20 border-t border-border pt-16">
-    <div class="grid grid-cols-1 items-end gap-8 md:grid-cols-[5fr_7fr]">
+    <div class="grid grid-cols-1 items-end gap-8 md:grid-cols-split-5-7">
       <div>
         <div
-          class="mb-4 inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.18em] text-primary uppercase"
+          class="mb-4 inline-flex items-center gap-2 font-mono text-caption tracking-caps text-primary uppercase"
         >
           <Icon name="lucide:code-2" class="size-3" />
           Ready to build
         </div>
         <h3
-          class="text-2xl font-extrabold tracking-[-0.03em] text-foreground md:text-3xl"
+          class="text-2xl font-extrabold tracking-snug text-foreground md:text-3xl"
         >
           One command.<br />Zero config.
         </h3>
@@ -22,7 +22,7 @@
         <div class="mt-6 flex flex-wrap items-center gap-3">
           <NuxtLink
             to="/docs/introduction"
-            class="inline-flex h-10 items-center gap-2 rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground transition-[filter] hover:brightness-110"
+            class="inline-flex h-10 items-center gap-2 rounded-md bg-primary px-5 text-sm font-medium text-primary-foreground transition-filter hover:brightness-110"
           >
             Get started
             <Icon name="lucide:arrow-right" class="size-4" />
@@ -58,7 +58,7 @@
             aria-hidden="true"
           ></div>
           <span
-            class="ml-2 font-mono text-[10px] tracking-[0.15em] text-muted-foreground uppercase"
+            class="ml-2 font-mono text-2xs tracking-caps-sm text-muted-foreground uppercase"
             >Terminal</span
           >
         </div>

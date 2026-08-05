@@ -96,7 +96,7 @@
       :animate="{ y: 0 }"
       :exit="{ y: '100%' }"
       :transition="{ type: 'spring', stiffness: 320, damping: 32 }"
-      class="absolute inset-x-0 bottom-0 z-30 max-h-[70%] min-h-[40dvh] overflow-y-auto rounded-t-md border-t border-border bg-background pb-[env(safe-area-inset-bottom)] shadow-lg"
+      class="absolute inset-x-0 bottom-0 z-30 max-h-7/10 min-h-sheet-peek overflow-y-auto rounded-t-md border-t border-border bg-background pb-safe shadow-lg"
     >
       <div
         class="mx-auto mt-2 mb-2 h-1 w-10 rounded-full bg-border"
@@ -108,7 +108,7 @@
         <slot name="header">
           <h3
             v-if="title"
-            class="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground"
+            class="font-mono text-caption uppercase tracking-caps text-muted-foreground"
           >
             {{ title }}
           </h3>
@@ -136,14 +136,14 @@
       :exit="{ opacity: 0, x: -20, scale: 0.96 }"
       :transition="{ type: 'spring', stiffness: 320, damping: 26 }"
       :class="[
-        'absolute top-4 left-4 z-20 max-h-[calc(100dvh-2rem)] overflow-y-auto rounded-md border border-border bg-background p-4 shadow-lg',
+        'absolute top-4 left-4 z-20 max-h-viewport-padded overflow-y-auto rounded-md border border-border bg-background p-4 shadow-lg',
         panelWidth,
       ]"
     >
       <div v-if="title || $slots.header" class="mb-3">
         <slot name="header">
           <h3
-            class="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground"
+            class="font-mono text-caption uppercase tracking-caps text-muted-foreground"
           >
             {{ title }}
           </h3>

@@ -48,7 +48,7 @@
   <div class="flex h-dvh flex-col overflow-hidden lg:flex-row">
     <!-- Left panel: docs/code (desktop only — mobile uses MapInfoSheet) -->
     <div
-      class="relative order-last hidden flex-1 flex-col lg:order-first lg:flex lg:w-1/3 lg:max-w-[33.333%]"
+      class="relative order-last hidden flex-1 flex-col lg:order-first lg:flex lg:w-1/3 lg:max-w-1/3"
     >
       <!-- Scrollable content -->
       <div
@@ -118,7 +118,7 @@
             </button>
 
             <div
-              class="shiki-wrapper max-h-[60vh] overflow-auto text-sm [&_pre]:!m-0 [&_pre]:!rounded-none [&_pre]:!border-0 [&_pre]:!bg-transparent [&_pre]:px-4 [&_pre]:py-4 [&_code]:!text-[13px] [&_code]:!leading-relaxed"
+              class="shiki-wrapper shiki-flush max-h-code-lg overflow-auto text-sm"
               v-html="highlightedHtml"
             ></div>
           </div>
@@ -207,7 +207,7 @@
               />
             </button>
             <div
-              class="shiki-wrapper max-h-[40vh] overflow-auto text-sm [&_pre]:!m-0 [&_pre]:!rounded-none [&_pre]:!border-0 [&_pre]:!bg-transparent [&_pre]:px-4 [&_pre]:py-4 [&_code]:!text-[13px] [&_code]:!leading-relaxed"
+              class="shiki-wrapper shiki-flush max-h-code-sm overflow-auto text-sm"
               v-html="highlightedHtml"
             ></div>
           </div>

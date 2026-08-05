@@ -7,7 +7,6 @@
     useVModel,
   } from '@vueuse/core';
   import { TooltipProvider } from 'reka-ui';
-  import { computed, ref } from 'vue';
   import { cn } from '@/lib/utils';
   import {
     provideSidebarContext,

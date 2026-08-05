@@ -1,5 +1,7 @@
 <script setup lang="ts">
-  import type { TocLink } from '~/types/docs';
+  import type { DocsNavItem, TocLink } from '~/types/docs';
+
+  const EMPTY_NAV_ITEMS: DocsNavItem[] = [];
 
   const route = useRoute();
 
@@ -23,14 +25,14 @@
     '/docs/components': 'lucide:component',
   };
 
-  const navItems = computed(() => {
+  const navItems = computed<DocsNavItem[]>(() => {
     return (
       allDocs.value?.map((doc) => ({
         title: doc.title,
         path: doc.path,
         active: doc.path === route.path,
         icon: navIcons[doc.path] || 'lucide:file-text',
-      })) ?? []
+      })) ?? EMPTY_NAV_ITEMS
     );
   });
 
@@ -93,6 +95,19 @@
   // Scroll spy for TOC
   const activeHeading = ref<string>('');
 
+  const LINK_ACTIVE = 'border-primary font-medium text-primary';
+  const LINK_IDLE =
+    'border-transparent text-muted-foreground hover:border-border hover:text-foreground';
+
+  function getNavLinkClass(active: boolean): string {
+    return active ? LINK_ACTIVE : LINK_IDLE;
+  }
+
+  function getTocLinkClass(id: string, level: number): string {
+    const indent = level === 3 ? 'pl-8' : 'pl-4';
+    return `${indent} ${activeHeading.value === id ? LINK_ACTIVE : LINK_IDLE}`;
+  }
+
   onMounted(() => {
     const HEADER_OFFSET = 100;
 
@@ -149,9 +164,7 @@
   <div class="relative min-h-dvh">
     <div class="fixed inset-0 -z-10">
       <div class="absolute inset-0 bg-background"></div>
-      <div
-        class="absolute inset-0 bg-[linear-gradient(to_right,var(--color-border)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-border)_1px,transparent_1px)] bg-size-[64px_64px] opacity-30"
-      ></div>
+      <div class="absolute inset-0 bg-grid opacity-30"></div>
     </div>
 
     <div class="container max-w-screen-2xl py-10">
@@ -160,7 +173,7 @@
         <aside class="hidden w-56 shrink-0 lg:block">
           <div class="sticky top-20">
             <div
-              class="mb-4 font-mono text-[11px] tracking-[0.18em] text-muted-foreground uppercase"
+              class="mb-4 font-mono text-caption tracking-caps text-muted-foreground uppercase"
             >
               Documentation
             </div>
@@ -170,11 +183,7 @@
                 :key="item.path"
                 :to="item.path"
                 class="group -ml-px flex items-center gap-2.5 border-l py-1.5 pl-4 text-sm transition-colors"
-                :class="[
-                  item.active
-                    ? 'border-primary font-medium text-primary'
-                    : 'border-transparent text-muted-foreground hover:border-border hover:text-foreground',
-                ]"
+                :class="getNavLinkClass(item.active)"
               >
                 <Icon :name="item.icon" class="size-3.5" />
                 {{ item.title }}
@@ -189,20 +198,20 @@
             <!-- Header -->
             <div class="mb-12 border-b border-border pb-8">
               <div
-                class="mb-4 inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.18em] text-primary uppercase"
+                class="mb-4 inline-flex items-center gap-2 font-mono text-caption tracking-caps text-primary uppercase"
               >
                 <Icon name="lucide:book-open" class="size-3" />
                 <span>Documentation</span>
               </div>
 
               <h1
-                class="text-3xl font-extrabold tracking-[-0.03em] text-foreground sm:text-4xl md:text-5xl"
+                class="text-3xl font-extrabold tracking-snug text-foreground sm:text-4xl md:text-5xl"
               >
                 {{ page?.title }}
               </h1>
               <p
                 v-if="page?.description"
-                class="mt-4 max-w-[60ch] text-lg/relaxed text-muted-foreground"
+                class="mt-4 max-w-measure-lg text-lg/relaxed text-muted-foreground"
               >
                 {{ page.description }}
               </p>
@@ -214,7 +223,7 @@
 
             <!-- Edit & Report Links -->
             <div
-              class="mt-12 flex items-center justify-between gap-2 border-t border-border pt-6 font-mono text-[11px] tracking-[0.15em] text-muted-foreground uppercase"
+              class="mt-12 flex items-center justify-between gap-2 border-t border-border pt-6 font-mono text-caption tracking-caps-sm text-muted-foreground uppercase"
             >
               <a
                 v-if="editUrl"
@@ -245,7 +254,7 @@
                 class="group flex flex-col rounded-md border border-border bg-card p-5 transition-colors hover:bg-muted/40"
               >
                 <span
-                  class="mb-3 inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase"
+                  class="mb-3 inline-flex items-center gap-2 font-mono text-2xs tracking-caps text-muted-foreground uppercase"
                 >
                   <Icon
                     name="lucide:arrow-left"
@@ -268,7 +277,7 @@
                 class="group flex flex-col items-end rounded-md border border-border bg-card p-5 text-right transition-colors hover:bg-muted/40"
               >
                 <span
-                  class="mb-3 inline-flex items-center gap-2 font-mono text-[10px] tracking-[0.18em] text-muted-foreground uppercase"
+                  class="mb-3 inline-flex items-center gap-2 font-mono text-2xs tracking-caps text-muted-foreground uppercase"
                 >
                   Next
                   <Icon
@@ -291,7 +300,7 @@
         <aside class="hidden w-56 shrink-0 xl:block">
           <div class="sticky top-20">
             <div
-              class="mb-4 font-mono text-[11px] tracking-[0.18em] text-muted-foreground uppercase"
+              class="mb-4 font-mono text-caption tracking-caps text-muted-foreground uppercase"
             >
               On this page
             </div>
@@ -304,12 +313,7 @@
                 :key="heading.id"
                 :href="`#${heading.id}`"
                 class="-ml-px border-l py-1.5 text-sm transition-colors"
-                :class="[
-                  heading.level === 3 ? 'pl-8' : 'pl-4',
-                  activeHeading === heading.id
-                    ? 'border-primary font-medium text-primary'
-                    : 'border-transparent text-muted-foreground hover:border-border hover:text-foreground',
-                ]"
+                :class="getTocLinkClass(heading.id, heading.level)"
               >
                 {{ heading.text }}
               </a>

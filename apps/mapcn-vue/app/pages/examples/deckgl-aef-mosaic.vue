@@ -392,7 +392,7 @@ ${SCRIPT_END}
         <div class="mb-4 space-y-1.5">
           <Label
             for="aef-location"
-            class="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
+            class="font-mono text-2xs uppercase tracking-caps text-muted-foreground"
             >Location</Label
           >
           <Select v-model="locationId">
@@ -414,7 +414,7 @@ ${SCRIPT_END}
           <div class="flex items-center justify-between">
             <Label
               for="aef-year"
-              class="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
+              class="font-mono text-2xs uppercase tracking-caps text-muted-foreground"
               >Year</Label
             >
             <span class="font-mono text-xs tabular-nums text-foreground">
@@ -430,7 +430,7 @@ ${SCRIPT_END}
             class="w-full"
           />
           <div
-            class="flex justify-between font-mono text-[10px] tabular-nums text-muted-foreground"
+            class="flex justify-between font-mono text-2xs tabular-nums text-muted-foreground"
           >
             <span>{{ YEAR_ORIGIN }}</span>
             <span>{{ YEAR_ORIGIN + NUM_YEARS - 1 }}</span>
@@ -438,10 +438,12 @@ ${SCRIPT_END}
         </div>
 
         <div class="mb-4 grid grid-cols-3 gap-2">
-          <div class="space-y-1.5">
+          <div
+            class="space-y-1.5 rounded-md border border-border bg-muted/40 p-2"
+          >
             <Label
               for="aef-r"
-              class="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
+              class="font-mono text-2xs uppercase tracking-caps text-muted-foreground"
               >R</Label
             >
             <NumberField
@@ -461,7 +463,7 @@ ${SCRIPT_END}
           <div class="space-y-1.5">
             <Label
               for="aef-g"
-              class="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
+              class="font-mono text-2xs uppercase tracking-caps text-muted-foreground"
               >G</Label
             >
             <NumberField
@@ -481,7 +483,7 @@ ${SCRIPT_END}
           <div class="space-y-1.5">
             <Label
               for="aef-b"
-              class="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
+              class="font-mono text-2xs uppercase tracking-caps text-muted-foreground"
               >B</Label
             >
             <NumberField
@@ -504,7 +506,7 @@ ${SCRIPT_END}
           <div class="space-y-1.5">
             <Label
               for="aef-rmin"
-              class="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
+              class="font-mono text-2xs uppercase tracking-caps text-muted-foreground"
               >Rescale Min</Label
             >
             <NumberField
@@ -526,7 +528,7 @@ ${SCRIPT_END}
           <div class="space-y-1.5">
             <Label
               for="aef-rmax"
-              class="font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
+              class="font-mono text-2xs uppercase tracking-caps text-muted-foreground"
               >Rescale Max</Label
             >
             <NumberField

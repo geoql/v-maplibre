@@ -44,7 +44,9 @@
             <div class="font-mono font-bold">{{ stats.totalSectors }}</div>
             <div class="text-muted-foreground">Total</div>
           </div>
-          <div class="rounded-md bg-muted/50 px-2 py-1.5">
+          <div
+            class="rounded-md bg-success/10 px-2 py-1.5 ring-1 ring-success/20"
+          >
             <div class="font-mono font-bold text-success">
               {{ stats.searchedSectors }}
             </div>

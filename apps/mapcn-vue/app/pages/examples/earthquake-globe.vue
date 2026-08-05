@@ -222,7 +222,7 @@
       <Transition name="slide-up">
         <div
           v-if="selectedQuake"
-          class="absolute bottom-3 left-3 z-10 max-w-[calc(100%-24px)] rounded-lg border border-primary/20 bg-gray-950/90 p-4 shadow-[0_0_30px_rgba(0,200,255,0.06)] backdrop-blur-xl sm:w-72"
+          class="absolute bottom-3 left-3 z-10 max-w-padded rounded-lg border border-primary/20 bg-popover/90 p-4 shadow-glow-primary backdrop-blur-xl sm:w-72"
         >
           <button
             class="absolute right-2 top-2 flex size-6 items-center justify-center rounded-full text-white/40 transition-colors hover:bg-white/10 hover:text-white"
@@ -255,7 +255,7 @@
               </div>
               <div class="h-2 rounded-full bg-white/5">
                 <div
-                  class="h-full rounded-full bg-gradient-to-r from-primary to-primary shadow-[0_0_10px_rgba(34,211,238,0.4)] transition-all duration-500"
+                  class="h-full rounded-full bg-gradient-to-r from-primary to-primary shadow-glow-cyan transition-all duration-500"
                   :style="{ width: magnitudeBarWidth }"
                 ></div>
               </div>
@@ -271,7 +271,7 @@
               </div>
               <div class="h-2 rounded-full bg-white/5">
                 <div
-                  class="h-full rounded-full bg-gradient-to-r from-warning to-destructive shadow-[0_0_10px_rgba(249,115,22,0.4)] transition-all duration-500"
+                  class="h-full rounded-full bg-gradient-to-r from-warning to-destructive shadow-glow-orange transition-all duration-500"
                   :style="{ width: depthBarWidth }"
                 ></div>
               </div>

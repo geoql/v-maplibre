@@ -130,13 +130,13 @@
   );
 
   watch(
-    () => [
-      props.data,
-      props.tileSize,
-      props.maxZoom,
-      props.minZoom,
-      props.opacity,
-      props.visible,
+    [
+      () => props.data,
+      () => props.tileSize,
+      () => props.maxZoom,
+      () => props.minZoom,
+      () => props.opacity,
+      () => props.visible,
     ],
     () => updateLayer(props.id, createLayer()),
     { deep: true },

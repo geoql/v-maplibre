@@ -140,7 +140,7 @@
               );
             "
           ></div>
-          <div class="flex justify-between text-[10px]">
+          <div class="flex justify-between text-2xs">
             <span>Low</span>
             <span>High (taller bars)</span>
           </div>
@@ -164,7 +164,7 @@
           <div class="text-lg font-bold tabular-nums">
             {{ stats.totalVessels }}
           </div>
-          <div class="text-[10px] text-muted-foreground">Vessels</div>
+          <div class="text-2xs text-muted-foreground">Vessels</div>
         </div>
         <div
           class="rounded-lg border border-border bg-muted/50 p-2 text-center"
@@ -172,7 +172,7 @@
           <div class="text-lg font-bold tabular-nums">
             {{ stats.densityPeak }}
           </div>
-          <div class="text-[10px] text-muted-foreground">Density Peak</div>
+          <div class="text-2xs text-muted-foreground">Density Peak</div>
         </div>
         <div
           class="rounded-lg border p-2 text-center"
@@ -188,7 +188,7 @@
           >
             {{ stats.stsEvents }}
           </div>
-          <div class="text-[10px] text-muted-foreground">STS Events</div>
+          <div class="text-2xs text-muted-foreground">STS Events</div>
         </div>
         <div
           class="rounded-lg border border-border bg-muted/50 p-2 text-center"
@@ -196,7 +196,7 @@
           <div class="text-lg font-bold tabular-nums leading-tight">
             {{ stats.activeChokepoint.split(' ')[0] }}
           </div>
-          <div class="text-[10px] text-muted-foreground">Zone</div>
+          <div class="text-2xs text-muted-foreground">Zone</div>
         </div>
       </div>
     </div>

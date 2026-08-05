@@ -41,7 +41,7 @@
         aria-label="Open example details"
       >
         <span
-          class="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground"
+          class="font-mono text-caption uppercase tracking-caps text-muted-foreground"
         >
           Details
         </span>
@@ -57,7 +57,7 @@
 
       <SheetContent
         side="bottom"
-        class="max-h-[85dvh] overflow-y-auto rounded-t-md border-t border-border bg-background p-0 md:hidden"
+        class="max-h-info-sheet overflow-y-auto rounded-t-md border-t border-border bg-background p-0 md:hidden"
       >
         <SheetHeader class="border-b border-border px-4 py-3 text-left">
           <SheetTitle class="text-xl font-extrabold tracking-tight">{{

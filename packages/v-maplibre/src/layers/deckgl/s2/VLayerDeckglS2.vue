@@ -115,15 +115,15 @@
   );
 
   watch(
-    () => [
-      props.data,
-      props.getS2Token,
-      props.getFillColor,
-      props.getElevation,
-      props.extruded,
-      props.elevationScale,
-      props.opacity,
-      props.visible,
+    [
+      () => props.data,
+      () => props.getS2Token,
+      () => props.getFillColor,
+      () => props.getElevation,
+      () => props.extruded,
+      () => props.elevationScale,
+      () => props.opacity,
+      () => props.visible,
     ],
     () => updateLayer(props.id, createLayer()),
     { deep: true },

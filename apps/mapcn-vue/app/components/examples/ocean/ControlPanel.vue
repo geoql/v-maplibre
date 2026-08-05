@@ -68,7 +68,9 @@
           "
           @click="emit('update:showCurrents', !showCurrents)"
         >
-          <span class="size-2.5 shrink-0 rounded-full bg-[#00c8ff]"></span>
+          <span
+            class="size-2.5 shrink-0 rounded-full bg-(--color-current-swatch)"
+          ></span>
           <Icon name="lucide:wind" class="size-3.5 shrink-0" />
           <span class="font-medium">Surface Currents</span>
         </button>
@@ -162,21 +164,21 @@
           class="rounded-lg border border-border bg-muted/50 p-2 text-center"
         >
           <div class="text-lg font-bold tabular-nums">{{ stats.minSst }}°</div>
-          <div class="text-[10px] text-muted-foreground">Min SST</div>
+          <div class="text-2xs text-muted-foreground">Min SST</div>
         </div>
         <div
           class="rounded-lg border border-border bg-muted/50 p-2 text-center"
         >
           <div class="text-lg font-bold tabular-nums">{{ stats.maxSst }}°</div>
-          <div class="text-[10px] text-muted-foreground">Max SST</div>
+          <div class="text-2xs text-muted-foreground">Max SST</div>
         </div>
         <div
-          class="rounded-lg border border-border bg-muted/50 p-2 text-center"
+          class="rounded-lg border border-primary/40 bg-primary/5 p-2 text-center"
         >
-          <div class="text-lg font-bold tabular-nums">
+          <div class="text-lg font-bold tabular-nums text-primary">
             {{ stats.meanCurrent }}
           </div>
-          <div class="text-[10px] text-muted-foreground">Mean m/s</div>
+          <div class="text-2xs text-muted-foreground">Mean m/s</div>
         </div>
         <div
           class="rounded-lg border border-border bg-muted/50 p-2 text-center"
@@ -184,7 +186,7 @@
           <div class="text-lg font-bold tabular-nums">
             {{ stats.gridCells.toLocaleString() }}
           </div>
-          <div class="text-[10px] text-muted-foreground">Grid Cells</div>
+          <div class="text-2xs text-muted-foreground">Grid Cells</div>
         </div>
       </div>
     </div>
@@ -200,7 +202,7 @@
           }"
         ></div>
         <div
-          class="flex justify-between font-mono text-[10px] text-muted-foreground"
+          class="flex justify-between font-mono text-2xs text-muted-foreground"
         >
           <span>22°C</span>
           <span>27°C</span>
@@ -218,3 +220,12 @@
     </div>
   </div>
 </template>
+
+<style scoped>
+  /* Surface-currents legend swatch — exact data-viz cyan, kept as a scoped
+   * CSS variable so the color stays out of the semantic token system while
+   * still avoiding a raw hex in the template class list. */
+  .space-y-4 {
+    --color-current-swatch: #00c8ff;
+  }
+</style>

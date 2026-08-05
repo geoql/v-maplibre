@@ -575,7 +575,7 @@ export function useExamplesData() {
       id: 'geoarrow',
       title: 'GeoArrow / Apache Arrow',
       description:
-        'Native Arrow IPC rendering with deck.gl-geoarrow — Point, LineString, Polygon, MultiPolygon, Text, Trips',
+        'Native Arrow IPC rendering with deck.gl-geoarrow: Point, LineString, Polygon, MultiPolygon, Text, Trips',
       icon: 'lucide:network',
       examples: [
         {
@@ -637,10 +637,34 @@ export function useExamplesData() {
         {
           title: 'All Geometry Types',
           description:
-            'Point, LineString, and Polygon in a single view — three GeoArrow IPC files rendered together.',
+            'Point, LineString, and Polygon in a single view: three GeoArrow IPC files rendered together.',
           href: '/examples/deckgl-geoarrow-mixed',
           icon: 'lucide:layers',
           badge: 'Combined',
+        },
+      ],
+    },
+    {
+      id: 'three',
+      title: '3D Splats & Tiles',
+      description: 'Gaussian splats and OGC 3D Tiles streamed through three.js',
+      icon: 'lucide:box',
+      examples: [
+        {
+          title: 'Gaussian Splat',
+          description:
+            'Georeferenced .spz splat rendered via Spark on the map.',
+          href: '/examples/splat',
+          icon: 'lucide:sparkles',
+          badge: 'New',
+        },
+        {
+          title: '3D Tiles Splats',
+          description:
+            'OGC 3D Tiles tileset with KHR_gaussian_splatting SPZ tiles.',
+          href: '/examples/3d-tiles',
+          icon: 'lucide:boxes',
+          badge: 'New',
         },
       ],
     },

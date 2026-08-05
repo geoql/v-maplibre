@@ -60,7 +60,7 @@
         >
           <span class="size-2.5 shrink-0 rounded-full bg-warning"></span>
           <span class="font-mono font-bold">{{ obs.label }}</span>
-          <span class="ml-auto rounded-full bg-muted px-1.5 py-0.5 text-[10px]">
+          <span class="ml-auto rounded-full bg-muted px-1.5 py-0.5 text-2xs">
             {{ obs.heightM }}m
           </span>
           <button

@@ -217,7 +217,7 @@
   }
 
   watch(
-    () => [props.loopedTime, props.positions, props.ships],
+    [() => props.loopedTime, () => props.positions, () => props.ships],
     () => syncLayers(),
     { deep: true },
   );

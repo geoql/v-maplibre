@@ -88,7 +88,7 @@
         :step="0.1"
         @update:model-value="handleSliderUpdate"
       />
-      <div class="mt-1 flex justify-between text-[10px] text-muted-foreground">
+      <div class="mt-1 flex justify-between text-2xs text-muted-foreground">
         <span>None</span>
         <span>Light</span>
         <span>Heavy</span>
@@ -115,7 +115,7 @@
 
     <div>
       <h4 class="text-xs font-medium">Height = Snow Depth</h4>
-      <p class="text-[10px] text-muted-foreground">
+      <p class="text-2xs text-muted-foreground">
         Taller bars = more snow accumulated since last plow
       </p>
     </div>

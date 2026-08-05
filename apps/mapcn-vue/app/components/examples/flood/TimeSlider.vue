@@ -56,6 +56,7 @@
     return counts.map((count, i) => {
       const year = props.min + i;
       return {
+        year,
         x: i * barWidth + gap / 2,
         width: barWidth - gap,
         y: 100 - (count / peak) * 100,
@@ -245,8 +246,8 @@
         preserveAspectRatio="none"
       >
         <rect
-          v-for="(bar, i) in bars"
-          :key="i"
+          v-for="bar in bars"
+          :key="bar.year"
           :x="bar.x"
           :y="bar.y"
           :width="bar.width"
@@ -293,7 +294,7 @@
         <button
           v-for="s in SPEED_OPTIONS"
           :key="s"
-          class="rounded px-1.5 py-0.5 text-[10px] font-medium transition-colors"
+          class="rounded px-1.5 py-0.5 text-2xs font-medium transition-colors"
           :class="
             playbackSpeed === s
               ? 'bg-primary/20 text-primary'
@@ -307,7 +308,7 @@
     </div>
 
     <!-- Year range labels -->
-    <div class="mt-1.5 flex justify-between text-[10px] text-muted-foreground">
+    <div class="mt-1.5 flex justify-between text-2xs text-muted-foreground">
       <span>{{ min }}</span>
       <span>{{ max }}</span>
     </div>

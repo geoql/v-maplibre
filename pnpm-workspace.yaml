@@ -88,6 +88,10 @@ catalogs:
     '@geoql/maplibre-gl-starfield': ^0.1.1
     '@geoql/maplibre-gl-snow': ^0.0.9
     '@geoql/maplibre-gl-compare': ^0.0.3
+    '@sparkjsdev/spark': ^2.1.0
+    '@dvt3d/maplibre-three-plugin': ^1.7.1
+    '3d-tiles-renderer': ^0.5.0
+    '3d-tiles-rendererjs-3dgs-plugin': ^0.1.15
     '@iconify-json/lucide': ^1.2.121
     '@iconify-json/simple-icons': ^1.2.92
     '@iconify-json/vscode-icons': ^1.2.68
@@ -137,6 +141,7 @@ catalogs:
     three: ^0.185.1
     tw-animate-css: ^1.4.0
     vue-sonner: ^2.0.9
+    vue-tsc: ^3.3.9
     wrangler: ^4.118.0
     terra-draw: ^1.32.2
     terra-draw-maplibre-gl-adapter: ^1.4.1
@@ -152,4 +157,5 @@ minimumReleaseAgeExclude:
   - '@vue/*'
 
 patchedDependencies:
+  '@sparkjsdev/spark@2.1.0': patches/@sparkjsdev__spark@2.1.0.patch
   maplibre-gl-interpolate-heatmap@0.1.3: patches/maplibre-gl-interpolate-heatmap@0.1.3.patch

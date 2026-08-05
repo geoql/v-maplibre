@@ -183,22 +183,22 @@
   });
 
   watch(
-    () => [
-      props.data,
-      props.currentTime,
-      props.trailLength,
-      props.fadeTrail,
-      props.getPath,
-      props.getTimestamps,
-      props.getColor,
-      props.getWidth,
-      props.widthUnits,
-      props.widthScale,
-      props.widthMinPixels,
-      props.widthMaxPixels,
-      props.opacity,
-      props.visible,
-      props.pickable,
+    [
+      () => props.data,
+      () => props.currentTime,
+      () => props.trailLength,
+      () => props.fadeTrail,
+      () => props.getPath,
+      () => props.getTimestamps,
+      () => props.getColor,
+      () => props.getWidth,
+      () => props.widthUnits,
+      () => props.widthScale,
+      () => props.widthMinPixels,
+      () => props.widthMaxPixels,
+      () => props.opacity,
+      () => props.visible,
+      () => props.pickable,
     ],
     () => {
       if (!LayerClass.value || !props.data) return;

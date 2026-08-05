@@ -124,17 +124,17 @@
   );
 
   watch(
-    () => [
-      props.data,
-      props.getPosition,
-      props.getRadius,
-      props.getFillColor,
-      props.getLineColor,
-      props.radiusScale,
-      props.opacity,
-      props.visible,
-      props.stroked,
-      props.filled,
+    [
+      () => props.data,
+      () => props.getPosition,
+      () => props.getRadius,
+      () => props.getFillColor,
+      () => props.getLineColor,
+      () => props.radiusScale,
+      () => props.opacity,
+      () => props.visible,
+      () => props.stroked,
+      () => props.filled,
     ],
     () => updateLayer(props.id, createLayer()),
     { deep: true },

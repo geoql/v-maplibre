@@ -49,6 +49,12 @@
       color: 'rgb(255, 50, 50)',
     },
   ];
+
+  // Stable per-item style objects so the v-for does not allocate on re-render
+  const shipTypeItems = shipTypeConfig.map((cfg) => ({
+    ...cfg,
+    dotStyle: { backgroundColor: cfg.color },
+  }));
 </script>
 
 <template>
@@ -57,7 +63,7 @@
       <h3 class="text-sm font-semibold">Ship Types</h3>
       <div class="space-y-1">
         <button
-          v-for="cfg in shipTypeConfig"
+          v-for="cfg in shipTypeItems"
           :key="cfg.type"
           class="flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-xs transition-colors"
           :class="
@@ -69,7 +75,7 @@
         >
           <span
             class="size-2.5 shrink-0 rounded-full"
-            :style="{ backgroundColor: cfg.color }"
+            :style="cfg.dotStyle"
           ></span>
           <Icon :name="cfg.icon" class="size-3.5 shrink-0" />
           <span class="font-medium">{{ cfg.label }}</span>
@@ -128,13 +134,13 @@
           <div class="text-lg font-bold tabular-nums">
             {{ stats.totalShips }}
           </div>
-          <div class="text-[10px] text-muted-foreground">Tracked</div>
+          <div class="text-2xs text-muted-foreground">Tracked</div>
         </div>
         <div
           class="rounded-lg border border-border bg-muted/50 p-2 text-center"
         >
           <div class="text-lg font-bold tabular-nums">{{ stats.inEez }}</div>
-          <div class="text-[10px] text-muted-foreground">In EEZ</div>
+          <div class="text-2xs text-muted-foreground">In EEZ</div>
         </div>
         <div
           class="rounded-lg border border-border bg-muted/50 p-2 text-center"
@@ -142,7 +148,7 @@
           <div class="text-lg font-bold tabular-nums">
             {{ stats.radarCoverage }}%
           </div>
-          <div class="text-[10px] text-muted-foreground">Radar Cov.</div>
+          <div class="text-2xs text-muted-foreground">Radar Cov.</div>
         </div>
         <div
           class="rounded-lg border p-2 text-center"
@@ -158,7 +164,7 @@
           >
             {{ stats.suspicious }}
           </div>
-          <div class="text-[10px] text-muted-foreground">Suspicious</div>
+          <div class="text-2xs text-muted-foreground">Suspicious</div>
         </div>
       </div>
     </div>

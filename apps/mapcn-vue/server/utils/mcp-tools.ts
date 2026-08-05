@@ -9,7 +9,7 @@ const DOCS_URL = `${SITE_URL}/docs/components`;
 
 export const MCP_SERVER_INFO = {
   name: 'mapcn-vue',
-  title: 'mapcn-vue — Vue map component registry',
+  title: 'mapcn-vue: Vue map component registry',
   version: '1.0.0',
 } as const;
 

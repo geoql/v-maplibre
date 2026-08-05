@@ -3,7 +3,6 @@
   import { VLayerDeckglGeoArrowText } from '@geoql/v-maplibre/deck.gl';
   import { tableFromIPC } from 'apache-arrow';
   import type { Table } from 'apache-arrow';
-  import { shallowRef } from 'vue';
   import { Slider } from '~/components/ui/slider';
 
   usePageGeo({
@@ -121,6 +120,7 @@
           <a
             href="https://geoarrow.org"
             target="_blank"
+            rel="noopener noreferrer"
             class="font-mono text-primary hover:underline"
             >GeoArrow</a
           >
@@ -129,13 +129,11 @@
           column.
         </p>
 
-        <div class="mb-4 grid grid-cols-2 gap-2 font-mono text-[11px]">
+        <div class="mb-4 grid grid-cols-2 gap-2 font-mono text-caption">
           <div
             class="rounded-sm border border-border bg-background/40 px-2 py-1.5"
           >
-            <div
-              class="text-[9px] uppercase tracking-[0.18em] text-muted-foreground"
-            >
+            <div class="text-3xs uppercase tracking-caps text-muted-foreground">
               Labels
             </div>
             <div class="tabular-nums text-foreground">
@@ -148,9 +146,7 @@
           <div
             class="rounded-sm border border-border bg-background/40 px-2 py-1.5"
           >
-            <div
-              class="text-[9px] uppercase tracking-[0.18em] text-muted-foreground"
-            >
+            <div class="text-3xs uppercase tracking-caps text-muted-foreground">
               Format
             </div>
             <div class="tabular-nums text-foreground">Point + name</div>
@@ -163,7 +159,7 @@
 
         <div>
           <div
-            class="mb-1.5 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
+            class="mb-1.5 flex items-center justify-between font-mono text-2xs uppercase tracking-caps text-muted-foreground"
           >
             <span>Font size</span>
             <span class="tabular-nums">{{ fontSize[0] }}px</span>

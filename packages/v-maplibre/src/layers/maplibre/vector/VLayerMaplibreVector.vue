@@ -1,5 +1,11 @@
 <script setup lang="ts">
-  import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
+  import {
+    onMounted,
+    onBeforeUnmount,
+    onWatcherCleanup,
+    ref,
+    watch,
+  } from 'vue';
   import type {
     Map,
     VectorSourceSpecification,
@@ -211,19 +217,19 @@
     },
   );
   watch(
-    () => ({
-      paint: props.layer.paint,
-      // Watch layout changes but exclude visibility since it's handled separately
-      layout: props.layer.layout
-        ? { ...props.layer.layout, visibility: undefined }
-        : undefined,
-    }),
-    (newValue, oldValue) => {
-      if (JSON.stringify(newValue) !== JSON.stringify(oldValue)) {
-        updateLayer();
-      }
+    // Serialised so Vue compares by value: the getter would otherwise build a
+    // fresh object every tick and re-fire on every unrelated reactive change.
+    // Visibility is excluded because the watcher below handles it separately.
+    () =>
+      JSON.stringify({
+        paint: props.layer.paint,
+        layout: props.layer.layout
+          ? { ...props.layer.layout, visibility: undefined }
+          : undefined,
+      }),
+    () => {
+      updateLayer();
     },
-    { deep: true },
   );
   watch(
     () => props.layer.layout?.visibility,
@@ -255,9 +261,10 @@
           // If becoming visible, ensure proper layer order
           if (newVisibility === 'visible' && props.before) {
             // Small timeout to ensure target layer is ready
-            setTimeout(() => {
+            const reorder = setTimeout(() => {
               mapInstance.moveLayer(props.layerId, props.before);
             }, 0);
+            onWatcherCleanup(() => clearTimeout(reorder));
           }
         } catch (error) {
           console.error(`[${props.layerId}] Error updating visibility:`, error);

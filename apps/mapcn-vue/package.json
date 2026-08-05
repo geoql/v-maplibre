@@ -50,6 +50,10 @@
     "@resvg/resvg-js": "catalog:app:mapcn-vue",
     "@resvg/resvg-wasm": "catalog:app:mapcn-vue",
     "@tanstack/vue-table": "catalog:app:mapcn-vue",
+    "@sparkjsdev/spark": "catalog:app:mapcn-vue",
+    "@dvt3d/maplibre-three-plugin": "catalog:app:mapcn-vue",
+    "3d-tiles-renderer": "catalog:app:mapcn-vue",
+    "3d-tiles-rendererjs-3dgs-plugin": "catalog:app:mapcn-vue",
     "@turf/turf": "catalog:app:mapcn-vue",
     "@vueuse/core": "catalog:app:mapcn-vue",
     "@vueuse/nuxt": "catalog:app:mapcn-vue",
@@ -98,6 +102,7 @@
     "tailwindcss": "catalog:app:mapcn-vue",
     "typescript": "catalog:default",
     "vue": "catalog:default",
+    "vue-tsc": "catalog:app:mapcn-vue",
     "wrangler": "catalog:app:mapcn-vue"
   }
 }

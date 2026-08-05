@@ -69,6 +69,21 @@
   const animationType = ref<'flyTo' | 'easeTo' | 'jumpTo'>('flyTo');
   const duration = ref(2000);
 
+  const ANIMATION_TYPES = ['flyTo', 'easeTo', 'jumpTo'] as const;
+  const OPTION_IDLE = 'border-border bg-background hover:bg-muted';
+
+  function getAnimationTypeClass(type: string): string {
+    return animationType.value === type
+      ? 'border-primary bg-primary text-primary-foreground'
+      : OPTION_IDLE;
+  }
+
+  function getCityClass(name: string): string {
+    return currentCity.value.name === name
+      ? 'border-primary bg-primary/10 text-primary'
+      : OPTION_IDLE;
+  }
+
   function handleMapLoad(map: MaplibreMap): void {
     mapRef.value = map;
   }
@@ -208,15 +223,11 @@
             <h3 class="mb-2 text-sm font-medium">Animation Type</h3>
             <div class="flex gap-2">
               <button
-                v-for="type in ['flyTo', 'easeTo', 'jumpTo']"
+                v-for="type in ANIMATION_TYPES"
                 :key="type"
                 class="rounded-md border px-3 py-1.5 text-sm transition-colors"
-                :class="[
-                  animationType === type
-                    ? 'border-primary bg-primary text-primary-foreground'
-                    : `border-border bg-background hover:bg-muted`,
-                ]"
-                @click="animationType = type as 'flyTo' | 'easeTo' | 'jumpTo'"
+                :class="getAnimationTypeClass(type)"
+                @click="animationType = type"
               >
                 {{ type }}
               </button>
@@ -242,11 +253,7 @@
                 v-for="city in cities"
                 :key="city.name"
                 class="rounded-md border px-3 py-1.5 text-sm transition-colors"
-                :class="[
-                  currentCity.name === city.name
-                    ? 'border-primary bg-primary/10 text-primary'
-                    : `border-border bg-background hover:bg-muted`,
-                ]"
+                :class="getCityClass(city.name)"
                 @click="flyToCity(city)"
               >
                 <Icon name="lucide:map-pin" class="mr-1 inline-block size-3" />

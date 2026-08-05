@@ -1,3 +1,4 @@
+import type { H3Event } from 'h3';
 import type {
   GroundsourceRow,
   GroundsourceApiResponse,
@@ -66,7 +67,7 @@ async function querySqlite(
 }
 
 export default defineEventHandler(
-  async (event): Promise<GroundsourceApiResponse> => {
+  async (event: H3Event): Promise<GroundsourceApiResponse> => {
     const query = getQuery(event);
     const cursor = Math.max(0, Number(query.cursor) || 0);
     const limit = Math.min(

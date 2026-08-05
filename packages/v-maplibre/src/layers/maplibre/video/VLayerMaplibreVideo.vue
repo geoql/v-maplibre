@@ -5,35 +5,22 @@
     VideoSource,
     Map,
   } from 'maplibre-gl';
-  import type { PropType } from 'vue';
   import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
   import { injectStrict, MapKey } from '../../../utils';
 
-  const props = defineProps({
-    sourceId: {
-      type: String,
-      default: 'maplibre.gl-video-source',
-      required: true,
-    },
-    layerId: {
-      type: String,
-      default: 'maplibre.gl-video-layer',
-      required: true,
-    },
-    source: {
-      type: Object as PropType<VideoSourceSpecification>,
-      required: true,
-    },
-    layer: {
-      type: Object as PropType<AnyLayer>,
-      default: () => ({}),
-      required: true,
-    },
-    before: {
-      type: String,
-      default: '',
-      required: false,
-    },
+  interface Props {
+    sourceId?: string;
+    layerId?: string;
+    source: VideoSourceSpecification;
+    layer?: AnyLayer;
+    before?: string;
+  }
+
+  const props = withDefaults(defineProps<Props>(), {
+    sourceId: 'maplibre.gl-video-source',
+    layerId: 'maplibre.gl-video-layer',
+    layer: () => ({}) as AnyLayer,
+    before: '',
   });
 
   const map = injectStrict(MapKey);

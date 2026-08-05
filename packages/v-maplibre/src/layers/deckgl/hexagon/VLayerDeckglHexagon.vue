@@ -128,14 +128,14 @@
   );
 
   watch(
-    () => [
-      props.data,
-      props.getPosition,
-      props.radius,
-      props.elevationScale,
-      props.opacity,
-      props.visible,
-      props.extruded,
+    [
+      () => props.data,
+      () => props.getPosition,
+      () => props.radius,
+      () => props.elevationScale,
+      () => props.opacity,
+      () => props.visible,
+      () => props.extruded,
     ],
     () => updateLayer(props.id, createLayer()),
     { deep: true },

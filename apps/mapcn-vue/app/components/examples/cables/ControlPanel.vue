@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import type { Cable, CableStats } from '~/types/maritime-cables';
 
-  defineProps<{
+  const props = defineProps<{
     cables: Cable[];
     selectedCableId: string | null;
     showEez: boolean;
@@ -18,6 +18,16 @@
     if (score >= 40) return 'MED';
     return 'LOW';
   }
+
+  // Stable per-cable style objects so the v-for does not allocate on re-render
+  const cableRows = computed(() =>
+    props.cables.map((cable) => ({
+      ...cable,
+      dotStyle: {
+        backgroundColor: `rgb(${cable.color[0]}, ${cable.color[1]}, ${cable.color[2]})`,
+      },
+    })),
+  );
 </script>
 
 <template>
@@ -38,7 +48,7 @@
           <span class="font-medium">All Cables</span>
         </button>
         <button
-          v-for="cable in cables"
+          v-for="cable in cableRows"
           :key="cable.id"
           class="flex w-full items-center gap-2 rounded-md px-2.5 py-2 text-xs transition-colors"
           :class="
@@ -50,15 +60,13 @@
         >
           <span
             class="size-2.5 shrink-0 rounded-full"
-            :style="{
-              backgroundColor: `rgb(${cable.color[0]}, ${cable.color[1]}, ${cable.color[2]})`,
-            }"
+            :style="cable.dotStyle"
           ></span>
           <span class="flex-1 truncate text-left font-medium">
             {{ cable.name }}
           </span>
           <span
-            class="shrink-0 rounded px-1 py-0.5 text-[9px] font-bold uppercase tracking-wide"
+            class="shrink-0 rounded px-1 py-0.5 text-3xs font-bold uppercase tracking-wide"
             :class="
               riskLabel(cable.riskScore) === 'HIGH'
                 ? 'bg-destructive/20 text-destructive'
@@ -92,7 +100,7 @@
 
     <div class="space-y-2">
       <h3 class="text-sm font-semibold">Cut Risk</h3>
-      <div class="flex items-center gap-3 px-2.5 text-[11px]">
+      <div class="flex items-center gap-3 px-2.5 text-caption">
         <span class="flex items-center gap-1.5">
           <span class="size-2 rounded-full bg-destructive"></span>
           <span class="text-muted-foreground">High</span>
@@ -117,7 +125,7 @@
           <div class="text-lg font-bold tabular-nums">
             {{ stats.totalCables }}
           </div>
-          <div class="text-[10px] text-muted-foreground">Cables</div>
+          <div class="text-2xs text-muted-foreground">Cables</div>
         </div>
         <div
           class="rounded-lg border border-border bg-muted/50 p-2 text-center"
@@ -125,7 +133,7 @@
           <div class="text-lg font-bold tabular-nums">
             {{ stats.totalLandingPoints }}
           </div>
-          <div class="text-[10px] text-muted-foreground">Landing Pts</div>
+          <div class="text-2xs text-muted-foreground">Landing Pts</div>
         </div>
         <div
           class="rounded-lg border p-2 text-center"
@@ -141,7 +149,7 @@
           >
             {{ stats.highRiskSegments }}
           </div>
-          <div class="text-[10px] text-muted-foreground">High-Risk Seg.</div>
+          <div class="text-2xs text-muted-foreground">High-Risk Seg.</div>
         </div>
         <div
           class="rounded-lg border border-border bg-muted/50 p-2 text-center"
@@ -149,7 +157,7 @@
           <div class="text-lg font-bold tabular-nums">
             {{ stats.totalCapacityTbps }}
           </div>
-          <div class="text-[10px] text-muted-foreground">Total Tbps</div>
+          <div class="text-2xs text-muted-foreground">Total Tbps</div>
         </div>
       </div>
     </div>

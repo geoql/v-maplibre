@@ -241,6 +241,18 @@
     }
   }
 
+  // Stable per-location marker options / styles so the v-for does not allocate
+  const locationMarkers = locations.map((loc) => ({
+    ...loc,
+    markerOptions: { color: getMarkerColor(loc.type) },
+    iconStyle: { backgroundColor: getMarkerColor(loc.type) },
+    icon: getMarkerIcon(loc.type),
+  }));
+
+  function getLocationRowClass(id: string): string {
+    return selectedLocation.value === id ? 'bg-primary/10' : 'hover:bg-muted';
+  }
+
   // Legend items for distance colors
   const distanceLegendItems: CategoryLegendItem[] = [
     { value: '< 5 km', label: '< 5 km', color: '#22c55e' },
@@ -367,10 +379,10 @@
           />
 
           <VMarker
-            v-for="loc in locations"
+            v-for="loc in locationMarkers"
             :key="loc.id"
             :coordinates="loc.coordinates"
-            :options="{ color: getMarkerColor(loc.type) }"
+            :options="loc.markerOptions"
             @click="toggleLocation(loc.id)"
           />
 
@@ -409,24 +421,17 @@
 
           <div class="space-y-1">
             <button
-              v-for="loc in locations"
+              v-for="loc in locationMarkers"
               :key="loc.id"
               class="flex w-full items-center gap-2 rounded-lg px-2 py-1.5 text-left text-xs transition-colors"
-              :class="[
-                selectedLocation === loc.id
-                  ? 'bg-primary/10'
-                  : 'hover:bg-muted',
-              ]"
+              :class="getLocationRowClass(loc.id)"
               @click="toggleLocation(loc.id)"
             >
               <div
                 class="flex size-5 items-center justify-center rounded-full"
-                :style="{ backgroundColor: getMarkerColor(loc.type) }"
+                :style="loc.iconStyle"
               >
-                <Icon
-                  :name="getMarkerIcon(loc.type)"
-                  class="size-2.5 text-white"
-                />
+                <Icon :name="loc.icon" class="size-2.5 text-white" />
               </div>
               <span>{{ loc.name }}</span>
             </button>

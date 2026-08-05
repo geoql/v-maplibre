@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { ref, watch, inject, onMounted } from 'vue';
+  import { computed, ref, watch, inject, onMounted } from 'vue';
   import { MapKey, injectStrict } from '../../utils';
   import { DeckLayersKey } from '../../layers/deckgl/_shared/useDeckOverlay';
   import { useMapControl } from '../_shared';
@@ -35,6 +35,7 @@
   const containerRef = ref<HTMLElement | null>(null);
   const isVisible = ref(props.visible);
   const currentOpacity = ref(props.opacity);
+  const toggleClass = computed(() => ({ 'is-hidden': !isVisible.value }));
 
   useMapControl(map, containerRef, props.position);
 
@@ -232,7 +233,7 @@
       <button
         type="button"
         class="v-layer-control-toggle"
-        :class="{ 'is-hidden': !isVisible }"
+        :class="toggleClass"
         :aria-pressed="isVisible"
         :title="isVisible ? 'Hide layer' : 'Show layer'"
         @click="toggleVisibility"

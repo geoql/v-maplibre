@@ -140,7 +140,7 @@ ${SCRIPT_END}
         class="pointer-events-auto absolute bottom-4 left-1/2 z-20 w-72 -translate-x-1/2 rounded-md border border-border bg-background/85 p-3 backdrop-blur-sm"
       >
         <div
-          class="mb-2 flex items-center justify-between font-mono text-[10px] tracking-[0.15em] text-muted-foreground uppercase"
+          class="mb-2 flex items-center justify-between font-mono text-2xs tracking-caps-sm text-muted-foreground uppercase"
         >
           <span>2018</span>
           <span class="tabular-nums text-foreground"

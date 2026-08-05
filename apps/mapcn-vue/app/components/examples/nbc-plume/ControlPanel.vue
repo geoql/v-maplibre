@@ -96,16 +96,12 @@
         <div
           class="relative flex size-12 items-center justify-center rounded-full border border-border bg-muted/50"
         >
-          <div class="absolute text-[8px] text-muted-foreground -top-0.5">
-            N
-          </div>
-          <div class="absolute text-[8px] text-muted-foreground -bottom-0.5">
+          <div class="absolute text-4xs text-muted-foreground -top-0.5">N</div>
+          <div class="absolute text-4xs text-muted-foreground -bottom-0.5">
             S
           </div>
-          <div class="absolute text-[8px] text-muted-foreground -left-0.5">
-            W
-          </div>
-          <div class="absolute text-[8px] text-muted-foreground -right-0.5">
+          <div class="absolute text-4xs text-muted-foreground -left-0.5">W</div>
+          <div class="absolute text-4xs text-muted-foreground -right-0.5">
             E
           </div>
           <div

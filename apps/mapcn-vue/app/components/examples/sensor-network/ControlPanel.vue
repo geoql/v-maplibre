@@ -7,7 +7,7 @@
   import { Slider } from '~/components/ui/slider';
   import { Label } from '~/components/ui/label';
 
-  defineProps<{
+  const props = defineProps<{
     activeSensorTypes: Set<SensorType>;
     stats: SensorNetworkStats;
     sensorTypes: SensorTypeConfig[];
@@ -24,6 +24,18 @@
   function rgbaToHex(c: [number, number, number, number]): string {
     return `rgb(${c[0]}, ${c[1]}, ${c[2]})`;
   }
+
+  function getSensorTypeClass(type: SensorType): string {
+    return props.activeSensorTypes.has(type) ? '' : 'opacity-40';
+  }
+
+  // Stable per-sensor style objects so the v-for does not allocate on re-render
+  const sensorTypeRows = computed(() =>
+    props.sensorTypes.map((st) => ({
+      ...st,
+      dotStyle: { backgroundColor: rgbaToHex(st.color) },
+    })),
+  );
 </script>
 
 <template>
@@ -32,18 +44,13 @@
       <h3 class="mb-3 text-sm font-semibold">Sensor Types</h3>
       <div class="space-y-2">
         <button
-          v-for="st in sensorTypes"
+          v-for="st in sensorTypeRows"
           :key="st.type"
           class="flex w-full items-center gap-2 rounded-md px-2 py-1.5 text-sm transition-colors hover:bg-accent"
-          :class="{
-            'opacity-40': !activeSensorTypes.has(st.type),
-          }"
+          :class="getSensorTypeClass(st.type)"
           @click="emit('toggleType', st.type)"
         >
-          <span
-            class="size-2.5 rounded-full"
-            :style="{ backgroundColor: rgbaToHex(st.color) }"
-          />
+          <span class="size-2.5 rounded-full" :style="st.dotStyle" />
           <Icon :name="st.icon" class="size-4" />
           <span class="flex-1 text-left">{{ st.label }}</span>
           <Icon
@@ -93,7 +100,9 @@
           </div>
           <div class="text-muted-foreground">Threats</div>
         </div>
-        <div class="rounded bg-muted/50 p-2 text-center">
+        <div
+          class="rounded bg-primary/10 p-2 text-center ring-1 ring-primary/20"
+        >
           <div class="text-lg font-bold text-primary">
             {{ stats.coveragePercent }}%
           </div>

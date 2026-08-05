@@ -254,15 +254,15 @@
 
   // Watch for style changes
   watch(
-    () => [
-      props.color,
-      props.width,
-      props.opacity,
-      props.lineCap,
-      props.lineJoin,
-      props.visible,
-      props.blur,
-      props.dashArray,
+    [
+      () => props.color,
+      () => props.width,
+      () => props.opacity,
+      () => props.lineCap,
+      () => props.lineJoin,
+      () => props.visible,
+      () => props.blur,
+      () => props.dashArray,
     ],
     () => updateLayerStyle(),
     { deep: true },

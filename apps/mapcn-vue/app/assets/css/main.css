@@ -9,6 +9,100 @@
 }
 
 /*
+ * Layout/structural utilities — values that the spacing scale and
+ * namespace tokens cannot express (calc(), env(), fr tracks, gradients).
+ */
+
+@utility max-h-float-panel {
+  max-height: calc(100% - 5rem);
+}
+
+@utility max-h-viewport-padded {
+  max-height: calc(100dvh - 2rem);
+}
+
+@utility max-h-info-sheet {
+  max-height: 85dvh;
+}
+
+@utility max-h-bottom-sheet {
+  max-height: 50vh;
+}
+
+@utility max-h-code-lg {
+  max-height: 60vh;
+}
+
+/* Shiki emits its own <pre>/<code>; strip their default chrome so the
+ * highlighted block sits flush inside our bordered container. */
+@utility shiki-flush {
+  & pre {
+    margin: 0;
+    border: 0;
+    border-radius: 0;
+    background-color: transparent;
+    padding: 1rem;
+  }
+
+  & code {
+    font-size: var(--text-note);
+    line-height: 1.625;
+  }
+}
+
+@utility max-h-code-sm {
+  max-height: 40vh;
+}
+
+@utility min-h-sheet-peek {
+  min-height: 40dvh;
+}
+
+@utility max-w-viewport-padded {
+  max-width: calc(100vw - 2rem);
+}
+
+@utility max-w-padded {
+  max-width: calc(100% - 1.5rem);
+}
+
+@utility pb-safe {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+@utility transition-filter {
+  transition-property: filter;
+  transition-timing-function: var(
+    --default-transition-timing-function,
+    cubic-bezier(0.4, 0, 0.2, 1)
+  );
+  transition-duration: var(--default-transition-duration, 150ms);
+}
+
+@utility grid-cols-split-5-7 {
+  grid-template-columns: 5fr 7fr;
+}
+
+@utility grid-cols-split-8-4 {
+  grid-template-columns: 8fr 4fr;
+}
+
+/* Blueprint grid backgrounds */
+@utility bg-grid {
+  background-image:
+    linear-gradient(to right, var(--color-border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--color-border) 1px, transparent 1px);
+  background-size: 4rem 4rem;
+}
+
+@utility bg-grid-faint {
+  background-image:
+    linear-gradient(to right, rgb(128 128 128 / 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(128 128 128 / 0.03) 1px, transparent 1px);
+  background-size: 3.75rem 3.75rem;
+}
+
+/*
  * Tech Utility direction — Linear / Vercel / Stripe reference set.
  * Pinned by apps/mapcn-vue/.claude/skills/mapcn-vue-design/SKILL.md
  * NEVER reintroduce: Inter / Plus Jakarta / Space Grotesk / gradient-text class.
@@ -53,6 +147,38 @@
   --color-sidebar-accent-foreground: oklch(0.18 0.012 254);
   --color-sidebar-border: oklch(0.88 0.008 254);
   --color-sidebar-ring: oklch(0.55 0.18 254);
+
+  /* Tiny mono labels (caps eyebrows) + display type */
+  --text-4xs: 0.5rem;
+  --text-3xs: 0.5625rem;
+  --text-2xs: 0.625rem;
+  --text-caption: 0.6875rem;
+  --text-note: 0.8125rem;
+  --text-display: clamp(4rem, 8vw, 7.5rem);
+
+  --tracking-caps: 0.18em;
+  --tracking-caps-sm: 0.15em;
+  --tracking-caps-xs: 0.12em;
+  --tracking-snug: -0.03em;
+  --tracking-display: -0.04em;
+  --tracking-display-tight: -0.045em;
+
+  --leading-display: 0.92;
+  --leading-copy: 1.55;
+
+  /* Measure (max-w) — reading width + headline wrap */
+  --container-measure-sm: 52ch;
+  --container-measure: 55ch;
+  --container-measure-lg: 60ch;
+  --container-headline-sm: 14ch;
+  --container-headline: 18ch;
+  --container-headline-lg: 20ch;
+
+  /* Glow effects (map stat bars, status cards) */
+  --shadow-glow-primary: 0 0 30px rgb(0 200 255 / 0.06);
+  --shadow-glow-cyan: 0 0 10px rgb(34 211 238 / 0.4);
+  --shadow-glow-orange: 0 0 10px rgb(249 115 22 / 0.4);
+  --shadow-inset-ring: inset 0 0 0 2px rgb(0 0 0 / 0.5);
 }
 
 .dark {

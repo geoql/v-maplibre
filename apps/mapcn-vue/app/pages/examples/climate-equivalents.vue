@@ -306,7 +306,7 @@ ${SCRIPT_END}
 
                 <div>
                   <div
-                    class="mb-1.5 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.18em] text-muted-foreground"
+                    class="mb-1.5 flex items-center justify-between font-mono text-2xs uppercase tracking-caps text-muted-foreground"
                   >
                     <span>Layer opacity</span>
                     <span class="tabular-nums text-foreground"
@@ -325,7 +325,7 @@ ${SCRIPT_END}
                 <template v-if="selectedCountry">
                   <div class="border-t border-border" />
                   <div
-                    class="font-mono text-[11px] uppercase tracking-[0.18em] text-muted-foreground"
+                    class="font-mono text-caption uppercase tracking-caps text-muted-foreground"
                   >
                     Breakdown ·
                     <span class="text-foreground">{{

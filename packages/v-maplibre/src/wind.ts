@@ -7,9 +7,3 @@
  * `pnpm add @deck.gl/core @deck.gl/mapbox maplibre-gl-wind`
  */
 export * from './layers/deckgl/wind';
-export {
-  useDeckOverlay,
-  useDeckLayers,
-  DeckOverlayKey,
-  DeckLayersKey,
-} from './layers/deckgl/_shared';

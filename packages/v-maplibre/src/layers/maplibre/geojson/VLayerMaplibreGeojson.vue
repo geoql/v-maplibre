@@ -19,8 +19,8 @@
   }
 
   interface Props {
-    sourceId: string;
-    layerId: string;
+    sourceId?: string;
+    layerId?: string;
     source: GeoJSONSourceSpecification;
     layer: LayerSpecification;
     before?: string;

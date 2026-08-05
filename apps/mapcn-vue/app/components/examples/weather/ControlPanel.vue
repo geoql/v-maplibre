@@ -96,6 +96,7 @@
         <a
           href="https://open-meteo.com/"
           target="_blank"
+          rel="noopener noreferrer"
           class="text-primary hover:underline"
           >Open-Meteo</a
         >

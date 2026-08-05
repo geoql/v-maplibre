@@ -1,4 +1,3 @@
-import { ref, computed, onMounted, onUnmounted } from 'vue';
 import type {
   ACTransitBusData,
   ACTransitRouteStopPrediction,
@@ -191,9 +190,10 @@ export function useActransitData() {
       );
     }
 
-    if (activeStopFilter.value?.routeNames.length) {
+    const stopFilter = activeStopFilter.value;
+    if (stopFilter?.routeNames.length) {
       result = result.filter((bus) =>
-        activeStopFilter.value!.routeNames.includes(bus.routeId),
+        stopFilter.routeNames.includes(bus.routeId),
       );
     }
 
@@ -209,9 +209,10 @@ export function useActransitData() {
       );
     }
 
-    if (activeStopFilter.value?.routeNames.length) {
+    const stopFilter = activeStopFilter.value;
+    if (stopFilter?.routeNames.length) {
       result = result.filter((trail) =>
-        activeStopFilter.value!.routeNames.includes(trail.routeId),
+        stopFilter.routeNames.includes(trail.routeId),
       );
     }
 
@@ -227,11 +228,10 @@ export function useActransitData() {
       );
     }
 
-    if (activeStopFilter.value?.routeNames.length) {
+    const stopFilter = activeStopFilter.value;
+    if (stopFilter?.routeNames.length) {
       result = result.filter((stop) =>
-        stop.routeNames.some((name) =>
-          activeStopFilter.value!.routeNames.includes(name),
-        ),
+        stop.routeNames.some((name) => stopFilter.routeNames.includes(name)),
       );
     }
 

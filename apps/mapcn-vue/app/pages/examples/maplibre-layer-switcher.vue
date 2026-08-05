@@ -67,6 +67,9 @@
 
   const currentStyleId = ref('light');
   const isDropdownOpen = ref(false);
+  const chevronClass = computed(() => ({
+    'rotate-180': !isDropdownOpen.value,
+  }));
 
   const currentStyle = computed(() => {
     const found = mapStyles.value.find((s) => s.id === currentStyleId.value);
@@ -92,6 +95,18 @@
 
   function toggleDropdown(): void {
     isDropdownOpen.value = !isDropdownOpen.value;
+  }
+
+  function getStyleItemClass(id: string): string {
+    return currentStyleId.value === id
+      ? 'bg-primary text-primary-foreground'
+      : 'hover:bg-muted';
+  }
+
+  function getQuickSelectClass(id: string): string {
+    return currentStyleId.value === id
+      ? 'border-primary bg-primary/10 text-primary'
+      : 'border-border hover:bg-muted';
   }
 
   onClickOutside(dropdownRef, () => {
@@ -191,7 +206,7 @@
             <Icon
               name="lucide:chevron-up"
               class="size-4 transition-transform"
-              :class="{ 'rotate-180': !isDropdownOpen }"
+              :class="chevronClass"
             />
           </button>
 
@@ -203,11 +218,7 @@
               v-for="style in mapStyles"
               :key="style.id"
               class="flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm transition-colors"
-              :class="[
-                currentStyleId === style.id
-                  ? 'bg-primary text-primary-foreground'
-                  : 'hover:bg-muted',
-              ]"
+              :class="getStyleItemClass(style.id)"
               @click="selectStyle(style)"
             >
               <Icon :name="style.icon" class="size-4" />
@@ -229,11 +240,7 @@
             v-for="style in mapStyles"
             :key="style.id"
             class="flex flex-col items-center gap-1 p-3 text-sm transition-colors"
-            :class="[
-              currentStyleId === style.id
-                ? 'border-primary bg-primary/10 text-primary'
-                : `border-border hover:bg-muted`,
-            ]"
+            :class="getQuickSelectClass(style.id)"
             @click="selectStyle(style)"
           >
             <Icon :name="style.icon" class="size-5" />

@@ -249,7 +249,12 @@
   }
 
   watch(
-    () => [props.sectors, props.positions, props.loopedTime, props.tripData],
+    [
+      () => props.sectors,
+      () => props.positions,
+      () => props.loopedTime,
+      () => props.tripData,
+    ],
     () => syncLayers(),
     { deep: true },
   );

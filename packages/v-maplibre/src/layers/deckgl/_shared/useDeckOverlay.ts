@@ -4,6 +4,7 @@ import {
   ref,
   shallowRef,
   onUnmounted,
+  onWatcherCleanup,
   watch,
   type InjectionKey,
   type Ref,
@@ -290,7 +291,8 @@ export function useDeckOverlay(
         initOverlay();
         return;
       }
-      mapInstance.once('style.load', () => initOverlay());
+      const onStyleLoad = () => initOverlay();
+      mapInstance.once('style.load', onStyleLoad);
       const interval = setInterval(() => {
         if (overlay.value) {
           clearInterval(interval);
@@ -301,7 +303,12 @@ export function useDeckOverlay(
           initOverlay();
         }
       }, 100);
-      setTimeout(() => clearInterval(interval), 10000);
+      const timeout = setTimeout(() => clearInterval(interval), 10000);
+      onWatcherCleanup(() => {
+        mapInstance.off('style.load', onStyleLoad);
+        clearInterval(interval);
+        clearTimeout(timeout);
+      });
     },
     { immediate: true },
   );

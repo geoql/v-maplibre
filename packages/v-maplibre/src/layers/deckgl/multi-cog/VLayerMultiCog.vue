@@ -235,16 +235,16 @@
   );
 
   watch(
-    () => [
-      props.sources,
-      props.composite,
-      props.renderPipeline,
-      props.opacity,
-      props.visible,
-      props.debug,
-      props.debugOpacity,
-      props.debugLevel,
-      props.maxError,
+    [
+      () => props.sources,
+      () => props.composite,
+      () => props.renderPipeline,
+      () => props.opacity,
+      () => props.visible,
+      () => props.debug,
+      () => props.debugOpacity,
+      () => props.debugLevel,
+      () => props.maxError,
     ],
     () => {
       const layer = createLayer();

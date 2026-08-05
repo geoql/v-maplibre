@@ -46,6 +46,17 @@
   const animationFrameId = ref<number | null>(null);
   const lastTimestamp = ref<number | null>(null);
 
+  const SPEED_OPTIONS = [0.5, 1, 2, 4];
+  const SPEED_ACTIVE = 'border-primary bg-primary text-primary-foreground';
+  const SPEED_IDLE = `
+    border-border
+    hover:bg-muted
+  `;
+
+  function getSpeedClass(s: number): string {
+    return speed.value === s ? SPEED_ACTIVE : SPEED_IDLE;
+  }
+
   function getDistance(p1: [number, number], p2: [number, number]): number {
     const dx = p2[0] - p1[0];
     const dy = p2[1] - p1[1];
@@ -408,17 +419,10 @@
           <span class="text-xs text-muted-foreground">Speed:</span>
           <div class="flex gap-1">
             <button
-              v-for="s in [0.5, 1, 2, 4]"
+              v-for="s in SPEED_OPTIONS"
               :key="s"
               class="rounded-md border px-2 py-0.5 text-xs transition-colors"
-              :class="[
-                speed === s
-                  ? 'border-primary bg-primary text-primary-foreground'
-                  : `
-                    border-border
-                    hover:bg-muted
-                  `,
-              ]"
+              :class="getSpeedClass(s)"
               @click="speed = s"
             >
               {{ s }}x

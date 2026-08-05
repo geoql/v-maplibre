@@ -49,6 +49,9 @@
   const deliveryRouteInfo = ref<DeliveryRouteInfo | null>(null);
   const deliveryLoading = ref(false);
   const panelOpen = ref(true);
+  const toggleClass = computed(() => ({
+    'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen.value,
+  }));
 
   const truckPosition = computed(() => {
     if (deliveryRouteCoordinates.value.length < 2) return null;
@@ -146,7 +149,7 @@
           <template #markers="{ setRef }">
             <div :ref="wrapMarkerRef(setRef)" class="relative">
               <div
-                class="absolute -top-7 left-1/2 -translate-x-1/2 rounded-sm bg-zinc-900/80 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-white"
+                class="absolute -top-7 left-1/2 -translate-x-1/2 rounded-sm bg-foreground/80 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-background"
               >
                 Store
               </div>
@@ -164,7 +167,7 @@
             <div :ref="wrapMarkerRef(setRef)" class="relative">
               <div
                 v-if="deliveryRouteInfo"
-                class="absolute -top-9 left-1/2 -translate-x-1/2 rounded-sm bg-zinc-900/90 px-2 py-1 text-xs font-medium whitespace-nowrap text-white shadow-lg"
+                class="absolute -top-9 left-1/2 -translate-x-1/2 rounded-sm bg-foreground/90 px-2 py-1 text-xs font-medium whitespace-nowrap text-background shadow-lg"
               >
                 <span class="text-success">{{
                   formatDuration(deliveryRouteInfo.duration)
@@ -184,7 +187,7 @@
           <template #markers="{ setRef }">
             <div :ref="wrapMarkerRef(setRef)" class="relative">
               <div
-                class="absolute -top-7 left-1/2 -translate-x-1/2 rounded-sm bg-zinc-900/80 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-white"
+                class="absolute -top-7 left-1/2 -translate-x-1/2 rounded-sm bg-foreground/80 px-2 py-0.5 text-xs font-medium whitespace-nowrap text-background"
               >
                 Home
               </div>
@@ -202,9 +205,7 @@
     <!-- Toggle button - always visible -->
     <button
       class="absolute top-4 left-4 z-10 flex size-9 items-center justify-center rounded-lg bg-background/95 shadow-lg backdrop-blur-sm transition-colors hover:bg-accent"
-      :class="{
-        'bg-primary text-primary-foreground hover:bg-primary/90': !panelOpen,
-      }"
+      :class="toggleClass"
       @click="panelOpen = !panelOpen"
     >
       <Icon

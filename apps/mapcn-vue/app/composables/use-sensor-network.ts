@@ -215,10 +215,10 @@ const THREAT_DESCRIPTIONS: string[] = [
   'Unidentified movement detected',
   'Signal anomaly intercepted',
   'Perimeter breach attempt',
-  'Acoustic signature — vehicle',
-  'Radar contact — low-altitude',
+  'Acoustic signature, vehicle',
+  'Radar contact, low-altitude',
   'EM interference detected',
-  'Personnel movement — group',
+  'Personnel movement, group',
   'Drone signature detected',
 ];
 

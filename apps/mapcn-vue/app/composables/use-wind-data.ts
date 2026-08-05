@@ -2,6 +2,7 @@ import type { WindDataPoint, ColorStop } from '@geoql/v-maplibre/wind';
 import { createWindDataFromOpenWeatherMap } from 'maplibre-gl-wind';
 
 export function useWindData() {
+  const config = useRuntimeConfig();
   const isLoading = ref(true);
   const error = ref<string | null>(null);
   const windData = ref<WindDataPoint[]>([]);
@@ -38,7 +39,7 @@ export function useWindData() {
       error.value = null;
 
       const gridPoints = generateGridPoints();
-      const apiKey = '385df3d81f3a89c1c99c115735540c6d';
+      const apiKey = config.public.openweathermapApiKey;
       const baseUrl = 'https://api.openweathermap.org/data/2.5/weather';
 
       const responses = await Promise.all(
@@ -72,6 +73,7 @@ export function useWindData() {
   function stopAutoRefresh(): void {
     if (refreshInterval.value) {
       clearInterval(refreshInterval.value);
+      refreshInterval.value = null;
     }
   }
 

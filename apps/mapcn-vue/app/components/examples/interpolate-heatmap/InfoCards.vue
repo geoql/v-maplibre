@@ -9,6 +9,7 @@
         <a
           href="https://openweathermap.org/api"
           target="_blank"
+          rel="noopener noreferrer"
           class="text-primary hover:underline"
           >OpenWeatherMap API</a
         >
@@ -31,6 +32,7 @@
         <a
           href="https://github.com/geoql/maplibre-gl-interpolate-heatmap"
           target="_blank"
+          rel="noopener noreferrer"
           class="text-primary hover:underline"
           >maplibre-gl-interpolate-heatmap</a
         >

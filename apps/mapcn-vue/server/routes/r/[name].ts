@@ -1,4 +1,6 @@
-export default defineEventHandler((event) => {
+import type { H3Event } from 'h3';
+
+export default defineEventHandler((event: H3Event) => {
   const rawName = getRouterParam(event, 'name');
   const name = rawName?.replace(/\.json$/, '');
 

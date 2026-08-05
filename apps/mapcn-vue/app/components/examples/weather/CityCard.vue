@@ -26,6 +26,23 @@
   function getDayName(dateStr: string): string {
     return dayNames[new Date(dateStr).getDay()] ?? '';
   }
+
+  // Stable per-day style objects so the v-for does not allocate on re-render
+  const forecastDays = computed(() => {
+    const daily = props.forecast?.daily;
+    if (!daily) return [];
+    return daily.time.map((day, idx) => {
+      const max = daily.temperature_2m_max[idx] ?? 0;
+      return {
+        day,
+        dayName: getDayName(day),
+        icon: props.getWeatherIcon(daily.weather_code[idx] ?? 0),
+        maxTemp: Math.round(max),
+        minTemp: Math.round(daily.temperature_2m_min[idx] ?? 0),
+        maxStyle: { color: props.getTemperatureColor(max) },
+      };
+    });
+  });
 </script>
 
 <template>
@@ -70,7 +87,9 @@
       </div>
 
       <div class="mt-3 grid grid-cols-2 gap-2">
-        <div class="flex items-center gap-1.5 text-xs text-muted-foreground">
+        <div
+          class="flex items-center gap-1.5 text-xs font-medium text-foreground"
+        >
           <Icon name="lucide:thermometer" class="size-3.5" />
           <span
             >Feels {{ Math.round(city.current.apparent_temperature) }}°</span
@@ -96,7 +115,7 @@
       <div class="mb-2 flex items-center justify-between">
         <h4 class="text-xs font-semibold text-muted-foreground">Air Quality</h4>
         <span
-          class="rounded-full px-2 py-0.5 text-[10px] font-semibold"
+          class="rounded-full px-2 py-0.5 text-2xs font-semibold"
           :style="{
             backgroundColor: props.getAqiLevel(airQuality.us_aqi).color + '20',
             color: props.getAqiLevel(airQuality.us_aqi).color,
@@ -149,29 +168,17 @@
       </h4>
       <div class="space-y-1">
         <div
-          v-for="(day, idx) in forecast.daily.time"
-          :key="day"
+          v-for="entry in forecastDays"
+          :key="entry.day"
           class="flex items-center justify-between rounded-md px-2 py-1.5 text-xs transition-colors hover:bg-accent/50"
         >
-          <span class="w-8 font-medium">{{ getDayName(day) }}</span>
-          <Icon
-            :name="props.getWeatherIcon(forecast.daily.weather_code[idx] ?? 0)"
-            class="size-4"
-          />
+          <span class="w-8 font-medium">{{ entry.dayName }}</span>
+          <Icon :name="entry.icon" class="size-4" />
           <div class="flex items-center gap-1">
-            <span
-              class="font-semibold"
-              :style="{
-                color: props.getTemperatureColor(
-                  forecast.daily.temperature_2m_max[idx] ?? 0,
-                ),
-              }"
-            >
-              {{ Math.round(forecast.daily.temperature_2m_max[idx] ?? 0) }}°
+            <span class="font-semibold" :style="entry.maxStyle">
+              {{ entry.maxTemp }}°
             </span>
-            <span class="text-muted-foreground">
-              {{ Math.round(forecast.daily.temperature_2m_min[idx] ?? 0) }}°
-            </span>
+            <span class="text-muted-foreground"> {{ entry.minTemp }}° </span>
           </div>
         </div>
       </div>

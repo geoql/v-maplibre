@@ -7,20 +7,20 @@
 <template>
   <div class="mb-16 pt-4 md:mb-20">
     <div
-      class="mb-6 inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.18em] text-primary uppercase"
+      class="mb-6 inline-flex items-center gap-2 font-mono text-caption tracking-caps text-primary uppercase"
     >
       <Icon name="lucide:sparkles" class="size-3" />
       <span class="tabular-nums">{{ totalExamples }} interactive examples</span>
     </div>
 
     <h1
-      class="max-w-[14ch] text-4xl font-extrabold tracking-[-0.04em] text-foreground sm:text-5xl md:text-6xl lg:text-7xl"
+      class="max-w-headline-sm text-4xl font-extrabold tracking-display text-foreground sm:text-5xl md:text-6xl lg:text-7xl"
     >
       Explore Examples
     </h1>
 
     <p
-      class="mt-6 max-w-[55ch] text-base/relaxed text-muted-foreground md:text-lg"
+      class="mt-6 max-w-measure text-base/relaxed text-muted-foreground md:text-lg"
     >
       What's possible with mapcn-vue. From basic markers to advanced
       <span class="font-medium text-foreground">WebGL visualizations</span>
@@ -28,7 +28,7 @@
     </p>
 
     <div
-      class="mt-8 flex flex-wrap items-center gap-6 font-mono text-[11px] tracking-[0.15em] text-muted-foreground uppercase"
+      class="mt-8 flex flex-wrap items-center gap-6 font-mono text-caption tracking-caps-sm text-muted-foreground uppercase"
     >
       <div class="flex items-center gap-2">
         <span class="relative flex size-1.5">

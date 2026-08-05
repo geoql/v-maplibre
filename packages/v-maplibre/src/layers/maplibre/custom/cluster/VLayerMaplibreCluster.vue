@@ -22,8 +22,8 @@
   }
 
   interface Props {
-    sourceId: string;
-    baseLayerId: string;
+    sourceId?: string;
+    baseLayerId?: string;
     source: GeoJSONSourceSpecification;
     visibility?: boolean;
     clusterPaint?: {

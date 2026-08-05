@@ -120,7 +120,7 @@
         <div v-if="group.label" class="group/sub mb-4 flex items-center gap-3">
           <a
             :href="`#${subsectionId(group.label)}`"
-            class="flex items-center gap-2 font-mono text-[11px] font-medium tracking-[0.18em] text-muted-foreground uppercase hover:text-foreground"
+            class="flex items-center gap-2 font-mono text-caption font-medium tracking-caps text-muted-foreground uppercase hover:text-foreground"
             @click.prevent="copyAnchor(subsectionId(group.label))"
           >
             {{ group.label }}
@@ -133,7 +133,7 @@
             class="h-px flex-1 bg-gradient-to-r from-border/60 via-border/20 to-transparent"
           />
           <span
-            class="rounded-sm border border-border/50 bg-muted/30 px-1.5 py-0.5 font-mono text-[10px] tabular-nums text-muted-foreground"
+            class="rounded-sm border border-border/50 bg-muted/30 px-1.5 py-0.5 font-mono text-2xs tabular-nums text-muted-foreground"
           >
             {{ group.examples.length }}
           </span>

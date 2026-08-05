@@ -124,14 +124,14 @@
   );
 
   watch(
-    () => [
-      props.data,
-      props.getPolygon,
-      props.getFillColor,
-      props.getLineColor,
-      props.opacity,
-      props.visible,
-      props.extruded,
+    [
+      () => props.data,
+      () => props.getPolygon,
+      () => props.getFillColor,
+      () => props.getLineColor,
+      () => props.opacity,
+      () => props.visible,
+      () => props.extruded,
     ],
     () => updateLayer(props.id, createLayer()),
     { deep: true },

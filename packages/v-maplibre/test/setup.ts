@@ -316,6 +316,40 @@ class MockAttributionControl {
   onRemove() {}
 }
 
+// Faithful-enough MercatorCoordinate for transform math in jsdom tests.
+class MockMercatorCoordinate {
+  x: number;
+  y: number;
+  z: number;
+
+  constructor(x: number, y: number, z = 0) {
+    this.x = x;
+    this.y = y;
+    this.z = z;
+  }
+
+  static fromLngLat(lngLat: [number, number], altitude = 0) {
+    const [lng, lat] = lngLat;
+    const x = (180 + lng) / 360;
+    const y =
+      (180 -
+        (180 / Math.PI) *
+          Math.log(Math.tan(Math.PI / 4 + (lat * Math.PI) / 360))) /
+      360;
+    const z = altitude / (40075016.686 * Math.cos((lat * Math.PI) / 180));
+    return new MockMercatorCoordinate(x, y, z);
+  }
+
+  meterInMercatorCoordinateUnits() {
+    const lat =
+      (2 *
+        (Math.atan(Math.exp((0.5 - this.y) * 2 * Math.PI)) - Math.PI / 4) *
+        180) /
+      Math.PI;
+    return 1 / (40075016.686 * Math.cos((lat * Math.PI) / 180));
+  }
+}
+
 // Mock maplibre-gl module (v6 is ESM-only with named exports; no default export)
 vi.mock('maplibre-gl', () => ({
   Map: MockMap,
@@ -326,6 +360,7 @@ vi.mock('maplibre-gl', () => ({
   GeolocateControl: MockGeolocateControl,
   FullscreenControl: MockFullscreenControl,
   AttributionControl: MockAttributionControl,
+  MercatorCoordinate: MockMercatorCoordinate,
   addProtocol: vi.fn(),
 }));
 

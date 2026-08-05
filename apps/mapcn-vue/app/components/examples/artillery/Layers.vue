@@ -141,7 +141,11 @@
   }
 
   watch(
-    () => [props.rangeFans, props.positions, props.selectedPositionId],
+    [
+      () => props.rangeFans,
+      () => props.positions,
+      () => props.selectedPositionId,
+    ],
     () => syncLayers(),
     { deep: true },
   );

@@ -183,7 +183,7 @@
   }
 
   watch(
-    () => [props.paths, props.currentTime, props.positions],
+    [() => props.paths, () => props.currentTime, () => props.positions],
     () => syncLayers(),
     { deep: true },
   );
