@@ -182,103 +182,101 @@
   };
 
   // ============ SIZE LEGEND DATA ============
-  const citiesGeoJson = computed(
-    (): FeatureCollection<Point> => ({
-      type: 'FeatureCollection',
-      features: [
-        {
-          type: 'Feature',
-          geometry: { type: 'Point', coordinates: [-73.935242, 40.73061] },
-          properties: {
-            name: 'New York',
-            population: 8336817,
-            popClass: 'large',
-          },
+  const citiesGeoJson = computed((): FeatureCollection<Point> => ({
+    type: 'FeatureCollection',
+    features: [
+      {
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: [-73.935242, 40.73061] },
+        properties: {
+          name: 'New York',
+          population: 8336817,
+          popClass: 'large',
         },
-        {
-          type: 'Feature',
-          geometry: { type: 'Point', coordinates: [-118.243683, 34.052235] },
-          properties: {
-            name: 'Los Angeles',
-            population: 3979576,
-            popClass: 'large',
-          },
+      },
+      {
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: [-118.243683, 34.052235] },
+        properties: {
+          name: 'Los Angeles',
+          population: 3979576,
+          popClass: 'large',
         },
-        {
-          type: 'Feature',
-          geometry: { type: 'Point', coordinates: [-87.629799, 41.878113] },
-          properties: {
-            name: 'Chicago',
-            population: 2693976,
-            popClass: 'large',
-          },
+      },
+      {
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: [-87.629799, 41.878113] },
+        properties: {
+          name: 'Chicago',
+          population: 2693976,
+          popClass: 'large',
         },
-        {
-          type: 'Feature',
-          geometry: { type: 'Point', coordinates: [-95.358421, 29.749907] },
-          properties: {
-            name: 'Houston',
-            population: 2320268,
-            popClass: 'medium',
-          },
+      },
+      {
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: [-95.358421, 29.749907] },
+        properties: {
+          name: 'Houston',
+          population: 2320268,
+          popClass: 'medium',
         },
-        {
-          type: 'Feature',
-          geometry: { type: 'Point', coordinates: [-112.074036, 33.448376] },
-          properties: {
-            name: 'Phoenix',
-            population: 1680992,
-            popClass: 'medium',
-          },
+      },
+      {
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: [-112.074036, 33.448376] },
+        properties: {
+          name: 'Phoenix',
+          population: 1680992,
+          popClass: 'medium',
         },
-        {
-          type: 'Feature',
-          geometry: { type: 'Point', coordinates: [-75.165222, 39.952583] },
-          properties: {
-            name: 'Philadelphia',
-            population: 1584064,
-            popClass: 'medium',
-          },
+      },
+      {
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: [-75.165222, 39.952583] },
+        properties: {
+          name: 'Philadelphia',
+          population: 1584064,
+          popClass: 'medium',
         },
-        {
-          type: 'Feature',
-          geometry: { type: 'Point', coordinates: [-98.493629, 29.424122] },
-          properties: {
-            name: 'San Antonio',
-            population: 1547253,
-            popClass: 'medium',
-          },
+      },
+      {
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: [-98.493629, 29.424122] },
+        properties: {
+          name: 'San Antonio',
+          population: 1547253,
+          popClass: 'medium',
         },
-        {
-          type: 'Feature',
-          geometry: { type: 'Point', coordinates: [-117.161087, 32.715736] },
-          properties: {
-            name: 'San Diego',
-            population: 1423851,
-            popClass: 'small',
-          },
+      },
+      {
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: [-117.161087, 32.715736] },
+        properties: {
+          name: 'San Diego',
+          population: 1423851,
+          popClass: 'small',
         },
-        {
-          type: 'Feature',
-          geometry: { type: 'Point', coordinates: [-96.796988, 32.776665] },
-          properties: {
-            name: 'Dallas',
-            population: 1343573,
-            popClass: 'small',
-          },
+      },
+      {
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: [-96.796988, 32.776665] },
+        properties: {
+          name: 'Dallas',
+          population: 1343573,
+          popClass: 'small',
         },
-        {
-          type: 'Feature',
-          geometry: { type: 'Point', coordinates: [-121.886329, 37.338208] },
-          properties: {
-            name: 'San Jose',
-            population: 1021795,
-            popClass: 'small',
-          },
+      },
+      {
+        type: 'Feature',
+        geometry: { type: 'Point', coordinates: [-121.886329, 37.338208] },
+        properties: {
+          name: 'San Jose',
+          population: 1021795,
+          popClass: 'small',
         },
-      ],
-    }),
-  );
+      },
+    ],
+  }));
 
   const sizeLegendItems: SizeLegendItem[] = [
     { value: 'large', label: '> 2.5M', size: 20 },
