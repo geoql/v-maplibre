@@ -134,6 +134,10 @@
     // nearly halving the render cost (this page was unplayable on weaker
     // GPUs at DPR 2). MapLibre v6 renamed the option to `pixelRatio`.
     pixelRatio: 1.5,
+    // Bound the canvas on large displays: render cost scales with pixel
+    // count, so a 5K window was dropping to 6fps. maxCanvasSize caps the
+    // canvas dimensions regardless of viewport (content upscales via CSS).
+    maxCanvasSize: [1400, 1400],
   }));
 
   // AWS Terrain Tiles (terrarium encoding) — global coverage, so it reaches
@@ -181,7 +185,7 @@
     <ClientOnly>
       <VMap
         :options="mapOptions"
-        deck-use-device-pixels="1"
+        :deck-use-device-pixels="1"
         class="size-full"
         @loaded="onMapLoaded"
       >
