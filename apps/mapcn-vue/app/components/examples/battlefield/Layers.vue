@@ -14,6 +14,7 @@
     paths: ElevatedPath[];
     currentTime: number;
     positions: ElevatedPosition[];
+    labelsVisible: boolean;
   }>();
 
   const UNITS_MAP: Record<string, BattlefieldUnit> = {
@@ -74,6 +75,13 @@
     d.lat,
     d.z,
   ];
+  // Labels get a clearance above the terrain surface: anchored at the exact
+  // exaggerated elevation they sit flush on the mesh and visually merge with
+  // the hillside at high pitch (unreadable against the relief). 60m clears
+  // local variation while staying anchored to the unit.
+  const getLabelPositionCoords = (
+    d: ElevatedPosition,
+  ): [number, number, number] => [d.lng, d.lat, d.z + 60];
   const getPositionColor = (d: ElevatedPosition): [number, number, number] =>
     UNITS_MAP[d.unitId]?.color ?? [255, 255, 255];
   const getCallsign = (d: ElevatedPosition): string =>
@@ -111,7 +119,7 @@
   <VLayerDeckglText
     id="unit-labels"
     :data="props.positions"
-    :get-position="getPositionCoords"
+    :get-position="getLabelPositionCoords"
     :get-text="getCallsign"
     :get-size="14"
     :get-color="[255, 255, 255, 230]"
@@ -122,5 +130,7 @@
     :billboard="true"
     :outline-width="3"
     :outline-color="[0, 0, 0, 200]"
+    :collision-enabled="true"
+    :visible="props.labelsVisible"
   />
 </template>

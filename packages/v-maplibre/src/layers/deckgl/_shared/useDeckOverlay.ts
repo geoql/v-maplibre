@@ -193,6 +193,34 @@ export function useDeckOverlay(
 
         mapInstance.addControl(overlay.value);
         registerClickHandler(mapInstance);
+
+        // MapboxOverlay syncs the deck canvas synchronously on EVERY map
+        // render (map.on('render') -> _updateViewState -> deck.redraw()).
+        // During camera moves that is 60 full-canvas redraws per second on
+        // top of the terrain render - the dominant cost of 3D pages. Replacing
+        // the listener with an every-other-render throttle keeps camera
+        // tracking smooth (one frame of lag is imperceptible) while halving
+        // the deck fill rate, so the canvas can stay at full device-pixel
+        // resolution (crisp labels) for the same pixel budget. Interleaved
+        // overlays draw inside MapLibre's own pass and must stay untouched.
+        let renderThrottle: (() => void) | null = null;
+        if (!useInterleaved) {
+          const originalSync = (
+            overlay.value as MapboxOverlay & {
+              _updateViewState?: () => void;
+            }
+          )._updateViewState;
+          if (typeof originalSync === 'function') {
+            mapInstance.off('render', originalSync);
+            let sync = false;
+            renderThrottle = () => {
+              sync = !sync;
+              if (sync) originalSync();
+            };
+            mapInstance.on('render', renderThrottle);
+            throttledRenderListener = renderThrottle;
+          }
+        }
         isInitialized.value = true;
 
         // Flush any layers that registered before the overlay existed. Child
@@ -352,8 +380,15 @@ export function useDeckOverlay(
     getLayers,
   });
 
+  // Hoisted so the throttled render listener can be removed on unmount.
+  let throttledRenderListener: (() => void) | null = null;
+
   onUnmounted(() => {
     removeClickHandler(map.value);
+    if (map.value && throttledRenderListener) {
+      map.value.off('render', throttledRenderListener);
+      throttledRenderListener = null;
+    }
     if (overlay.value && map.value) {
       try {
         map.value.removeControl(overlay.value);

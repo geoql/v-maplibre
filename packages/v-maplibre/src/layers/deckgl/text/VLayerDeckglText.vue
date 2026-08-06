@@ -56,6 +56,8 @@
     maxWidth?: number;
     outlineWidth?: number;
     outlineColor?: Color;
+    collisionEnabled?: boolean;
+    getCollisionPriority?: Accessor<D, number>;
     opacity?: number;
     visible?: boolean;
     pickable?: boolean;
@@ -79,6 +81,8 @@
     wordBreak: 'break-word',
     maxWidth: -1,
     outlineWidth: 0,
+    collisionEnabled: false,
+    getCollisionPriority: 0,
     opacity: 1,
     visible: true,
     pickable: true,
@@ -110,6 +114,7 @@
       getBorderWidth: props.getBorderWidth,
       background: props.background,
       backgroundPadding: props.backgroundPadding,
+      getBackgroundColor: props.getBackgroundColor,
       billboard: props.billboard,
       sizeScale: props.sizeScale,
       sizeUnits: props.sizeUnits,
@@ -124,6 +129,8 @@
       maxWidth: props.maxWidth,
       outlineWidth: props.outlineWidth,
       outlineColor: props.outlineColor,
+      collisionEnabled: props.collisionEnabled,
+      getCollisionPriority: props.getCollisionPriority,
       opacity: props.opacity,
       visible: props.visible,
       pickable: props.pickable,

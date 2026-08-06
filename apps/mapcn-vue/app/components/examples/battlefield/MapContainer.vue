@@ -30,12 +30,20 @@
   const elevationTick = ref(0);
   let refreshTimer: ReturnType<typeof setTimeout> | null = null;
 
+  // The six units sit in a tight formation (~2km apart), so their labels
+  // collide below ~z12.3. Hide labels until zoomed in - map convention.
+  const zoom = ref(11);
+  const labelsVisible = computed(() => zoom.value >= 12.3);
+
   onBeforeUnmount(() => {
     if (refreshTimer) clearTimeout(refreshTimer);
   });
 
   const onMapLoaded = (m: Map) => {
     mapInstance.value = m;
+    m.on('zoom', () => {
+      zoom.value = m.getZoom();
+    });
     // Re-run the elevation enrichment when DEM tiles land. This must NOT be
     // 'idle': a recompute feeds new data arrays into the deck wrappers, which
     // call updateLayer → triggerRepaint → another render → another idle,
@@ -183,12 +191,7 @@
 <template>
   <div class="relative size-full min-w-0 overflow-hidden">
     <ClientOnly>
-      <VMap
-        :options="mapOptions"
-        :deck-use-device-pixels="1"
-        class="size-full"
-        @loaded="onMapLoaded"
-      >
+      <VMap :options="mapOptions" class="size-full" @loaded="onMapLoaded">
         <VControlNavigation position="top-right" />
         <VControlScale position="bottom-left" />
         <VSky :sky="sky" />
@@ -207,6 +210,7 @@
           :paths="elevatedPaths"
           :current-time="publishedTime"
           :positions="publishedPositions"
+          :labels-visible="labelsVisible"
         />
       </VMap>
       <template #fallback>
