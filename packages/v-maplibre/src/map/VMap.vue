@@ -13,11 +13,13 @@
       options?: MapOptions;
       supportPmtiles?: boolean;
       projection?: 'globe' | 'mercator';
+      deckUseDevicePixels?: number | boolean;
     }>(),
     {
       options: () => ({ container: 'map' }) as MapOptions,
       supportPmtiles: false,
       projection: 'mercator',
+      deckUseDevicePixels: true,
     },
   );
   const emit = defineEmits(['loaded', ...mapEvents]);
@@ -37,7 +39,10 @@
 
   // Initialize deck.gl overlay at VMap level so all children can access it
   // This provides DeckOverlayKey and DeckLayersKey to all descendants
-  useDeckOverlay(map, { globe: props.projection === 'globe' });
+  useDeckOverlay(map, {
+    globe: props.projection === 'globe',
+    useDevicePixels: props.deckUseDevicePixels,
+  });
 
   // MapLibre v6 removed `map.transform` (now internal at `map._camera.transform`),
   // but @deck.gl/mapbox (incl. 9.4 alpha) still reads `map.transform.height/_nearZ/_farZ`

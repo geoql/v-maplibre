@@ -102,8 +102,6 @@
     "pmtiles": "^4.4.1"
   },
   "devDependencies": {
-    "3d-tiles-renderer": "^0.5.0",
-    "3d-tiles-rendererjs-3dgs-plugin": "^0.1.15",
     "@deck.gl/aggregation-layers": "^9.3.7",
     "@deck.gl/core": "^9.3.7",
     "@deck.gl/geo-layers": "^9.3.7",
@@ -123,10 +121,12 @@
     "@sparkjsdev/spark": "^2.1.0",
     "@tsdown/css": "^0.22.14",
     "@types/node": "^26.1.2",
-    "@types/three": "^0.185.3",
+    "@types/three": "^0.185.4",
     "@vitejs/plugin-vue": "^6.0.8",
     "@vitest/coverage-v8": "4.1.10",
     "@vue/test-utils": "^2.4.11",
+    "3d-tiles-renderer": "^0.5.0",
+    "3d-tiles-rendererjs-3dgs-plugin": "^0.1.15",
     "apache-arrow": "^21.2.0",
     "happy-dom": "^20.11.1",
     "maplibre-gl-lidar": "^0.16.2",
@@ -134,8 +134,8 @@
     "three": "^0.185.1",
     "typescript": "^6.0.3",
     "unplugin-vue": "^7.2.0",
-    "vite-plus": "^0.2.7",
-    "vue": "^3.5.40",
+    "vite-plus": "^0.2.8",
+    "vue": "^3.5.41",
     "vue-tsc": "^3.3.9",
     "zarrita": "^0.7.3"
   },

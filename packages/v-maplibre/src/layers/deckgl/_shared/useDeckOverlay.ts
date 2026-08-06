@@ -11,7 +11,10 @@ import {
   type ShallowRef,
 } from 'vue';
 import type { MapboxOverlay } from '@deck.gl/mapbox';
-import type { Map, MapMouseEvent } from 'maplibre-gl';
+// Aliased: the bare `Map` name would shadow the global Map constructor used by
+// layerRegistry (the lib's build tooling does not typecheck, so this only
+// surfaces in the editor / vue-tsc).
+import type { Map as MapLibreMap, MapMouseEvent } from 'maplibre-gl';
 import { requirePeer } from '../../../utils';
 
 export const DeckOverlayKey: InjectionKey<ShallowRef<MapboxOverlay | null>> =
@@ -33,6 +36,14 @@ interface UseDeckOverlayOptions {
    * (Scatterplot / Trips / Icon / Text) don't clip off the sphere on pitch.
    */
   globe?: boolean;
+  /**
+   * Pixel ratio for the deck canvas. Non-interleaved overlays redraw the deck
+   * canvas synchronously on every map render, so a 2x device canvas costs 4x
+   * the fill rate and stalls camera moves on 3D scenes (measured multi-second
+   * frame stalls at 2x on a terrain page). Set to 1 to halve the resolution
+   * (slightly softer deck content on retina) for a large frame-time win.
+   */
+  useDevicePixels?: number | boolean;
 }
 
 interface UseDeckOverlayReturn {
@@ -47,10 +58,14 @@ interface UseDeckOverlayReturn {
 }
 
 export function useDeckOverlay(
-  map: Ref<Map | null>,
+  map: Ref<MapLibreMap | null>,
   options: UseDeckOverlayOptions = {},
 ): UseDeckOverlayReturn {
-  const { interleaved = false, globe = false } = options;
+  const {
+    interleaved = false,
+    globe = false,
+    useDevicePixels = true,
+  } = options;
   const useInterleaved = interleaved || globe;
 
   const applyGlobeParams = (layer: unknown): unknown => {
@@ -103,7 +118,7 @@ export function useDeckOverlay(
    * fails to dispatch clicks. We register our own MapLibre click handler that uses
    * overlay.pickObject() for a fresh GPU pick and dispatches to the layer's onClick.
    */
-  function registerClickHandler(mapInstance: Map): void {
+  function registerClickHandler(mapInstance: MapLibreMap): void {
     clickHandler = (e: MapMouseEvent) => {
       if (!overlay.value) return;
       const info = overlay.value.pickObject({
@@ -124,7 +139,7 @@ export function useDeckOverlay(
     mapInstance.on('click', clickHandler);
   }
 
-  function removeClickHandler(mapInstance: Map | null): void {
+  function removeClickHandler(mapInstance: MapLibreMap | null): void {
     if (clickHandler && mapInstance) {
       mapInstance.off('click', clickHandler);
     }
@@ -174,12 +189,45 @@ export function useDeckOverlay(
         overlay.value = new MapboxOverlay({
           interleaved: useInterleaved,
           layers: [],
+          useDevicePixels,
           onError: (err: unknown) =>
             console.error('[useDeckOverlay] deck onError:', err),
         } as ConstructorParameters<typeof MapboxOverlay>[0]);
 
         mapInstance.addControl(overlay.value);
         registerClickHandler(mapInstance);
+
+        // MapboxOverlay syncs the deck canvas synchronously on EVERY map
+        // render (map.on('render') -> _updateViewState -> deck.redraw()).
+        // During camera moves that is 60 full-canvas redraws per second on
+        // top of the terrain render - the dominant cost of 3D pages. Replacing
+        // the listener with an every-other-render throttle keeps camera
+        // tracking smooth (one frame of lag is imperceptible) while halving
+        // the deck fill rate, so the canvas can stay at full device-pixel
+        // resolution (crisp labels) for the same pixel budget. Interleaved
+        // overlays draw inside MapLibre's own pass and must stay untouched.
+        let renderThrottle: (() => void) | null = null;
+        if (!useInterleaved) {
+          // Cast through unknown: intersecting the overlay type with the
+          // private `_updateViewState` member collapses the intersection to
+          // `never` (private members from multiple constituents), which made
+          // the property read a type error.
+          const originalSync = (
+            overlay.value as unknown as {
+              _updateViewState?: () => void;
+            }
+          )._updateViewState;
+          if (typeof originalSync === 'function') {
+            mapInstance.off('render', originalSync);
+            let sync = false;
+            renderThrottle = () => {
+              sync = !sync;
+              if (sync) originalSync();
+            };
+            mapInstance.on('render', renderThrottle);
+            throttledRenderListener = renderThrottle;
+          }
+        }
         isInitialized.value = true;
 
         // Flush any layers that registered before the overlay existed. Child
@@ -252,6 +300,24 @@ export function useDeckOverlay(
     }
   };
 
+  // Animated scenes update several layers in the same reactive flush (a
+  // currentTime tick touches every animated wrapper at once). Each update
+  // used to push its own overlay.setProps + triggerRepaint, which for an
+  // N-layer animated scene meant N full layer-array diffs per frame (measured
+  // 244 setProps/s on a 6-unit scene — the source of jank during camera
+  // moves). Coalescing to one syncLayers per flush keeps the overlay at a
+  // single diff per frame; addLayer/removeLayer stay synchronous because they
+  // are mount/unmount-time and rare.
+  let syncScheduled = false;
+  const scheduleSync = (): void => {
+    if (syncScheduled) return;
+    syncScheduled = true;
+    Promise.resolve().then(() => {
+      syncScheduled = false;
+      syncLayers();
+    });
+  };
+
   const removeLayer = (layerId: string): void => {
     layerRegistry.delete(layerId);
     syncLayers();
@@ -260,7 +326,7 @@ export function useDeckOverlay(
   const updateLayer = (layerId: string, rawLayer: unknown): void => {
     if (layerRegistry.has(layerId)) {
       layerRegistry.set(layerId, applyGlobeParams(rawLayer));
-      syncLayers();
+      scheduleSync();
     } else {
       addLayer(rawLayer);
     }
@@ -321,8 +387,15 @@ export function useDeckOverlay(
     getLayers,
   });
 
+  // Hoisted so the throttled render listener can be removed on unmount.
+  let throttledRenderListener: (() => void) | null = null;
+
   onUnmounted(() => {
     removeClickHandler(map.value);
+    if (map.value && throttledRenderListener) {
+      map.value.off('render', throttledRenderListener);
+      throttledRenderListener = null;
+    }
     if (overlay.value && map.value) {
       try {
         map.value.removeControl(overlay.value);

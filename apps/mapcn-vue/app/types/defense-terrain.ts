@@ -26,6 +26,14 @@ export interface BattlefieldPosition {
   unitId: string;
 }
 
+/** BattlefieldPath with a terrain-elevation z on every vertex. */
+export type ElevatedPath = Omit<BattlefieldPath, 'path'> & {
+  path: [number, number, number][];
+};
+
+/** BattlefieldPosition with its terrain-elevation z (exaggerated metres). */
+export type ElevatedPosition = BattlefieldPosition & { z: number };
+
 export interface MissionPhaseInfo {
   phase: MissionPhase;
   label: string;
