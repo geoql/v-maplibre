@@ -27,7 +27,7 @@ export interface BattlefieldPosition {
 }
 
 /** BattlefieldPath with a terrain-elevation z on every vertex. */
-export type ElevatedPath = BattlefieldPath & {
+export type ElevatedPath = Omit<BattlefieldPath, 'path'> & {
   path: [number, number, number][];
 };
 

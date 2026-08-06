@@ -111,7 +111,9 @@
     const mapInstance = map.value;
     if (!mapInstance || !applied) return;
     try {
-      mapInstance.setSky(undefined);
+      // v6's Map class overloads setSky with a required parameter even though
+      // undefined is the documented way to clear the sky; cast through unknown.
+      mapInstance.setSky(undefined as unknown as SkySpecification);
     } catch (error) {
       console.error('[VSky] Error during cleanup:', error);
     }

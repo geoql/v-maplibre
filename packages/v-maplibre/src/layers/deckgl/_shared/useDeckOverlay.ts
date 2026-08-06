@@ -11,7 +11,10 @@ import {
   type ShallowRef,
 } from 'vue';
 import type { MapboxOverlay } from '@deck.gl/mapbox';
-import type { Map, MapMouseEvent } from 'maplibre-gl';
+// Aliased: the bare `Map` name would shadow the global Map constructor used by
+// layerRegistry (the lib's build tooling does not typecheck, so this only
+// surfaces in the editor / vue-tsc).
+import type { Map as MapLibreMap, MapMouseEvent } from 'maplibre-gl';
 import { requirePeer } from '../../../utils';
 
 export const DeckOverlayKey: InjectionKey<ShallowRef<MapboxOverlay | null>> =
@@ -55,7 +58,7 @@ interface UseDeckOverlayReturn {
 }
 
 export function useDeckOverlay(
-  map: Ref<Map | null>,
+  map: Ref<MapLibreMap | null>,
   options: UseDeckOverlayOptions = {},
 ): UseDeckOverlayReturn {
   const {
@@ -115,7 +118,7 @@ export function useDeckOverlay(
    * fails to dispatch clicks. We register our own MapLibre click handler that uses
    * overlay.pickObject() for a fresh GPU pick and dispatches to the layer's onClick.
    */
-  function registerClickHandler(mapInstance: Map): void {
+  function registerClickHandler(mapInstance: MapLibreMap): void {
     clickHandler = (e: MapMouseEvent) => {
       if (!overlay.value) return;
       const info = overlay.value.pickObject({
@@ -136,7 +139,7 @@ export function useDeckOverlay(
     mapInstance.on('click', clickHandler);
   }
 
-  function removeClickHandler(mapInstance: Map | null): void {
+  function removeClickHandler(mapInstance: MapLibreMap | null): void {
     if (clickHandler && mapInstance) {
       mapInstance.off('click', clickHandler);
     }
@@ -205,8 +208,12 @@ export function useDeckOverlay(
         // overlays draw inside MapLibre's own pass and must stay untouched.
         let renderThrottle: (() => void) | null = null;
         if (!useInterleaved) {
+          // Cast through unknown: intersecting the overlay type with the
+          // private `_updateViewState` member collapses the intersection to
+          // `never` (private members from multiple constituents), which made
+          // the property read a type error.
           const originalSync = (
-            overlay.value as MapboxOverlay & {
+            overlay.value as unknown as {
               _updateViewState?: () => void;
             }
           )._updateViewState;

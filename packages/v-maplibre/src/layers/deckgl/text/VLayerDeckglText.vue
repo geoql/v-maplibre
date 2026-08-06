@@ -114,7 +114,6 @@
       getBorderWidth: props.getBorderWidth,
       background: props.background,
       backgroundPadding: props.backgroundPadding,
-      getBackgroundColor: props.getBackgroundColor,
       billboard: props.billboard,
       sizeScale: props.sizeScale,
       sizeUnits: props.sizeUnits,

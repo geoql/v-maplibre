@@ -14,7 +14,7 @@
     VTerrain,
   } from '@geoql/v-maplibre';
   import type {
-    Map,
+    Map as MapLibreMap,
     RasterDEMSourceSpecification,
     SkySpecification,
   } from 'maplibre-gl';
@@ -26,7 +26,7 @@
   }>();
 
   const mapId = useId();
-  const mapInstance = ref<Map | null>(null);
+  const mapInstance = ref<MapLibreMap | null>(null);
   const elevationTick = ref(0);
   let refreshTimer: ReturnType<typeof setTimeout> | null = null;
 
@@ -39,7 +39,7 @@
     if (refreshTimer) clearTimeout(refreshTimer);
   });
 
-  const onMapLoaded = (m: Map) => {
+  const onMapLoaded = (m: MapLibreMap) => {
     mapInstance.value = m;
     m.on('zoom', () => {
       zoom.value = m.getZoom();
@@ -145,7 +145,7 @@
     // Bound the canvas on large displays: render cost scales with pixel
     // count, so a 5K window was dropping to 6fps. maxCanvasSize caps the
     // canvas dimensions regardless of viewport (content upscales via CSS).
-    maxCanvasSize: [1400, 1400],
+    maxCanvasSize: [1400, 1400] as [number, number],
   }));
 
   // AWS Terrain Tiles (terrarium encoding) — global coverage, so it reaches
