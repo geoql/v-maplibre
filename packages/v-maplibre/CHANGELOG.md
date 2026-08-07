@@ -1,5 +1,63 @@
 # Changelog
 
+## [3.0.0](https://github.com/geoql/v-maplibre/compare/v2.0.1...v3.0.0) (2026-08-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* **v-maplibre:** migrate core to maplibre-gl v6
+* **deps:** bump maplibre-gl to ^6.0.0
+
+### Features
+
+* add gaussian splat + ogc 3d tiles layers (VLayerSplat, VLayer3DTiles) ([cf5c500](https://github.com/geoql/v-maplibre/commit/cf5c500d745b7e80a2879d735805792d42a7046b)), closes [#140](https://github.com/geoql/v-maplibre/issues/140)
+* add gaussian splat + ogc 3d tiles layers with demos and doctor cleanup ([39d17d6](https://github.com/geoql/v-maplibre/commit/39d17d640cb2fa94ec257468372bfa7150bbe493))
+* gaussian splat + ogc 3d tiles layers (VLayerSplat, VLayer3DTiles) ([344fcae](https://github.com/geoql/v-maplibre/commit/344fcae5c2e52b2f942bd10b944bd1e4009d393b))
+* **mapcn:** add splat + 3d-tiles demos wired to geolith r2 assets ([63d6c99](https://github.com/geoql/v-maplibre/commit/63d6c99af9fdb9364df9bfb632253bd0f09b70d4))
+* **terrain:** add native maplibre 3d terrain + hillshade support ([60c7068](https://github.com/geoql/v-maplibre/commit/60c7068128ff8284edc808492dd40cd05eb707fa))
+* **terrain:** add VSky, fix battlefield 3D terrain, repair docs sources block ([4f55042](https://github.com/geoql/v-maplibre/commit/4f55042bef2d8e83472393f4e78f5cfd9c827b53))
+* **terrain:** native MapLibre 3D terrain + hillshade + sky components and demos ([888217a](https://github.com/geoql/v-maplibre/commit/888217a84a8775ad2feb0a074b9f1a127e59edd5))
+
+
+### Bug Fixes
+
+* **3d-tiles:** render tile splat content at the anchor ([95923b4](https://github.com/geoql/v-maplibre/commit/95923b48aab325417d44578080ad9758cc036ce2)), closes [#142](https://github.com/geoql/v-maplibre/issues/142)
+* **battlefield:** crisp labels via view-state throttle + zoom-gated density ([a4f8239](https://github.com/geoql/v-maplibre/commit/a4f82392238219178f3415fb44983682d13f8fd5))
+* **test:** match coverage provider to vite-plus vitest ([598b3b5](https://github.com/geoql/v-maplibre/commit/598b3b54259d76248e69d2a3cfdae081c8faff95))
+* **three:** render splats at correct size and sharpness ([0d6cbd2](https://github.com/geoql/v-maplibre/commit/0d6cbd2b3d5ce56d1a12bb3ef7569a71768865f6))
+* **three:** render splats in a metre scene frame ([3831222](https://github.com/geoql/v-maplibre/commit/3831222892c4e0b69163912ffbfe3f7805b9ec46))
+* type errors in the deck overlay + text wrapper + sky cleanup ([1d82685](https://github.com/geoql/v-maplibre/commit/1d826859b8fa9a3d259aeed92290157e4b412bc2))
+* **v-maplibre:** migrate core to maplibre-gl v6 ([9aab80d](https://github.com/geoql/v-maplibre/commit/9aab80d886b9fd10dc2a252b549471fe46d44c13))
+* wait for map idle when style readiness stalls on missing sprites ([7ccbf2c](https://github.com/geoql/v-maplibre/commit/7ccbf2c29a304420315c28ecfa82c9ff22767004))
+
+
+### Performance Improvements
+
+* **battlefield:** restore zoom/play frame rate; add FPS meter ([33dcdfd](https://github.com/geoql/v-maplibre/commit/33dcdfdac086523b710c8fb5698b2bc5be332437))
+
+
+### Documentation
+
+* update MapLibre GL JS references to 6.x ([c564df2](https://github.com/geoql/v-maplibre/commit/c564df27d722c67a3e7854fea896cd33539cb66e))
+
+
+### Miscellaneous
+
+* bump dependencies ([4ea244e](https://github.com/geoql/v-maplibre/commit/4ea244ec9cdae495a263e9487ae2d0ac4a77b188))
+* bump dependencies ✨ ([081bcc9](https://github.com/geoql/v-maplibre/commit/081bcc96fc2406f4a98797ecc73f8fb95f2bdafd))
+* bump dependencies ✨ ([5763e20](https://github.com/geoql/v-maplibre/commit/5763e200e1d57619c0005dbefabceea75ad40cc5))
+* bump maplibre-gl to 6.2.0 ([ea9c640](https://github.com/geoql/v-maplibre/commit/ea9c64075734af853e975152294fe6185b92bfc0))
+* bump skills and dependencies 🤷‍♂️ ([0444f86](https://github.com/geoql/v-maplibre/commit/0444f86704fee00a6a1394548563260fcd6bc50f))
+* **deps:** bump maplibre-gl to ^6.0.0 ([23b9e30](https://github.com/geoql/v-maplibre/commit/23b9e303f0f4d800dc470f137d5f88ad32002335))
+
+
+### Code Refactoring
+
+* **3d-tiles:** rework VLayer3DTiles on the MapScene pipeline ([e6c4c25](https://github.com/geoql/v-maplibre/commit/e6c4c25283e2aa0414eb19ca0bc23e2a1f97dd1f))
+* **3d-tiles:** use combined MVP for traversal frustum ([549ef1f](https://github.com/geoql/v-maplibre/commit/549ef1f959f2c5cf39ea0ba517b517ce926f1fd8))
+* **v-maplibre:** clear doctor dead-code and prop warnings ([84f6403](https://github.com/geoql/v-maplibre/commit/84f64031f2428bac7be72150784df1ee15b7956b))
+* **v-maplibre:** clear remaining doctor warnings ([f53d6ee](https://github.com/geoql/v-maplibre/commit/f53d6eef313d5a9c9a069b920a864594df975db4))
+
 ## [2.0.1](https://github.com/geoql/v-maplibre/compare/v2.0.0...v2.0.1) (2026-06-14)
 
 
