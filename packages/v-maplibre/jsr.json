@@ -1,6 +1,6 @@
 {
   "name": "@geoql/v-maplibre",
-  "version": "2.0.1",
+  "version": "3.0.0",
   "exports": {
     ".": "./dist/index.js",
     "./deck.gl": "./dist/deckgl.js",
@@ -41,6 +41,10 @@
     "@luma.gl/shadertools": "npm:@luma.gl/shadertools@^9.3.0"
   },
   "publish": {
-    "exclude": ["!dist", "!README.md", "!LICENSE"]
+    "exclude": [
+      "!dist",
+      "!README.md",
+      "!LICENSE"
+    ]
   }
 }
