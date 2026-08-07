@@ -38,7 +38,7 @@ allowBuilds:
 # Requires pnpm v9.5+ (this repo pins pnpm v11).
 catalogs:
   default:
-    maplibre-gl: ^6.1.0
+    maplibre-gl: ^6.2.0
     oxfmt: ^0.62.0
     oxlint: ^1.77.0
     typescript: ^6.0.3
@@ -83,7 +83,7 @@ catalogs:
     '@developmentseed/geotiff': ^0.7.0
     '@developmentseed/proj': ^0.7.0
     apache-arrow: ^21.2.0
-    zarrita: ^0.7.3
+    zarrita: ^0.7.4
     lerc: ^4.2.0
     '@geoql/maplibre-gl-starfield': ^0.1.1
     '@geoql/maplibre-gl-snow': ^0.0.9
@@ -91,10 +91,10 @@ catalogs:
     '@sparkjsdev/spark': ^2.1.0
     '@dvt3d/maplibre-three-plugin': ^1.7.1
     '3d-tiles-renderer': ^0.5.0
-    '3d-tiles-rendererjs-3dgs-plugin': ^0.1.15
+    '3d-tiles-rendererjs-3dgs-plugin': ^0.1.16
     '@iconify-json/lucide': ^1.2.121
     '@iconify-json/simple-icons': ^1.2.93
-    '@iconify-json/vscode-icons': ^1.2.68
+    '@iconify-json/vscode-icons': ^1.2.69
     '@loaders.gl/3d-tiles': ^4.4.4
     '@loaders.gl/core': ^4.4.4
     '@loaders.gl/gltf': ^4.4.4

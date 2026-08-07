@@ -98,7 +98,7 @@
     "prepublishOnly": "pnpm run lint && pnpm run format:check && pnpm run test:coverage && pnpm run build"
   },
   "dependencies": {
-    "maplibre-gl": "^6.1.0",
+    "maplibre-gl": "^6.2.0",
     "pmtiles": "^4.4.1"
   },
   "devDependencies": {
@@ -126,7 +126,7 @@
     "@vitest/coverage-v8": "4.1.10",
     "@vue/test-utils": "^2.4.11",
     "3d-tiles-renderer": "^0.5.0",
-    "3d-tiles-rendererjs-3dgs-plugin": "^0.1.15",
+    "3d-tiles-rendererjs-3dgs-plugin": "^0.1.16",
     "apache-arrow": "^21.2.0",
     "happy-dom": "^20.11.1",
     "maplibre-gl-lidar": "^0.16.2",
@@ -137,7 +137,7 @@
     "vite-plus": "^0.2.8",
     "vue": "^3.5.41",
     "vue-tsc": "^3.3.9",
-    "zarrita": "^0.7.3"
+    "zarrita": "^0.7.4"
   },
   "peerDependencies": {
     "3d-tiles-renderer": "^0.5.0",
