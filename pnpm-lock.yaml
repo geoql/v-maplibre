@@ -7,8 +7,8 @@ settings:
 catalogs:
   app:docs:
     '@comark/nuxt':
-      specifier: ^0.6.0
-      version: 0.6.0
+      specifier: ^0.6.1
+      version: 0.6.2
     '@nuxtjs/plausible':
       specifier: ^3.0.2
       version: 3.0.2
@@ -32,8 +32,8 @@ catalogs:
       version: 3.25.2
   app:mapcn-vue:
     3d-tiles-renderer:
-      specifier: ^0.5.0
-      version: 0.5.0
+      specifier: ^0.5.1
+      version: 0.5.1
     3d-tiles-rendererjs-3dgs-plugin:
       specifier: ^0.1.16
       version: 0.1.16
@@ -335,7 +335,7 @@ importers:
     dependencies:
       '@comark/nuxt':
         specifier: catalog:app:docs
-        version: 0.6.0(magic-string@1.1.0)(magicast@0.5.4)(nuxt@4.5.2(538cf795588041b3e0cdce2a5426ee83))(oxc-parser@0.135.0)(rolldown@1.2.3)(shiki@4.4.2)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.3)(rollup@4.62.4)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(stylus@0.57.0(supports-color@10.2.2))(terser@5.49.2)(yaml@2.9.0)))(vue@3.5.41(typescript@6.0.3))
+        version: 0.6.2(magic-string@1.1.0)(magicast@0.5.4)(nuxt@4.5.2(538cf795588041b3e0cdce2a5426ee83))(oxc-parser@0.135.0)(rolldown@1.2.3)(shiki@4.4.2)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.3)(rollup@4.62.4)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(stylus@0.57.0(supports-color@10.2.2))(terser@5.49.2)(yaml@2.9.0)))(vue@3.5.41(typescript@6.0.3))
       better-sqlite3:
         specifier: catalog:app:docs
         version: 13.0.3
@@ -369,10 +369,10 @@ importers:
     dependencies:
       3d-tiles-renderer:
         specifier: catalog:app:mapcn-vue
-        version: 0.5.0(react@19.2.8)(three@0.185.1)
+        version: 0.5.1(react@19.2.8)(three@0.185.1)
       3d-tiles-rendererjs-3dgs-plugin:
         specifier: catalog:app:mapcn-vue
-        version: 0.1.16(3d-tiles-renderer@0.5.0(react@19.2.8)(three@0.185.1))(@sparkjsdev/spark@2.1.0(patch_hash=2986afc6563f1f270f87ec56218aa2fe0c2032800311e1c5123d151139a7c293)(three@0.185.1))(three@0.185.1)
+        version: 0.1.16(3d-tiles-renderer@0.5.1(react@19.2.8)(three@0.185.1))(@sparkjsdev/spark@2.1.0(patch_hash=2986afc6563f1f270f87ec56218aa2fe0c2032800311e1c5123d151139a7c293)(three@0.185.1))(three@0.185.1)
       '@deck.gl/aggregation-layers':
         specifier: catalog:app:mapcn-vue
         version: 9.3.7(@deck.gl/core@9.3.7)(@deck.gl/layers@9.3.7(@deck.gl/core@9.3.7)(@loaders.gl/core@4.4.4)(@luma.gl/core@9.3.6)(@luma.gl/engine@9.3.6(@luma.gl/core@9.3.6)(@luma.gl/shadertools@9.3.6(@luma.gl/core@9.3.6))))(@luma.gl/core@9.3.6)(@luma.gl/engine@9.3.6(@luma.gl/core@9.3.6)(@luma.gl/shadertools@9.3.6(@luma.gl/core@9.3.6)))
@@ -659,11 +659,11 @@ importers:
         version: 4.4.1
     devDependencies:
       3d-tiles-renderer:
-        specifier: ^0.5.0
-        version: 0.5.0(react@19.2.8)(three@0.185.1)
+        specifier: ^0.5.1
+        version: 0.5.1(react@19.2.8)(three@0.185.1)
       3d-tiles-rendererjs-3dgs-plugin:
         specifier: ^0.1.16
-        version: 0.1.16(3d-tiles-renderer@0.5.0(react@19.2.8)(three@0.185.1))(@sparkjsdev/spark@2.1.0(patch_hash=2986afc6563f1f270f87ec56218aa2fe0c2032800311e1c5123d151139a7c293)(three@0.185.1))(three@0.185.1)
+        version: 0.1.16(3d-tiles-renderer@0.5.1(react@19.2.8)(three@0.185.1))(@sparkjsdev/spark@2.1.0(patch_hash=2986afc6563f1f270f87ec56218aa2fe0c2032800311e1c5123d151139a7c293)(three@0.185.1))(three@0.185.1)
       '@deck.gl/aggregation-layers':
         specifier: ^9.3.7
         version: 9.3.7(@deck.gl/core@9.3.7)(@deck.gl/layers@9.3.7(@deck.gl/core@9.3.7)(@loaders.gl/core@4.4.4)(@luma.gl/core@9.3.6)(@luma.gl/engine@9.3.6(@luma.gl/core@9.3.6)(@luma.gl/shadertools@9.3.6(@luma.gl/core@9.3.6))))(@luma.gl/core@9.3.6)(@luma.gl/engine@9.3.6(@luma.gl/core@9.3.6)(@luma.gl/shadertools@9.3.6(@luma.gl/core@9.3.6)))
@@ -769,8 +769,8 @@ importers:
 
 packages:
 
-  3d-tiles-renderer@0.5.0:
-    resolution: {integrity: sha512-r+6BdOBC7nwGZDJFo2brOhBiF/M/WbSqEsOAYwOB3jTK4dC50ccDQLu3igFovhRsB4SdMpGhdO7NK5g53BfETA==}
+  3d-tiles-renderer@0.5.1:
+    resolution: {integrity: sha512-pR1pfY4LM4L0EqmSbhlCyQ8DMbZeXao5W3q9V4AyZcL1dSFncWPk3nwliIdI5N4nH3sULoZEr43Rq4MzXflTLQ==}
     peerDependencies:
       '@babylonjs/core': '>=8.0.0'
       '@babylonjs/loaders': '>=8.0.0'
@@ -1196,8 +1196,8 @@ packages:
   '@colordx/core@5.5.0':
     resolution: {integrity: sha512-3PxTH8itZzltK0U9jTwVVnjLXvnDYuq3m+QXsHkENxWiPRh4WaoLcs1SQjqgZ55kS+QyirpH5BVwzP2gMVG6EQ==}
 
-  '@comark/nuxt@0.6.0':
-    resolution: {integrity: sha512-oyNlqqOSsvxYW1ObZvloXUfADupjYfbxhhqc/I9MWweboC+/HsEXDB341TKXyTkwUISIOvpTcChP8tWjfrB/ww==}
+  '@comark/nuxt@0.6.2':
+    resolution: {integrity: sha512-kv9BbXssdNY1fJ+t0thZs8Ir0qoY0VIv1MlmIIAiiGXPJoDkY/+S11+q6MYWpM7lxnVmDBXfNPA9yFpGRLV56Q==}
     peerDependencies:
       nuxt: ^4.0.0
 
@@ -1216,8 +1216,8 @@ packages:
       shiki:
         optional: true
 
-  '@comark/vue@0.6.0':
-    resolution: {integrity: sha512-c7BxpneMTWcA34OabdMetm1+Q2ANTbPdSpqNESaFB2cVB7i5IufmA5jjEyQkXWw24/ChfBbvT6BQkib2BxHqSQ==}
+  '@comark/vue@0.6.2':
+    resolution: {integrity: sha512-ToRyzz4I96DjXtDgYOC1WnNWt0W6YgOcazuT8rVRMJRR86NXBLATnIWb3hdMM0/8lMaDz+DmlcpX5EN1hqsG0Q==}
     peerDependencies:
       beautiful-mermaid: ^1.1.3
       katex: ^0.17.0
@@ -7009,16 +7009,19 @@ packages:
       shiki:
         optional: true
 
-  comark@0.6.0:
-    resolution: {integrity: sha512-+0TRU6agbL0qadduzT9FnTSkvukHA3+B2p4rbu/xlfwRLL1LrJVtUS/NVF5OYetrCpRhOL9/Zgu/7fuqIqXyZg==}
+  comark@0.6.2:
+    resolution: {integrity: sha512-hlWa7KlGPfRxovQavnHZlLlTUKrfwE7/o4ewCY0FzqFtRvVT8VdslrumQwELIiK9utsurpoSWCBFj1yVMtDOtw==}
     peerDependencies:
       beautiful-mermaid: ^1.1.3
       katex: ^0.17.0
+      rangi: ^2.2.0
       shiki: ^4.3.1
     peerDependenciesMeta:
       beautiful-mermaid:
         optional: true
       katex:
+        optional: true
+      rangi:
         optional: true
       shiki:
         optional: true
@@ -11810,7 +11813,7 @@ packages:
 
 snapshots:
 
-  3d-tiles-renderer@0.5.0(react@19.2.8)(three@0.185.1):
+  3d-tiles-renderer@0.5.1(react@19.2.8)(three@0.185.1):
     dependencies:
       '@mapbox/vector-tile': 2.0.5
       pbf: 4.0.2
@@ -11819,9 +11822,9 @@ snapshots:
       react: 19.2.8
       three: 0.185.1
 
-  3d-tiles-rendererjs-3dgs-plugin@0.1.16(3d-tiles-renderer@0.5.0(react@19.2.8)(three@0.185.1))(@sparkjsdev/spark@2.1.0(patch_hash=2986afc6563f1f270f87ec56218aa2fe0c2032800311e1c5123d151139a7c293)(three@0.185.1))(three@0.185.1):
+  3d-tiles-rendererjs-3dgs-plugin@0.1.16(3d-tiles-renderer@0.5.1(react@19.2.8)(three@0.185.1))(@sparkjsdev/spark@2.1.0(patch_hash=2986afc6563f1f270f87ec56218aa2fe0c2032800311e1c5123d151139a7c293)(three@0.185.1))(three@0.185.1):
     dependencies:
-      3d-tiles-renderer: 0.5.0(react@19.2.8)(three@0.185.1)
+      3d-tiles-renderer: 0.5.1(react@19.2.8)(three@0.185.1)
       '@sparkjsdev/spark': 2.1.0(patch_hash=2986afc6563f1f270f87ec56218aa2fe0c2032800311e1c5123d151139a7c293)(three@0.185.1)
       three: 0.185.1
 
@@ -12322,11 +12325,11 @@ snapshots:
 
   '@colordx/core@5.5.0': {}
 
-  '@comark/nuxt@0.6.0(magic-string@1.1.0)(magicast@0.5.4)(nuxt@4.5.2(538cf795588041b3e0cdce2a5426ee83))(oxc-parser@0.135.0)(rolldown@1.2.3)(shiki@4.4.2)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.3)(rollup@4.62.4)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(stylus@0.57.0(supports-color@10.2.2))(terser@5.49.2)(yaml@2.9.0)))(vue@3.5.41(typescript@6.0.3))':
+  '@comark/nuxt@0.6.2(magic-string@1.1.0)(magicast@0.5.4)(nuxt@4.5.2(538cf795588041b3e0cdce2a5426ee83))(oxc-parser@0.135.0)(rolldown@1.2.3)(shiki@4.4.2)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.3)(rollup@4.62.4)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(stylus@0.57.0(supports-color@10.2.2))(terser@5.49.2)(yaml@2.9.0)))(vue@3.5.41(typescript@6.0.3))':
     dependencies:
-      '@comark/vue': 0.6.0(shiki@4.4.2)(vue@3.5.41(typescript@6.0.3))
+      '@comark/vue': 0.6.2(shiki@4.4.2)(vue@3.5.41(typescript@6.0.3))
       '@nuxt/kit': 4.5.2(magic-string@1.1.0)(magicast@0.5.4)(oxc-parser@0.135.0)(rolldown@1.2.3)(unplugin@3.3.0(esbuild@0.28.1)(rolldown@1.2.3)(rollup@4.62.4)(vite@8.2.0(@types/node@26.1.2)(esbuild@0.28.1)(jiti@2.7.0)(stylus@0.57.0(supports-color@10.2.2))(terser@5.49.2)(yaml@2.9.0)))
-      comark: 0.6.0(shiki@4.4.2)
+      comark: 0.6.2(shiki@4.4.2)
       nuxt: 4.5.2(538cf795588041b3e0cdce2a5426ee83)
     transitivePeerDependencies:
       - beautiful-mermaid
@@ -12334,6 +12337,7 @@ snapshots:
       - magic-string
       - magicast
       - oxc-parser
+      - rangi
       - rolldown
       - shiki
       - unplugin
@@ -12346,12 +12350,14 @@ snapshots:
     optionalDependencies:
       shiki: 4.4.2
 
-  '@comark/vue@0.6.0(shiki@4.4.2)(vue@3.5.41(typescript@6.0.3))':
+  '@comark/vue@0.6.2(shiki@4.4.2)(vue@3.5.41(typescript@6.0.3))':
     dependencies:
-      comark: 0.6.0(shiki@4.4.2)
+      comark: 0.6.2(shiki@4.4.2)
       vue: 3.5.41(typescript@6.0.3)
     optionalDependencies:
       shiki: 4.4.2
+    transitivePeerDependencies:
+      - rangi
 
   '@commitlint/cli@21.2.1(@types/node@26.1.2)(conventional-commits-parser@7.1.2)(typescript@6.0.3)':
     dependencies:
@@ -19355,7 +19361,7 @@ snapshots:
     optionalDependencies:
       shiki: 4.4.2
 
-  comark@0.6.0(shiki@4.4.2):
+  comark@0.6.2(shiki@4.4.2):
     dependencies:
       entities: 8.0.0
       htmlparser2: 12.0.0

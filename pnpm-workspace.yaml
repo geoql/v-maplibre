@@ -48,7 +48,7 @@ catalogs:
     shadcn-vue: ^2.8.1
 
   app:docs:
-    '@comark/nuxt': ^0.6.0
+    '@comark/nuxt': ^0.6.1
     '@nuxtjs/plausible': ^3.0.2
     agents: ^0.20.1
     better-sqlite3: ^13.0.3
@@ -90,7 +90,7 @@ catalogs:
     '@geoql/maplibre-gl-compare': ^0.0.3
     '@sparkjsdev/spark': ^2.1.0
     '@dvt3d/maplibre-three-plugin': ^1.7.1
-    '3d-tiles-renderer': ^0.5.0
+    '3d-tiles-renderer': ^0.5.1
     '3d-tiles-rendererjs-3dgs-plugin': ^0.1.16
     '@iconify-json/lucide': ^1.2.121
     '@iconify-json/simple-icons': ^1.2.93
