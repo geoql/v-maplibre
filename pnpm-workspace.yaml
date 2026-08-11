@@ -128,7 +128,7 @@ catalogs:
     motion-v: ^2.3.0
     nuxt: ^4.5.2
     nuxt-llms: ^0.2.0
-    nuxt-og-image: ^6.7.7
+    nuxt-og-image: ^6.7.6
     nuxt-security: ^2.6.0
     proj4: ^2.21.0
     reka-ui: ^2.10.3
