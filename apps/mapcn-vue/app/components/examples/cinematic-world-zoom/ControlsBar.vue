@@ -59,7 +59,7 @@
       aria-label="Replay flight"
       @click="emit('replay')"
     >
-      <Icon name="lucide:rotate-ccw" class="size-4" />
+      <Icon name="lucide:refresh-ccw" class="size-4" />
     </Button>
   </div>
 </template>

@@ -26,7 +26,11 @@ import type { Map as MaplibreMap } from 'maplibre-gl';
 export function useCinematicZoom(handle: CinematicMapHandle) {
   const phase = ref<CinematicPhase>('idle');
   const currentDestination = ref<CinematicDestination | null>(null);
-  const reducedMotion = usePreferredReducedMotion();
+  // NOTE: @vueuse/core v14's usePreferredReducedMotion returns the string
+  // 'reduce' | 'no-preference' (not a boolean) — compare explicitly.
+  const reducedMotion = computed(
+    () => usePreferredReducedMotion().value === 'reduce',
+  );
 
   let shot: CinematicShot | null = null;
   let rafId: number | null = null;
