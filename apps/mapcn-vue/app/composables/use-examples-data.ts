@@ -10,6 +10,14 @@ export function useExamplesData() {
       icon: 'lucide:sparkles',
       examples: [
         {
+          title: 'Cinematic World Zoom',
+          description:
+            'Fly from orbit to street level in one continuous shot — great-circle camera flight across six global cities with a pitched, 3D-buildings arrival. Camera choreography inspired by Makio64/threejs-cinematic-world-zoom (MIT).',
+          href: '/examples/cinematic-world-zoom',
+          icon: 'lucide:orbit',
+          badge: 'Cinematic',
+        },
+        {
           title: 'AC Transit Live',
           description:
             'Real-time GTFS-RT bus tracking for Oakland/East Bay with historical trails.',
