@@ -7,7 +7,6 @@ import {
 import type {
   CinematicCameraState,
   CinematicDestination,
-  CinematicHudState,
   CinematicShot,
   LngLat,
 } from '../types/cinematic-zoom';
