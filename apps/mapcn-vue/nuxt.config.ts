@@ -338,6 +338,39 @@ export default defineNuxtConfig({
   routeRules: {
     // /docs has no index page — send crawlers and humans to the first doc.
     '/docs': { redirect: { to: '/docs/introduction', statusCode: 301 } },
+    // COPC LiDAR streaming decodes LAZ with laz-perf, whose Emscripten glue
+    // builds its dynCall trampolines with `new Function(...)` — blocked by the
+    // site-wide A+ CSP, which omits 'unsafe-eval' (only 'wasm-unsafe-eval' is
+    // allowed, for shiki). laz-perf ships no non-eval path (the CSP-clean
+    // laz_rs_wasm decoder is not selectable through the public API), so scope
+    // 'unsafe-eval' to just this one route. Both layers are overridden to match
+    // the dual-layer setup above: `security` patches the runtime nonce CSP that
+    // the worker serves this page with (the document policy that governs the
+    // eval), and `headers` patches the static _headers fallback. Every other
+    // route keeps the strict nonce/strict-dynamic policy untouched.
+    '/examples/lidar-copc': {
+      security: {
+        headers: {
+          contentSecurityPolicy: {
+            'script-src': [
+              "'self'",
+              'https:',
+              "'unsafe-inline'",
+              "'strict-dynamic'",
+              "'nonce-{{nonce}}'",
+              "'unsafe-eval'",
+              "'wasm-unsafe-eval'",
+            ],
+          },
+        },
+      },
+      headers: {
+        'Content-Security-Policy':
+          "base-uri 'none'; connect-src 'self' https: data: blob:; font-src 'self' https: data:; form-action 'self'; frame-ancestors 'none'; frame-src 'self'; img-src 'self' data: blob: https:; media-src 'self' data: blob:; object-src 'none'; script-src 'self' https: 'unsafe-inline' 'unsafe-eval' 'wasm-unsafe-eval'; style-src 'self' https: 'unsafe-inline'; worker-src 'self' blob:; upgrade-insecure-requests",
+        'Permissions-Policy':
+          'camera=(), display-capture=(), fullscreen=(self), geolocation=(), microphone=()',
+      },
+    },
     '/**': {
       headers: {
         'Content-Security-Policy':
