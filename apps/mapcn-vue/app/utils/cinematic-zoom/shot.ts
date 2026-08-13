@@ -19,55 +19,37 @@ export const WORLD_START = {
   roll: 0,
 };
 
-export const SHOT_DURATION_S = 9;
+/** Flight (orbit → arrival) duration in seconds. */
+export const SHOT_DURATION_S = 9.5;
+/** Exponential settle tail after arrival, in seconds. */
 export const SETTLE_S = 1.2;
+/** Post-arrival orbit speed around the streamed tileset, in deg/second. */
+export const ORBIT_RATE_DEG_S = 8;
 
 /**
- * One array entry per destination. Add a city by appending an entry —
- * arrival zoom/pitch/bearing are per-destination camera parameters.
+ * One entry per destination. Each flies from orbit down to a REAL OGC 3D
+ * Tiles capture streamed from the geolith R2 bucket at its true geographic
+ * location. `coordinates` MUST match the tileset's self-anchor (both are
+ * derived from the tileset root transform). Add a destination by generating
+ * a geolith capture and appending an entry with its tileset path + true
+ * coordinates + arrival framing.
  */
 export const CINEMATIC_DESTINATIONS: readonly CinematicDestination[] = [
   {
-    name: 'New York',
-    coordinates: [-74.006, 40.7128],
-    arrivalZoom: 16.4,
-    arrivalPitch: 56,
-    arrivalBearing: 20,
-  },
-  {
     name: 'Tokyo',
-    coordinates: [139.6917, 35.6895],
-    arrivalZoom: 16.4,
-    arrivalPitch: 56,
-    arrivalBearing: -35,
+    coordinates: [139.7454, 35.6586],
+    tilesetPath: '/splat/cactus/tileset.json',
+    arrivalZoom: 20.7,
+    arrivalPitch: 62,
+    arrivalBearing: -20,
   },
   {
-    name: 'London',
-    coordinates: [-0.1276, 51.5072],
-    arrivalZoom: 16.2,
-    arrivalPitch: 56,
-    arrivalBearing: 40,
-  },
-  {
-    name: 'Paris',
-    coordinates: [2.3522, 48.8566],
-    arrivalZoom: 16.4,
-    arrivalPitch: 57,
-    arrivalBearing: -25,
-  },
-  {
-    name: 'Mumbai',
-    coordinates: [72.8777, 19.076],
-    arrivalZoom: 16.4,
-    arrivalPitch: 56,
-    arrivalBearing: -15,
-  },
-  {
-    name: 'San Francisco',
-    coordinates: [-122.4194, 37.7749],
-    arrivalZoom: 16.0,
-    arrivalPitch: 58,
-    arrivalBearing: 15,
+    name: 'Italian Alps',
+    coordinates: [7.9797, 45.9756],
+    tilesetPath: '/splat/bonsai/tileset.json',
+    arrivalZoom: 20.9,
+    arrivalPitch: 62,
+    arrivalBearing: 25,
   },
 ];
 
@@ -92,34 +74,45 @@ function lerpLngLat(a: LngLat, b: LngLat, t: number): LngLat {
 
 /**
  * Builds the per-destination shot: piecewise zoom (micro anticipation dip,
- * then a monotone plunge — MapLibre zoom is log2 scale, so a linear-ish
- * zoom ramp is a geometric distance fall), great-circle pan coupled to zoom
- * progress, north-up bearing hold until zoom 4 then a smooth sweep, a late
- * pitch flare, a subtle roll bank inside the mercator phase, and an
- * exponential settle tail that carries exit velocity into the landing.
+ * then a monotone plunge deep enough to frame the streamed 3D tiles — MapLibre
+ * zoom is log2 scale, so a smooth zoom ramp is a geometric distance fall),
+ * great-circle pan coupled to zoom progress (the last mile happens at low
+ * altitude), north-up bearing hold until the dive commits then a smooth sweep
+ * to the arrival bearing, a late pitch flare that stands the camera up to read
+ * the 3D geometry, a subtle roll bank inside the descent, and an exponential
+ * settle tail that carries exit velocity into the landing.
+ *
+ * Camera choreography inspired by
+ * https://github.com/Makio64/threejs-cinematic-world-zoom (MIT).
  */
 export function buildShot(destination: CinematicDestination): CinematicShot {
   const start = WORLD_START;
   const Z_END = destination.arrivalZoom;
 
-  // Piecewise zoom: anticipation dip [0, 0.08] then monotone plunge [0.08, 1].
+  // Piecewise zoom: anticipation dip [0, 0.08] then a smooth deep plunge that
+  // eases into the arrival zoom rather than slamming the last stop.
   const dipEnd = 0.08;
   const zoomRise = smoothTrack([
     [dipEnd, 1.35],
-    [0.5, 6],
-    [0.78, 11.5],
-    [0.93, 15.2],
+    [0.4, 5.5],
+    [0.62, 10],
+    [0.78, 14],
+    [0.88, 17],
+    [0.95, 19],
     [1, Z_END],
   ]);
   const zoomCurve = (t: number): number =>
     t < dipEnd ? 1.6 + (1.35 - 1.6) * easeInOutQuad(t / dipEnd) : zoomRise(t);
 
+  // Pitch flares late: level through the globe phase, then stands up to the
+  // pitched arrival so the streamed 3D tiles are read at an angle.
   const pitchCurve = smoothTrack([
     [0, 0],
-    [0.35, 0],
-    [0.7, 18],
-    [0.93, 62],
-    [1, 62],
+    [0.3, 0],
+    [0.6, 15],
+    [0.85, 45],
+    [0.95, destination.arrivalPitch],
+    [1, destination.arrivalPitch],
   ]);
 
   const rollStart = 0.8;
@@ -130,12 +123,14 @@ export function buildShot(destination: CinematicDestination): CinematicShot {
     return rollPeak * Math.sin(Math.PI * p);
   };
 
-  // North-up hold keyed to zoom (distance), release over the remaining dive.
+  // North-up hold keyed to zoom (distance), released over the remaining dive.
+  // `+ 0` normalises the signed zero a negative arrival bearing would produce
+  // while held north (−20 * 0 = −0), so the held phase reads a clean 0.
   const bearingCurve = (zoom: number): number =>
-    destination.arrivalBearing * smoothstep(4, 15.2, zoom);
+    destination.arrivalBearing * smoothstep(5, 18, zoom) + 0;
 
   // Center pan must not outrun the dive: couple it to zoom progress so the
-  // last mile of travel happens at low altitude.
+  // last mile of travel happens at low altitude, over the destination.
   const panT = (zoom: number): number => smoothstep(1.6, Z_END, zoom);
 
   const sample = (t: number): CinematicCameraState => {

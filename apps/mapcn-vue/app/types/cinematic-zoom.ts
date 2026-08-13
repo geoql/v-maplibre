@@ -5,10 +5,13 @@ export type LngLat = [number, number];
 
 export interface CinematicDestination {
   name: string;
+  /** True location of the 3D Tiles capture — MUST match the tileset self-anchor. */
   coordinates: LngLat;
-  /** Arrival camera parameters — adding a city = one array entry in shot.ts */
-  arrivalZoom: number; // desired visual zoom at t=1 (target ≥ 15.5 after globe adjustment)
-  arrivalPitch: number; // resting pitch at arrival (56-58)
+  /** R2 path of the geolith 3D Tiles tileset.json (prefixed with r2AssetsBase). */
+  tilesetPath: string;
+  /** Arrival camera parameters — adding a destination = one array entry in shot.ts */
+  arrivalZoom: number; // desired visual zoom at t=1 (deep enough to frame the 3D tiles, ~20.5)
+  arrivalPitch: number; // resting pitch at arrival (pitched to read the 3D geometry, ~62)
   arrivalBearing: number; // cinematic final bearing (deg)
 }
 
