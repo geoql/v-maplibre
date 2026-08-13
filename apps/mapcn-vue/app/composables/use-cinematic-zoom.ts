@@ -9,6 +9,7 @@ import type {
 import {
   buildShot,
   getHudAltitude,
+  ORBIT_RATE_DEG_S,
   SETTLE_S,
   SHOT_DURATION_S,
   WORLD_START,
@@ -34,6 +35,9 @@ export function useCinematicZoom(handle: CinematicMapHandle) {
 
   let shot: CinematicShot | null = null;
   let rafId: number | null = null;
+  let orbitRaf: number | null = null;
+  let orbitBearing = 0;
+  let lastOrbitAt = 0;
   let startTime = 0;
   let lastHudAt = 0;
   let currentMap: MaplibreMap | null = null;
@@ -71,7 +75,12 @@ export function useCinematicZoom(handle: CinematicMapHandle) {
   function abortFromInterrupt(): void {
     if (rafId !== null) cancelAnimationFrame(rafId);
     rafId = null;
+    if (orbitRaf !== null) cancelAnimationFrame(orbitRaf);
+    orbitRaf = null;
     teardownListeners();
+    // A flight in progress returns to idle; an interrupt during the arrival
+    // orbit just stops orbiting and hands the (fully interactive) map over,
+    // leaving the destination marker + HUD in their arrived state.
     if (phase.value === 'flying') setPhase('idle');
   }
 
@@ -90,7 +99,19 @@ export function useCinematicZoom(handle: CinematicMapHandle) {
   function apply(state: CinematicCameraState): void {
     const map = getMap();
     if (!map) return;
-    map.jumpTo(state);
+    // A terrain-enabled style (maps.guru 3D) samples DEM elevation at the
+    // camera target inside jumpTo. During a fast flight the DEM tile for the
+    // new center is often not loaded yet, which throws a RangeError ("Out of
+    // range source coordinates for DEM data"). That throw must NEVER escape
+    // apply() — otherwise it unwinds the rAF tick before the next frame is
+    // scheduled and the whole flight freezes. Swallow it; the next frame (a
+    // few ms later, over a slightly different point with more tiles loaded)
+    // recovers, so the camera keeps advancing smoothly.
+    try {
+      map.jumpTo(state);
+    } catch {
+      // Transient terrain elevation-sampling error — ignored on purpose.
+    }
     const now = performance.now();
     if (handle.onHud && now - lastHudAt >= 100) {
       lastHudAt = now;
@@ -120,9 +141,40 @@ export function useCinematicZoom(handle: CinematicMapHandle) {
     } else {
       apply(shot.rest);
       rafId = null;
-      teardownListeners();
       setPhase('arrived');
+      // Keep the interrupt listeners registered through the orbit so the
+      // first user gesture stops it and takes over the map.
+      startOrbit();
     }
+  }
+
+  // A slow, gentle orbit around the arrived destination that carries the
+  // shot's exit bearing forward — it shows the streamed 3D tiles from
+  // changing angles and reads as "the flight landed alive" rather than a hard
+  // stop. Every frame is a programmatic jumpTo (no originalEvent), so it never
+  // triggers its own abort; a real pointer/wheel gesture does.
+  function orbitTick(now: number): void {
+    if (!shot) return;
+    const map = getMap();
+    if (!map) return;
+    const dt = (now - lastOrbitAt) / 1000;
+    lastOrbitAt = now;
+    orbitBearing += ORBIT_RATE_DEG_S * dt;
+    apply({
+      center: shot.rest.center,
+      zoom: shot.rest.zoom,
+      pitch: shot.rest.pitch,
+      bearing: orbitBearing,
+      roll: 0,
+    });
+    orbitRaf = requestAnimationFrame(orbitTick);
+  }
+
+  function startOrbit(): void {
+    if (reducedMotion.value || !shot) return;
+    orbitBearing = shot.rest.bearing;
+    lastOrbitAt = performance.now();
+    orbitRaf = requestAnimationFrame(orbitTick);
   }
 
   function fly(destination: CinematicDestination): void {
