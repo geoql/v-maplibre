@@ -11,7 +11,12 @@ if [ -z "$EMAIL" ]; then
     exit 1
 fi
 
-git interpret-trailers --if-exists doNothing --trailer \
+# Every commit must carry the author's Signed-off-by trailer. `replace` (not
+# the previous `doNothing`) guarantees it: an agent or tool that writes a
+# wrong trailer into the message cannot override the real signature — the
+# hook always rewrites the trailer to the configured git identity. This is
+# what makes the signature a hard invariant instead of a convention.
+git interpret-trailers --if-exists replace --trailer \
     "Signed-off-by: $NAME <$EMAIL>" \
     --in-place "$1"
 
