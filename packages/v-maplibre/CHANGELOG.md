@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/geoql/v-maplibre/compare/v3.0.0...v3.0.1) (2026-08-14)
+
+
+### Miscellaneous
+
+* **deps:** bump maplibre-gl to v6.3.0 ([2304bb3](https://github.com/geoql/v-maplibre/commit/2304bb300e6b00afb6308e0b4f2ccc7e6a368244))
+
 ## [3.0.0](https://github.com/geoql/v-maplibre/compare/v2.0.1...v3.0.0) (2026-08-14)
 
 
