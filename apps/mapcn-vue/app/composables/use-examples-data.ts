@@ -675,11 +675,11 @@ export function useExamplesData() {
           badge: 'New',
         },
         {
-          title: '3D Splat Scene',
+          title: '3D Buildings',
           description:
-            'A KHR_gaussian_splatting SPZ splat tileset streamed via three.js.',
+            'Photogrammetry building geometry streamed via OGC 3D Tiles in three.js.',
           href: '/examples/3d-buildings',
-          icon: 'lucide:sparkles',
+          icon: 'lucide:building-2',
           badge: 'New',
         },
       ],
