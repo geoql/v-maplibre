@@ -674,6 +674,14 @@ export function useExamplesData() {
           icon: 'lucide:boxes',
           badge: 'New',
         },
+        {
+          title: '3D Splat Scene',
+          description:
+            'A KHR_gaussian_splatting SPZ splat tileset streamed via three.js.',
+          href: '/examples/3d-buildings',
+          icon: 'lucide:sparkles',
+          badge: 'New',
+        },
       ],
     },
     {

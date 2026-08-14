@@ -21,6 +21,8 @@
   import { TilesRenderer } from '3d-tiles-renderer';
   import { TilesFadePlugin } from '3d-tiles-renderer/plugins';
   import { GaussianSplatPlugin } from '3d-tiles-rendererjs-3dgs-plugin';
+  import { DRACOLoader } from 'three/addons/loaders/DRACOLoader.js';
+  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
   import { MathUtils, Matrix4, Vector3, Group } from 'three';
   import type { Map } from 'maplibre-gl';
   import { injectStrict, MapKey } from '../../../utils';
@@ -205,6 +207,21 @@
       tiles = new TilesRenderer(props.url);
       tiles.errorTarget = props.errorTarget;
       if (props.fetchOptions) tiles.fetchOptions = props.fetchOptions;
+
+      // Register a GLTFLoader with DRACO support directly on the tile
+      // manager. B3DMLoader.parse calls manager.getHandler('path.gltf')
+      // and falls back to a bare GLTFLoader (no DRACO) when it misses.
+      // Note: GLTFExtensionsPlugin has a /g flag bug on its regex that
+      // causes alternating handler misses, so we skip it and register
+      // manually with a non-global regex.
+      const dracoLoader = new DRACOLoader();
+      dracoLoader.setDecoderPath(
+        'https://www.gstatic.com/draco/versioned/decoders/1.5.7/',
+      );
+      const gltfLoader = new GLTFLoader(tiles.manager);
+      gltfLoader.setDRACOLoader(dracoLoader);
+      tiles.manager.addHandler(/\.(gltf|glb)$/, gltfLoader);
+
       if (props.fade) tiles.registerPlugin(new TilesFadePlugin());
       if (props.splats) {
         tiles.registerPlugin(
@@ -244,10 +261,10 @@
         }) as never,
       );
 
-      // LOD traversal runs every rendered frame against the context's draw
-      // camera (its matrices track the live map view).
+      // LOD traversal + georeference sync runs every rendered frame.
       removeFrameHook = entry.addFrameHook(() => {
         if (!tiles || !entry) return;
+        applyTransform();
         tiles.setResolutionFromRenderer(entry.lodCamera, entry.renderer);
         tiles.update();
       });
