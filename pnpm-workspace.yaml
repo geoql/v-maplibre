@@ -38,7 +38,7 @@ allowBuilds:
 # Requires pnpm v9.5+ (this repo pins pnpm v11).
 catalogs:
   default:
-    maplibre-gl: ^6.2.0
+    maplibre-gl: ^6.3.0
     oxfmt: ^0.63.0
     oxlint: ^1.78.0
     typescript: ^6.0.3

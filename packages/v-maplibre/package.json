@@ -98,7 +98,7 @@
     "prepublishOnly": "pnpm run lint && pnpm run format:check && pnpm run test:coverage && pnpm run build"
   },
   "dependencies": {
-    "maplibre-gl": "^6.2.0",
+    "maplibre-gl": "^6.3.0",
     "pmtiles": "^4.4.1"
   },
   "devDependencies": {

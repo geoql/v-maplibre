@@ -267,8 +267,8 @@ catalogs:
       version: 0.3.3
   default:
     maplibre-gl:
-      specifier: ^6.2.0
-      version: 6.2.0
+      specifier: ^6.3.0
+      version: 6.3.0
     oxfmt:
       specifier: ^0.63.0
       version: 0.63.0
@@ -405,13 +405,13 @@ importers:
         version: 1.7.1(three@0.185.1)
       '@geoql/maplibre-gl-compare':
         specifier: catalog:app:mapcn-vue
-        version: 0.0.3(maplibre-gl@6.2.0)
+        version: 0.0.3(maplibre-gl@6.3.0)
       '@geoql/maplibre-gl-snow':
         specifier: catalog:app:mapcn-vue
-        version: 0.0.9(maplibre-gl@6.2.0)(three@0.185.1)
+        version: 0.0.9(maplibre-gl@6.3.0)(three@0.185.1)
       '@geoql/maplibre-gl-starfield':
         specifier: catalog:app:mapcn-vue
-        version: 0.1.1(maplibre-gl@6.2.0)(three@0.185.1)
+        version: 0.1.1(maplibre-gl@6.3.0)(three@0.185.1)
       '@geoql/v-maplibre':
         specifier: workspace:*
         version: link:../../packages/v-maplibre
@@ -504,13 +504,13 @@ importers:
         version: 4.2.0
       maplibre-gl:
         specifier: catalog:default
-        version: 6.2.0
+        version: 6.3.0
       maplibre-gl-interpolate-heatmap:
         specifier: catalog:app:mapcn-vue
-        version: 0.1.3(patch_hash=ae753930ca5d378f6b5875808e5fc3ecbc77fb96fc756ebc2276ca9006c4b2c4)(maplibre-gl@6.2.0)
+        version: 0.1.3(patch_hash=ae753930ca5d378f6b5875808e5fc3ecbc77fb96fc756ebc2276ca9006c4b2c4)(maplibre-gl@6.3.0)
       maplibre-gl-lidar:
         specifier: catalog:app:mapcn-vue
-        version: 0.16.2(@luma.gl/core@9.3.6)(@luma.gl/engine@9.3.6(@luma.gl/core@9.3.6)(@luma.gl/shadertools@9.3.6(@luma.gl/core@9.3.6)))(@math.gl/web-mercator@4.1.0)(maplibre-gl@6.2.0)(react@19.2.8)
+        version: 0.16.2(@luma.gl/core@9.3.6)(@luma.gl/engine@9.3.6(@luma.gl/core@9.3.6)(@luma.gl/shadertools@9.3.6(@luma.gl/core@9.3.6)))(@math.gl/web-mercator@4.1.0)(maplibre-gl@6.3.0)(react@19.2.8)
       maplibre-gl-wind:
         specifier: catalog:app:mapcn-vue
         version: 0.2.0(@deck.gl/core@9.3.9)(@deck.gl/layers@9.3.9(@deck.gl/core@9.3.9)(@loaders.gl/core@4.4.4)(@luma.gl/core@9.3.6)(@luma.gl/engine@9.3.6(@luma.gl/core@9.3.6)(@luma.gl/shadertools@9.3.6(@luma.gl/core@9.3.6))))(@luma.gl/core@9.3.6)(@luma.gl/engine@9.3.6(@luma.gl/core@9.3.6)(@luma.gl/shadertools@9.3.6(@luma.gl/core@9.3.6)))(@luma.gl/shadertools@9.3.6(@luma.gl/core@9.3.6))
@@ -555,7 +555,7 @@ importers:
         version: 1.32.3
       terra-draw-maplibre-gl-adapter:
         specifier: catalog:app:mapcn-vue
-        version: 1.4.1(maplibre-gl@6.2.0)(terra-draw@1.32.3)
+        version: 1.4.1(maplibre-gl@6.3.0)(terra-draw@1.32.3)
       three:
         specifier: catalog:app:mapcn-vue
         version: 0.185.1
@@ -652,8 +652,8 @@ importers:
   packages/v-maplibre:
     dependencies:
       maplibre-gl:
-        specifier: ^6.2.0
-        version: 6.2.0
+        specifier: ^6.3.0
+        version: 6.3.0
       pmtiles:
         specifier: ^4.4.1
         version: 4.4.1
@@ -702,7 +702,7 @@ importers:
         version: 1.7.1(three@0.185.1)
       '@geoql/maplibre-gl-starfield':
         specifier: ^0.1.1
-        version: 0.1.1(maplibre-gl@6.2.0)(three@0.185.1)
+        version: 0.1.1(maplibre-gl@6.3.0)(three@0.185.1)
       '@luma.gl/core':
         specifier: ^9.3.6
         version: 9.3.6
@@ -741,7 +741,7 @@ importers:
         version: 20.11.2
       maplibre-gl-lidar:
         specifier: ^0.16.2
-        version: 0.16.2(@luma.gl/core@9.3.6)(@luma.gl/engine@9.3.6(@luma.gl/core@9.3.6)(@luma.gl/shadertools@9.3.6(@luma.gl/core@9.3.6)))(@math.gl/web-mercator@4.1.0)(maplibre-gl@6.2.0)(react@19.2.8)
+        version: 0.16.2(@luma.gl/core@9.3.6)(@luma.gl/engine@9.3.6(@luma.gl/core@9.3.6)(@luma.gl/shadertools@9.3.6(@luma.gl/core@9.3.6)))(@math.gl/web-mercator@4.1.0)(maplibre-gl@6.3.0)(react@19.2.8)
       maplibre-gl-wind:
         specifier: ^0.2.0
         version: 0.2.0(@deck.gl/core@9.3.9)(@deck.gl/layers@9.3.9(@deck.gl/core@9.3.9)(@loaders.gl/core@4.4.4)(@luma.gl/core@9.3.6)(@luma.gl/engine@9.3.6(@luma.gl/core@9.3.6)(@luma.gl/shadertools@9.3.6(@luma.gl/core@9.3.6))))(@luma.gl/core@9.3.6)(@luma.gl/engine@9.3.6(@luma.gl/core@9.3.6)(@luma.gl/shadertools@9.3.6(@luma.gl/core@9.3.6)))(@luma.gl/shadertools@9.3.6(@luma.gl/core@9.3.6))
@@ -9091,8 +9091,8 @@ packages:
       '@luma.gl/engine': '>=9.0.0'
       '@luma.gl/shadertools': '>=9.0.0'
 
-  maplibre-gl@6.2.0:
-    resolution: {integrity: sha512-PaNYtxWmYgIdDHshXsnU3Pho+H9IPme9H6dTjZbFWNazi+Q5QgKgIlu2GiSGVtOZ77/Fz3n5/1/kGM6ETzu0Lg==}
+  maplibre-gl@6.3.0:
+    resolution: {integrity: sha512-F0Is48MTzn3DvOEidPjh68E0kuSA7hdzY1YIR0ypPtFgcif3WPtzI1oZFgsv9WtHmarQnbwIXfsf+EfQYvM00A==}
     engines: {node: '>=16.14.0', npm: '>=8.1.0'}
 
   markdown-exit@1.0.0-beta.9:
@@ -13314,18 +13314,18 @@ snapshots:
       - '@vue/composition-api'
       - vue
 
-  '@geoql/maplibre-gl-compare@0.0.3(maplibre-gl@6.2.0)':
+  '@geoql/maplibre-gl-compare@0.0.3(maplibre-gl@6.3.0)':
     dependencies:
-      maplibre-gl: 6.2.0
+      maplibre-gl: 6.3.0
 
-  '@geoql/maplibre-gl-snow@0.0.9(maplibre-gl@6.2.0)(three@0.185.1)':
+  '@geoql/maplibre-gl-snow@0.0.9(maplibre-gl@6.3.0)(three@0.185.1)':
     dependencies:
-      maplibre-gl: 6.2.0
+      maplibre-gl: 6.3.0
       three: 0.185.1
 
-  '@geoql/maplibre-gl-starfield@0.1.1(maplibre-gl@6.2.0)(three@0.185.1)':
+  '@geoql/maplibre-gl-starfield@0.1.1(maplibre-gl@6.3.0)(three@0.185.1)':
     dependencies:
-      maplibre-gl: 6.2.0
+      maplibre-gl: 6.3.0
       three: 0.185.1
 
   '@hono/node-server@2.1.0(hono@4.13.1)':
@@ -21735,17 +21735,17 @@ snapshots:
     dependencies:
       semver: 7.8.5
 
-  maplibre-gl-interpolate-heatmap@0.1.3(patch_hash=ae753930ca5d378f6b5875808e5fc3ecbc77fb96fc756ebc2276ca9006c4b2c4)(maplibre-gl@6.2.0):
+  maplibre-gl-interpolate-heatmap@0.1.3(patch_hash=ae753930ca5d378f6b5875808e5fc3ecbc77fb96fc756ebc2276ca9006c4b2c4)(maplibre-gl@6.3.0):
     dependencies:
-      maplibre-gl: 6.2.0
+      maplibre-gl: 6.3.0
 
-  maplibre-gl-layer-control@0.17.4(maplibre-gl@6.2.0)(react@19.2.8):
+  maplibre-gl-layer-control@0.17.4(maplibre-gl@6.3.0)(react@19.2.8):
     dependencies:
-      maplibre-gl: 6.2.0
+      maplibre-gl: 6.3.0
     optionalDependencies:
       react: 19.2.8
 
-  maplibre-gl-lidar@0.16.2(@luma.gl/core@9.3.6)(@luma.gl/engine@9.3.6(@luma.gl/core@9.3.6)(@luma.gl/shadertools@9.3.6(@luma.gl/core@9.3.6)))(@math.gl/web-mercator@4.1.0)(maplibre-gl@6.2.0)(react@19.2.8):
+  maplibre-gl-lidar@0.16.2(@luma.gl/core@9.3.6)(@luma.gl/engine@9.3.6(@luma.gl/core@9.3.6)(@luma.gl/shadertools@9.3.6(@luma.gl/core@9.3.6)))(@math.gl/web-mercator@4.1.0)(maplibre-gl@6.3.0)(react@19.2.8):
     dependencies:
       '@deck.gl/core': 9.3.9
       '@deck.gl/extensions': 9.3.9(@deck.gl/core@9.3.9)(@luma.gl/core@9.3.6)(@luma.gl/engine@9.3.6(@luma.gl/core@9.3.6)(@luma.gl/shadertools@9.3.6(@luma.gl/core@9.3.6)))
@@ -21754,8 +21754,8 @@ snapshots:
       '@loaders.gl/core': 4.4.4
       '@loaders.gl/las': 4.4.4(@loaders.gl/core@4.4.4)
       copc: 0.0.8
-      maplibre-gl: 6.2.0
-      maplibre-gl-layer-control: 0.17.4(maplibre-gl@6.2.0)(react@19.2.8)
+      maplibre-gl: 6.3.0
+      maplibre-gl-layer-control: 0.17.4(maplibre-gl@6.3.0)(react@19.2.8)
       proj4: 2.21.0
     optionalDependencies:
       react: 19.2.8
@@ -21774,7 +21774,7 @@ snapshots:
       '@luma.gl/engine': 9.3.6(@luma.gl/core@9.3.6)(@luma.gl/shadertools@9.3.6(@luma.gl/core@9.3.6))
       '@luma.gl/shadertools': 9.3.6(@luma.gl/core@9.3.6)
 
-  maplibre-gl@6.2.0:
+  maplibre-gl@6.3.0:
     dependencies:
       '@mapbox/point-geometry': 1.1.0
       '@mapbox/tiny-sdf': 2.2.0
@@ -25150,9 +25150,9 @@ snapshots:
       - bare-abort-controller
       - react-native-b4a
 
-  terra-draw-maplibre-gl-adapter@1.4.1(maplibre-gl@6.2.0)(terra-draw@1.32.3):
+  terra-draw-maplibre-gl-adapter@1.4.1(maplibre-gl@6.3.0)(terra-draw@1.32.3):
     dependencies:
-      maplibre-gl: 6.2.0
+      maplibre-gl: 6.3.0
       terra-draw: 1.32.3
 
   terra-draw@1.32.3: {}
