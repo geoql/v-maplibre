@@ -125,7 +125,7 @@
     "@types/node": "^26.6.1",
     "@types/three": "^0.186.0",
     "@vitejs/plugin-vue": "^6.0.9",
-    "@vitest/coverage-v8": "4.1.10",
+    "@vitest/coverage-v8": "4.1.11",
     "@vue/test-utils": "^2.5.1",
     "apache-arrow": "^21.2.0",
     "happy-dom": "^20.14.5",
