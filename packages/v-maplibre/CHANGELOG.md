@@ -1,5 +1,20 @@
 # Changelog
 
+## [3.0.1](https://github.com/geoql/v-maplibre/compare/v3.0.0...v3.0.1) (2026-09-18)
+
+
+### Bug Fixes
+
+* **v-maplibre:** ship and auto-wire a self-contained MapLibre v6 worker ([f912fe8](https://github.com/geoql/v-maplibre/commit/f912fe8addd2b9c504a6f3f0b5340eb0235e4314)), closes [#160](https://github.com/geoql/v-maplibre/issues/160)
+
+
+### Miscellaneous
+
+* **deps:** align @vitest/coverage-v8 with the bundled vitest ([cf88d18](https://github.com/geoql/v-maplibre/commit/cf88d182b04bb0aaf47e4c330691b75eee5292f2))
+* **deps:** bump maplibre-gl to v6.3.0 ([2304bb3](https://github.com/geoql/v-maplibre/commit/2304bb300e6b00afb6308e0b4f2ccc7e6a368244))
+* **deps:** refresh workspace dependencies ([04a02c5](https://github.com/geoql/v-maplibre/commit/04a02c57586a94befc8d1c89334d60213ae54ded))
+* **v-maplibre:** exclude the worker entry from the doctor's dead-code pass ([a2d1539](https://github.com/geoql/v-maplibre/commit/a2d1539fb9f10a38239ceb43b82e67cb9945ba7a))
+
 ## [3.0.0](https://github.com/geoql/v-maplibre/compare/v2.0.1...v3.0.0) (2026-08-14)
 
 
