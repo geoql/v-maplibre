@@ -350,6 +350,12 @@ class MockMercatorCoordinate {
   }
 }
 
+// Worker URL state — MapLibre v6 resolves its worker URL at runtime, and
+// `VMap` points it at the library's bundled asset (see
+// `src/utils/maplibre-worker.ts`). Tests assert both the install and the
+// "consumer override wins" branch.
+const mockWorkerUrl = { value: '' };
+
 // Mock maplibre-gl module (v6 is ESM-only with named exports; no default export)
 vi.mock('maplibre-gl', () => ({
   Map: MockMap,
@@ -362,6 +368,10 @@ vi.mock('maplibre-gl', () => ({
   AttributionControl: MockAttributionControl,
   MercatorCoordinate: MockMercatorCoordinate,
   addProtocol: vi.fn(),
+  getWorkerUrl: () => mockWorkerUrl.value,
+  setWorkerUrl: (url: string) => {
+    mockWorkerUrl.value = url;
+  },
 }));
 
 // Mock pmtiles
@@ -505,4 +515,4 @@ vi.mock('@deck.gl/mapbox', () => ({
 }));
 
 // Export mocks for use in tests
-export { MockMapboxOverlay, MockLayer };
+export { MockMapboxOverlay, MockLayer, mockWorkerUrl };

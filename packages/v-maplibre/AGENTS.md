@@ -546,8 +546,21 @@ pnpm run format           # Format with oxfmt
 pnpm run format:check     # Check formatting
 
 # From monorepo root
-pnpm run dev:lib          # Watch mode
+pnpm run dev:lib      # Watch mode
 ```
+
+### Build notes
+
+- `vp pack` emits `dist/maplibre-worker.js` from the `src/maplibre-worker.ts`
+  entry — a self-contained bundle of MapLibre's two-file worker pair. It is
+  load-bearing: `src/utils/maplibre-worker.ts` references it with the native
+  `new URL('./maplibre-worker.js', import.meta.url)` pattern, which is how
+  consumers get a working worker without setup (geoql/v-maplibre#160).
+- Two config pieces keep that asset self-contained, and removing either breaks
+  it: the `MAPLIBRE_WORKER_ENTRY` early-return in `isExternal()` (rolldown
+  checks `external` before plugin resolve hooks) **and** the matching
+  `deps.alwaysBundle` entry — the `deps` list from `package.json` would
+  otherwise externalize it again. Do not "simplify" either one.
 
 ---
 

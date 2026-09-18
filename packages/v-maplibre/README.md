@@ -95,6 +95,30 @@ pnpm add @geoql/maplibre-gl-starfield three
 
 If you import a layer without its peer deps installed, your bundler will surface a `Cannot find module '...'` error — install the missing package(s) from the table above to resolve it.
 
+## MapLibre GL v6 worker
+
+MapLibre GL v6 resolves its worker with a URL it builds at runtime, which bundlers
+cannot see — the request 404s unless the worker URL is wired by hand
+([#160](https://github.com/geoql/v-maplibre/issues/160)). `VMap` handles it for
+you: it points MapLibre at a self-contained worker that ships with the library,
+using the standard `new URL('./maplibre-worker.js', import.meta.url)` pattern —
+Vite (dev + build) and webpack 5 both emit that file as an asset. No setup
+needed.
+
+Prefer a worker built from your own `maplibre-gl` version? Set it before the
+first `VMap` mounts — the library keeps an existing URL:
+
+```ts
+// app/plugins/maplibre-worker.client.ts (Nuxt) or main.ts (Vite)
+import { setWorkerUrl } from 'maplibre-gl';
+import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
+
+setWorkerUrl(workerUrl);
+```
+
+`?worker&url` is Vite-specific. On other bundlers keep the shipped worker — no
+override is needed.
+
 ## Migrating to v2.0.0
 
 v2.0.0 moves the optional-peer layers off the root entry onto dedicated subpaths so a core-only install no longer transitively references deck.gl / lidar / wind (fixes [#114](https://github.com/geoql/v-maplibre/issues/114)). Core components are unchanged — keep importing `VMap`, `VMarker`, `VPopup`, every `VControl*` (except `VControlLidar`), and every `VLayerMaplibre*` (except `VLayerStarfield`) from `@geoql/v-maplibre`. Only update the optional-peer components:

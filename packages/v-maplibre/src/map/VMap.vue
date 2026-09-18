@@ -6,6 +6,7 @@
   import type { Ref } from 'vue';
   import { mapEvents } from '../constants/events';
   import { MapKey, PMTileProtocolKey } from '../utils/symbols';
+  import { installMaplibreWorkerUrl } from '../utils/maplibre-worker-url';
   import { useDeckOverlay } from '../layers/deckgl/_shared/useDeckOverlay';
 
   const props = withDefaults(
@@ -62,6 +63,7 @@
   };
 
   onMounted(() => {
+    installMaplibreWorkerUrl();
     const instance = new Map(props.options);
     restoreTransformCompat(instance);
     map.value = instance;

@@ -37,7 +37,15 @@ const EXTERNAL_PREFIXES = [
 // `vue/dist/foo`). All deck.gl / luma.gl / map libs are peer-deps; consumers
 // install their own copies, so bundling them here would create duplicate
 // versions at runtime.
+//
+// Exception: MapLibre's worker is bundled (see `src/maplibre-worker.ts` and
+// `deps.alwaysBundle` below). The exception has to live here too — rolldown
+// checks the `external` option BEFORE plugin resolve hooks, so marking it
+// external here would short-circuit `deps.alwaysBundle` entirely.
+const MAPLIBRE_WORKER_ENTRY = 'maplibre-gl/dist/maplibre-gl-worker.mjs';
+
 function isExternal(id: string): boolean {
+  if (id === MAPLIBRE_WORKER_ENTRY) return false;
   return (
     EXTERNAL_PREFIXES.includes(id) ||
     EXTERNAL_PREFIXES.some((prefix) => id.startsWith(`${prefix}/`))
@@ -55,6 +63,8 @@ export default defineConfig({
       'src/lidar.ts',
       'src/splat.ts',
       'src/3d-tiles.ts',
+      // Self-contained MapLibre worker asset (see src/maplibre-worker.ts).
+      'src/maplibre-worker.ts',
     ],
     format: ['esm'],
     platform: 'neutral',
@@ -67,7 +77,14 @@ export default defineConfig({
       vue: true,
       tsconfig: './tsconfig.json',
     },
-    deps: { neverBundle: isExternal },
+    // `alwaysBundle` is load-bearing: `src/maplibre-worker.ts` re-exports
+    // MapLibre's worker so it can be emitted as a self-contained asset
+    // (dist/maplibre-worker.js) that the native `new URL(..., import.meta.url)`
+    // reference in `src/utils/maplibre-worker.ts` can load at runtime.
+    deps: {
+      neverBundle: isExternal,
+      alwaysBundle: [MAPLIBRE_WORKER_ENTRY],
+    },
     outDir: 'dist',
     outExtensions: () => ({ js: '.js' }),
     loader: { '.css': 'css' },
@@ -134,6 +151,18 @@ export default defineConfig({
     bracketSpacing: true,
     arrowParens: 'always',
     endOfLine: 'lf',
-    ignorePatterns: ['dist', 'node_modules', 'coverage'],
+    // oxfmt 0.68 stopped indenting `<script>` / `<style>` content in SFCs by
+    // default; keep the house style (and avoid a 12k-line reformat diff).
+    vueIndentScriptAndStyle: true,
+    // Release-please owns CHANGELOG/jsr and the root config excludes these too —
+    // `vp fmt` must not rewrite them (it does not read .oxfmtrc.jsonc).
+    ignorePatterns: [
+      'dist',
+      'node_modules',
+      'coverage',
+      '**/CHANGELOG.md',
+      '**/jsr.json',
+      '**/package.json',
+    ],
   },
 });
