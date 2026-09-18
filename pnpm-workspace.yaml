@@ -7,7 +7,7 @@ overrides:
   # unhead/dist/stream/iife.mjs that the Cloudflare preset build cannot parse,
   # aborting the CF Workers build (nuxt/nuxt#35670). Fixed in Unhead 3.2.0+;
   # keep the floor above 3.2.1 so the Cloudflare build always resolves a good copy.
-  unhead: '>=3.3.1'
+  unhead: '>=3.4.1'
   # docus -> @nuxtjs/mcp-toolkit + devframe pull h3@2.0.1-rc.x, which wins the
   # shamefully-hoist for bare `h3` imports. @nuxt/content + nuxt-llms nitro
   # handlers then mix h3 v1 events with v2 setHeader and every prerender route
@@ -18,8 +18,13 @@ overrides:
   # docus@5.11 pulls @nuxt/content@3.13.0 (no zod3 chunk -> defineCollection
   # throws via the zod3 placeholder), while @nuxt/ui pulls @nuxt/content@3.14.0.
   # Pinning to 3.14 + zod 4 makes every path use the zod4 chunk.
-  '@nuxt/content': ^3.15.2
-  zod: ^4.4.3
+  '@nuxt/content': ^3.16.0
+  zod: ^4.6.5
+  # A second @vue/* generation (3.5.41) survived the last dependency sweep
+  # inside @vue/test-utils' peer set. Two Vue runtimes in one SSR bundle lose
+  # Nuxt's async context: the prerenderer aborts every route with NUXT_E1001
+  # and ships no index.html. Keep the SSR renderer on `vue`'s line.
+  '@vue/server-renderer': ^3.5.43
 
 allowBuilds:
   '@mongodb-js/zstd': true
@@ -38,76 +43,76 @@ allowBuilds:
 # Requires pnpm v9.5+ (this repo pins pnpm v11).
 catalogs:
   default:
-    maplibre-gl: ^6.3.0
-    oxfmt: ^0.63.0
-    oxlint: ^1.78.0
+    maplibre-gl: ^6.10.0
+    oxfmt: ^0.68.0
+    oxlint: ^1.83.0
     typescript: ^6.0.3
-    vue: ^3.5.41
+    vue: ^3.5.43
 
   pkg:mapcn-vue:
     shadcn-vue: ^2.8.2
 
   app:docs:
-    '@comark/nuxt': ^0.6.2
+    '@comark/nuxt': ^0.7.0
     '@nuxtjs/plausible': ^4.0.0
-    agents: ^0.20.1
+    agents: ^0.23.0
     better-sqlite3: ^13.0.3
-    docus: ^5.12.3
+    docus: ^5.13.0
     nuxt: ^4.5.2
-    wrangler: ^4.120.0
+    wrangler: ^4.134.0
     # Required by docus → @nuxt/content collection schema generation.
     # CI fails on `nuxt prepare` without these because @nuxt/content 3.13.x
     # peer-requires zod (not bundled). Local installs sometimes resolve to
     # 3.14.x which sidesteps the requirement, but CI consistently pulls 3.13.x.
-    zod: ^4.4.3
+    zod: ^4.6.5
     zod-to-json-schema: ^3.25.2
 
   app:mapcn-vue:
     '@nuxt/schema': ^4.5.2
-    '@nuxtjs/robots': ^6.1.4
+    '@nuxtjs/robots': ^6.2.3
     '@openpanel/nuxt': ^0.4.1
     '@openpanel/sdk': ^1.3.1
-    '@nuxtjs/sitemap': ^8.3.4
+    '@nuxtjs/sitemap': ^8.5.1
     '@types/geojson': ^7946.0.16
-    maplibre-gl-wind: ^0.2.0
-    'nuxt-schema-org': ^6.2.9
-    '@deck.gl/aggregation-layers': ^9.3.9
-    '@deck.gl/core': ^9.3.9
-    '@deck.gl/geo-layers': ^9.3.9
-    '@deck.gl/layers': ^9.3.9
-    '@deck.gl/mapbox': ^9.3.9
-    '@deck.gl/mesh-layers': ^9.3.9
+    maplibre-gl-wind: ^0.2.1
+    'nuxt-schema-org': ^6.3.2
+    '@deck.gl/aggregation-layers': ^9.4.0
+    '@deck.gl/core': ^9.4.0
+    '@deck.gl/geo-layers': ^9.4.0
+    '@deck.gl/layers': ^9.4.0
+    '@deck.gl/mapbox': ^9.4.0
+    '@deck.gl/mesh-layers': ^9.4.0
     '@developmentseed/deck.gl-geotiff': ^0.7.0
     '@developmentseed/deck.gl-raster': ^0.7.0
     '@developmentseed/deck.gl-zarr': ^0.7.0
     '@developmentseed/geotiff': ^0.7.0
     '@developmentseed/proj': ^0.7.0
     apache-arrow: ^21.2.0
-    zarrita: ^0.7.4
+    zarrita: ^0.7.5
     lerc: ^4.2.0
-    '@geoql/maplibre-gl-starfield': ^0.1.1
-    '@geoql/maplibre-gl-snow': ^0.0.9
-    '@geoql/maplibre-gl-compare': ^0.0.3
-    '@sparkjsdev/spark': ^2.1.0
+    '@geoql/maplibre-gl-starfield': ^0.1.2
+    '@geoql/maplibre-gl-snow': ^0.0.10
+    '@geoql/maplibre-gl-compare': ^0.0.4
+    '@sparkjsdev/spark': ^2.2.0
     '@dvt3d/maplibre-three-plugin': ^1.7.1
-    '3d-tiles-renderer': ^0.5.1
-    '3d-tiles-rendererjs-3dgs-plugin': ^0.1.16
-    '@iconify-json/lucide': ^1.2.123
-    '@iconify-json/simple-icons': ^1.2.93
-    '@iconify-json/vscode-icons': ^1.2.70
-    '@loaders.gl/3d-tiles': ^4.4.4
-    '@loaders.gl/core': ^4.4.4
-    '@loaders.gl/gltf': ^4.4.4
-    '@luma.gl/core': ^9.3.6
-    '@luma.gl/engine': ^9.3.6
-    '@luma.gl/gltf': ^9.3.6
-    '@luma.gl/shadertools': ^9.3.6
+    '3d-tiles-renderer': ^0.5.2
+    '3d-tiles-rendererjs-3dgs-plugin': ^0.3.0
+    '@iconify-json/lucide': ^1.2.133
+    '@iconify-json/simple-icons': ^1.2.96
+    '@iconify-json/vscode-icons': ^1.2.77
+    '@loaders.gl/3d-tiles': ^4.5.1
+    '@loaders.gl/core': ^4.5.1
+    '@loaders.gl/gltf': ^4.5.1
+    '@luma.gl/core': ^9.4.1
+    '@luma.gl/engine': ^9.4.1
+    '@luma.gl/gltf': ^9.4.1
+    '@luma.gl/shadertools': ^9.4.1
     '@math.gl/core': ^4.1.0
     '@math.gl/types': ^4.1.0
     '@resvg/resvg-js': ^2.6.2
     '@resvg/resvg-wasm': ^2.6.2
-    '@nuxt/content': ^3.15.2
-    '@nuxt/icon': ^2.5.0
+    '@nuxt/content': ^3.16.0
+    '@nuxt/icon': ^2.5.1
     '@nuxt/fonts': ^0.14.0
     '@nuxtjs/color-mode': ^4.0.1
     '@nuxtjs/plausible': ^4.0.0
@@ -115,35 +120,35 @@ catalogs:
     '@nuxtjs/tailwindcss': 7.0.0-beta.1
     '@turf/turf': ^7.4.0
     '@rollup/plugin-inject': ^5.0.5
-    '@tanstack/vue-table': ^9.1.2
-    '@vueuse/core': ^14.4.0
-    '@vueuse/nuxt': ^14.4.0
+    '@tanstack/vue-table': ^9.2.4
+    '@vueuse/core': ^15.0.0
+    '@vueuse/nuxt': ^15.0.0
     better-sqlite3: ^13.0.3
     class-variance-authority: ^0.7.1
     clsx: ^2.1.1
     flatbush: ^4.6.2
-    jszip: ^3.10.1
+    jszip: ^3.10.2
     maplibre-gl-interpolate-heatmap: 0.1.3
-    maplibre-gl-lidar: ^0.16.2
-    motion-v: ^2.3.0
+    maplibre-gl-lidar: ^0.17.0
+    motion-v: ^2.4.4
     nuxt: ^4.5.2
     nuxt-llms: ^0.2.0
-    nuxt-og-image: ^6.7.6
+    nuxt-og-image: ^6.8.0
     nuxt-security: ^2.6.0
-    proj4: ^2.21.0
-    reka-ui: ^2.10.3
-    satori: ^0.29.0
+    proj4: ^2.22.0
+    reka-ui: ^2.10.4
+    satori: ^0.33.4
     shadcn-nuxt: ^2.8.2
     shiki: ^4.4.3
-    tailwind-merge: ^3.6.0
+    tailwind-merge: ^3.7.0
     tailwindcss: ^4.3.3
     tailwindcss-animate: ^1.0.7
-    three: ^0.185.1
+    three: ^0.186.0
     tw-animate-css: ^1.4.0
     vue-sonner: ^2.0.9
-    vue-tsc: ^3.3.9
-    wrangler: ^4.120.0
-    terra-draw: ^1.32.3
+    vue-tsc: ^3.3.11
+    wrangler: ^4.134.0
+    terra-draw: ^1.33.0
     terra-draw-maplibre-gl-adapter: ^1.4.1
     yoga-wasm-web: ^0.3.3
 
@@ -157,5 +162,6 @@ minimumReleaseAgeExclude:
   - '@vue/*'
 
 patchedDependencies:
-  '@sparkjsdev/spark@2.1.0': patches/@sparkjsdev__spark@2.1.0.patch
+  # @sparkjsdev/spark no longer needs a patch: 2.2.0 dropped its use of the
+  # deprecated THREE.Clock (the 2.1.0 patch only silenced the three r183+ warn).
   maplibre-gl-interpolate-heatmap@0.1.3: patches/maplibre-gl-interpolate-heatmap@0.1.3.patch
