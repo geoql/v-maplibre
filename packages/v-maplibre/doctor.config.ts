@@ -19,6 +19,11 @@ export default {
     // Vitest files stub globals themselves and run outside any auto-import
     // context, so explicit imports there are required, not slop.
     'test/**',
+    // Worker entry (geoql/v-maplibre#160): referenced only by the `pack.entry`
+    // list in vite.config.ts (a string path, not an import) and at runtime by
+    // the `new URL(...)` in src/utils/maplibre-worker-url.ts. No static import
+    // exists for the dead-code pass to follow, so it reads as an unused file.
+    'src/maplibre-worker.ts',
   ],
   rules: {
     // Library components deliberately use manual MapLibre lifecycle management
