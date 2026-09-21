@@ -46,7 +46,7 @@ catalogs:
     maplibre-gl: ^6.10.0
     oxfmt: ^0.68.0
     oxlint: ^1.83.0
-    typescript: ^6.0.3
+    typescript: ^7.0.2
     vue: ^3.5.43
 
   pkg:mapcn-vue:
