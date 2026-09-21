@@ -102,7 +102,7 @@
     "pmtiles": "^4.5.0"
   },
   "devDependencies": {
-    "3d-tiles-renderer": "^0.5.2",
+    "3d-tiles-renderer": "^0.5.3",
     "3d-tiles-rendererjs-3dgs-plugin": "^0.3.0",
     "@deck.gl/aggregation-layers": "^9.4.0",
     "@deck.gl/core": "^9.4.0",
@@ -134,7 +134,7 @@
     "three": "^0.186.0",
     "typescript": "^6.0.3",
     "unplugin-vue": "^8.0.0",
-    "vite-plus": "^0.3.2",
+    "vite-plus": "^0.3.3",
     "vue": "^3.5.43",
     "vue-tsc": "^3.3.11",
     "zarrita": "^0.7.5"

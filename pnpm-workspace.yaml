@@ -95,7 +95,7 @@ catalogs:
     '@geoql/maplibre-gl-compare': ^0.0.4
     '@sparkjsdev/spark': ^2.2.0
     '@dvt3d/maplibre-three-plugin': ^1.7.1
-    '3d-tiles-renderer': ^0.5.2
+    '3d-tiles-renderer': ^0.5.3
     '3d-tiles-rendererjs-3dgs-plugin': ^0.3.0
     '@iconify-json/lucide': ^1.2.133
     '@iconify-json/simple-icons': ^1.2.96
@@ -148,7 +148,7 @@ catalogs:
     vue-sonner: ^2.0.9
     vue-tsc: ^3.3.11
     wrangler: ^4.134.0
-    terra-draw: ^1.33.0
+    terra-draw: ^1.34.0
     terra-draw-maplibre-gl-adapter: ^1.4.1
     yoga-wasm-web: ^0.3.3
 
