@@ -132,7 +132,7 @@
     "maplibre-gl-lidar": "^0.17.0",
     "maplibre-gl-wind": "^0.2.1",
     "three": "^0.186.0",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "unplugin-vue": "^8.0.0",
     "vite-plus": "^0.3.2",
     "vue": "^3.5.43",
