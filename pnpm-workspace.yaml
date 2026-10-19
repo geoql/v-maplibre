@@ -141,7 +141,7 @@ catalogs:
     nuxt-security: ^2.6.0
     proj4: ^2.22.0
     reka-ui: ^2.11.0
-    satori: ^0.47.1
+    satori: ^0.62.0
     shadcn-nuxt: ^2.8.2
     shiki: ^4.5.0
     tailwind-merge: ^3.7.0
