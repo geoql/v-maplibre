@@ -1,5 +1,34 @@
 # Changelog
 
+## [3.1.0](https://github.com/geoql/v-maplibre/compare/v3.0.1...v3.1.0) (2026-10-21)
+
+
+### Features
+
+* **v-maplibre:** concurrencyLimiter prop and error event on COG layers ([d6b4af8](https://github.com/geoql/v-maplibre/commit/d6b4af87a7c17c43a927487c523bb1e24ff8e71b))
+* **v-maplibre:** expose maplibre-gl-lidar 0.18-0.21 features on VControlLidar ([c9fcc6a](https://github.com/geoql/v-maplibre/commit/c9fcc6a25b47938b888f771f5564eaee25193078))
+* **v-maplibre:** reactive globalState and dragRotate props on VMap ([e373a3c](https://github.com/geoql/v-maplibre/commit/e373a3c221f3d44a0f4584b9130b692762876c7b))
+
+
+### Bug Fixes
+
+* **deps:** bump @sparkjsdev/spark to 2.4.0 ([35184de](https://github.com/geoql/v-maplibre/commit/35184de035dc395e4c124d13e0f2c506287b9ebf))
+* **lidar:** release the LiDAR control's GPU context and cancel loads on unmount ([eaf827e](https://github.com/geoql/v-maplibre/commit/eaf827eccf719b327fd5ecc903fdcb04892c4e3d))
+* **v-maplibre:** draw 3D-tiles splat content with Gaussian Splat Lite ([693df96](https://github.com/geoql/v-maplibre/commit/693df96367bbe87e338420d5a2d7bc14cdb2d09f))
+* **v-maplibre:** load the Draco decoder from three, not a CDN ([8bef8a6](https://github.com/geoql/v-maplibre/commit/8bef8a6b52336cbac6e1420d33772e387108a481))
+* **v-maplibre:** release each map's WebGL context on unmount ([437be12](https://github.com/geoql/v-maplibre/commit/437be12c4790871426219332ea79d4378553215e))
+* **v-maplibre:** wait for the style before layers change it ([ecd2e1f](https://github.com/geoql/v-maplibre/commit/ecd2e1f87d27d73f2d586a0256b2dee7741218e7))
+
+
+### Performance Improvements
+
+* **v-maplibre:** render splat and 3D-tiles scenes on demand ([7093862](https://github.com/geoql/v-maplibre/commit/70938629ea58c4e288bf94944f0b87c6b1eed152))
+
+
+### Miscellaneous
+
+* **deps:** upgrade all dependencies and migrate to vite-plus 1.3 ([3ae472e](https://github.com/geoql/v-maplibre/commit/3ae472e4c3e53519ed38783d866b4ee9a12b60f3))
+
 ## [3.0.1](https://github.com/geoql/v-maplibre/compare/v3.0.0...v3.0.1) (2026-09-18)
 
 
