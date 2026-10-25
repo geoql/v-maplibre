@@ -66,9 +66,9 @@
 <template>
   <VLayerWindParticle
     v-bind="props"
-    @click="(info) => emit('click', info)"
-    @hover="(info) => emit('hover', info)"
+    @click="(info: PickingInfo) => emit('click', info)"
+    @hover="(info: PickingInfo) => emit('hover', info)"
     @loaded="emit('loaded')"
-    @error="(err) => emit('error', err)"
+    @error="(err: Error) => emit('error', err)"
   ></VLayerWindParticle>
 </template>

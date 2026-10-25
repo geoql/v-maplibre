@@ -19,7 +19,7 @@
 <template>
   <VLayerDeckglH3Hexagon
     v-bind="props"
-    @click="(info) => emit('click', info)"
-    @hover="(info) => emit('hover', info)"
+    @click="(info: PickingInfo) => emit('click', info)"
+    @hover="(info: PickingInfo) => emit('hover', info)"
   ></VLayerDeckglH3Hexagon>
 </template>

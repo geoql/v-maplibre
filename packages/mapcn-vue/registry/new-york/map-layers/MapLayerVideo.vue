@@ -1,4 +1,5 @@
 <script setup lang="ts">
+  import { computed } from 'vue';
   import { VLayerMaplibreVideo } from '@geoql/v-maplibre';
   import type {
     VideoSourceSpecification,
@@ -13,13 +14,23 @@
   }
 
   const props = defineProps<MapLayerVideoProps>();
+
+  // Source and layer ids derive from `id`, so two instances never collide.
+  const sourceId = computed(() => `${props.id}-source`);
+  const layerSpec = computed<RasterLayerSpecification>(() => ({
+    ...props.layer,
+    id: props.id,
+    type: 'raster',
+    source: sourceId.value,
+  }));
 </script>
 
 <template>
   <VLayerMaplibreVideo
-    :id="props.id"
+    :source-id="sourceId"
+    :layer-id="props.id"
     :source="props.source"
-    :layer="props.layer"
+    :layer="layerSpec"
     :before="props.before"
   ></VLayerMaplibreVideo>
 </template>

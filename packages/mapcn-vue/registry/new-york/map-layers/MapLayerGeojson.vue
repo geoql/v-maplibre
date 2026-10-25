@@ -1,35 +1,66 @@
 <script setup lang="ts">
+  import { computed } from 'vue';
   import { VLayerMaplibreGeojson } from '@geoql/v-maplibre';
+  import type { Feature } from 'geojson';
   import type {
     GeoJSONSourceSpecification,
     LayerSpecification,
-    MapLayerMouseEvent,
   } from 'maplibre-gl';
+
+  // Layer types that read from a GeoJSON source.
+  type GeojsonLayerSpecification = Extract<
+    LayerSpecification,
+    {
+      type:
+        | 'fill'
+        | 'line'
+        | 'symbol'
+        | 'circle'
+        | 'heatmap'
+        | 'fill-extrusion';
+    }
+  >;
+  // `id` and `source` are set by this component, per layer type.
+  type GeojsonLayerInput = GeojsonLayerSpecification extends infer L
+    ? L extends GeojsonLayerSpecification
+      ? Omit<L, 'id' | 'source'>
+      : never
+    : never;
+
+  export interface MapLayerGeojsonClickEvent {
+    features: Feature[];
+    coordinates: { lng: number; lat: number };
+  }
 
   export interface MapLayerGeojsonProps {
     id: string;
     source: GeoJSONSourceSpecification;
-    layer: Omit<LayerSpecification, 'id' | 'source'>;
+    layer: GeojsonLayerInput;
     before?: string;
   }
 
   const props = defineProps<MapLayerGeojsonProps>();
 
   const emit = defineEmits<{
-    click: [e: MapLayerMouseEvent];
-    mouseenter: [e: MapLayerMouseEvent];
-    mouseleave: [e: MapLayerMouseEvent];
+    click: [event: MapLayerGeojsonClickEvent];
   }>();
+
+  // Source and layer ids derive from `id`, so two instances never collide.
+  const sourceId = computed(() => `${props.id}-source`);
+  const layerSpec = computed<GeojsonLayerSpecification>(() => ({
+    ...props.layer,
+    id: props.id,
+    source: sourceId.value,
+  }));
 </script>
 
 <template>
   <VLayerMaplibreGeojson
-    :id="props.id"
+    :source-id="sourceId"
+    :layer-id="props.id"
     :source="props.source"
-    :layer="props.layer"
+    :layer="layerSpec"
     :before="props.before"
-    @click="(e) => emit('click', e)"
-    @mouseenter="(e) => emit('mouseenter', e)"
-    @mouseleave="(e) => emit('mouseleave', e)"
+    @on-click="(event) => emit('click', event)"
   ></VLayerMaplibreGeojson>
 </template>

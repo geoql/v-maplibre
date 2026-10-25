@@ -40,8 +40,8 @@
   <VControlGeolocate
     v-if="props.showGeolocate"
     :position="props.position"
-    @geolocate="(e) => emit('geolocate', e)"
-    @error="(e) => emit('geolocateError', e)"
+    @geolocate="(e: GeolocationPosition) => emit('geolocate', e)"
+    @error="(e: GeolocationPositionError) => emit('geolocateError', e)"
   ></VControlGeolocate>
   <VControlFullscreen
     v-if="props.showFullscreen"

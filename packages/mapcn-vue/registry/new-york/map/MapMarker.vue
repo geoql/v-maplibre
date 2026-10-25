@@ -27,11 +27,15 @@
     scale: 1,
   });
 
+  interface MarkerDragEvent {
+    lngLat: { lng: number; lat: number };
+  }
+
   const emit = defineEmits<{
     click: [e: MouseEvent];
-    dragstart: [e: { lngLat: { lng: number; lat: number } }];
-    drag: [e: { lngLat: { lng: number; lat: number } }];
-    dragend: [e: { lngLat: { lng: number; lat: number } }];
+    dragstart: [e: MarkerDragEvent];
+    drag: [e: MarkerDragEvent];
+    dragend: [e: MarkerDragEvent];
   }>();
 </script>
 
@@ -45,9 +49,9 @@
     :scale="props.scale"
     :class="props.class"
     @click="(e: MouseEvent) => emit('click', e)"
-    @dragstart="(e) => emit('dragstart', e)"
-    @drag="(e) => emit('drag', e)"
-    @dragend="(e) => emit('dragend', e)"
+    @dragstart="(e: MarkerDragEvent) => emit('dragstart', e)"
+    @drag="(e: MarkerDragEvent) => emit('drag', e)"
+    @dragend="(e: MarkerDragEvent) => emit('dragend', e)"
   >
     <slot></slot>
   </VMarker>

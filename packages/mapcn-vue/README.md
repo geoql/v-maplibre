@@ -46,7 +46,7 @@ MapLibre native layer components.
 - `MapLayerVector` - Vector tiles
 - `MapLayerRaster` - Raster tiles
 - `MapLayerCluster` - Clustered points
-- `MapLayerPmtiles` - PMTiles
+- `MapLayerPmtiles` - Raster PMTiles
 - `MapLayerImage` - Georeferenced images
 - `MapLayerVideo` - Video overlays
 - `MapLayerCanvas` - Custom canvas

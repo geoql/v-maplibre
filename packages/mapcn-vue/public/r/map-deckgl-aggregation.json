@@ -20,7 +20,7 @@
     },
     {
       "path": "registry/new-york/map-deckgl-aggregation/MapLayerGrid.vue",
-      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglGrid } from '@geoql/v-maplibre/deck.gl';\n  import type { GridLayerProps } from '@deck.gl/aggregation-layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerGridProps extends Partial<GridLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerGridProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglGrid\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglGrid>\n</template>\n",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglGrid } from '@geoql/v-maplibre/deck.gl';\n  import type { GridLayerProps } from '@deck.gl/aggregation-layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerGridProps extends Partial<GridLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerGridProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglGrid\n    v-bind=\"props\"\n    @click=\"(info: PickingInfo) => emit('click', info)\"\n    @hover=\"(info: PickingInfo) => emit('hover', info)\"\n  ></VLayerDeckglGrid>\n</template>\n",
       "type": "registry:ui",
       "target": "components/ui/map-deckgl-aggregation/MapLayerGrid.vue"
     },
@@ -32,7 +32,7 @@
     },
     {
       "path": "registry/new-york/map-deckgl-aggregation/MapLayerHexagon.vue",
-      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglHexagon } from '@geoql/v-maplibre/deck.gl';\n  import type { HexagonLayerProps } from '@deck.gl/aggregation-layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerHexagonProps extends Partial<HexagonLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerHexagonProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglHexagon\n    v-bind=\"props\"\n    @click=\"(info) => emit('click', info)\"\n    @hover=\"(info) => emit('hover', info)\"\n  ></VLayerDeckglHexagon>\n</template>\n",
+      "content": "<script setup lang=\"ts\">\n  import { VLayerDeckglHexagon } from '@geoql/v-maplibre/deck.gl';\n  import type { HexagonLayerProps } from '@deck.gl/aggregation-layers';\n  import type { PickingInfo } from '@deck.gl/core';\n\n  export interface MapLayerHexagonProps extends Partial<HexagonLayerProps> {\n    id: string;\n    data: unknown[] | string;\n  }\n\n  const props = defineProps<MapLayerHexagonProps>();\n\n  const emit = defineEmits<{\n    click: [info: PickingInfo];\n    hover: [info: PickingInfo];\n  }>();\n</script>\n\n<template>\n  <VLayerDeckglHexagon\n    v-bind=\"props\"\n    @click=\"(info: PickingInfo) => emit('click', info)\"\n    @hover=\"(info: PickingInfo) => emit('hover', info)\"\n  ></VLayerDeckglHexagon>\n</template>\n",
       "type": "registry:ui",
       "target": "components/ui/map-deckgl-aggregation/MapLayerHexagon.vue"
     },

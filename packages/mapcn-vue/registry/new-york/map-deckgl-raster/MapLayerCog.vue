@@ -34,28 +34,30 @@
     debugOpacity: 0.25,
   });
 
+  interface GeotiffLoadOptions {
+    geographicBounds: {
+      west: number;
+      south: number;
+      east: number;
+      north: number;
+    };
+  }
+
   const emit = defineEmits<{
     click: [info: PickingInfo];
     hover: [info: PickingInfo];
-    geotiffLoad: [
-      tiff: unknown,
-      options: {
-        geographicBounds: {
-          west: number;
-          south: number;
-          east: number;
-          north: number;
-        };
-      },
-    ];
+    geotiffLoad: [tiff: unknown, options: GeotiffLoadOptions];
   }>();
 </script>
 
 <template>
   <VLayerCog
     v-bind="props"
-    @click="(info) => emit('click', info)"
-    @hover="(info) => emit('hover', info)"
-    @geotiff-load="(tiff, options) => emit('geotiffLoad', tiff, options)"
+    @click="(info: PickingInfo) => emit('click', info)"
+    @hover="(info: PickingInfo) => emit('hover', info)"
+    @geotiff-load="
+      (tiff: unknown, options: GeotiffLoadOptions) =>
+        emit('geotiffLoad', tiff, options)
+    "
   ></VLayerCog>
 </template>

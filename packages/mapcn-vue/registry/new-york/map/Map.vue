@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { VMap } from '@geoql/v-maplibre';
   import { useColorMode } from '@vueuse/core';
-  import { computed, type StyleValue } from 'vue';
+  import { computed, useId, type StyleValue } from 'vue';
   import type {
     Map as MaplibreMap,
     MapMouseEvent,
@@ -40,7 +40,13 @@
     zoom: [e: MapMouseEvent];
   }>();
 
-  const { isDark } = useColorMode();
+  // `useColorMode` returns a Ref of the selected mode ('light' | 'dark' |
+  // 'auto'); `state` resolves 'auto' to the system preference.
+  const colorMode = useColorMode();
+  const isDark = computed(() => colorMode.state.value === 'dark');
+
+  // MapLibre needs a container; VMap renders a div with this id.
+  const containerId = `map-${useId()}`;
 
   const defaultStyles = {
     light: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json',
@@ -65,6 +71,7 @@
     minZoom: props.minZoom,
     maxZoom: props.maxZoom,
     ...props.options,
+    container: props.options?.container ?? containerId,
   }));
 
   function handleLoad(map: MaplibreMap) {

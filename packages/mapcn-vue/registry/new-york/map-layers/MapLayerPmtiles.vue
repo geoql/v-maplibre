@@ -1,31 +1,33 @@
 <script setup lang="ts">
+  import { computed } from 'vue';
   import { VLayerMaplibrePmtile } from '@geoql/v-maplibre';
-  import type { LayerSpecification, MapLayerMouseEvent } from 'maplibre-gl';
+  import type { RasterLayerSpecification } from 'maplibre-gl';
 
   export interface MapLayerPmtilesProps {
     id: string;
     url: string;
-    layer: Omit<LayerSpecification, 'id' | 'source'>;
+    layer?: Partial<Omit<RasterLayerSpecification, 'id' | 'source' | 'type'>>;
     before?: string;
   }
 
   const props = defineProps<MapLayerPmtilesProps>();
 
-  const emit = defineEmits<{
-    click: [e: MapLayerMouseEvent];
-    mouseenter: [e: MapLayerMouseEvent];
-    mouseleave: [e: MapLayerMouseEvent];
-  }>();
+  // Source and layer ids derive from `id`, so two instances never collide.
+  const sourceId = computed(() => `${props.id}-source`);
+  const layerSpec = computed<RasterLayerSpecification>(() => ({
+    ...props.layer,
+    id: props.id,
+    type: 'raster',
+    source: sourceId.value,
+  }));
 </script>
 
 <template>
   <VLayerMaplibrePmtile
-    :id="props.id"
+    :source-id="sourceId"
+    :layer-id="props.id"
     :url="props.url"
-    :layer="props.layer"
+    :layer="layerSpec"
     :before="props.before"
-    @click="(e) => emit('click', e)"
-    @mouseenter="(e) => emit('mouseenter', e)"
-    @mouseleave="(e) => emit('mouseleave', e)"
   ></VLayerMaplibrePmtile>
 </template>
