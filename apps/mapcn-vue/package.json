@@ -15,11 +15,10 @@
     "lint:fix": "vp lint --fix",
     "format": "vp fmt --write .",
     "format:check": "vp fmt --check .",
-    "test": "vp test run tests"
+    "test": "vp test run tests",
+    "typecheck": "nuxt typecheck"
   },
   "dependencies": {
-    "3d-tiles-renderer": "catalog:app:mapcn-vue",
-    "3d-tiles-rendererjs-3dgs-plugin": "catalog:app:mapcn-vue",
     "@deck.gl/aggregation-layers": "catalog:app:mapcn-vue",
     "@deck.gl/core": "catalog:app:mapcn-vue",
     "@deck.gl/geo-layers": "catalog:app:mapcn-vue",
@@ -59,6 +58,8 @@
     "@turf/turf": "catalog:app:mapcn-vue",
     "@vueuse/core": "catalog:app:mapcn-vue",
     "@vueuse/nuxt": "catalog:app:mapcn-vue",
+    "3d-tiles-renderer": "catalog:app:mapcn-vue",
+    "3d-tiles-rendererjs-3dgs-plugin": "catalog:app:mapcn-vue",
     "apache-arrow": "catalog:app:mapcn-vue",
     "class-variance-authority": "catalog:app:mapcn-vue",
     "clsx": "catalog:app:mapcn-vue",
@@ -98,6 +99,7 @@
     "@nuxtjs/color-mode": "catalog:app:mapcn-vue",
     "@nuxtjs/tailwindcss": "catalog:app:mapcn-vue",
     "@rollup/plugin-inject": "catalog:app:mapcn-vue",
+    "@types/better-sqlite3": "catalog:app:mapcn-vue",
     "@types/geojson": "catalog:app:mapcn-vue",
     "better-sqlite3": "catalog:app:mapcn-vue",
     "jszip": "catalog:app:mapcn-vue",
@@ -106,7 +108,7 @@
     "typescript": "catalog:default",
     "vite-plus": "catalog:",
     "vue": "catalog:default",
-    "vue-tsc": "catalog:app:mapcn-vue",
+    "vue-tsc": "catalog:",
     "wrangler": "catalog:app:mapcn-vue"
   }
 }

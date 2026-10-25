@@ -9,10 +9,12 @@
     "lint": "vp lint",
     "lint:fix": "vp lint --fix",
     "postinstall": "nuxt prepare",
-    "test": "vp test run tests"
+    "test": "vp test run tests",
+    "typecheck": "nuxt typecheck"
   },
   "dependencies": {
     "@comark/nuxt": "catalog:app:docs",
+    "@nuxt/content": "catalog:app:docs",
     "@nuxt/scripts": "catalog:app:docs",
     "@openpanel/nuxt": "catalog:app:docs",
     "better-sqlite3": "catalog:app:docs",
@@ -24,6 +26,7 @@
   "devDependencies": {
     "agents": "catalog:app:docs",
     "vite-plus": "catalog:",
+    "vue-tsc": "catalog:",
     "wrangler": "catalog:app:docs"
   }
 }

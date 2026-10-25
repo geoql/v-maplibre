@@ -23,6 +23,7 @@
     "lint": "pnpm -r run lint",
     "format": "vp fmt --write .",
     "format:check": "vp fmt --check .",
+    "typecheck": "pnpm --filter @geoql/v-maplibre run build && pnpm -r run typecheck",
     "test": "pnpm --filter @geoql/v-maplibre run test && pnpm run test:apps",
     "test:apps": "pnpm --filter @geoql/mapcn-vue-app --filter @geoql/v-maplibre-docs run test",
     "test:coverage": "pnpm --filter @geoql/v-maplibre run test:coverage",
@@ -41,15 +42,11 @@
     "zod": "^4.6.7",
     "zod-to-json-schema": "^3.25.2"
   },
-  "packageManager": "pnpm@12.14.0+sha512.c18ba6d87993d3d164cb5e8948f32b2c06ee854487e06cd8d86781342fb3e5bb4634367034711e86802baa9c37bea906ce1929ad08d70884c97d801df13389a6",
+  "packageManager": "pnpm@12.15.0+sha512.b3951d6d6ff4a9f13dc7cf56cd28d2b8eb37dbcc9c68e52e1e1191873ea9f82a017287ab50baadc5ccc494f036c67c0e47eb13608c2fa36f47711b61ea128e61",
   "devEngines": {
     "runtime": {
       "name": "node",
-      "version": ">=26.12.0"
+      "version": ">=26.x"
     }
-  },
-  "engines": {
-    "node": ">=24",
-    "pnpm": ">=11"
   }
 }

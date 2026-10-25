@@ -21,7 +21,6 @@ export default defineConfig({
       '*.min.js',
       '*.min.css',
       'pnpm-lock.yaml',
-      'bun.lock',
       'apps/docs',
       '**/CHANGELOG.md',
       '**/jsr.json',
