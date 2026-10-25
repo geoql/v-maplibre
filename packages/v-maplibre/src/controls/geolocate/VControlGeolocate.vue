@@ -41,11 +41,15 @@
   });
 
   const addControl = (): void => {
+    const mapInstance = map.value;
+    if (!mapInstance) return;
     const control = new GeolocateControl(props.options || defaultOptions);
-    map.value!.addControl(control, props.position);
+    mapInstance.addControl(control, props.position);
+    // Forward each event with its payload: the position for `geolocate`,
+    // the GeolocationPositionError for `error`, the event for the rest.
     events.forEach((event) => {
-      control.on(event, () => {
-        emit(event);
+      control.on(event, (payload) => {
+        emit(event, payload);
       });
     });
   };
