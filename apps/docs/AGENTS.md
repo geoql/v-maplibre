@@ -178,7 +178,7 @@ This is a documentation site. Do NOT create custom Vue components. All content s
 | **Content** | @nuxt/content v3 |
 | **Database** | Cloudflare D1 (for content) |
 | **Hosting** | Cloudflare Pages |
-| **Analytics** | Plausible Analytics |
+| **Analytics** | Plausible + OpenPanel + GA4 via `useAnalytics()` (`app/composables/use-analytics.ts`) |
 
 ---
 
@@ -226,7 +226,8 @@ export default defineNuxtConfig({
   extends: ['docus'],
 
   modules: [
-    ['@nuxtjs/plausible', { /* analytics config */ }],
+    '@nuxt/scripts', // GA4 (Plausible loads from app/plugins/plausible.client.ts)
+    '@openpanel/nuxt',
   ],
 
   site: {
