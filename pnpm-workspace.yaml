@@ -64,7 +64,8 @@ catalogs:
 
   app:docs:
     '@comark/nuxt': ^0.7.0
-    '@nuxtjs/plausible': ^4.0.0
+    '@nuxt/scripts': ^1.3.12
+    '@openpanel/nuxt': ^0.4.2
     agents: ^0.28.1
     better-sqlite3: ^13.0.3
     docus: ^5.15.0
@@ -80,7 +81,8 @@ catalogs:
   app:mapcn-vue:
     '@nuxt/schema': ^4.6.2
     '@nuxtjs/robots': ^7.0.2
-    '@openpanel/nuxt': ^0.4.1
+    '@nuxt/scripts': ^1.3.12
+    '@openpanel/nuxt': ^0.4.2
     '@openpanel/sdk': ^1.3.1
     '@nuxtjs/sitemap': ^9.1.0
     '@types/geojson': ^7946.0.16
@@ -130,7 +132,6 @@ catalogs:
     '@nuxt/icon': ^2.5.1
     '@nuxt/fonts': ^1.0.1
     '@nuxtjs/color-mode': ^4.0.1
-    '@nuxtjs/plausible': ^4.0.0
     # Pinned: only 7.x supports Tailwind v4. Do NOT bump to 6.x.
     '@nuxtjs/tailwindcss': 7.0.0-beta.1
     '@turf/turf': ^7.4.0

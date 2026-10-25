@@ -8,10 +8,13 @@
     "preview": "nuxt preview",
     "lint": "vp lint",
     "lint:fix": "vp lint --fix",
-    "postinstall": "nuxt prepare"
+    "postinstall": "nuxt prepare",
+    "test": "vp test run tests"
   },
   "dependencies": {
     "@comark/nuxt": "catalog:app:docs",
+    "@nuxt/scripts": "catalog:app:docs",
+    "@openpanel/nuxt": "catalog:app:docs",
     "better-sqlite3": "catalog:app:docs",
     "docus": "catalog:app:docs",
     "nuxt": "catalog:app:docs",
@@ -19,7 +22,6 @@
     "zod-to-json-schema": "catalog:app:docs"
   },
   "devDependencies": {
-    "@nuxtjs/plausible": "catalog:app:docs",
     "agents": "catalog:app:docs",
     "vite-plus": "catalog:",
     "wrangler": "catalog:app:docs"

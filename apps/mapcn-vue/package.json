@@ -14,9 +14,12 @@
     "lint": "vp lint",
     "lint:fix": "vp lint --fix",
     "format": "vp fmt --write .",
-    "format:check": "vp fmt --check ."
+    "format:check": "vp fmt --check .",
+    "test": "vp test run tests"
   },
   "dependencies": {
+    "3d-tiles-renderer": "catalog:app:mapcn-vue",
+    "3d-tiles-rendererjs-3dgs-plugin": "catalog:app:mapcn-vue",
     "@deck.gl/aggregation-layers": "catalog:app:mapcn-vue",
     "@deck.gl/core": "catalog:app:mapcn-vue",
     "@deck.gl/geo-layers": "catalog:app:mapcn-vue",
@@ -44,7 +47,7 @@
     "@math.gl/core": "catalog:app:mapcn-vue",
     "@math.gl/types": "catalog:app:mapcn-vue",
     "@nuxt/schema": "catalog:app:mapcn-vue",
-    "@nuxtjs/plausible": "catalog:app:mapcn-vue",
+    "@nuxt/scripts": "catalog:app:mapcn-vue",
     "@nuxtjs/robots": "catalog:app:mapcn-vue",
     "@nuxtjs/sitemap": "catalog:app:mapcn-vue",
     "@openpanel/nuxt": "catalog:app:mapcn-vue",
@@ -56,8 +59,6 @@
     "@turf/turf": "catalog:app:mapcn-vue",
     "@vueuse/core": "catalog:app:mapcn-vue",
     "@vueuse/nuxt": "catalog:app:mapcn-vue",
-    "3d-tiles-renderer": "catalog:app:mapcn-vue",
-    "3d-tiles-rendererjs-3dgs-plugin": "catalog:app:mapcn-vue",
     "apache-arrow": "catalog:app:mapcn-vue",
     "class-variance-authority": "catalog:app:mapcn-vue",
     "clsx": "catalog:app:mapcn-vue",
