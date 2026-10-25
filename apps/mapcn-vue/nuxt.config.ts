@@ -1,5 +1,9 @@
 import libraryPkg from '../../packages/v-maplibre/package.json' with { type: 'json' };
 
+// Public analytics IDs for mapcn-vue.geoql.in (they ship in the HTML, so
+// they are not secrets). Every one is overridable with its NUXT_PUBLIC_* env.
+const OPENPANEL_CLIENT_ID = '7abde857-674c-4614-b1d0-94c432caea3d';
+
 // Bump alongside packages/v-maplibre version. Source: GitHub release date for the matching tag.
 const LIBRARY_RELEASED_AT = '2026-06-10T16:13:11Z';
 
@@ -19,25 +23,23 @@ export default defineNuxtConfig({
     'nuxt-llms',
     'nuxt-security',
     '@nuxtjs/tailwindcss',
-    [
-      '@nuxtjs/plausible',
-      {
-        domain: 'mapcn-vue.geoql.in',
-        apiHost: 'https://analytics.geoql.in',
-        autoOutboundTracking: true,
-      },
-    ],
-    // OpenPanel product analytics (self-hosted at events.geoql.in), alongside
-    // Plausible. The module bundles the SDK into the app's own nonce'd module
-    // script (no external op1.js), so only connect-src needs events.geoql.in
-    // for the /track POST. The module copies every option below into
+    // GA4 through useScriptGoogleAnalytics (plugins/google-analytics.client.ts).
+    // Plausible loads from plugins/plausible.client.ts, not a module: the
+    // pa-*.js tracker needs the official init snippet, which neither
+    // @nuxtjs/plausible nor the @nuxt/scripts Plausible helper runs.
+    '@nuxt/scripts',
+    // OpenPanel product analytics (self-hosted at events.geoql.in). The
+    // module bundles the SDK into the app's own nonce'd module script (no
+    // external op1.js), so only connect-src needs events.geoql.in for the
+    // /track POST. The module copies every option below into
     // runtimeConfig.public (browser-exposed), so clientSecret is absent here —
     // it lives in the private runtimeConfig.openpanel block.
     '@openpanel/nuxt',
   ],
 
   openpanel: {
-    clientId: process.env.NUXT_PUBLIC_OPENPANEL_CLIENT_ID ?? '',
+    clientId:
+      process.env.NUXT_PUBLIC_OPENPANEL_CLIENT_ID ?? OPENPANEL_CLIENT_ID,
     apiUrl: 'https://events.geoql.in/api',
     trackScreenViews: true,
     trackOutgoingLinks: true,
@@ -129,10 +131,17 @@ export default defineNuxtConfig({
     // Server-only: never exposed to the client bundle. Used by
     // server/utils/openpanel.ts to authenticate server-side track calls.
     openpanel: {
-      clientId: process.env.NUXT_PUBLIC_OPENPANEL_CLIENT_ID ?? '',
+      clientId:
+        process.env.NUXT_PUBLIC_OPENPANEL_CLIENT_ID ?? OPENPANEL_CLIENT_ID,
       clientSecret: process.env.NUXT_OPENPANEL_CLIENT_SECRET ?? '',
     },
     public: {
+      // GA4 measurement ID (NUXT_PUBLIC_GTAG_ID).
+      gtagId: 'G-2C6H86DE9L',
+      // Plausible: script ID + self-hosted instance
+      // (NUXT_PUBLIC_PLAUSIBLE_SCRIPT_ID / NUXT_PUBLIC_PLAUSIBLE_API_HOST).
+      plausibleScriptId: 'pa-wI9F0Bm70vHg3ZGe2R6Ye',
+      plausibleApiHost: 'https://analytics.geoql.in',
       mapsguruApiKey:
         'mapx_xjfRpEuggdoqFSUQxgCpGHWSETwokQlHykEprhbPwwiOTaXdeGlqsGsxXldXhLFA',
       // Free-tier OpenWeatherMap key powering the wind + interpolate-heatmap
@@ -275,8 +284,12 @@ export default defineNuxtConfig({
       contentSecurityPolicy: {
         'base-uri': ["'none'"],
         // Map tiles (maps.guru, cartocdn), demo APIs (valhalla, overpass,
-        // source.coop COGs), OpenPanel (events.geoql.in) + Plausible
-        // (analytics.geoql.in) event POSTs. blob:/data: for Arrow/COG loaders
+        // source.coop COGs), OpenPanel (events.geoql.in), Plausible
+        // (analytics.geoql.in) and GA4 (*.google-analytics.com,
+        // *.analytics.google.com) event POSTs. The tracker scripts
+        // (analytics.geoql.in/js/pa-*.js, www.googletagmanager.com/gtag/js)
+        // are injected by nonce'd app code, so script-src 'strict-dynamic'
+        // admits them; 'https:' covers browsers without strict-dynamic. blob:/data: for Arrow/COG loaders
         // reading object URLs.
         'connect-src': ["'self'", 'https:', 'data:', 'blob:'],
         'font-src': ["'self'", 'https:', 'data:'],

@@ -37,6 +37,16 @@
   const { copy, copied } = useClipboard({
     source: 'npx shadcn-vue@latest add https://mapcn-vue.geoql.in/r/map',
   });
+  const { track } = useAnalytics();
+
+  function copyInstallCommand() {
+    copy();
+    track('install_command_copied', {
+      location: 'hero',
+      registry: 'map',
+      packageManager: 'npm',
+    });
+  }
 </script>
 
 <template>
@@ -115,7 +125,7 @@
 
           <button
             class="mt-8 inline-flex max-w-full items-center gap-3 rounded-md border border-border bg-card px-4 py-3 font-mono text-xs transition-colors hover:bg-muted sm:text-note"
-            @click="copy()"
+            @click="copyInstallCommand"
           >
             <span class="text-primary">$</span>
             <code class="truncate text-foreground"

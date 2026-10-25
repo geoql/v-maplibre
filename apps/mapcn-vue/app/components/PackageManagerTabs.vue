@@ -1,5 +1,6 @@
 <script setup lang="ts">
   import { useClipboard } from '@vueuse/core';
+  import type { PackageManagerId } from '~/types/analytics';
   import type { PackageManager } from '~/types/examples';
 
   const props = defineProps<{
@@ -13,7 +14,7 @@
     { id: 'bun', label: 'bun', prefix: 'bunx --bun' },
   ];
 
-  const selected = ref('npm');
+  const selected = ref<PackageManagerId>('npm');
 
   const installCommand = computed(() => {
     const mgr = managers.find((m) => m.id === selected.value);
@@ -22,6 +23,16 @@
   });
 
   const { copy, copied } = useClipboard({ source: installCommand });
+  const { track } = useAnalytics();
+
+  function copyInstallCommand() {
+    copy(installCommand.value);
+    track('install_command_copied', {
+      location: 'component_install',
+      registry: props.registry,
+      packageManager: selected.value,
+    });
+  }
 
   const TAB_BASE =
     'rounded-md px-2 py-0.5 text-xs font-medium transition-colors';
@@ -61,7 +72,7 @@
         class="grid size-7 shrink-0 place-items-center rounded-md text-muted-foreground/50 transition-colors hover:bg-muted hover:text-foreground"
         :class="copied ? 'text-foreground' : ''"
         :aria-label="copied ? 'Copied' : 'Copy command'"
-        @click="copy(installCommand)"
+        @click="copyInstallCommand"
       >
         <Icon
           :name="copied ? 'lucide:check' : 'lucide:copy'"

@@ -564,10 +564,10 @@ All dependency versions are managed centrally via **pnpm workspace catalogs** in
 
 ### Deployment
 
-| Service              | Purpose                       |
-| -------------------- | ----------------------------- |
-| **Cloudflare Pages** | SSR hosting with edge runtime |
-| **Analytics**        | Plausible Analytics           |
+| Service              | Purpose                                          |
+| -------------------- | ------------------------------------------------ |
+| **Cloudflare Pages** | SSR hosting with edge runtime                    |
+| **Analytics**        | Plausible + OpenPanel + GA4 via `useAnalytics()` |
 
 ---
 

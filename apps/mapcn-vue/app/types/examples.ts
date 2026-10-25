@@ -1,3 +1,5 @@
+import type { PackageManagerId } from '~/types/analytics';
+
 export interface Example {
   title: string;
   description: string;
@@ -33,7 +35,7 @@ export interface ExampleSubsection {
 }
 
 export interface PackageManager {
-  id: string;
+  id: PackageManagerId;
   label: string;
   prefix: string;
 }

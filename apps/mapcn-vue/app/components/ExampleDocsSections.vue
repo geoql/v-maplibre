@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { useClipboard } from '@vueuse/core';
   import type { ExampleDocsSectionsProps } from '~/types/examples';
+  import { slugAfter } from '~/utils/analytics-funnel';
 
   const props = withDefaults(defineProps<ExampleDocsSectionsProps>(), {
     size: 'lg',
@@ -8,6 +9,15 @@
 
   const components = useExampleComponents(() => props.code);
   const { copy, copied } = useClipboard();
+  const route = useRoute();
+  const { track } = useAnalytics();
+
+  function copyCode() {
+    copy(props.code);
+    track('example_code_copied', {
+      slug: slugAfter(route.path, '/examples/') ?? route.path,
+    });
+  }
 
   // The v-maplibre API reference lives on the docs site.
   const DOCS_URL = 'https://v-maplibre.geoql.in';
@@ -37,7 +47,7 @@
           type="button"
           class="absolute top-2 right-2 z-10 grid size-8 place-items-center rounded-md text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           :aria-label="copied ? 'Copied' : 'Copy code'"
-          @click="copy(code)"
+          @click="copyCode"
         >
           <Icon
             :name="copied ? 'lucide:check' : 'lucide:copy'"
