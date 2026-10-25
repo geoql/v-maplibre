@@ -4,7 +4,9 @@
   import type {
     LngLatLike,
     MarkerOptions,
+    PointLike,
     PopupOptions,
+    PositionAnchor,
     Map,
   } from 'maplibre-gl';
   import { Marker } from 'maplibre-gl';
@@ -20,13 +22,41 @@
       options?: MarkerOptions;
       popupOptions?: PopupOptions;
       cursor?: string;
+      /** Shorthand for `options.draggable`; wins over it when set. */
+      draggable?: boolean;
+      /** Shorthand for `options.anchor`; wins over it when set. */
+      anchor?: PositionAnchor;
+      /** Shorthand for `options.offset`; wins over it when set. */
+      offset?: PointLike;
+      /** Shorthand for `options.color`; wins over it when set. */
+      color?: string;
+      /** Shorthand for `options.scale`; wins over it when set. */
+      scale?: number;
     }>(),
     {
       options: () => ({}),
       popupOptions: () => ({}),
       cursor: 'pointer',
+      // Vue casts an absent boolean prop to `false`; keep it undefined so
+      // `options.draggable` still applies when the shorthand is not used.
+      draggable: undefined,
+      anchor: undefined,
+      offset: undefined,
+      color: undefined,
+      scale: undefined,
     },
   );
+
+  // Top-level shorthands that were set, layered over `options`.
+  const shorthandOptions = (): MarkerOptions => {
+    const result: MarkerOptions = {};
+    if (props.draggable !== undefined) result.draggable = props.draggable;
+    if (props.anchor !== undefined) result.anchor = props.anchor;
+    if (props.offset !== undefined) result.offset = props.offset;
+    if (props.color !== undefined) result.color = props.color;
+    if (props.scale !== undefined) result.scale = props.scale;
+    return result;
+  };
 
   const emit = defineEmits([
     'added',
@@ -159,6 +189,7 @@
     try {
       const markerOptions: MarkerOptions = {
         ...props.options,
+        ...shorthandOptions(),
         element: element || undefined,
       };
       marker.value = new Marker(markerOptions);
@@ -170,6 +201,24 @@
       console.error('Error initializing marker:', error);
     }
   };
+
+  // MapLibre can change these two on a live marker; the others need a new one.
+  watch(
+    () => props.draggable,
+    (draggable) => {
+      if (marker.value && draggable !== undefined) {
+        marker.value.setDraggable(draggable);
+      }
+    },
+  );
+  watch(
+    () => props.offset,
+    (offset) => {
+      if (marker.value && offset !== undefined) {
+        marker.value.setOffset(offset);
+      }
+    },
+  );
 
   watch(slotRef, (el) => {
     if (el && !marker.value) {
