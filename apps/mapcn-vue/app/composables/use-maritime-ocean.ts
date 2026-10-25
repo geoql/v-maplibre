@@ -42,6 +42,7 @@ export function sstToColor(sst: number): [number, number, number] {
   const f = idx - i;
   const c0 = THERMAL_RAMP[Math.min(i, n)];
   const c1 = THERMAL_RAMP[Math.min(i + 1, n)];
+  if (!c0 || !c1) return [0, 0, 0];
   return [
     Math.round(lerp(c0[0], c1[0], f)),
     Math.round(lerp(c0[1], c1[1], f)),

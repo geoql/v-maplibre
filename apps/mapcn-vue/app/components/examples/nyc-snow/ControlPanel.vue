@@ -38,8 +38,8 @@
     return BOROUGH_MAP[code]?.name ?? code;
   }
 
-  function handleSliderUpdate(value: number[]): void {
-    const first = value[0];
+  function handleSliderUpdate(value: number[] | undefined): void {
+    const first = value?.[0];
     if (first !== undefined) {
       emit('update:snowfallRate', first);
     }

@@ -3,7 +3,7 @@ import type {
   JsonRpcRequest,
   JsonRpcResponse,
   McpToolResult,
-} from '~~/apps/mapcn-vue/server/types/mcp';
+} from '~~/server/types/mcp';
 
 const PROTOCOL_VERSION = '2025-06-18';
 

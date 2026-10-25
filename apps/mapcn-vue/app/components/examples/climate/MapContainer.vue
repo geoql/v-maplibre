@@ -1,6 +1,10 @@
 <script setup lang="ts">
-  import type { ComponentPublicInstance } from 'vue';
-  import type { Map as MaplibreMap } from 'maplibre-gl';
+  import type { ComponentPublicInstance, DeepReadonly } from 'vue';
+  import type {
+    ExpressionSpecification,
+    MapOptions,
+    Map as MaplibreMap,
+  } from 'maplibre-gl';
   import type {
     HoverState,
     RegionLabel,
@@ -17,14 +21,14 @@
   } from '@geoql/v-maplibre';
 
   const props = defineProps<{
-    mapOptions: Record<string, unknown>;
+    mapOptions: MapOptions;
     zones: ZoneFeatureCollection | null;
-    fillColorExpression: unknown[];
-    fillOpacityExpression: unknown[] | number;
+    fillColorExpression: ExpressionSpecification;
+    fillOpacityExpression: ExpressionSpecification | number;
     selectedIso: string | null;
     countryOutlineSource: GeoJSON.FeatureCollection | null;
     regionLabels: RegionLabel[];
-    selectedCountry: SelectedCountry | null;
+    selectedCountry: DeepReadonly<SelectedCountry> | null;
     hoverState: HoverState | null;
     hoverPopupHtml: string | null;
     hoverPopupLngLat: { lng: number; lat: number } | null;

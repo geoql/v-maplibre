@@ -1,4 +1,4 @@
-import type { Map as MaplibreMap } from 'maplibre-gl';
+import type { ExpressionSpecification, Map as MaplibreMap } from 'maplibre-gl';
 import * as turf from '@turf/turf';
 import type {
   ClassContext,
@@ -513,7 +513,7 @@ function buildCountryOutline(
   if (!entry) return null;
   let outline: GeoJSON.Feature | null;
   if (entry.features.length === 1) {
-    outline = entry.features[0];
+    outline = entry.features[0] ?? null;
   } else {
     try {
       outline = turf.union(
@@ -642,10 +642,10 @@ export function useClimateEquivalents() {
   });
 
   // Derived: current fill color expression
-  const fillColorExpression = computed(() => {
+  const fillColorExpression = computed<ExpressionSpecification>(() => {
     if (!selectedCountry.value) return buildFillColorExpression();
     const iso = selectedCountry.value.iso;
-    const expr = [
+    const expr: ExpressionSpecification = [
       'case',
       ['==', ['get', 'iso3'], iso],
       buildFillColorExpression(),
@@ -656,11 +656,13 @@ export function useClimateEquivalents() {
 
   const layerOpacity = ref(0.8);
 
-  const fillOpacityExpression = computed(() => {
-    if (!selectedCountry.value) return layerOpacity.value;
-    const iso = selectedCountry.value.iso;
-    return ['case', ['==', ['get', 'iso3'], iso], layerOpacity.value, 1.0];
-  });
+  const fillOpacityExpression = computed<ExpressionSpecification | number>(
+    () => {
+      if (!selectedCountry.value) return layerOpacity.value;
+      const iso = selectedCountry.value.iso;
+      return ['case', ['==', ['get', 'iso3'], iso], layerOpacity.value, 1.0];
+    },
+  );
 
   // Derived: region labels
   const regionLabels = ref<RegionLabel[]>([]);
@@ -911,7 +913,9 @@ export function useClimateEquivalents() {
     // State
     isLoading: readonly(isLoading),
     error: readonly(error),
-    zones: readonly(zones),
+    // Shallow: the 11.5 MB collection is handed to MapLibre as-is; a deep
+    // readonly proxy over it buys nothing and hides its GeoJSON type.
+    zones: shallowReadonly(zones),
     selectedCountry: readonly(selectedCountry),
     hasEverSelected: readonly(hasEverSelected),
     countryOptions,

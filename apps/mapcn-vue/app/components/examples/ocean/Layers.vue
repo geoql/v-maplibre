@@ -22,7 +22,12 @@
     loopedTime: number;
   }>();
 
-  const legendLabels = [
+  interface LegendLabel {
+    position: Position;
+    text: string;
+  }
+
+  const legendLabels: LegendLabel[] = [
     { position: [60.5, 5.2], text: '22°C' },
     { position: [65.5, 5.2], text: '24°C' },
     { position: [70.5, 5.2], text: '27°C' },
@@ -61,11 +66,11 @@
   }
 
   function getLabelPosition(d: unknown): Position {
-    return (d as { position: number[] }).position;
+    return (d as LegendLabel).position;
   }
 
   function getLabelText(d: unknown): string {
-    return (d as { text: string }).text;
+    return (d as LegendLabel).text;
   }
 </script>
 

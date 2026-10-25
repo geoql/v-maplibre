@@ -1,12 +1,6 @@
 import type { H3Event } from 'h3';
-import type {
-  JsonRpcRequest,
-  JsonRpcResponse,
-} from '~~/apps/mapcn-vue/server/types/mcp';
-import type {
-  A2aMessage,
-  A2aSendMessageParams,
-} from '~~/apps/mapcn-vue/server/types/a2a';
+import type { JsonRpcRequest, JsonRpcResponse } from '~~/server/types/mcp';
+import type { A2aMessage, A2aSendMessageParams } from '~~/server/types/a2a';
 
 function success(
   id: number | string | null,

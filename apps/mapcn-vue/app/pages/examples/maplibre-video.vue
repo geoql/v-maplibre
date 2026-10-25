@@ -5,6 +5,7 @@
     VControlNavigation,
     VControlScale,
   } from '@geoql/v-maplibre';
+  import type { VideoSourceSpecification } from 'maplibre-gl';
 
   usePageGeo({
     title: 'Video Layer - mapcn-vue Examples',
@@ -28,8 +29,8 @@
   }));
 
   // Video source - using a sample video
-  const videoSource = {
-    type: 'video' as const,
+  const videoSource: VideoSourceSpecification = {
+    type: 'video',
     urls: [
       'https://static-assets.mapbox.com/mapbox-gl-js/drone.mp4',
       'https://static-assets.mapbox.com/mapbox-gl-js/drone.webm',

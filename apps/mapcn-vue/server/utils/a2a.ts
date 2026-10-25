@@ -3,8 +3,8 @@ import type {
   A2aArtifact,
   A2aMessage,
   A2aTask,
-} from '~~/apps/mapcn-vue/server/types/a2a';
-import type { RegistryIndexItem } from '~~/apps/mapcn-vue/server/types/mcp';
+} from '~~/server/types/a2a';
+import type { RegistryIndexItem } from '~~/server/types/mcp';
 
 const SITE_URL = 'https://mapcn-vue.geoql.in';
 

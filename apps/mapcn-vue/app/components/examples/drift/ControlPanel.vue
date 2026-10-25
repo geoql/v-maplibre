@@ -39,6 +39,12 @@
     { label: 'NW', val: 315 },
   ];
 
+  /** Forward the first thumb value of a slider update, if present. */
+  function onFirst(value: number[] | undefined, apply: (n: number) => void) {
+    const first = value?.[0];
+    if (first !== undefined) apply(first);
+  }
+
   function formatBearing(deg: number): string {
     const found = bearingLabels.find((b) => b.val === deg);
     return found ? found.label : `${deg}°`;
@@ -91,7 +97,9 @@
         :max="1500"
         :step="50"
         :aria-label="'Particle count'"
-        @update:model-value="emit('update:particleCount', $event[0])"
+        @update:model-value="
+          onFirst($event, (n) => emit('update:particleCount', n))
+        "
       />
     </div>
 
@@ -110,7 +118,9 @@
         :max="72"
         :step="1"
         :aria-label="'Drift duration'"
-        @update:model-value="emit('update:durationHours', $event[0])"
+        @update:model-value="
+          onFirst($event, (n) => emit('update:durationHours', n))
+        "
       />
     </div>
 
@@ -129,7 +139,9 @@
         :max="5"
         :step="0.1"
         :aria-label="'Current speed'"
-        @update:model-value="emit('update:currentSpeedKn', $event[0])"
+        @update:model-value="
+          onFirst($event, (n) => emit('update:currentSpeedKn', n))
+        "
       />
     </div>
 
@@ -173,7 +185,9 @@
         :max="30"
         :step="1"
         :aria-label="'Wind speed'"
-        @update:model-value="emit('update:windSpeedKn', $event[0])"
+        @update:model-value="
+          onFirst($event, (n) => emit('update:windSpeedKn', n))
+        "
       />
     </div>
 

@@ -83,7 +83,7 @@ function blockToMarkdown(html: string): string {
  */
 export function htmlToMarkdown(html: string): string | undefined {
   const mainMatch = html.match(/<main\b[^>]*>([\s\S]*?)<\/main>/i);
-  const scoped = mainMatch ? mainMatch[1] : html;
+  const scoped = mainMatch?.[1] ?? html;
 
   // Remove script/style blocks entirely before any other processing.
   const withoutScripts = scoped

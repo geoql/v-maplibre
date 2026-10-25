@@ -36,9 +36,9 @@ export default class AnimatedArcLayer<DataT = unknown> extends ArcLayer<
   DataT,
   AnimatedArcLayerProps<DataT>
 > {
-  static layerName = 'AnimatedArcLayer';
+  static override layerName = 'AnimatedArcLayer';
 
-  getShaders() {
+  override getShaders() {
     const shaders = super.getShaders();
     shaders.inject = {
       'vs:#decl': `\
@@ -65,7 +65,7 @@ color.a *= (vTimestamp - trips.timeRange.x) / (trips.timeRange.y - trips.timeRan
     return shaders;
   }
 
-  initializeState() {
+  override initializeState() {
     super.initializeState();
     this.getAttributeManager()!.addInstanced({
       instanceSourceTimestamp: {
@@ -79,7 +79,7 @@ color.a *= (vTimestamp - trips.timeRange.x) / (trips.timeRange.y - trips.timeRan
     });
   }
 
-  draw(params: Parameters<ArcLayer['draw']>[0]) {
+  override draw(params: Parameters<ArcLayer['draw']>[0]) {
     const timeRange = this.props.timeRange ?? [0, 1];
     const tripsProps: TripsProps = { timeRange };
     const model = this.state.model!;

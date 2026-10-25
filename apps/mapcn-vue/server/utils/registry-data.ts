@@ -2,7 +2,7 @@ import type {
   RegistryIndex,
   RegistryIndexItem,
   RegistryItem,
-} from '~~/apps/mapcn-vue/server/types/mcp';
+} from '~~/server/types/mcp';
 import registryIndex from '../../../../packages/mapcn-vue/public/r/registry.json';
 import mapItem from '../../../../packages/mapcn-vue/public/r/map.json';
 import mapLayersItem from '../../../../packages/mapcn-vue/public/r/map-layers.json';

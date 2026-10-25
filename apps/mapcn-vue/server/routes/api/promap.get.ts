@@ -1,9 +1,6 @@
 import type { H3Event } from 'h3';
 import type { PromapApiResponse, PromapRow } from '~/types/promap';
-import type {
-  D1Database,
-  PromapQuery,
-} from '~~/apps/mapcn-vue/server/types/promap';
+import type { D1Database, PromapQuery } from '~~/server/types/promap';
 
 defineRouteMeta({
   openAPI: {

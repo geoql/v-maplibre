@@ -34,7 +34,9 @@
     panelWidth: 'w-72',
   });
 
-  const open = defineModel<boolean>('open', { default: undefined });
+  const open = defineModel<boolean | undefined>('open', {
+    default: undefined,
+  });
 
   const isMobile = useMediaQuery('(max-width: 767px)');
 

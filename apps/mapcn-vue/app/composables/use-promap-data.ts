@@ -11,8 +11,12 @@ import type {
 } from '~/types/promap';
 
 // ── Color palettes ──────────────────────────────────────────────────────────
+type Rgb = [number, number, number];
+type Palette = [Rgb, Rgb, Rgb, Rgb, Rgb];
+type Quintiles = [number, number, number, number];
+
 /** Levels mode: warm palette — cheapest (blue) → most expensive (red) */
-const LEVELS_COLORS: [number, number, number][] = [
+const LEVELS_COLORS: Palette = [
   [33, 102, 172],
   [103, 169, 207],
   [253, 219, 199],
@@ -21,7 +25,7 @@ const LEVELS_COLORS: [number, number, number][] = [
 ];
 
 /** Changes mode: diverging — declining (black/gray) → appreciating (blue) */
-const CHANGES_COLORS: [number, number, number][] = [
+const CHANGES_COLORS: Palette = [
   [26, 26, 26],
   [115, 115, 115],
   [189, 189, 189],
@@ -30,17 +34,21 @@ const CHANGES_COLORS: [number, number, number][] = [
 ];
 
 // ── Quantile computation ────────────────────────────────────────────────────
+/** Linear-interpolated quantile of a non-empty, ascending-sorted array. */
 function quantile(sorted: number[], q: number): number {
   const pos = (sorted.length - 1) * q;
   const base = Math.floor(pos);
   const rest = pos - base;
-  if (sorted[base + 1] !== undefined) {
-    return sorted[base] + rest * (sorted[base + 1] - sorted[base]);
+  const lower = sorted[base];
+  if (lower === undefined) return 0;
+  const upper = sorted[base + 1];
+  if (upper !== undefined) {
+    return lower + rest * (upper - lower);
   }
-  return sorted[base];
+  return lower;
 }
 
-function computeQuintiles(values: number[]): number[] {
+function computeQuintiles(values: number[]): Quintiles {
   if (values.length === 0) return [0, 0, 0, 0];
   const sorted = [...values].sort((a, b) => a - b);
   return [
@@ -51,7 +59,10 @@ function computeQuintiles(values: number[]): number[] {
   ];
 }
 
-function getQuintileIndex(value: number, quintiles: number[]): number {
+function getQuintileIndex(
+  value: number,
+  quintiles: Quintiles,
+): 0 | 1 | 2 | 3 | 4 {
   if (value <= quintiles[0]) return 0;
   if (value <= quintiles[1]) return 1;
   if (value <= quintiles[2]) return 2;
@@ -225,8 +236,8 @@ export function usePromapData() {
       count: pts.length,
       medianPrice: quantile(prices, 0.5),
       avgChange: changes.reduce((a, b) => a + b, 0) / changes.length,
-      minPrice: prices[0],
-      maxPrice: prices[prices.length - 1],
+      minPrice: prices[0] ?? 0,
+      maxPrice: prices[prices.length - 1] ?? 0,
     };
   });
 
@@ -243,8 +254,8 @@ export function usePromapData() {
     const values = pts
       .map((p) => (mode === 'levels' ? p.price : p.priceChange))
       .sort((a, b) => a - b);
-    const minVal = values[0];
-    const maxVal = values[values.length - 1];
+    const minVal = values[0] ?? 0;
+    const maxVal = values[values.length - 1] ?? 0;
 
     return [
       {

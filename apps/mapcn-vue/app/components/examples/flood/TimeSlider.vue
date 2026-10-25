@@ -23,21 +23,26 @@
   const sliderRef = ref<HTMLElement | null>(null);
   let timerId: ReturnType<typeof setInterval> | null = null;
 
+  /** The [start, end] year window; falls back to the full extent if unset. */
+  const range = computed<[number, number]>(() => [
+    props.modelValue[0] ?? props.min,
+    props.modelValue[1] ?? props.max,
+  ]);
+
   const rangeLabel = computed(() => {
-    const [start, end] = props.modelValue;
+    const [start, end] = range.value;
     if (start === end) return `${start}`;
     return `${start} – ${end}`;
   });
 
   const isFiltered = computed(
-    () =>
-      props.modelValue[0] !== props.min || props.modelValue[1] !== props.max,
+    () => range.value[0] !== props.min || range.value[1] !== props.max,
   );
 
   const playbackProgress = computed(() => {
-    const range = props.max - props.min;
-    if (range === 0) return 100;
-    return Math.round(((props.modelValue[1] - props.min) / range) * 100);
+    const span = props.max - props.min;
+    if (span === 0) return 100;
+    return Math.round(((range.value[1] - props.min) / span) * 100);
   });
 
   // Bar chart computeds
@@ -61,7 +66,7 @@
         width: barWidth - gap,
         y: 100 - (count / peak) * 100,
         height: (count / peak) * 100,
-        selected: year >= props.modelValue[0] && year <= props.modelValue[1],
+        selected: year >= range.value[0] && year <= range.value[1],
       };
     });
   });
@@ -76,14 +81,14 @@
 
   function startPlayback() {
     isPlaying.value = true;
-    const [start, end] = props.modelValue;
+    const [start, end] = range.value;
     if (end >= props.max) {
       const span = end - start;
       emit('update:modelValue', [props.min, props.min + span]);
     }
     clearTimer();
     timerId = setInterval(() => {
-      const [s, e] = props.modelValue;
+      const [s, e] = range.value;
       if (e >= props.max) {
         stopPlayback();
         return;
@@ -120,14 +125,16 @@
     }
   }
 
-  function handleSliderUpdate(value: number[]) {
+  function handleSliderUpdate(value: number[] | undefined) {
     if (isPlaying.value) stopPlayback();
 
+    if (!value) return;
     let [newStart, newEnd] = value;
+    if (newStart === undefined || newEnd === undefined) return;
     const span = newEnd - newStart;
 
     if (span > MAX_SPAN) {
-      const [oldStart] = props.modelValue;
+      const [oldStart] = range.value;
       if (newStart !== oldStart) {
         newEnd = Math.min(newStart + MAX_SPAN, props.max);
       } else {
@@ -156,7 +163,7 @@
       e.stopPropagation();
       if (isPlaying.value) stopPlayback();
       startX = e.clientX;
-      startValues = [props.modelValue[0], props.modelValue[1]];
+      startValues = [range.value[0], range.value[1]];
       rangeEl!.setPointerCapture(e.pointerId);
       rangeEl!.addEventListener('pointermove', onPointerMove);
       rangeEl!.addEventListener('pointerup', onPointerUp);

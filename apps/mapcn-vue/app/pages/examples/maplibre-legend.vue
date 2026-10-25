@@ -279,9 +279,9 @@
   }));
 
   const sizeLegendItems: SizeLegendItem[] = [
-    { value: 'large', label: '> 2.5M', size: 20 },
-    { value: 'medium', label: '1.5M - 2.5M', size: 14 },
-    { value: 'small', label: '< 1.5M', size: 8 },
+    { value: 2500000, label: '> 2.5M', size: 20 },
+    { value: 1500000, label: '1.5M - 2.5M', size: 14 },
+    { value: 0, label: '< 1.5M', size: 8 },
   ];
 
   // ============ FETCH DATA ============
@@ -438,9 +438,9 @@
                   import type { SizeLegendItem } from '@geoql/v-maplibre';
 
                   const sizeLegendItems: SizeLegendItem[] = [
-                  { value: 'large', label: '> 2.5M', size: 20 },
-                  { value: 'medium', label: '1.5M - 2.5M', size: 14 },
-                  { value: 'small', label: '< 1.5M', size: 8 },
+                  { value: 2500000, label: '> 2.5M', size: 20 },
+                  { value: 1500000, label: '1.5M - 2.5M', size: 14 },
+                  { value: 0, label: '< 1.5M', size: 8 },
                   ];
                 ${SCRIPT_END}
 

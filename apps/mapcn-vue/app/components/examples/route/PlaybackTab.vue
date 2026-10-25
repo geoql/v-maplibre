@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import type { Map as MaplibreMap } from 'maplibre-gl';
+  import type { MapOptions, Map as MaplibreMap } from 'maplibre-gl';
   import { AttributionControl } from 'maplibre-gl';
   import {
     VControlLegend,
@@ -28,7 +28,7 @@
   const startLocation = { coordinates: [-74.006, 40.7128] as [number, number] };
   const endLocation = { coordinates: [-73.8648, 40.7614] as [number, number] };
 
-  const mapOptions = computed(() => ({
+  const mapOptions = computed<MapOptions>(() => ({
     container: `playback-map-${mapId}`,
     style: mapStyle.value,
     center: [-73.93, 40.74] as [number, number],

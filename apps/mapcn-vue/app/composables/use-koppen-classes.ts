@@ -1,3 +1,4 @@
+import type { ExpressionSpecification } from 'maplibre-gl';
 import type { KoppenClassesIndex } from '~/types/climate';
 
 /**
@@ -145,13 +146,18 @@ export function pickTextColor(rgbStr: string): '#111' | '#fff' {
  * Build a MapLibre `fill-color` expression that maps `koppen_class` property
  * to the canonical Köppen color. Unknown classes fall back to `#cccccc`.
  */
-export function buildFillColorExpression(): unknown[] {
-  const expr: unknown[] = ['match', ['get', 'koppen_class']];
-  for (const [id, cls] of Object.entries(KOPPEN_CLASSES)) {
-    expr.push(Number(id), cls.color);
-  }
-  expr.push('#cccccc');
-  return expr;
+export function buildFillColorExpression(): ExpressionSpecification {
+  const FALLBACK = '#cccccc';
+  const [first, ...others] = Object.entries(KOPPEN_CLASSES);
+  if (!first) return ['to-color', FALLBACK];
+  return [
+    'match',
+    ['get', 'koppen_class'],
+    Number(first[0]),
+    first[1].color,
+    ...others.flatMap(([id, cls]) => [Number(id), cls.color]),
+    FALLBACK,
+  ];
 }
 
 /**

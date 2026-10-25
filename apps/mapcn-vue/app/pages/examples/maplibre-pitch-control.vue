@@ -73,6 +73,12 @@
     });
   }
 
+  /** Forward the first thumb value of a slider update, if present. */
+  function onFirst(value: number[] | undefined, apply: (n: number) => void) {
+    const first = value?.[0];
+    if (first !== undefined) apply(first);
+  }
+
   function updatePitch(value: number): void {
     pitch.value = value;
     if (mapRef.value) {
@@ -260,7 +266,7 @@
             :min="0"
             :max="85"
             :step="1"
-            @update:model-value="(val) => updatePitch(val[0])"
+            @update:model-value="(val) => onFirst(val, updatePitch)"
           />
           <div class="mt-1 flex justify-between text-xs text-muted-foreground">
             <span>0° (Flat)</span>
@@ -279,7 +285,7 @@
             :min="-180"
             :max="180"
             :step="1"
-            @update:model-value="(val) => updateBearing(val[0])"
+            @update:model-value="(val) => onFirst(val, updateBearing)"
           />
           <div class="mt-1 flex justify-between text-xs text-muted-foreground">
             <span>-180° (South)</span>
@@ -299,7 +305,7 @@
             :min="10"
             :max="20"
             :step="0.1"
-            @update:model-value="(val) => updateZoom(val[0])"
+            @update:model-value="(val) => onFirst(val, updateZoom)"
           />
           <div class="mt-1 flex justify-between text-xs text-muted-foreground">
             <span>10 (Far)</span>

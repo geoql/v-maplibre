@@ -2,7 +2,7 @@ import type {
   McpToolDefinition,
   McpToolResult,
   RegistryIndexItem,
-} from '~~/apps/mapcn-vue/server/types/mcp';
+} from '~~/server/types/mcp';
 
 const SITE_URL = 'https://mapcn-vue.geoql.in';
 const DOCS_URL = `${SITE_URL}/docs/components`;

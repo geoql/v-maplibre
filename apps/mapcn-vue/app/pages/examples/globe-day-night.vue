@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { VControlNavigation, VControlScale, VMap } from '@geoql/v-maplibre';
   import { VLayerStarfield } from '@geoql/v-maplibre/starfield';
+  import type { MapOptions } from 'maplibre-gl';
 
   usePageGeo({
     title: 'Globe Day/Night - mapcn-vue Examples',
@@ -19,7 +20,7 @@
   const { sunAzimuth, sunAltitude, localSunAltitude, skyMode } =
     useSunPosition();
 
-  const mapOptions = computed(() => ({
+  const mapOptions = computed<MapOptions>(() => ({
     container: `globe-day-night-${mapId}`,
     style: {
       version: 8 as const,

@@ -38,8 +38,14 @@
     bearing?: number;
   }
 
+  const newYork: CityLocation = {
+    name: 'New York',
+    coordinates: [-74.006, 40.7128],
+    zoom: 12,
+  };
+
   const cities: CityLocation[] = [
-    { name: 'New York', coordinates: [-74.006, 40.7128], zoom: 12 },
+    newYork,
     {
       name: 'Paris',
       coordinates: [2.3522, 48.8566],
@@ -65,7 +71,7 @@
     },
   ];
 
-  const currentCity = ref<CityLocation>(cities[0]);
+  const currentCity = ref<CityLocation>(newYork);
   const animationType = ref<'flyTo' | 'easeTo' | 'jumpTo'>('flyTo');
   const duration = ref(2000);
 

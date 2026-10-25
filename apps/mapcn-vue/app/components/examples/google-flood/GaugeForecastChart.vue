@@ -51,9 +51,11 @@
 
   const forecastRangeLabel = computed(() => {
     const ranges = props.forecast?.forecastRanges ?? [];
-    if (ranges.length < 2) return '';
-    const start = new Date(ranges[0].forecastStartTime);
-    const end = new Date(ranges[ranges.length - 1].forecastEndTime);
+    const first = ranges[0];
+    const last = ranges[ranges.length - 1];
+    if (ranges.length < 2 || !first || !last) return '';
+    const start = new Date(first.forecastStartTime);
+    const end = new Date(last.forecastEndTime);
     const fmt = (d: Date) =>
       d.toLocaleDateString([], { month: 'short', day: 'numeric' });
     return `${fmt(start)} – ${fmt(end)}`;

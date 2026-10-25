@@ -27,6 +27,12 @@
 
   const speedOptions = [0.25, 0.5, 1, 2];
 
+  /** Forward the first thumb value of a slider update, if present. */
+  function onFirst(value: number[] | undefined, apply: (n: number) => void) {
+    const first = value?.[0];
+    if (first !== undefined) apply(first);
+  }
+
   // Thermal legend stops
   const thermalStops = THERMAL_RAMP.map((c, i) => ({
     color: `rgb(${c[0]},${c[1]},${c[2]})`,
@@ -91,7 +97,9 @@
         :max="1"
         :step="0.05"
         class="w-full"
-        @update:model-value="emit('update:sstOpacity', $event[0])"
+        @update:model-value="
+          onFirst($event, (n) => emit('update:sstOpacity', n))
+        "
       />
     </div>
 
@@ -109,7 +117,9 @@
         :max="1"
         :step="0.05"
         class="w-full"
-        @update:model-value="emit('update:currentDensity', $event[0])"
+        @update:model-value="
+          onFirst($event, (n) => emit('update:currentDensity', n))
+        "
       />
     </div>
 

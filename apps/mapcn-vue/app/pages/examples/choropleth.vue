@@ -143,12 +143,8 @@
   ];
 
   function getColorForRate(rate: number): string {
-    for (let i = colorScale.length - 1; i >= 0; i--) {
-      if (rate >= colorScale[i].threshold) {
-        return colorScale[i].color;
-      }
-    }
-    return colorScale[0].color;
+    const match = colorScale.findLast((step) => rate >= step.threshold);
+    return (match ?? colorScale[0])?.color ?? '#f7fbff';
   }
 
   function hexToRgba(
@@ -156,11 +152,12 @@
     alpha = 200,
   ): [number, number, number, number] {
     const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-    if (result) {
+    const [, r, g, b] = result ?? [];
+    if (r !== undefined && g !== undefined && b !== undefined) {
       return [
-        Number.parseInt(result[1], 16),
-        Number.parseInt(result[2], 16),
-        Number.parseInt(result[3], 16),
+        Number.parseInt(r, 16),
+        Number.parseInt(g, 16),
+        Number.parseInt(b, 16),
         alpha,
       ];
     }

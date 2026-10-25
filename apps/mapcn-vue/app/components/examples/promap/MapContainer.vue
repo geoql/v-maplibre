@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import type { Map as MaplibreMap } from 'maplibre-gl';
+  import type { LngLatLike, Map as MaplibreMap } from 'maplibre-gl';
   import type { PickingInfo } from '@deck.gl/core';
   import {
     VMap,
@@ -49,6 +49,12 @@
     minZoom: 2,
     maxZoom: 16,
   }));
+
+  // MapLibre's LngLatLike wants a mutable tuple; ZIP coordinates are readonly.
+  const hoveredLngLat = computed<LngLatLike | null>(() => {
+    const coords = props.hoveredZip?.coordinates;
+    return coords ? [coords[0], coords[1]] : null;
+  });
 
   const legendTitle = computed(() => {
     const base = props.viewMode === 'levels' ? 'Median Price' : 'YoY Change';
@@ -102,7 +108,7 @@
   /** Fly to coordinates (used by search) */
   function flyTo(coords: readonly [number, number], zoom = 10): void {
     mapRef.value?.flyTo({
-      center: coords,
+      center: [coords[0], coords[1]],
       zoom,
       duration: 1500,
     });
@@ -149,8 +155,8 @@
 
       <!-- Hover popup -->
       <VPopup
-        v-if="hoveredZip"
-        :coordinates="hoveredZip.coordinates"
+        v-if="hoveredZip && hoveredLngLat"
+        :coordinates="hoveredLngLat"
         :options="{
           closeButton: false,
           closeOnClick: false,

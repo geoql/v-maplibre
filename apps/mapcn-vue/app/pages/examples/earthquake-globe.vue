@@ -8,6 +8,7 @@
   import { VLayerDeckglScatterplot } from '@geoql/v-maplibre/deck.gl';
   import { VLayerStarfield } from '@geoql/v-maplibre/starfield';
   import type { PickingInfo } from '@deck.gl/core';
+  import type { MapOptions } from 'maplibre-gl';
   import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import type { EarthquakeData } from '~/types/earthquake';
 
@@ -25,7 +26,7 @@
   const mapId = useId();
   const { sunAzimuth, sunAltitude, localSunAltitude } = useSunPosition();
 
-  const mapOptions = computed(() => ({
+  const mapOptions = computed<MapOptions>(() => ({
     container: `earthquake-globe-${mapId}`,
     style: {
       version: 8 as const,

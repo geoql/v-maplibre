@@ -5,6 +5,7 @@
     VControlNavigation,
     VControlScale,
   } from '@geoql/v-maplibre';
+  import type { ImageSourceSpecification } from 'maplibre-gl';
 
   usePageGeo({
     title: 'Image Layer - mapcn-vue Examples',
@@ -28,8 +29,8 @@
   }));
 
   // Image source - using a weather radar image from MapLibre docs example
-  const imageSource = {
-    type: 'image' as const,
+  const imageSource: ImageSourceSpecification = {
+    type: 'image',
     url: 'https://docs.mapbox.com/mapbox-gl-js/assets/radar.gif',
     coordinates: [
       [-80.425, 46.437], // top-left

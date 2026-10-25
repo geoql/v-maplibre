@@ -127,8 +127,10 @@
     { value: 'ndvi', label: 'NDVI Vegetation', color: '#8bc34a' },
   ];
 
-  function handleNdviRangeUpdate(value: number[]) {
-    ndviRange.value = [value[0], value[1]];
+  function handleNdviRangeUpdate(value: number[] | undefined) {
+    const [min, max] = value ?? [];
+    if (min === undefined || max === undefined) return;
+    ndviRange.value = [min, max];
   }
 
   function getRenderModeLabel(value: MosaicRenderMode) {

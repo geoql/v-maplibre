@@ -126,13 +126,12 @@
   ];
 
   // Selected values
-  const selectedGroup = ref(hhiConfig.value.groupVars[0].code);
-  const selectedLevel = ref(hhiConfig.value.groupVars[0].levels[0].code);
-  const selectedHhi = ref(hhiConfig.value.hhiVars[0].code);
-  // Slider expects an array
-  const selectedYear = ref([
-    hhiConfig.value.years[hhiConfig.value.years.length - 1],
-  ]);
+  const firstGroup = hhiConfig.value.groupVars[0];
+  const selectedGroup = ref(firstGroup?.code ?? '');
+  const selectedLevel = ref(firstGroup?.levels[0]?.code ?? '');
+  const selectedHhi = ref(hhiConfig.value.hhiVars[0]?.code ?? '');
+  // Slider expects an array: start on the latest year
+  const selectedYear = ref(hhiConfig.value.years.slice(-1));
 
   // Computed current levels based on selected group
   const currentLevels = computed(() => {
@@ -159,7 +158,7 @@
   );
 
   // Shared fill-color expression (avoids duplication between addLayer and setPaintProperty)
-  const buildFillColor = (col: string) => [
+  const buildFillColor = (col: string): ExpressionSpecification => [
     'case',
     ['has', col],
     [
@@ -200,17 +199,16 @@
       source: 'hhi-tracts',
       'source-layer': 'tracts',
       paint: {
-        'fill-color': buildFillColor(
-          columnName.value,
-        ) as ExpressionSpecification,
+        'fill-color': buildFillColor(columnName.value),
         'fill-opacity': 0.7,
       },
     });
 
     // Hover: show popup with HHI value
     map.on('mousemove', 'hhi-fill', (e) => {
-      if (!e.features || e.features.length === 0) return;
-      const raw = e.features[0].properties?.[columnName.value];
+      const feature = e.features?.[0];
+      if (!feature) return;
+      const raw = feature.properties?.[columnName.value];
       const value =
         typeof raw === 'number' ? raw : Number.parseFloat(String(raw));
       if (!Number.isNaN(value)) {
@@ -244,14 +242,14 @@
 
   // Reset level when group changes
   watch(selectedGroup, () => {
-    const levels = currentLevels.value;
-    if (levels.length > 0) {
-      selectedLevel.value = levels[0].code;
+    const firstLevel = currentLevels.value[0];
+    if (firstLevel) {
+      selectedLevel.value = firstLevel.code;
     }
     // Reset HHI to first available
-    const hhiVars = currentHhiVars.value;
-    if (hhiVars.length > 0) {
-      selectedHhi.value = hhiVars[0].code;
+    const firstHhi = currentHhiVars.value[0];
+    if (firstHhi) {
+      selectedHhi.value = firstHhi.code;
     }
   });
   const SCRIPT_END = '</' + 'script>';

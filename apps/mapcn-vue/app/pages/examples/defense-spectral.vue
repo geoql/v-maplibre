@@ -26,7 +26,7 @@
     nightvision: `https://maps.guru/api/v1/styles/standard/dark/style.json?key=${key}`,
   };
 
-  const SPECTRAL_PAIRS: SpectralPair[] = [
+  const SPECTRAL_PAIRS: [SpectralPair, ...SpectralPair[]] = [
     {
       id: 'vis-therm',
       label: 'Visual / Thermal',
