@@ -61,6 +61,10 @@ catalogs:
     '@vitest/coverage-v8': 5.0.5
 
   pkg:mapcn-vue:
+    '@vitejs/plugin-vue': ^6.0.10
+    '@vue/test-utils': ^2.5.1
+    '@vueuse/core': ^15.0.0
+    happy-dom: ^21.0.4
     '@types/node': ^26.6.5
     shadcn-vue: ^2.8.2
 

@@ -22,6 +22,8 @@
       dark?: string | StyleSpecification;
     };
     options?: Partial<MapOptions>;
+    /** Register the `pmtiles://` protocol so PMTiles sources (MapLayerPmtiles) load. */
+    supportPmtiles?: boolean;
     class?: string;
     style?: StyleValue;
   }
@@ -31,6 +33,7 @@
     zoom: 2,
     bearing: 0,
     pitch: 0,
+    supportPmtiles: false,
   });
 
   const emit = defineEmits<{
@@ -82,6 +85,7 @@
 <template>
   <VMap
     :options="mapOptions"
+    :support-pmtiles="props.supportPmtiles"
     :class="['h-full w-full', props.class]"
     :style="props.style"
     @loaded="handleLoad"

@@ -25,7 +25,7 @@
     "format:check": "vp fmt --check .",
     "typecheck": "pnpm --filter @geoql/v-maplibre run build && pnpm -r run typecheck",
     "test": "pnpm --filter @geoql/v-maplibre run test && pnpm run test:apps",
-    "test:apps": "pnpm --filter @geoql/mapcn-vue-app --filter @geoql/v-maplibre-docs run test",
+    "test:apps": "pnpm --filter @geoql/mapcn-vue-app --filter @geoql/v-maplibre-docs --filter @geoql/mapcn-vue run test",
     "test:coverage": "pnpm --filter @geoql/v-maplibre run test:coverage",
     "prepare": "husky || true",
     "clean": "rm -rf node_modules packages/*/node_modules apps/*/node_modules packages/*/dist apps/*/.nuxt apps/*/.output && rm -rf pnpm-lock.yaml",

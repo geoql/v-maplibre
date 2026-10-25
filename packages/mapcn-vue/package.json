@@ -25,7 +25,8 @@
   "scripts": {
     "build": "node scripts/build-registry.ts",
     "lint": "vp lint",
-    "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+    "test": "vp test run"
   },
   "dependencies": {
     "@geoql/v-maplibre": "workspace:*"
@@ -38,6 +39,10 @@
     "@deck.gl/mesh-layers": "catalog:app:mapcn-vue",
     "@types/geojson": "catalog:app:mapcn-vue",
     "@types/node": "catalog:pkg:mapcn-vue",
+    "@vitejs/plugin-vue": "catalog:pkg:mapcn-vue",
+    "@vue/test-utils": "catalog:pkg:mapcn-vue",
+    "@vueuse/core": "catalog:pkg:mapcn-vue",
+    "happy-dom": "catalog:pkg:mapcn-vue",
     "maplibre-gl": "catalog:default",
     "maplibre-gl-wind": "catalog:app:mapcn-vue",
     "shadcn-vue": "catalog:pkg:mapcn-vue",
