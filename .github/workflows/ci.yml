@@ -48,12 +48,12 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v6
+        uses: pnpm/action-setup@v6.1.0
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version-file: '.node-version'
+          node-version: 26
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -75,12 +75,12 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v6
+        uses: pnpm/action-setup@v6.1.0
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version-file: '.node-version'
+          node-version: 26
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -99,6 +99,34 @@ jobs:
           fail_ci_if_error: false
           token: ${{ secrets.CODECOV_TOKEN }}
 
+  typecheck:
+    name: 'Typecheck'
+    needs: [quality]
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6.1.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      # The registry and the apps import @geoql/v-maplibre from its built
+      # dist/*.d.ts, so the library is built before the typecheck runs.
+      - name: Typecheck
+        run: pnpm run typecheck
+        env:
+          NODE_OPTIONS: --max-old-space-size=8192
+
   build-lib:
     name: 'Build Library'
     needs: [quality]
@@ -109,12 +137,12 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v6
+        uses: pnpm/action-setup@v6.1.0
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version-file: '.node-version'
+          node-version: 26
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -229,12 +257,12 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v6
+        uses: pnpm/action-setup@v6.1.0
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version-file: '.node-version'
+          node-version: 26
           cache: 'pnpm'
 
       - name: Install dependencies
@@ -285,12 +313,12 @@ jobs:
         uses: actions/checkout@v7
 
       - name: Setup pnpm
-        uses: pnpm/action-setup@v6
+        uses: pnpm/action-setup@v6.1.0
 
       - name: Setup Node.js
         uses: actions/setup-node@v7
         with:
-          node-version-file: '.node-version'
+          node-version: 26
           cache: 'pnpm'
 
       - name: Install dependencies
