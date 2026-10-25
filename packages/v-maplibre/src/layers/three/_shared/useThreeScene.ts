@@ -27,6 +27,48 @@ import type { GaussianSplatRenderer } from 'gaussian-splat-lite';
  * Content lives in a local ENU metre frame anchored at the scene origin —
  * 1 unit = 1 metre, x east, y north, z up (see {@link mercatorGroupMatrix}).
  */
+/**
+ * MapLibre's tile size in pixels. The transform's `tileSize` is a hard-coded
+ * constant (`transform_helper.ts`: `this._tileSize = 512; // constant`).
+ */
+const MAPLIBRE_TILE_SIZE = 512;
+
+interface CameraView {
+  /** Pitch in degrees. */
+  pitch: number;
+  /** Bearing in degrees. */
+  bearing: number;
+  /** Vertical field of view in degrees. */
+  fov: number;
+  /** Camera-to-centre distance in CSS pixels. */
+  cameraToCenterDistance: number;
+  /** World size in CSS pixels at the current zoom. */
+  worldSize: number;
+}
+
+/**
+ * The camera values the scene needs, read from MapLibre's public API.
+ *
+ * MapLibre 6 made `map.transform` internal. Its values are derived here with
+ * the same formulas MapLibre uses in `transform_helper.ts`:
+ * - `worldSize = tileSize * 2^zoom`
+ * - `cameraToCenterDistance = 0.5 / tan(fov / 2) * height`
+ *
+ * `height` is the transform height, which MapLibre also writes to the canvas
+ * CSS height on every resize, so `canvas.clientHeight` gives the same value.
+ */
+const cameraViewOf = (map: Map, canvas: HTMLCanvasElement): CameraView => {
+  const fov = map.getVerticalFieldOfView();
+  const halfFov = (fov * Math.PI) / 360;
+  return {
+    pitch: map.getPitch(),
+    bearing: map.getBearing(),
+    fov,
+    cameraToCenterDistance: (0.5 / Math.tan(halfFov)) * canvas.clientHeight,
+    worldSize: MAPLIBRE_TILE_SIZE * 2 ** map.getZoom(),
+  };
+};
+
 export interface ThreeSceneEntry {
   scene: Scene;
   renderer: WebGLRenderer;
@@ -202,7 +244,7 @@ export function acquireThreeScene(map: Map): ThreeSceneEntry {
       // (dropping scale), so it must stay rigid — rotation and translation
       // only, never a fused mercator matrix.
       const { origin, metres } = sceneOriginFor(map);
-      const t = map.transform;
+      const view = cameraViewOf(map, canvas);
       const c = map.getCenter();
       const target = MercatorCoordinate.fromLngLat(
         [c.lng, c.lat],
@@ -219,9 +261,9 @@ export function acquireThreeScene(map: Map): ThreeSceneEntry {
       // whole scene is culled. Orbiting the look-at target by pitch and
       // bearing is elevation-agnostic and always lands the camera exactly
       // `cameraToCenterDistance` away, matching MapLibre's own framing.
-      const pitch = (t.pitch * Math.PI) / 180;
-      const bearing = (t.bearing * Math.PI) / 180;
-      const camDistance = t.cameraToCenterDistance / t.worldSize / metres;
+      const pitch = (view.pitch * Math.PI) / 180;
+      const bearing = (view.bearing * Math.PI) / 180;
+      const camDistance = view.cameraToCenterDistance / view.worldSize / metres;
       const ground = camDistance * Math.sin(pitch);
       poseCamera.position.set(
         targetX - ground * Math.sin(bearing),
@@ -242,7 +284,7 @@ export function acquireThreeScene(map: Map): ThreeSceneEntry {
       // Pose + fov + aspect are taken from MapLibre's own camera, so this
       // projection lands content exactly where the fused one did.
       const dpr = window.devicePixelRatio;
-      poseCamera.fov = t.fov;
+      poseCamera.fov = view.fov;
       poseCamera.aspect = canvas.width / canvas.height;
       poseCamera.near = Math.max(camDistance / 1000, 0.1);
       poseCamera.far = camDistance * 100;

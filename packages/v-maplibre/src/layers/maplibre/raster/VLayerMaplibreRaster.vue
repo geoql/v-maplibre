@@ -5,7 +5,12 @@
     Map,
   } from 'maplibre-gl';
   import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
-  import { injectStrict, MapKey } from '../../../utils';
+  import {
+    injectStrict,
+    MapKey,
+    setLayoutProperties,
+    setPaintProperties,
+  } from '../../../utils';
 
   const props = defineProps<{
     sourceId: string;
@@ -150,16 +155,10 @@
     try {
       if (mapInstance.getLayer(props.layerId)) {
         // Update paint properties
-        const paint = props.layer.paint || {};
-        Object.entries(paint).forEach(([key, value]) => {
-          mapInstance.setPaintProperty(props.layerId, key, value);
-        });
+        setPaintProperties(mapInstance, props.layerId, props.layer.paint);
 
         // Update layout properties
-        const layout = props.layer.layout || {};
-        Object.entries(layout).forEach(([key, value]) => {
-          mapInstance.setLayoutProperty(props.layerId, key, value);
-        });
+        setLayoutProperties(mapInstance, props.layerId, props.layer.layout);
       }
     } catch (error) {
       console.error('Error updating Raster layer:', error);

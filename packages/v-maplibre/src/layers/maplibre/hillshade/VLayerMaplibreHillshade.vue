@@ -5,7 +5,12 @@
     Map,
     RasterDEMSourceSpecification,
   } from 'maplibre-gl';
-  import { injectStrict, MapKey } from '../../../utils';
+  import {
+    injectStrict,
+    MapKey,
+    setLayoutProperties,
+    setPaintProperties,
+  } from '../../../utils';
 
   interface Props {
     sourceId?: string;
@@ -118,14 +123,8 @@
       const mapInstance = map.value;
       if (!mapInstance || !mapInstance.getLayer(props.layerId)) return;
       try {
-        const paint = props.layer.paint ?? {};
-        for (const [key, value] of Object.entries(paint)) {
-          mapInstance.setPaintProperty(props.layerId, key, value);
-        }
-        const layout = props.layer.layout ?? {};
-        for (const [key, value] of Object.entries(layout)) {
-          mapInstance.setLayoutProperty(props.layerId, key, value);
-        }
+        setPaintProperties(mapInstance, props.layerId, props.layer.paint);
+        setLayoutProperties(mapInstance, props.layerId, props.layer.layout);
       } catch (error) {
         console.error(`[${props.layerId}] Error updating hillshade:`, error);
       }

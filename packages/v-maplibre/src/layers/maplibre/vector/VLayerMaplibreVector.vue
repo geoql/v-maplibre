@@ -12,7 +12,12 @@
     LayerSpecification,
   } from 'maplibre-gl';
   import { mapLayerEvents } from '../../../constants/events';
-  import { injectStrict, MapKey } from '../../../utils';
+  import {
+    injectStrict,
+    MapKey,
+    setLayoutProperties,
+    setPaintProperties,
+  } from '../../../utils';
 
   const props = defineProps<{
     sourceId: string;
@@ -156,17 +161,21 @@
         >;
 
         // Only update properties that have changed
-        Object.entries(props.layer.paint || {}).forEach(([key, value]) => {
-          if (JSON.stringify(currentPaint[key]) !== JSON.stringify(value)) {
-            mapInstance.setPaintProperty(props.layerId, key, value);
-          }
-        });
+        setPaintProperties(
+          mapInstance,
+          props.layerId,
+          props.layer.paint,
+          (key, value) =>
+            JSON.stringify(currentPaint[key]) !== JSON.stringify(value),
+        );
 
-        Object.entries(props.layer.layout || {}).forEach(([key, value]) => {
-          if (JSON.stringify(currentLayout[key]) !== JSON.stringify(value)) {
-            mapInstance.setLayoutProperty(props.layerId, key, value);
-          }
-        });
+        setLayoutProperties(
+          mapInstance,
+          props.layerId,
+          props.layer.layout,
+          (key, value) =>
+            JSON.stringify(currentLayout[key]) !== JSON.stringify(value),
+        );
       }
     } catch (error) {
       console.error('Error updating vector layer:', error);

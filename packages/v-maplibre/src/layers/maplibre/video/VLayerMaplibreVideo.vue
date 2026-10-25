@@ -6,7 +6,12 @@
     Map,
   } from 'maplibre-gl';
   import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
-  import { injectStrict, MapKey } from '../../../utils';
+  import {
+    injectStrict,
+    MapKey,
+    setLayoutProperties,
+    setPaintProperties,
+  } from '../../../utils';
 
   interface Props {
     sourceId?: string;
@@ -154,12 +159,8 @@
 
     try {
       if (mapInstance.getLayer(props.layerId)) {
-        Object.entries(props.layer.paint || {}).forEach(([key, value]) => {
-          mapInstance.setPaintProperty(props.layerId, key, value);
-        });
-        Object.entries(props.layer.layout || {}).forEach(([key, value]) => {
-          mapInstance.setLayoutProperty(props.layerId, key, value);
-        });
+        setPaintProperties(mapInstance, props.layerId, props.layer.paint);
+        setLayoutProperties(mapInstance, props.layerId, props.layer.layout);
       }
     } catch (error) {
       console.error('Error updating Video layer:', error);

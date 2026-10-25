@@ -8,7 +8,12 @@
     Map,
     MapLayerMouseEvent,
   } from 'maplibre-gl';
-  import { injectStrict, MapKey } from '../../../utils';
+  import {
+    injectStrict,
+    MapKey,
+    setLayoutProperties,
+    setPaintProperties,
+  } from '../../../utils';
 
   interface LayerClick {
     features: GeoJSON.Feature[];
@@ -207,13 +212,9 @@
     try {
       if (mapInstance.getLayer(props.layerId)) {
         // Update paint properties
-        Object.entries(props.layer.paint || {}).forEach(([key, value]) => {
-          mapInstance.setPaintProperty(props.layerId, key, value);
-        });
+        setPaintProperties(mapInstance, props.layerId, props.layer.paint);
         // Update layout properties
-        Object.entries(props.layer.layout || {}).forEach(([key, value]) => {
-          mapInstance.setLayoutProperty(props.layerId, key, value);
-        });
+        setLayoutProperties(mapInstance, props.layerId, props.layer.layout);
       } else {
         // If layer doesn't exist, try to add it
         tryAddLayer();

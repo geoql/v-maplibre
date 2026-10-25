@@ -110,7 +110,7 @@
   const listenMarkerEvents = (markerInstance: Marker): void => {
     try {
       let coordinates: LngLatLike;
-      markerMapEvents.forEach((event: string) => {
+      markerMapEvents.forEach((event) => {
         markerInstance.on(event, (e: { target: Marker }) => {
           if (event === 'dragend') {
             if (Array.isArray(props.coordinates)) {
@@ -127,7 +127,7 @@
         });
       });
 
-      markerDOMEvents.forEach((event: string) => {
+      markerDOMEvents.forEach((event) => {
         markerInstance.getElement().addEventListener(event, (e) => {
           emit(event, e);
         });

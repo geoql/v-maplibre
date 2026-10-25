@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { computed, ref, watch, inject, onMounted } from 'vue';
   import { MapKey, injectStrict } from '../../utils';
+  import type { PaintPropertyName } from '../../utils';
   import { DeckLayersKey } from '../../layers/deckgl/_shared/useDeckOverlay';
   import { useMapControl } from '../_shared';
   import type { ControlPosition, LayerType } from './types';
@@ -55,7 +56,7 @@
     return null;
   };
 
-  const getOpacityProperty = (): string | null => {
+  const getOpacityProperty = (): PaintPropertyName | null => {
     if (!map.value || getLayerType() !== 'maplibre') return null;
 
     const layer = map.value.getLayer(props.layerId);

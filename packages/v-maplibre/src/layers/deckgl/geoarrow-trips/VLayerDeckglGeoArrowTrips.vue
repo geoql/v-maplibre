@@ -24,6 +24,7 @@
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
   import { useMapReady } from '../_shared/useMapReady';
   import { extractLineStrings, filterDefined } from '../_shared/arrow';
+  import type { Ring } from '../_shared/arrow';
   import type { ArrowTableLike } from '../_shared/types';
 
   const TRIPS_PEER_INSTALL =
@@ -87,7 +88,7 @@
     'timestampsColumn',
   ]);
 
-  type Trip = { path: number[][]; timestamps: number[] };
+  type Trip = { path: Ring; timestamps: number[] };
 
   const buildTrips = (
     table: ArrowTableLike,
@@ -109,7 +110,7 @@
     for (let i = 0; i < extracted.length; i++) {
       const start = extracted.startIndices[i] ?? 0;
       const end = extracted.startIndices[i + 1] ?? 0;
-      const path: number[][] = [];
+      const path: Ring = [];
       for (let v = start; v < end; v++) {
         path.push([
           extracted.positions[v * 3] ?? 0,

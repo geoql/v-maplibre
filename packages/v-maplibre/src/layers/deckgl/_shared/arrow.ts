@@ -173,7 +173,13 @@ export const extractMultiPolygons = (
   };
 };
 
-export type RingPolygons = number[][][];
+/** A 2D `[x, y]` coordinate. Matches deck.gl's `Position` tuple form. */
+export type Coordinate2D = [x: number, y: number];
+
+/** One ring of coordinates. A valid deck.gl simple polygon or path. */
+export type Ring = Coordinate2D[];
+
+export type RingPolygons = Ring[];
 
 export const polygonsToRingArrays = (
   geom: GeoArrowMultiPolygonExtract,
@@ -186,7 +192,7 @@ export const polygonsToRingArrays = (
     for (let r = polyStart; r < polyEnd; r++) {
       const ringStart = primitivePolygonIndices[r] ?? 0;
       const ringEnd = primitivePolygonIndices[r + 1] ?? 0;
-      const ring: number[][] = [];
+      const ring: Ring = [];
       for (let v = ringStart; v < ringEnd; v++) {
         const x = positions[v * 3] ?? 0;
         const y = positions[v * 3 + 1] ?? 0;

@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { ref, watch, computed, inject, onMounted } from 'vue';
   import { MapKey, injectStrict } from '../../utils';
+  import type { PaintPropertyName } from '../../utils';
   import { DeckLayersKey } from '../../layers/deckgl/_shared/useDeckOverlay';
   import { useMapControl } from '../_shared';
   import type {
@@ -22,7 +23,7 @@
       type?: LegendType;
       items?: LegendItem[];
       position?: ControlPosition;
-      property?: string;
+      property?: PaintPropertyName;
       autoGenerate?: boolean;
       title?: string;
       collapsed?: boolean;

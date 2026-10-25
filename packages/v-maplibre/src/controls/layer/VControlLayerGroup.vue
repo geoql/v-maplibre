@@ -1,6 +1,7 @@
 <script setup lang="ts">
   import { ref, watch, inject, onMounted } from 'vue';
   import { MapKey, injectStrict } from '../../utils';
+  import type { PaintPropertyName } from '../../utils';
   import { DeckLayersKey } from '../../layers/deckgl/_shared/useDeckOverlay';
   import { useMapControl } from '../_shared';
   import type { ControlPosition, LayerType } from './types';
@@ -75,7 +76,7 @@
     return null;
   };
 
-  const getOpacityProperty = (layerId: string): string | null => {
+  const getOpacityProperty = (layerId: string): PaintPropertyName | null => {
     if (!map.value) return null;
     const layer = map.value.getLayer(layerId);
     if (!layer) return null;

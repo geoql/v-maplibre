@@ -1,5 +1,7 @@
 import type { MapEventType } from 'maplibre-gl';
 
+// `tiledataloading` is not a MapLibre event (MapLibre never fired it). Tile
+// loads are reported as `sourcedataloading` / `dataloading` with a `tile`.
 export const mapEvents: Array<keyof MapEventType> = [
   'error',
   'load',
@@ -11,7 +13,6 @@ export const mapEvents: Array<keyof MapEventType> = [
   'webglcontextrestored',
   'dataloading',
   'data',
-  'tiledataloading',
   'sourcedataloading',
   'styledataloading',
   'sourcedata',

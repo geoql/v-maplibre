@@ -1,3 +1,5 @@
+import type { PaintPropertyName } from '../../utils/layer-properties';
+
 export type { ControlPosition } from 'maplibre-gl';
 
 export type LegendType = 'category' | 'gradient' | 'size' | 'table';
@@ -59,7 +61,7 @@ export interface LegendControlOptions {
   type: LegendType;
   items?: LegendItem[];
   position?: 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
-  property?: string;
+  property?: PaintPropertyName;
   autoGenerate?: boolean;
   title?: string;
   collapsed?: boolean;

@@ -6,7 +6,12 @@
     Map,
   } from 'maplibre-gl';
   import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
-  import { injectStrict, MapKey } from '../../../utils';
+  import {
+    injectStrict,
+    MapKey,
+    setLayoutProperties,
+    setPaintProperties,
+  } from '../../../utils';
 
   interface Props {
     sourceId?: string;
@@ -117,11 +122,13 @@
       const source = mapInstance.getSource(props.sourceId) as ImageSource;
       if (source) {
         // For image sources, we need to update coordinates and url
-        if (source.updateImage) {
-          source.updateImage({
-            url: props.source.url,
-            coordinates: props.source.coordinates,
-          });
+        const { url, coordinates } = props.source;
+        if (source.updateImage && url !== undefined) {
+          source.updateImage({ url, coordinates });
+        } else if (source.setCoordinates && url === undefined) {
+          // MapLibre 6 allows an image source without a url. There is no
+          // image to load, so only the corners can change.
+          source.setCoordinates(coordinates);
         } else {
           // If updateImage is not available, remove and re-add the source and layer
           if (mapInstance.getLayer(props.layerId)) {
@@ -151,12 +158,8 @@
 
     try {
       if (mapInstance.getLayer(props.layerId)) {
-        Object.entries(props.layer.paint || {}).forEach(([key, value]) => {
-          mapInstance.setPaintProperty(props.layerId, key, value);
-        });
-        Object.entries(props.layer.layout || {}).forEach(([key, value]) => {
-          mapInstance.setLayoutProperty(props.layerId, key, value);
-        });
+        setPaintProperties(mapInstance, props.layerId, props.layer.paint);
+        setLayoutProperties(mapInstance, props.layerId, props.layer.layout);
       }
     } catch (error) {
       console.error('Error updating Image layer:', error);

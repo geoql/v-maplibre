@@ -30,6 +30,7 @@ import VMarker from './markers/VMarker.vue';
 import VPopup from './popups/VPopup.vue';
 
 export { requirePeer } from './utils';
+export type { PaintPropertyName } from './utils';
 
 export {
   VMap,

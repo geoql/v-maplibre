@@ -28,6 +28,7 @@
     polygonsToRingArrays,
     filterDefined,
   } from '../_shared/arrow';
+  import type { Ring } from '../_shared/arrow';
   import type { ArrowTableLike } from '../_shared/types';
 
   const POLYGON_PEER_INSTALL =
@@ -112,7 +113,7 @@
         ...filterDefined(props as unknown as Record<string, unknown>, EXCLUDE),
         id: props.id,
         data: rings,
-        getPolygon: (ring: number[][]) => ring,
+        getPolygon: (ring: Ring) => ring,
         onClick: (info: PickingInfo) => emit('click', info),
         onHover: (info: PickingInfo) => emit('hover', info),
       });

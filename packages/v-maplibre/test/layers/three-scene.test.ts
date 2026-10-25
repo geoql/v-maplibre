@@ -49,14 +49,10 @@ const makeMap = (): Map => {
     getStyle: vi.fn(() => ({ layers })),
     getCenter: () => ({ lng: 7.9, lat: 45.9 }),
     getCenterElevation: () => 0,
-    transform: {
-      cameraPosition: [0.5, 0.35, 0.001],
-      fov: 45,
-      pitch: 30,
-      bearing: 10,
-      cameraToCenterDistance: 800,
-      worldSize: 512 * 2 ** 14,
-    },
+    getVerticalFieldOfView: () => 45,
+    getPitch: () => 30,
+    getBearing: () => 10,
+    getZoom: () => 14,
   } as unknown as Map;
 };
 
