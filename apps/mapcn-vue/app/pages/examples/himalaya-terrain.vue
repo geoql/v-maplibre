@@ -40,12 +40,17 @@
   // Two separate raster-dem sources: MapLibre cannot reliably drive both
   // setTerrain and a hillshade layer from one source. Bounds / zoom range
   // come from the PMTiles header via the protocol's TileJSON — never
-  // hardcoded here.
+  // hardcoded here. The attribution is set explicitly: MapLibre lets the
+  // source spec override the archive's TileJSON fields, so the map credit
+  // never depends on whatever the archive metadata says.
+  const TERRAIN_ATTRIBUTION = 'Garhwal Himalaya terrain';
+
   const terrainSource: RasterDEMSourceSpecification = {
     type: 'raster-dem',
     url: terrainUrl,
     tileSize: 512,
     encoding: 'mapbox',
+    attribution: TERRAIN_ATTRIBUTION,
   };
 
   const hillshadeSource: RasterDEMSourceSpecification = {
@@ -53,6 +58,7 @@
     url: terrainUrl,
     tileSize: 512,
     encoding: 'mapbox',
+    attribution: TERRAIN_ATTRIBUTION,
   };
 
   // At pitch 64 the terrain meets empty canvas without a sky, so the horizon
