@@ -20,7 +20,7 @@
   const config = useRuntimeConfig();
   const assetsBase = config.public.r2AssetsBase;
 
-  // geolith pipeline output (geolith/geolith#17): an outward-facing CC0
+  // Converted demo asset: an outward-facing CC0
   // 3DGS capture (steam-studio.jp) at true metric scale, anchored near
   // Tokyo Tower. The subject is ~2.5 m tall, so the altitude lifts its
   // local origin enough that the base rests on the flat basemap.
@@ -96,7 +96,7 @@
 <template>
   <ComponentDemo
     title="Gaussian Splat Layer"
-    description="Render a georeferenced Gaussian splat scene (.ply / .spz / .splat / .ksplat / .sog) on the map. A geolith-converted outward-facing 3DGS capture (CC0, steam-studio.jp) anchored near Tokyo Tower, rendered by Spark with LOD streaming inside a shared three.js scene."
+    description="Render a georeferenced Gaussian splat scene (.ply / .spz / .splat / .ksplat / .sog) on the map. A converted outward-facing 3DGS capture (CC0, steam-studio.jp) anchored near Tokyo Tower, rendered by Spark with LOD streaming inside a shared three.js scene."
     :code="codeExample"
     full-width
     class="h-full"
