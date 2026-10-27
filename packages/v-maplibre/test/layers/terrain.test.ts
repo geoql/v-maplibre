@@ -13,7 +13,7 @@ import type {
 
 const demSource: RasterDEMSourceSpecification = {
   type: 'raster-dem',
-  url: 'pmtiles://https://samples.geolith.app/terrain/garhwal-himalaya.pmtiles',
+  url: 'pmtiles://https://assets.example.com/terrain/garhwal-himalaya.pmtiles',
   tileSize: 512,
   encoding: 'mapbox',
 };

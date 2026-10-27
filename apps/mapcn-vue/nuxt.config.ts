@@ -151,7 +151,7 @@ export default defineNuxtConfig({
       openweathermapApiKey:
         process.env.NUXT_PUBLIC_OPENWEATHERMAP_API_KEY ??
         '385df3d81f3a89c1c99c115735540c6d',
-      // Base URL of the R2 bucket hosting geolith-generated demo assets
+      // Base URL of the R2 bucket hosting the demo assets
       // (Gaussian splats, 3D Tiles tilesets, Terrain-RGB PMTiles). Baked at
       // build time from NUXT_PUBLIC_R2_ASSETS_BASE (GH secret) so the bucket
       // can be rotated without a code change. Must read process.env HERE:

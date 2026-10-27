@@ -29,7 +29,7 @@
 * add gaussian splat + ogc 3d tiles layers with demos and doctor cleanup ([39d17d6](https://github.com/geoql/v-maplibre/commit/39d17d640cb2fa94ec257468372bfa7150bbe493))
 * gaussian splat + ogc 3d tiles layers (VLayerSplat, VLayer3DTiles) ([344fcae](https://github.com/geoql/v-maplibre/commit/344fcae5c2e52b2f942bd10b944bd1e4009d393b))
 * **mapcn-vue:** add 3D splat scene example with DRACO and per-frame georeference fixes ([aa29fed](https://github.com/geoql/v-maplibre/commit/aa29fedd03e474016ccb64f4a32b419a55870e17))
-* **mapcn:** add splat + 3d-tiles demos wired to geolith r2 assets ([63d6c99](https://github.com/geoql/v-maplibre/commit/63d6c99af9fdb9364df9bfb632253bd0f09b70d4))
+* **mapcn:** add splat + 3d-tiles demos wired to r2 assets ([63d6c99](https://github.com/geoql/v-maplibre/commit/63d6c99af9fdb9364df9bfb632253bd0f09b70d4))
 * **terrain:** add native maplibre 3d terrain + hillshade support ([60c7068](https://github.com/geoql/v-maplibre/commit/60c7068128ff8284edc808492dd40cd05eb707fa))
 * **terrain:** add VSky, fix battlefield 3D terrain, repair docs sources block ([4f55042](https://github.com/geoql/v-maplibre/commit/4f55042bef2d8e83472393f4e78f5cfd9c827b53))
 * **terrain:** native MapLibre 3D terrain + hillshade + sky components and demos ([888217a](https://github.com/geoql/v-maplibre/commit/888217a84a8775ad2feb0a074b9f1a127e59edd5))

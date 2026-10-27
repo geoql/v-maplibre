@@ -288,7 +288,7 @@ jobs:
           # time — without it prerendered pages ship clientId:"" and OpenPanel
           # tracking is silently dead in production.
           NUXT_PUBLIC_OPENPANEL_CLIENT_ID: ${{ secrets.NUXT_PUBLIC_OPENPANEL_CLIENT_ID }}
-          # R2 bucket serving geolith demo assets (splats, 3D Tiles, terrain
+          # R2 bucket serving demo assets (splats, 3D Tiles, terrain
           # PMTiles) for the /examples/splat + /examples/3d-tiles pages.
           NUXT_PUBLIC_R2_ASSETS_BASE: ${{ secrets.NUXT_PUBLIC_R2_ASSETS_BASE }}
 

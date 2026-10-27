@@ -22,7 +22,7 @@
   defineOgImage('MapcnDoc', {
     title: 'Himalaya 3D Terrain',
     description:
-      'Native MapLibre setTerrain + hillshade from a geolith Terrain-RGB PMTiles archive.',
+      'Native MapLibre setTerrain + hillshade from a Terrain-RGB PMTiles archive.',
     category: 'MapLibre Layers',
   });
 
@@ -180,7 +180,7 @@
 <template>
   <ComponentDemo
     title="Himalaya 3D Terrain"
-    description="Native MapLibre 3D terrain — no three.js, no deck.gl. A geolith-built Terrain-RGB PMTiles archive of the Garhwal Himalaya (Kedarnath, Badrinath, Chaukhamba, Valley of Flowers) drives setTerrain plus a hillshade layer, with the basemap draped over the relief."
+    description="Native MapLibre 3D terrain — no three.js, no deck.gl. A Terrain-RGB PMTiles archive of the Garhwal Himalaya (Kedarnath, Badrinath, Chaukhamba, Valley of Flowers) drives setTerrain plus a hillshade layer, with the basemap draped over the relief."
     :code="codeExample"
     full-width
     class="h-full"
