@@ -37,7 +37,7 @@
     "husky": "^9.1.7",
     "is-ci": "^4.1.0",
     "lint-staged": "^17.6.0",
-    "typescript": "^6.0.3",
+    "typescript": "^7.0.2",
     "vite-plus": "catalog:",
     "zod": "^4.6.7",
     "zod-to-json-schema": "^3.25.2"
