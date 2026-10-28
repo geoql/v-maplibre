@@ -6,6 +6,8 @@
 [![JSR](https://jsr.io/badges/@geoql/v-maplibre)](https://jsr.io/@geoql/v-maplibre)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+**[Live examples](https://mapcn-vue.geoql.in/?utm_source=github&utm_medium=readme&utm_campaign=v-maplibre)** · [Docs](https://v-maplibre.geoql.in/?utm_source=github&utm_medium=readme&utm_campaign=v-maplibre) · [npm](https://www.npmjs.com/package/@geoql/v-maplibre) · [JSR](https://jsr.io/@geoql/v-maplibre)
+
 ## Packages
 
 | Package                                    | Description                             |
@@ -175,6 +177,17 @@ Check out the [live examples](https://mapcn-vue.geoql.in/examples) for interacti
 ## Credits
 
 Built with [MapLibre GL JS](https://maplibre.org/), [deck.gl](https://deck.gl/), [Vue 3](https://vuejs.org/), and [Vite](https://vitejs.dev/).
+
+## More from the author
+
+- [v-mapkit](https://v-mapkit.geoql.in/?utm_source=github&utm_medium=readme&utm_campaign=v-maplibre) — Vue 3 components for Apple MapKit JS
+- [mapkit-cn](https://mapkit-cn.geoql.in/?utm_source=github&utm_medium=readme&utm_campaign=v-maplibre) — copy-paste Apple MapKit JS components with live examples
+- [maplibre-gl-wind](https://maplibre-gl-wind.geoql.in/?utm_source=github&utm_medium=readme&utm_campaign=v-maplibre) — wind particle animation layer for MapLibre
+- [maplibre-gl-inspect](https://maplibre-gl-inspect.geoql.in/?utm_source=github&utm_medium=readme&utm_campaign=v-maplibre) — inspect vector tile features and their properties
+- [maplibre-gl-compare](https://maplibre-gl-compare.geoql.in/?utm_source=github&utm_medium=readme&utm_campaign=v-maplibre) — swipe-style map comparison control
+- [nxui](https://nxui.geoql.in/?utm_source=github&utm_medium=readme&utm_campaign=v-maplibre) — animated copy-paste UI components for Vue 3 and Nuxt
+
+See every project at [vinayakkulkarni.dev/projects](https://vinayakkulkarni.dev/projects?utm_source=github&utm_medium=readme&utm_campaign=v-maplibre) and [geoql.in](https://geoql.in/?utm_source=github&utm_medium=readme&utm_campaign=v-maplibre).
 
 ---
 
