@@ -52,7 +52,7 @@ allowBuilds:
 catalogs:
   default:
     maplibre-gl: ^6.15.0
-    typescript: ^6.0.3
+    typescript: ^7.0.2
     vue: ^3.5.44
     vue-tsc: ^3.3.13
     vite: npm:@voidzero-dev/vite-plus-core@1.4.0
