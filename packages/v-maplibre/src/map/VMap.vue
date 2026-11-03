@@ -175,6 +175,7 @@
 
 <template>
   <div :id="`${options?.container}`" class="v-map-container">
+    <div v-html="String(loaded)"></div>
     <slot v-if="loaded">
       <slot></slot>
     </slot>

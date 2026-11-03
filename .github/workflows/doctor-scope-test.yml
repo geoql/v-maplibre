@@ -1,0 +1,130 @@
+name: 'Doctor scope test (scratch, delete me)'
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  changed-merge-ref:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6.1.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - id: doctor
+        continue-on-error: true
+        uses: geoql/doctor-action@996e5c8e3b086a41d587b15348a3aa100b02fe38
+        with:
+          framework: vue
+          working-directory: packages/v-maplibre
+          scope: changed
+          pr-comment: 'true'
+      - name: Assert
+        env:
+          NEW: ${{ steps.doctor.outputs.new-count }}
+          FIXED: ${{ steps.doctor.outputs.fixed-count }}
+          CODE: ${{ steps.doctor.outputs.exit-code }}
+          FINDINGS: ${{ steps.doctor.outputs.findings-count }}
+          OUTCOME: ${{ steps.doctor.outcome }}
+        run: |
+          echo "new=$NEW fixed=$FIXED code=$CODE findings=$FINDINGS outcome=$OUTCOME"
+          jq '{scope, baseline, d: [.diagnostics[].ruleId]}' packages/v-maplibre/doctor-report.json
+          [ "$NEW" = "1" ] && [ "$FIXED" = "0" ] && [ "$CODE" = "1" ] && [ "$FINDINGS" = "1" ] && [ "$OUTCOME" = "failure" ]
+
+  changed-head-sha:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: pnpm/action-setup@v6.1.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - id: doctor
+        continue-on-error: true
+        uses: geoql/doctor-action@996e5c8e3b086a41d587b15348a3aa100b02fe38
+        with:
+          framework: vue
+          working-directory: packages/v-maplibre
+          scope: lines
+      - name: Assert
+        env:
+          CODE: ${{ steps.doctor.outputs.exit-code }}
+          FINDINGS: ${{ steps.doctor.outputs.findings-count }}
+        run: |
+          echo "code=$CODE findings=$FINDINGS"
+          jq '{scope, d: [.diagnostics[].ruleId]}' packages/v-maplibre/doctor-report.json
+          [ "$CODE" = "1" ] && [ "$FINDINGS" = "1" ]
+
+  baseline:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.base.sha }}
+      - uses: pnpm/action-setup@v6.1.0
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: 'pnpm'
+      - run: pnpm install --frozen-lockfile
+      - id: base
+        continue-on-error: true
+        uses: geoql/doctor-action@996e5c8e3b086a41d587b15348a3aa100b02fe38
+        with:
+          framework: vue
+          working-directory: packages/v-maplibre
+          save-baseline: ${{ runner.temp }}/doctor-baseline.json
+          warning-exit-code: '78'
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - run: pnpm install --frozen-lockfile
+      - id: head
+        continue-on-error: true
+        uses: geoql/doctor-action@996e5c8e3b086a41d587b15348a3aa100b02fe38
+        with:
+          framework: vue
+          working-directory: packages/v-maplibre
+          baseline: ${{ runner.temp }}/doctor-baseline.json
+      - name: Assert
+        env:
+          BASE_CODE: ${{ steps.base.outputs.exit-code }}
+          BASE_NEW: ${{ steps.base.outputs.new-count }}
+          NEW: ${{ steps.head.outputs.new-count }}
+          FIXED: ${{ steps.head.outputs.fixed-count }}
+          CODE: ${{ steps.head.outputs.exit-code }}
+        run: |
+          echo "base: code=$BASE_CODE new='$BASE_NEW'  head: new=$NEW fixed=$FIXED code=$CODE"
+          test -s "$RUNNER_TEMP/doctor-baseline.json"
+          [ "$BASE_CODE" = "78" ] && [ -z "$BASE_NEW" ] && [ "$NEW" = "1" ] && [ "$FIXED" = "0" ] && [ "$CODE" = "1" ]
+
+  version-guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - id: doctor
+        continue-on-error: true
+        uses: geoql/doctor-action@996e5c8e3b086a41d587b15348a3aa100b02fe38
+        with:
+          framework: vue
+          version: '1.7.0'
+          working-directory: packages/v-maplibre
+          scope: changed
+      - name: Assert
+        env:
+          OUTCOME: ${{ steps.doctor.outcome }}
+          CODE: ${{ steps.doctor.outputs.exit-code }}
+        run: |
+          echo "outcome=$OUTCOME code='$CODE'"
+          [ "$OUTCOME" = "failure" ] && [ -z "$CODE" ]
