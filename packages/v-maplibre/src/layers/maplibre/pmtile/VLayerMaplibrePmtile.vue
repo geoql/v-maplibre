@@ -49,7 +49,9 @@
     :source="source"
     :layer="{
       ...layer,
+      id: layerId,
       type: 'raster',
+      source: sourceId,
     }"
     :before="before"
   ></VLayerMaplibreRaster>

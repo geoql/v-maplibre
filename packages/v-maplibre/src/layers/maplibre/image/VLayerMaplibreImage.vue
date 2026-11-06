@@ -11,6 +11,7 @@
     MapKey,
     setLayoutProperties,
     setPaintProperties,
+    removeLayerAndSource,
   } from '../../../utils';
 
   interface Props {
@@ -198,16 +199,7 @@
     const mapInstance = getMapInstance();
     if (!mapInstance) return;
 
-    try {
-      if (mapInstance.getLayer(props.layerId)) {
-        mapInstance.removeLayer(props.layerId);
-      }
-      if (mapInstance.getSource(props.sourceId)) {
-        mapInstance.removeSource(props.sourceId);
-      }
-    } catch (error) {
-      console.error('Error cleaning up Image layer:', error);
-    }
+    removeLayerAndSource(mapInstance, props.layerId, props.sourceId);
   });
 </script>
 

@@ -17,6 +17,7 @@
     MapKey,
     setLayoutProperties,
     setPaintProperties,
+    removeLayerAndSource,
   } from '../../../utils';
 
   const props = defineProps<{
@@ -332,6 +333,11 @@
 
   onBeforeUnmount(() => {
     unbindReadyHandlers();
+
+    const mapInstance = getMapInstance();
+    if (!mapInstance) return;
+
+    removeLayerAndSource(mapInstance, props.layerId, props.sourceId);
   });
 </script>
 

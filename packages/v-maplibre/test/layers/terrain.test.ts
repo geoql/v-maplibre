@@ -27,7 +27,9 @@ interface MockMapOverrides {
 const createMockMap = (overrides: MockMapOverrides = {}) => {
   const { hasSource = false, hasLayer = false, styleLoaded = true } = overrides;
   const sources = new Set<string>(hasSource ? ['dem'] : []);
-  const layers = new Set<string>(hasLayer ? ['existing-layer'] : []);
+  const layers = new globalThis.Map<string, string | undefined>(
+    hasLayer ? [['existing-layer', undefined]] : [],
+  );
   return {
     listeners: new globalThis.Map<string, Set<(...args: unknown[]) => void>>(),
     on(event: string, cb: (...args: unknown[]) => void) {
@@ -51,9 +53,12 @@ const createMockMap = (overrides: MockMapOverrides = {}) => {
       sources.delete(id);
     }),
     getLayer: vi.fn((id: string) => (layers.has(id) ? { id } : undefined)),
-    addLayer: vi.fn((layer: { id: string }) => {
-      layers.add(layer.id);
+    addLayer: vi.fn((layer: { id: string; source?: string }) => {
+      layers.set(layer.id, layer.source);
     }),
+    getStyle: vi.fn(() => ({
+      layers: [...layers].map(([id, source]) => ({ id, source })),
+    })),
     removeLayer: vi.fn((id: string) => {
       layers.delete(id);
     }),

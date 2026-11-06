@@ -11,6 +11,7 @@
     MapKey,
     setLayoutProperties,
     setPaintProperties,
+    removeLayerAndSource,
   } from '../../../utils';
 
   interface Props {
@@ -209,16 +210,11 @@
           videoElement.remove();
         }
       }
-
-      if (mapInstance.getLayer(props.layerId)) {
-        mapInstance.removeLayer(props.layerId);
-      }
-      if (mapInstance.getSource(props.sourceId)) {
-        mapInstance.removeSource(props.sourceId);
-      }
     } catch (error) {
-      console.error('Error cleaning up Video layer:', error);
+      console.error('Error stopping Video source:', error);
     }
+
+    removeLayerAndSource(mapInstance, props.layerId, props.sourceId);
   });
 </script>
 

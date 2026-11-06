@@ -10,6 +10,7 @@
     MapKey,
     setLayoutProperties,
     setPaintProperties,
+    removeLayerAndSource,
   } from '../../../utils';
 
   interface Props {
@@ -138,18 +139,11 @@
 
   onBeforeUnmount(() => {
     unbindReadyHandlers();
+
     const mapInstance = map.value;
     if (!mapInstance) return;
-    try {
-      if (mapInstance.getLayer(props.layerId)) {
-        mapInstance.removeLayer(props.layerId);
-      }
-      if (mapInstance.getSource(props.sourceId)) {
-        mapInstance.removeSource(props.sourceId);
-      }
-    } catch (error) {
-      console.error(`[${props.layerId}] Error during cleanup:`, error);
-    }
+
+    removeLayerAndSource(mapInstance, props.layerId, props.sourceId);
   });
 </script>
 

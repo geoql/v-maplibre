@@ -13,6 +13,7 @@
     MapKey,
     setLayoutProperties,
     setPaintProperties,
+    removeLayerAndSource,
   } from '../../../utils';
 
   interface LayerClick {
@@ -350,31 +351,7 @@
     const mapInstance = getMapInstance();
     if (!mapInstance) return;
 
-    try {
-      // Remove layer
-      if (mapInstance.getLayer(props.layerId)) {
-        mapInstance.removeLayer(props.layerId);
-      }
-
-      // Only remove source if no other layers are using it
-      const layersUsingSource = mapInstance
-        .getStyle()
-        .layers.filter(
-          (l) =>
-            l.type !== 'background' &&
-            'source' in l &&
-            l.source === props.sourceId,
-        );
-
-      if (
-        layersUsingSource.length === 0 &&
-        mapInstance.getSource(props.sourceId)
-      ) {
-        mapInstance.removeSource(props.sourceId);
-      }
-    } catch (error) {
-      console.error('Error cleaning up GeoJSON layer:', error);
-    }
+    removeLayerAndSource(mapInstance, props.layerId, props.sourceId);
   });
 </script>
 
