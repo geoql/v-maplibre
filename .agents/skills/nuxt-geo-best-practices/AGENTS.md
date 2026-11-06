@@ -712,7 +712,7 @@ Unlike Googlebot (which renders JS), most AI crawlers — GPTBot, ClaudeBot, Per
 
 ```html
 <!-- What an AI crawler sees on a CSR Nuxt build -->
-<!DOCTYPE html>
+<!doctype html>
 <html>
   <head>
     <title>My App</title>

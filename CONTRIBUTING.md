@@ -6,7 +6,7 @@ Thank you for your interest in contributing! This guide will help you get starte
 
 ### Prerequisites
 
-- Node.js 26 (see [`.node-version`](./.node-version))
+- Node.js 26 LTS (`devEngines.runtime` in [`package.json`](./package.json))
 - pnpm v11
 - Git
 

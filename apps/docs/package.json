@@ -24,6 +24,8 @@
     "zod-to-json-schema": "catalog:app:docs"
   },
   "devDependencies": {
+    "@modelcontextprotocol/sdk": "catalog:app:docs",
+    "@modelcontextprotocol/server": "catalog:app:docs",
     "agents": "catalog:app:docs",
     "vite-plus": "catalog:",
     "vue-tsc": "catalog:",

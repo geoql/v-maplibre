@@ -20,7 +20,7 @@ column directly off the Arrow `Table` without an explicit
 ## Regenerating
 
 Use the `generate.ts` script in this directory. It uses the workspace's
-`apache-arrow` dependency and runs natively under Node 24's built-in
+`apache-arrow` dependency and runs natively under Node 26's built-in
 TypeScript type stripping — no transpile step required:
 
 ```sh

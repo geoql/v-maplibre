@@ -31,24 +31,21 @@
     bearing: -17,
   }));
 
-  // Generate column data (buildings/metrics)
-  const columnData = [];
-  for (let i = 0; i < 50; i++) {
-    columnData.push({
-      position: [
-        -122.4 + (Math.random() - 0.5) * 0.1,
-        37.78 + (Math.random() - 0.5) * 0.08,
-      ],
-      elevation: Math.random() * 1000 + 200,
-      color: Math.random() > 0.5 ? [255, 140, 0, 200] : [0, 200, 150, 200],
-    });
-  }
-
   interface ColumnData {
     position: [number, number];
     elevation: number;
     color: [number, number, number, number];
   }
+
+  // Generate column data (buildings/metrics)
+  const columnData: ColumnData[] = Array.from({ length: 50 }, () => ({
+    position: [
+      -122.4 + (Math.random() - 0.5) * 0.1,
+      37.78 + (Math.random() - 0.5) * 0.08,
+    ],
+    elevation: Math.random() * 1000 + 200,
+    color: Math.random() > 0.5 ? [255, 140, 0, 200] : [0, 200, 150, 200],
+  }));
 
   const legendItems: CategoryLegendItem[] = [
     { value: 'category-a', label: 'Category A', color: '#ff8c00' },
