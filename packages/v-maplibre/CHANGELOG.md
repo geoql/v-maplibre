@@ -1,5 +1,18 @@
 # Changelog
 
+## [3.1.1](https://github.com/geoql/v-maplibre/compare/v3.1.0...v3.1.1) (2026-11-06)
+
+
+### Bug Fixes
+
+* **v-maplibre:** remove raster, vector and pmtile layers on unmount ([8f46ff1](https://github.com/geoql/v-maplibre/commit/8f46ff16a44c36f7303923c538d77ef60243d40b)), closes [#180](https://github.com/geoql/v-maplibre/issues/180)
+
+
+### Miscellaneous
+
+* **deps:** bump vitest to 5.1.0 in v-maplibre devDependencies ([4b6f79e](https://github.com/geoql/v-maplibre/commit/4b6f79e8331f4283629bf6ee26a6dda118d8a9e5))
+* **deps:** latest dependencies, node 26 lts and pnpm 12.18.0 ([ea505e6](https://github.com/geoql/v-maplibre/commit/ea505e6e9c9b9feec4b8915b7dfeaa184ed9ff64))
+
 ## [3.1.0](https://github.com/geoql/v-maplibre/compare/v3.0.1...v3.1.0) (2026-10-27)
 
 
