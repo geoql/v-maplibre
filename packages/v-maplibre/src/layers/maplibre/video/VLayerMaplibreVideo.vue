@@ -8,10 +8,11 @@
   import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
   import {
     injectStrict,
+    isStyleReady,
     MapKey,
+    removeLayerAndSource,
     setLayoutProperties,
     setPaintProperties,
-    removeLayerAndSource,
   } from '../../../utils';
 
   interface Props {
@@ -53,7 +54,7 @@
     if (!mapInstance) return false;
 
     // Style must be ready before sources/layers can be added.
-    if (!mapInstance.isStyleLoaded()) return false;
+    if (!isStyleReady(mapInstance)) return false;
 
     try {
       if (!mapInstance.getSource(props.sourceId)) {

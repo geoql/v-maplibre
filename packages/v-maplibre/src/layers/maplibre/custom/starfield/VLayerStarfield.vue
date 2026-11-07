@@ -10,7 +10,7 @@
   import { ref, watch, onBeforeUnmount } from 'vue';
   import type { Map } from 'maplibre-gl';
   import { MaplibreStarfieldLayer } from '@geoql/maplibre-gl-starfield';
-  import { injectStrict, MapKey } from '../../../../utils';
+  import { injectStrict, isStyleReady, MapKey } from '../../../../utils';
 
   interface Props {
     id?: string;
@@ -55,7 +55,7 @@
 
   const addLayer = (): void => {
     const mapInstance = getMapInstance();
-    if (!mapInstance || !mapInstance.isStyleLoaded()) return;
+    if (!mapInstance || !isStyleReady(mapInstance)) return;
 
     try {
       if (mapInstance.getLayer(props.id)) {
@@ -90,7 +90,7 @@
 
     mapInstance.on('style.load', () => {
       const styleTimeout = () => {
-        if (!mapInstance.isStyleLoaded()) {
+        if (!isStyleReady(mapInstance)) {
           loaded.value = false;
           setTimeout(styleTimeout, 200);
         } else {
@@ -106,7 +106,7 @@
     (newMap) => {
       if (newMap) {
         setupMap(newMap);
-        if (newMap.isStyleLoaded()) {
+        if (isStyleReady(newMap)) {
           loaded.value = true;
         }
       }

@@ -7,10 +7,11 @@
   import { onMounted, onBeforeUnmount, ref, watch } from 'vue';
   import {
     injectStrict,
+    isStyleReady,
     MapKey,
+    removeLayerAndSource,
     setLayoutProperties,
     setPaintProperties,
-    removeLayerAndSource,
   } from '../../../utils';
 
   const props = withDefaults(
@@ -41,6 +42,8 @@
   // Bound readiness handlers so they can be removed on unmount / map rebind.
   let boundMap: Map | null = null;
   let styleLoadHandler: (() => void) | null = null;
+  // An updateSource() deferred while a style was loading.
+  let pendingSourceUpdate = false;
   let idleHandler: (() => void) | null = null;
 
   // Single, idempotent entry point. Adds the source + layer exactly once, but
@@ -52,7 +55,7 @@
     if (!mapInstance) return false;
 
     // Style must be ready before sources/layers can be added.
-    if (!mapInstance.isStyleLoaded()) return false;
+    if (!isStyleReady(mapInstance)) return false;
 
     try {
       if (!mapInstance.getSource(props.sourceId)) {
@@ -86,7 +89,8 @@
     boundMap = mapInstance;
 
     styleLoadHandler = () => {
-      tryAddLayer();
+      if (pendingSourceUpdate) updateSource();
+      else tryAddLayer();
     };
     mapInstance.on('style.load', styleLoadHandler);
 
@@ -117,10 +121,15 @@
   const updateSource = (): void => {
     const mapInstance = getMapInstance();
     if (!mapInstance) return;
-    // The style must be ready before sources/layers can be mutated. When it is
-    // not, tryAddLayer() (bound to style.load / idle) adds the CURRENT props
-    // later, so the update is not lost.
-    if (!mapInstance.isStyleLoaded()) return;
+    // The style must be parsed before sources/layers can be mutated. When it
+    // is not (a style is loading), mark the update pending: the style.load
+    // handler applies the CURRENT props once the style is parsed. tryAddLayer()
+    // alone would not, because it returns early once the layer was added.
+    if (!isStyleReady(mapInstance)) {
+      pendingSourceUpdate = true;
+      return;
+    }
+    pendingSourceUpdate = false;
 
     try {
       // For canvas sources, we need to remove and re-add both source and layer
@@ -138,6 +147,7 @@
         source: props.sourceId,
       } as LayerSpecification;
       mapInstance.addLayer(layerSpec, props.before);
+      initialized.value = true;
     } catch (error) {
       console.error('Error updating Canvas source:', error);
     }

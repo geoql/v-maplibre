@@ -4,7 +4,7 @@
   import type { LngLatLike, Marker, PopupOptions, Map } from 'maplibre-gl';
   import { Popup } from 'maplibre-gl';
   import { popupEvents } from '../constants/events';
-  import { injectStrict, MapKey } from '../utils';
+  import { injectStrict, isStyleReady, MapKey } from '../utils';
 
   const props = withDefaults(
     defineProps<{
@@ -40,7 +40,7 @@
 
     mapInstance.on('style.load', () => {
       const styleTimeout = () => {
-        if (!mapInstance.isStyleLoaded()) {
+        if (!isStyleReady(mapInstance)) {
           loaded.value = false;
           setTimeout(styleTimeout, 200);
         } else {

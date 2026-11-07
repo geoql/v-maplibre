@@ -1,3 +1,4 @@
+import { isStyleReady } from '../../../utils';
 import { onMounted, watch, type Ref } from 'vue';
 import type { Map } from 'maplibre-gl';
 
@@ -8,7 +9,7 @@ import type { Map } from 'maplibre-gl';
  * style is already loaded by the time a child wrapper mounts (the common case
  * in production where lazy-loaded chunks arrive AFTER the basemap has
  * rendered), the `.once()` listener never fires and the layer never
- * initialises. This helper polls `isStyleLoaded()` every 100ms (capped at
+ * initialises. This helper polls `isStyleReady()` every 100ms (capped at
  * 10s) alongside the event listener so the callback runs whether the style
  * loaded before or after the wrapper mounted, and whether the map ref
  * arrived synchronously or asynchronously.
@@ -22,7 +23,7 @@ export function useMapReady(map: Ref<Map | null>, cb: () => void): void {
   };
 
   const waitForStyle = (m: Map) => {
-    if (m.isStyleLoaded()) {
+    if (isStyleReady(m)) {
       fireOnce();
       return;
     }
@@ -32,7 +33,7 @@ export function useMapReady(map: Ref<Map | null>, cb: () => void): void {
         clearInterval(interval);
         return;
       }
-      if (m.isStyleLoaded()) {
+      if (isStyleReady(m)) {
         clearInterval(interval);
         fireOnce();
       }

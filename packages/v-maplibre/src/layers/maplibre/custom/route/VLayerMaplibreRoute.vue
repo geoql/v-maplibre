@@ -7,7 +7,7 @@
     MapLayerMouseEvent,
     LineLayerSpecification,
   } from 'maplibre-gl';
-  import { injectStrict, MapKey } from '../../../../utils';
+  import { injectStrict, isStyleReady, MapKey } from '../../../../utils';
 
   interface RouteClick {
     coordinates: {
@@ -99,7 +99,7 @@
 
     mapInstance.on('style.load', () => {
       const styleTimeout = () => {
-        if (!mapInstance.isStyleLoaded()) {
+        if (!isStyleReady(mapInstance)) {
           loaded.value = false;
           setTimeout(styleTimeout, 200);
         } else {
@@ -112,7 +112,7 @@
 
   const addLayer = (): void => {
     const mapInstance = getMapInstance();
-    if (!mapInstance || !mapInstance.isStyleLoaded()) return;
+    if (!mapInstance || !isStyleReady(mapInstance)) return;
 
     // Don't add if no valid coordinates
     if (props.coordinates.length < 2) return;
@@ -241,7 +241,7 @@
     () => props.coordinates,
     () => {
       const mapInstance = getMapInstance();
-      if (mapInstance?.isStyleLoaded()) {
+      if (mapInstance && isStyleReady(mapInstance)) {
         if (!mapInstance.getSource(sourceId.value)) {
           addLayer();
         } else {
@@ -274,7 +274,7 @@
     (newMap) => {
       if (newMap) {
         setupMap(newMap);
-        if (newMap.isStyleLoaded()) {
+        if (isStyleReady(newMap)) {
           loaded.value = true;
         }
       }
@@ -297,7 +297,11 @@
   onMounted(() => {
     try {
       const mapInstance = getMapInstance();
-      if (mapInstance?.isStyleLoaded() && props.coordinates.length >= 2) {
+      if (
+        mapInstance &&
+        isStyleReady(mapInstance) &&
+        props.coordinates.length >= 2
+      ) {
         addLayer();
         setupLayerEvents(mapInstance);
       }

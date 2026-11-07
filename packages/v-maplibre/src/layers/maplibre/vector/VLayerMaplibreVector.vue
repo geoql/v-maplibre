@@ -14,10 +14,11 @@
   import { mapLayerEvents } from '../../../constants/events';
   import {
     injectStrict,
+    isStyleReady,
     MapKey,
+    removeLayerAndSource,
     setLayoutProperties,
     setPaintProperties,
-    removeLayerAndSource,
   } from '../../../utils';
 
   const props = defineProps<{
@@ -53,7 +54,7 @@
     if (!mapInstance) return false;
 
     // Style must be ready before sources/layers can be added.
-    if (!mapInstance.isStyleLoaded()) return false;
+    if (!isStyleReady(mapInstance)) return false;
 
     try {
       if (!mapInstance.getSource(props.sourceId)) {

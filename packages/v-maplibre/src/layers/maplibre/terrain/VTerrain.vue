@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { onBeforeUnmount, onMounted, watch } from 'vue';
   import type { Map, RasterDEMSourceSpecification } from 'maplibre-gl';
-  import { injectStrict, MapKey } from '../../../utils';
+  import { injectStrict, isStyleReady, MapKey } from '../../../utils';
 
   interface Props {
     /** Id of the raster-dem source to drive `map.setTerrain`. */
@@ -33,7 +33,7 @@
 
     const mapInstance = map.value;
     if (!mapInstance) return false;
-    if (!mapInstance.isStyleLoaded()) return false;
+    if (!isStyleReady(mapInstance)) return false;
 
     try {
       if (!mapInstance.getSource(props.source)) {

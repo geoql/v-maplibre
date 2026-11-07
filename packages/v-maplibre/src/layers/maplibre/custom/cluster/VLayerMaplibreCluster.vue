@@ -11,7 +11,7 @@
     MapLayerMouseEvent,
     DataDrivenPropertyValueSpecification,
   } from 'maplibre-gl';
-  import { injectStrict, MapKey } from '../../../../utils';
+  import { injectStrict, isStyleReady, MapKey } from '../../../../utils';
 
   interface LayerClick {
     features: GeoJSON.Feature[];
@@ -98,7 +98,7 @@
   // Add all cluster-related layers at once
   const addClusterLayers = (): void => {
     const mapInstance = getMapInstance();
-    if (!mapInstance || !mapInstance.isStyleLoaded()) {
+    if (!mapInstance || !isStyleReady(mapInstance)) {
       return;
     }
 
@@ -309,7 +309,7 @@
 
     mapInstance.on('style.load', () => {
       const checkStyleLoaded = () => {
-        if (!mapInstance.isStyleLoaded()) {
+        if (!isStyleReady(mapInstance)) {
           loaded.value = false;
           setTimeout(checkStyleLoaded, 200);
         } else {
@@ -324,7 +324,7 @@
     });
 
     // If style is already loaded
-    if (mapInstance.isStyleLoaded()) {
+    if (isStyleReady(mapInstance)) {
       loaded.value = true;
       // Only add layers if we have data
       if (hasValidData(props.source.data)) {
@@ -340,7 +340,7 @@
       // Only proceed if we have actual data
       if (hasValidData(newData)) {
         const mapInstance = getMapInstance();
-        if (mapInstance?.isStyleLoaded()) {
+        if (mapInstance && isStyleReady(mapInstance)) {
           // First time with data - add all layers
           if (!mapInstance.getSource(props.sourceId)) {
             addClusterLayers();
@@ -370,7 +370,7 @@
   onMounted(() => {
     const mapInstance = getMapInstance();
     // Only add layers if map is ready AND we have data
-    if (mapInstance?.isStyleLoaded() && hasValidData(props.source.data)) {
+    if (isStyleReady(mapInstance) && hasValidData(props.source.data)) {
       addClusterLayers();
     }
   });

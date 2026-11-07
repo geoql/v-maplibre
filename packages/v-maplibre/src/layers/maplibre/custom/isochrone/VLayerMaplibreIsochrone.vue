@@ -15,7 +15,7 @@
     FillLayerSpecification,
     LineLayerSpecification,
   } from 'maplibre-gl';
-  import { injectStrict, MapKey } from '../../../../utils';
+  import { injectStrict, isStyleReady, MapKey } from '../../../../utils';
 
   interface IsochroneFeature {
     type: 'Feature';
@@ -126,7 +126,7 @@
 
     mapInstance.on('style.load', () => {
       const styleTimeout = () => {
-        if (!mapInstance.isStyleLoaded()) {
+        if (!isStyleReady(mapInstance)) {
           loaded.value = false;
           setTimeout(styleTimeout, 200);
         } else {
@@ -139,7 +139,7 @@
 
   const addLayers = (): void => {
     const mapInstance = getMapInstance();
-    if (!mapInstance || !mapInstance.isStyleLoaded()) return;
+    if (!mapInstance || !isStyleReady(mapInstance)) return;
 
     const data = processedData.value;
     if (!data) return;
@@ -299,7 +299,7 @@
     if (initialized.value) return;
 
     const mapInstance = getMapInstance();
-    if (!mapInstance || !mapInstance.isStyleLoaded()) return;
+    if (!mapInstance || !isStyleReady(mapInstance)) return;
     if (!processedData.value) return;
 
     // Wait for next tick to ensure all watchers are set up
@@ -318,7 +318,7 @@
     () => props.data,
     () => {
       const mapInstance = getMapInstance();
-      if (mapInstance?.isStyleLoaded()) {
+      if (mapInstance && isStyleReady(mapInstance)) {
         if (!mapInstance.getSource(sourceId.value)) {
           addLayers();
         } else {
@@ -355,7 +355,7 @@
     (newMap) => {
       if (newMap) {
         setupMap(newMap);
-        if (newMap.isStyleLoaded()) {
+        if (isStyleReady(newMap)) {
           loaded.value = true;
           // Also call initializeLayers directly in case loaded watcher already ran
           initializeLayers();

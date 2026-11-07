@@ -12,7 +12,7 @@
   import { Marker } from 'maplibre-gl';
   import VPopup from '../popups/VPopup.vue';
   import { markerDOMEvents, markerMapEvents } from '../constants/events';
-  import { injectStrict, MapKey } from '../utils';
+  import { injectStrict, isStyleReady, MapKey } from '../utils';
 
   const slots = useSlots();
 
@@ -83,7 +83,7 @@
 
     mapInstance.on('style.load', () => {
       const styleTimeout = () => {
-        if (!mapInstance.isStyleLoaded()) {
+        if (!isStyleReady(mapInstance)) {
           loaded.value = false;
           setTimeout(styleTimeout, 200);
         } else {

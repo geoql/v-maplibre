@@ -1,7 +1,7 @@
 <script setup lang="ts">
   import { onBeforeUnmount, onMounted, watch } from 'vue';
   import type { Map, SkySpecification } from 'maplibre-gl';
-  import { injectStrict, MapKey } from '../../../utils';
+  import { injectStrict, isStyleReady, MapKey } from '../../../utils';
 
   interface Props {
     /**
@@ -28,7 +28,7 @@
 
     const mapInstance = map.value;
     if (!mapInstance) return false;
-    if (!mapInstance.isStyleLoaded()) return false;
+    if (!isStyleReady(mapInstance)) return false;
 
     try {
       mapInstance.setSky(props.sky);

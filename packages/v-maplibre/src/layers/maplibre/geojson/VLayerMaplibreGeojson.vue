@@ -10,10 +10,11 @@
   } from 'maplibre-gl';
   import {
     injectStrict,
+    isStyleReady,
     MapKey,
+    removeLayerAndSource,
     setLayoutProperties,
     setPaintProperties,
-    removeLayerAndSource,
   } from '../../../utils';
 
   interface LayerClick {
@@ -92,7 +93,7 @@
     if (!mapInstance) return false;
 
     // Style must be ready before sources/layers can be added.
-    if (!mapInstance.isStyleLoaded()) return false;
+    if (!isStyleReady(mapInstance)) return false;
 
     // Data must be valid before adding the source (clustering / async loads).
     if (!hasValidData(props.source.data)) return false;
@@ -308,7 +309,7 @@
     () => props.layer.layout?.visibility,
     (newVisibility) => {
       const mapInstance = getMapInstance();
-      if (!mapInstance || !mapInstance.isStyleLoaded()) return;
+      if (!mapInstance || !isStyleReady(mapInstance)) return;
 
       const hasLayer = mapInstance.getLayer(props.layerId);
 

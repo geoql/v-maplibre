@@ -7,10 +7,11 @@
   } from 'maplibre-gl';
   import {
     injectStrict,
+    isStyleReady,
     MapKey,
+    removeLayerAndSource,
     setLayoutProperties,
     setPaintProperties,
-    removeLayerAndSource,
   } from '../../../utils';
 
   interface Props {
@@ -49,7 +50,7 @@
 
     const mapInstance = map.value;
     if (!mapInstance) return false;
-    if (!mapInstance.isStyleLoaded()) return false;
+    if (!isStyleReady(mapInstance)) return false;
 
     try {
       if (!mapInstance.getSource(props.sourceId)) {
