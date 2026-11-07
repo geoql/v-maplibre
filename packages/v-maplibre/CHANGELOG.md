@@ -1,5 +1,17 @@
 # Changelog
 
+## [3.1.2](https://github.com/geoql/v-maplibre/compare/v3.1.1...v3.1.2) (2026-11-07)
+
+
+### Bug Fixes
+
+* **v-maplibre:** gate style mutations on a parsed style, not loaded tiles ([6d36a85](https://github.com/geoql/v-maplibre/commit/6d36a85911dcffddb1536f0a049f1887fdbcf802)), closes [#183](https://github.com/geoql/v-maplibre/issues/183)
+
+
+### Miscellaneous
+
+* **deps:** bump tsdown css, gaussian-splat-lite, comark, wrangler, motion-v, tailwindcss ([da34129](https://github.com/geoql/v-maplibre/commit/da341299bd76ddb4462b623abc74fe59e39e7f17))
+
 ## [3.1.1](https://github.com/geoql/v-maplibre/compare/v3.1.0...v3.1.1) (2026-11-06)
 
 
