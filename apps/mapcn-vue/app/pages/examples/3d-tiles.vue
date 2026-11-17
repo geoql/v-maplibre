@@ -17,8 +17,7 @@
 
   const { mapStyle } = useMapStyle();
   const mapId = useId();
-  const config = useRuntimeConfig();
-  const assetsBase = config.public.r2AssetsBase;
+  const { cactusTileset: tilesetUrl } = useDemoAssets();
 
   // Pre-generated tileset: SPZ splat tiles with
   // KHR_gaussian_splatting — an outward-facing CC0 capture at true metric
@@ -26,7 +25,6 @@
   // Tokyo Tower. The demo pins altitude to 0 so the content sits on the flat
   // basemap: without a DEM the map's ground plane is 0 m, and the tileset's
   // own ellipsoidal height would float it above the ground.
-  const tilesetUrl = `${assetsBase}/splat/cactus/tileset.json`;
 
   const mapOptions = computed(() => ({
     container: `tiles-3d-example-${mapId}`,

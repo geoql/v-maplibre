@@ -508,7 +508,7 @@ export function useExamplesData() {
         {
           title: 'Himalaya 3D Terrain',
           description:
-            'Native setTerrain + hillshade from a Terrain-RGB PMTiles archive.',
+            'Native setTerrain + hillshade from a Terrain-RGB tileset.',
           href: '/examples/himalaya-terrain',
           icon: 'lucide:mountain-snow',
           badge: 'New',

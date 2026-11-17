@@ -16,13 +16,13 @@
   usePageGeo({
     title: 'Himalaya 3D Terrain - mapcn-vue Examples',
     description:
-      'Native MapLibre 3D terrain from a Terrain-RGB PMTiles archive: Garhwal Himalaya relief with hillshade and a maps.guru basemap drape.',
+      'Native MapLibre 3D terrain from a Terrain-RGB tileset: Garhwal Himalaya relief with hillshade and a maps.guru basemap drape.',
   });
 
   defineOgImage('MapcnDoc', {
     title: 'Himalaya 3D Terrain',
     description:
-      'Native MapLibre setTerrain + hillshade from a Terrain-RGB PMTiles archive.',
+      'Native MapLibre setTerrain + hillshade from a Terrain-RGB tileset.',
     category: 'MapLibre Layers',
   });
 
@@ -31,16 +31,14 @@
   // so the 3D terrain is effectively invisible in dark mode.
   const { mapsguruLightStyle } = useMapStyle();
   const mapId = useId();
-  const config = useRuntimeConfig();
-  const assetsBase = config.public.r2AssetsBase;
-
-  const terrainUrl = `pmtiles://${assetsBase}/terrain/garhwal-himalaya.pmtiles`;
+  // TileJSON from this site's demo-assets proxy: the Worker holds the API
+  // key, so the browser only ever sees proxy URLs.
+  const { himalayaTerrainTileJson: terrainUrl } = useDemoAssets();
   const EXAGGERATION = 1.25;
 
   // Two separate raster-dem sources: MapLibre cannot reliably drive both
   // setTerrain and a hillshade layer from one source. Bounds / zoom range
-  // come from the PMTiles header via the protocol's TileJSON — never
-  // hardcoded here. The attribution is set explicitly: MapLibre lets the
+  // come from the TileJSON — never hardcoded here. The attribution is set explicitly: MapLibre lets the
   // source spec override the archive's TileJSON fields, so the map credit
   // never depends on whatever the archive metadata says.
   const TERRAIN_ATTRIBUTION = 'Garhwal Himalaya terrain';
@@ -130,8 +128,8 @@
                 } from '@geoql/v-maplibre';
                 import type { RasterDEMSourceSpecification } from 'maplibre-gl';
 
-                const terrainUrl =
-                  'pmtiles://https://your-bucket.example.com/terrain.pmtiles';
+                // TileJSON for a Terrain-RGB raster-dem tileset.
+                const terrainUrl = 'https://tiles.example.com/terrain.json';
 
                 // Two separate raster-dem sources: one drives setTerrain,
                 // the other backs the hillshade layer.
@@ -156,7 +154,7 @@
               ${SCRIPT_END}
 
               <template>
-                <VMap :options="mapOptions" support-pmtiles class="h-125 w-full">
+                <VMap :options="mapOptions" class="h-125 w-full">
                   <VControlNavigation position="top-right" />
                   <VSky
                     :sky="{
@@ -186,19 +184,14 @@
 <template>
   <ComponentDemo
     title="Himalaya 3D Terrain"
-    description="Native MapLibre 3D terrain — no three.js, no deck.gl. A Terrain-RGB PMTiles archive of the Garhwal Himalaya (Kedarnath, Badrinath, Chaukhamba, Valley of Flowers) drives setTerrain plus a hillshade layer, with the basemap draped over the relief."
+    description="Native MapLibre 3D terrain — no three.js, no deck.gl. A Terrain-RGB tileset of the Garhwal Himalaya (Kedarnath, Badrinath, Chaukhamba, Valley of Flowers) drives setTerrain plus a hillshade layer, with the basemap draped over the relief."
     :code="codeExample"
     full-width
     class="h-full"
   >
     <div class="relative size-full min-w-0 overflow-hidden">
       <ClientOnly>
-        <VMap
-          :options="mapOptions"
-          support-pmtiles
-          class="size-full"
-          @loaded="onMapLoaded"
-        >
+        <VMap :options="mapOptions" class="size-full" @loaded="onMapLoaded">
           <VControlNavigation position="top-right" />
           <VControlScale position="bottom-left" />
           <VSky :sky="sky" />

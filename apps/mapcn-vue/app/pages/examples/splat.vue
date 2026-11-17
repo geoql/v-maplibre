@@ -17,16 +17,13 @@
 
   const { mapStyle } = useMapStyle();
   const mapId = useId();
-  const config = useRuntimeConfig();
-  const assetsBase = config.public.r2AssetsBase;
+  const { cactusSplat: splatUrl } = useDemoAssets();
 
   // Converted demo asset: an outward-facing CC0
   // 3DGS capture (steam-studio.jp) at true metric scale, anchored near
   // Tokyo Tower. The subject is ~2.5 m tall, so the altitude lifts its
   // local origin enough that the base rests on the flat basemap.
   const anchor = { lng: 139.7454, lat: 35.6586, altitude: 1 };
-
-  const splatUrl = `${assetsBase}/splat/cactus/scene.spz`;
 
   const mapOptions = computed(() => ({
     container: `splat-example-${mapId}`,

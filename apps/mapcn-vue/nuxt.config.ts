@@ -135,6 +135,16 @@ export default defineNuxtConfig({
         process.env.NUXT_PUBLIC_OPENPANEL_CLIENT_ID ?? OPENPANEL_CLIENT_ID,
       clientSecret: process.env.NUXT_OPENPANEL_CLIENT_SECRET ?? '',
     },
+    // Server-only: the key-holding upstream for the demo assets (Terrain-RGB
+    // tiles, Gaussian splats, 3D Tiles). server/routes/demo-assets proxies
+    // an allowlist of paths and adds the key, so neither value ever reaches
+    // the browser. Both are Worker secrets read at request time:
+    // NUXT_DEMO_ASSETS_API_BASE (origin, no trailing slash) and
+    // NUXT_DEMO_ASSETS_API_KEY. Unset means the proxy answers 503.
+    demoAssets: {
+      apiBase: '',
+      apiKey: '',
+    },
     public: {
       // GA4 measurement ID (NUXT_PUBLIC_GTAG_ID).
       gtagId: 'G-2C6H86DE9L',
@@ -151,16 +161,6 @@ export default defineNuxtConfig({
       openweathermapApiKey:
         process.env.NUXT_PUBLIC_OPENWEATHERMAP_API_KEY ??
         '385df3d81f3a89c1c99c115735540c6d',
-      // Base URL of the R2 bucket hosting the demo assets
-      // (Gaussian splats, 3D Tiles tilesets, Terrain-RGB PMTiles). Defaults
-      // to the public samples host; NUXT_PUBLIC_R2_ASSETS_BASE (GH secret)
-      // overrides it at build time so the bucket can move without a code
-      // change. Must read process.env HERE: /examples/* is worker-routed
-      // (assets.run_worker_first), so those pages are SSR'd with the server
-      // bundle's baked default. An empty env value falls back to the default
-      // so a blank secret can never ship empty asset URLs.
-      r2AssetsBase:
-        process.env.NUXT_PUBLIC_R2_ASSETS_BASE || 'https://samples.geoql.in',
       library: {
         version: libraryPkg.version,
         releasedAt: LIBRARY_RELEASED_AT,
