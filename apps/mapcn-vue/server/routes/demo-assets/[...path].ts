@@ -1,3 +1,4 @@
+import type { H3Event } from 'h3';
 import { proxyDemoAsset } from '../../utils/demo-assets';
 
 /**
@@ -6,7 +7,7 @@ import { proxyDemoAsset } from '../../utils/demo-assets';
  * Worker secrets (NUXT_DEMO_ASSETS_API_BASE / NUXT_DEMO_ASSETS_API_KEY) and
  * never reach the browser.
  */
-export default defineEventHandler((event) => {
+export default defineEventHandler((event: H3Event) => {
   const headers = new Headers();
   for (const [name, value] of Object.entries(getRequestHeaders(event))) {
     if (value !== undefined) headers.set(name, value);
