@@ -136,10 +136,10 @@
   const { addLayer, removeLayer, updateLayer } = useDeckOverlay(map);
 
   // Store module references
-  const COGLayerClass = shallowRef<
+  const cogLayerClass = shallowRef<
     typeof import('@developmentseed/deck.gl-geotiff').COGLayer | null
   >(null);
-  const COGSourceClass = shallowRef<
+  const cogSourceClass = shallowRef<
     typeof import('@developmentseed/deck.gl-geotiff').COGSource | null
   >(null);
   // The source opened here when a concurrencyLimiter is set, since that is
@@ -155,7 +155,7 @@
   };
 
   const isOpenedSource = (input: unknown): input is COGSource =>
-    !!COGSourceClass.value && input instanceof COGSourceClass.value;
+    !!cogSourceClass.value && input instanceof cogSourceClass.value;
 
   /**
    * Opens the COG here when `concurrencyLimiter` is set (it is an option of
@@ -167,11 +167,11 @@
       openedSource.value = null;
       return;
     }
-    const SourceClass = COGSourceClass.value;
-    if (!SourceClass) return;
+    const sourceClass = cogSourceClass.value;
+    if (!sourceClass) return;
     const request = ++openRequest;
     try {
-      const source = await SourceClass.open(input, {
+      const source = await sourceClass.open(input, {
         concurrencyLimiter: toRaw(props.concurrencyLimiter),
       });
       if (request !== openRequest) return;
@@ -184,7 +184,7 @@
   };
 
   const createLayer = () => {
-    if (!COGLayerClass.value) return null;
+    if (!cogLayerClass.value) return null;
     // Wait for the source this component is opening.
     if (props.concurrencyLimiter !== undefined && !openedSource.value) {
       if (!isOpenedSource(toRaw(props.geotiff))) return null;
@@ -224,7 +224,7 @@
     if (props.beforeId !== undefined)
       layerProps.beforeId = toRaw(props.beforeId);
 
-    const layer = new COGLayerClass.value(layerProps);
+    const layer = new cogLayerClass.value(layerProps);
     return markRaw(layer);
   };
 
@@ -241,8 +241,8 @@
         COG_PEER_INSTALL,
       );
 
-      COGLayerClass.value = markRaw(geotiffModule.COGLayer);
-      COGSourceClass.value = markRaw(geotiffModule.COGSource);
+      cogLayerClass.value = markRaw(geotiffModule.COGLayer);
+      cogSourceClass.value = markRaw(geotiffModule.COGSource);
 
       await resolveSource();
       const layer = createLayer();
@@ -270,7 +270,7 @@
   );
 
   watch([() => props.geotiff, () => props.concurrencyLimiter], async () => {
-    if (!COGLayerClass.value) return;
+    if (!cogLayerClass.value) return;
     await resolveSource();
     syncLayer();
   });

@@ -15,13 +15,13 @@
     sweepAngle: number;
   }>();
 
-  let PolygonLayerClass: typeof import('@deck.gl/layers').PolygonLayer | null =
+  let polygonLayerClass: typeof import('@deck.gl/layers').PolygonLayer | null =
     null;
-  let ScatterplotLayerClass:
+  let scatterplotLayerClass:
     | typeof import('@deck.gl/layers').ScatterplotLayer
     | null = null;
-  let LineLayerClass: typeof import('@deck.gl/layers').LineLayer | null = null;
-  let TextLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
+  let lineLayerClass: typeof import('@deck.gl/layers').LineLayer | null = null;
+  let textLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
   let initialized = false;
 
   const { updateLayer, removeLayer } = useDeckLayers();
@@ -76,26 +76,26 @@
   async function initLayers(): Promise<void> {
     if (initialized) return;
     const layersModule = await import('@deck.gl/layers');
-    PolygonLayerClass = layersModule.PolygonLayer;
-    ScatterplotLayerClass = layersModule.ScatterplotLayer;
-    LineLayerClass = layersModule.LineLayer;
-    TextLayerClass = layersModule.TextLayer;
+    polygonLayerClass = layersModule.PolygonLayer;
+    scatterplotLayerClass = layersModule.ScatterplotLayer;
+    lineLayerClass = layersModule.LineLayer;
+    textLayerClass = layersModule.TextLayer;
     initialized = true;
     syncLayers();
   }
 
   function syncLayers(): void {
     if (
-      !PolygonLayerClass ||
-      !ScatterplotLayerClass ||
-      !LineLayerClass ||
-      !TextLayerClass
+      !polygonLayerClass ||
+      !scatterplotLayerClass ||
+      !lineLayerClass ||
+      !textLayerClass
     )
       return;
 
     updateLayer(
       'air-defense-coverage',
-      new PolygonLayerClass({
+      new polygonLayerClass({
         id: 'air-defense-coverage',
         data: props.coveragePolygons,
         getPolygon: getCoveragePolygon,
@@ -111,7 +111,7 @@
 
     updateLayer(
       'air-defense-sweep',
-      new LineLayerClass({
+      new lineLayerClass({
         id: 'air-defense-sweep',
         data: props.sweepLines,
         getSourcePosition: getSweepSourcePosition,
@@ -129,7 +129,7 @@
 
     updateLayer(
       'air-defense-sites',
-      new ScatterplotLayerClass({
+      new scatterplotLayerClass({
         id: 'air-defense-sites',
         data: props.siteData,
         getPosition: getSitePosition,
@@ -145,7 +145,7 @@
 
     updateLayer(
       'air-defense-labels',
-      new TextLayerClass({
+      new textLayerClass({
         id: 'air-defense-labels',
         data: props.labelData,
         getPosition: getLabelPosition,

@@ -70,14 +70,14 @@
   const map = injectStrict(MapKey);
   const { addLayer, removeLayer, updateLayer } = useDeckOverlay(map);
 
-  const LayerClass = shallowRef<
+  const layerClass = shallowRef<
     typeof import('@deck.gl/layers').SolidPolygonLayer | null
   >(null);
 
   const EXCLUDE = new Set(['id', 'data', 'getPolygon']);
 
   const createLayer = () => {
-    if (!LayerClass.value || !props.data) return null;
+    if (!layerClass.value || !props.data) return null;
     const multi = extractMultiPolygons(props.data);
     const single = multi ? null : extractPolygons(props.data);
     const geom = multi ?? single;
@@ -89,7 +89,7 @@
     }
     const rings = polygonsToRingArrays(geom);
     try {
-      const layer = new LayerClass.value({
+      const layer = new layerClass.value({
         ...filterDefined(props as unknown as Record<string, unknown>, EXCLUDE),
         id: props.id,
         data: rings,
@@ -113,12 +113,12 @@
       () => import('@deck.gl/layers'),
       SOLID_POLYGON_PEER_INSTALL,
     );
-    LayerClass.value = markRaw(mod.SolidPolygonLayer);
+    layerClass.value = markRaw(mod.SolidPolygonLayer);
   };
 
   useMapReady(map, initializeLayer);
 
-  watch(LayerClass, (cls) => {
+  watch(layerClass, (cls) => {
     if (!cls || !props.data) return;
     const layer = createLayer();
     if (layer) addLayer(layer);
@@ -127,7 +127,7 @@
   watch(
     () => props.data,
     () => {
-      if (!LayerClass.value || !props.data) return;
+      if (!layerClass.value || !props.data) return;
       const layer = createLayer();
       if (layer) updateLayer(props.id, layer);
     },
@@ -147,7 +147,7 @@
       () => props.pickable,
     ],
     () => {
-      if (!LayerClass.value || !props.data) return;
+      if (!layerClass.value || !props.data) return;
       const layer = createLayer();
       if (layer) updateLayer(props.id, layer);
     },

@@ -23,13 +23,13 @@
     sectorClick: [sectorId: string];
   }>();
 
-  let PolygonLayerClass: typeof import('@deck.gl/layers').PolygonLayer | null =
+  let polygonLayerClass: typeof import('@deck.gl/layers').PolygonLayer | null =
     null;
-  let ScatterplotLayerClass:
+  let scatterplotLayerClass:
     | typeof import('@deck.gl/layers').ScatterplotLayer
     | null = null;
-  let TextLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
-  let TripsLayerClass: typeof import('@deck.gl/geo-layers').TripsLayer | null =
+  let textLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
+  let tripsLayerClass: typeof import('@deck.gl/geo-layers').TripsLayer | null =
     null;
   let initialized = false;
 
@@ -113,10 +113,10 @@
       import('@deck.gl/layers'),
       import('@deck.gl/geo-layers'),
     ]);
-    PolygonLayerClass = layersModule.PolygonLayer;
-    ScatterplotLayerClass = layersModule.ScatterplotLayer;
-    TextLayerClass = layersModule.TextLayer;
-    TripsLayerClass = geoModule.TripsLayer;
+    polygonLayerClass = layersModule.PolygonLayer;
+    scatterplotLayerClass = layersModule.ScatterplotLayer;
+    textLayerClass = layersModule.TextLayer;
+    tripsLayerClass = geoModule.TripsLayer;
     initialized = true;
     syncLayers();
   }
@@ -129,10 +129,10 @@
 
   function syncLayers(): void {
     if (
-      !PolygonLayerClass ||
-      !ScatterplotLayerClass ||
-      !TextLayerClass ||
-      !TripsLayerClass
+      !polygonLayerClass ||
+      !scatterplotLayerClass ||
+      !textLayerClass ||
+      !tripsLayerClass
     )
       return;
 
@@ -143,7 +143,7 @@
       sectorId: s.id,
     }));
 
-    const polygonLayer = new PolygonLayerClass({
+    const polygonLayer = new polygonLayerClass({
       id: 'sar-sectors',
       data: sectorData,
       getPolygon,
@@ -168,7 +168,7 @@
           : ([255, 255, 255, 230] as [number, number, number, number]),
     }));
 
-    const labelLayer = new TextLayerClass({
+    const labelLayer = new textLayerClass({
       id: 'sar-labels',
       data: labelData,
       getPosition: getLabelPosition,
@@ -184,7 +184,7 @@
     updateLayer('sar-labels', labelLayer);
 
     for (const trip of props.tripData) {
-      const trailLayer = new TripsLayerClass({
+      const trailLayer = new tripsLayerClass({
         id: `sar-trail-${trip.helicopterId}`,
         data: [trip],
         getPath: getTripPath,
@@ -209,7 +209,7 @@
       })
       .filter((d): d is SarPositionDatum => d !== null);
 
-    const heloLayer = new ScatterplotLayerClass({
+    const heloLayer = new scatterplotLayerClass({
       id: 'sar-helicopters',
       data: heloData,
       getPosition: getHeloPosition,
@@ -231,7 +231,7 @@
       };
     });
 
-    const heloLabelLayer = new TextLayerClass({
+    const heloLabelLayer = new textLayerClass({
       id: 'sar-helo-labels',
       data: heloLabelData,
       getPosition: getLabelPosition,

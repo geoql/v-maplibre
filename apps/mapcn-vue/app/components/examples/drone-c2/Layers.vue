@@ -18,12 +18,12 @@
     selectedUnitId: string | null;
   }>();
 
-  let TripsLayerClass: typeof import('@deck.gl/geo-layers').TripsLayer | null =
+  let tripsLayerClass: typeof import('@deck.gl/geo-layers').TripsLayer | null =
     null;
-  let ScatterplotLayerClass:
+  let scatterplotLayerClass:
     | typeof import('@deck.gl/layers').ScatterplotLayer
     | null = null;
-  let TextLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
+  let textLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
   let initialized = false;
 
   const { updateLayer, removeLayer } = useDeckLayers();
@@ -75,21 +75,21 @@
       import('@deck.gl/geo-layers'),
       import('@deck.gl/layers'),
     ]);
-    TripsLayerClass = geoModule.TripsLayer;
-    ScatterplotLayerClass = layersModule.ScatterplotLayer;
-    TextLayerClass = layersModule.TextLayer;
+    tripsLayerClass = geoModule.TripsLayer;
+    scatterplotLayerClass = layersModule.ScatterplotLayer;
+    textLayerClass = layersModule.TextLayer;
     initialized = true;
     syncLayers();
   }
 
   function syncLayers(): void {
-    if (!TripsLayerClass || !ScatterplotLayerClass || !TextLayerClass) return;
+    if (!tripsLayerClass || !scatterplotLayerClass || !textLayerClass) return;
 
     for (const patrol of props.patrolPaths) {
       const unit = props.units.find((u) => u.id === patrol.unitId);
       if (!unit) continue;
 
-      const trailLayer = new TripsLayerClass({
+      const trailLayer = new tripsLayerClass({
         id: `c2-trail-${patrol.unitId}`,
         data: [patrol],
         getPath: getPathFromTrip,
@@ -119,7 +119,7 @@
       })
       .filter((d): d is C2PositionDatum => d !== null);
 
-    const posLayer = new ScatterplotLayerClass({
+    const posLayer = new scatterplotLayerClass({
       id: 'c2-positions',
       data: positionData,
       getPosition: getPositionFromDatum,
@@ -138,7 +138,7 @@
       text: props.units.find((u) => u.id === d.unitId)?.callsign ?? '',
     }));
 
-    const labelLayer = new TextLayerClass({
+    const labelLayer = new textLayerClass({
       id: 'c2-labels',
       data: labelData,
       getPosition: getLabelPosition,
@@ -154,7 +154,7 @@
     });
     updateLayer('c2-labels', labelLayer);
 
-    const waypointLayer = new ScatterplotLayerClass({
+    const waypointLayer = new scatterplotLayerClass({
       id: 'c2-waypoints',
       data: props.waypoints,
       getPosition: getWaypointPosition,

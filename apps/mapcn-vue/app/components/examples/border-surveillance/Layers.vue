@@ -20,13 +20,13 @@
     loopedTime: number;
   }>();
 
-  let PathLayerClass: typeof import('@deck.gl/layers').PathLayer | null = null;
-  let PolygonLayerClass: typeof import('@deck.gl/layers').PolygonLayer | null =
+  let pathLayerClass: typeof import('@deck.gl/layers').PathLayer | null = null;
+  let polygonLayerClass: typeof import('@deck.gl/layers').PolygonLayer | null =
     null;
-  let ScatterplotLayerClass:
+  let scatterplotLayerClass:
     | typeof import('@deck.gl/layers').ScatterplotLayer
     | null = null;
-  let TripsLayerClass: typeof import('@deck.gl/geo-layers').TripsLayer | null =
+  let tripsLayerClass: typeof import('@deck.gl/geo-layers').TripsLayer | null =
     null;
   let initialized = false;
 
@@ -83,20 +83,20 @@
       import('@deck.gl/layers'),
       import('@deck.gl/geo-layers'),
     ]);
-    PathLayerClass = layersModule.PathLayer;
-    PolygonLayerClass = layersModule.PolygonLayer;
-    ScatterplotLayerClass = layersModule.ScatterplotLayer;
-    TripsLayerClass = geoModule.TripsLayer;
+    pathLayerClass = layersModule.PathLayer;
+    polygonLayerClass = layersModule.PolygonLayer;
+    scatterplotLayerClass = layersModule.ScatterplotLayer;
+    tripsLayerClass = geoModule.TripsLayer;
     initialized = true;
     syncLayers();
   }
 
   function syncLayers(): void {
     if (
-      !PathLayerClass ||
-      !PolygonLayerClass ||
-      !ScatterplotLayerClass ||
-      !TripsLayerClass
+      !pathLayerClass ||
+      !polygonLayerClass ||
+      !scatterplotLayerClass ||
+      !tripsLayerClass
     )
       return;
 
@@ -106,7 +106,7 @@
     const showZones = props.visibleLayers.has('zones');
 
     if (showBorder) {
-      const borderLayer = new PathLayerClass({
+      const borderLayer = new pathLayerClass({
         id: 'border-lac-line',
         data: [{ path: props.borderLine }],
         getPath: getBorderPath,
@@ -122,7 +122,7 @@
     }
 
     if (showCameras) {
-      const coneLayer = new PolygonLayerClass({
+      const coneLayer = new polygonLayerClass({
         id: 'border-camera-cones',
         data: props.cameras,
         getPolygon: getConePolygon,
@@ -140,7 +140,7 @@
         status: c.status,
       }));
 
-      const camDots = new ScatterplotLayerClass({
+      const camDots = new scatterplotLayerClass({
         id: 'border-camera-dots',
         data: camData,
         getPosition: getCameraPosition,
@@ -159,7 +159,7 @@
 
     if (showPatrols) {
       for (const route of props.patrols) {
-        const trailLayer = new TripsLayerClass({
+        const trailLayer = new tripsLayerClass({
           id: `border-trail-${route.id}`,
           data: [route],
           getPath: getPatrolPath,
@@ -184,7 +184,7 @@
         })
         .filter((d): d is PatrolVehicleDatum => d !== null);
 
-      const vehicleLayer = new ScatterplotLayerClass({
+      const vehicleLayer = new scatterplotLayerClass({
         id: 'border-patrol-vehicles',
         data: vehicleData,
         getPosition: getVehiclePosition,
@@ -204,7 +204,7 @@
     }
 
     if (showZones) {
-      const zoneLayer = new PolygonLayerClass({
+      const zoneLayer = new polygonLayerClass({
         id: 'border-intrusion-zones',
         data: props.intrusionZones,
         getPolygon: getZonePolygon,

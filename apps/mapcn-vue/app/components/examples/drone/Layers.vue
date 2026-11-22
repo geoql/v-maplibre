@@ -54,9 +54,9 @@
     };
   }
 
-  let TripsLayerClass: typeof import('@deck.gl/geo-layers').TripsLayer | null =
+  let tripsLayerClass: typeof import('@deck.gl/geo-layers').TripsLayer | null =
     null;
-  let IconLayerClass: typeof import('@deck.gl/layers').IconLayer | null = null;
+  let iconLayerClass: typeof import('@deck.gl/layers').IconLayer | null = null;
   let initialized = false;
 
   const { updateLayer, removeLayer } = useDeckLayers();
@@ -67,16 +67,16 @@
       import('@deck.gl/geo-layers'),
       import('@deck.gl/layers'),
     ]);
-    TripsLayerClass = geoModule.TripsLayer;
-    IconLayerClass = layersModule.IconLayer;
+    tripsLayerClass = geoModule.TripsLayer;
+    iconLayerClass = layersModule.IconLayer;
     initialized = true;
     syncLayers();
   }
 
   function syncLayers(): void {
-    if (!TripsLayerClass || !IconLayerClass) return;
+    if (!tripsLayerClass || !iconLayerClass) return;
 
-    const shadowLayer = new TripsLayerClass({
+    const shadowLayer = new tripsLayerClass({
       id: 'drone-shadow',
       data: props.tripData,
       getPath,
@@ -91,7 +91,7 @@
       opacity: 0.3,
     });
 
-    const trailLayer = new TripsLayerClass({
+    const trailLayer = new tripsLayerClass({
       id: 'drone-trail',
       data: props.tripData,
       getPath,
@@ -111,7 +111,7 @@
 
     const pos = props.dronePosition;
     if (pos) {
-      const iconLayer = new IconLayerClass({
+      const iconLayer = new iconLayerClass({
         id: 'drone-icon',
         data: [pos],
         getIcon: getDroneIcon,

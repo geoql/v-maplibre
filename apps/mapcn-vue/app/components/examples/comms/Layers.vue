@@ -7,11 +7,11 @@
     links: CommLink[];
   }>();
 
-  let ScatterplotLayerClass:
+  let scatterplotLayerClass:
     | typeof import('@deck.gl/layers').ScatterplotLayer
     | null = null;
-  let LineLayerClass: typeof import('@deck.gl/layers').LineLayer | null = null;
-  let TextLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
+  let lineLayerClass: typeof import('@deck.gl/layers').LineLayer | null = null;
+  let textLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
   let initialized = false;
 
   const { updateLayer, removeLayer } = useDeckLayers();
@@ -106,21 +106,21 @@
   async function initLayers(): Promise<void> {
     if (initialized) return;
     const mod = await import('@deck.gl/layers');
-    ScatterplotLayerClass = mod.ScatterplotLayer;
-    LineLayerClass = mod.LineLayer;
-    TextLayerClass = mod.TextLayer;
+    scatterplotLayerClass = mod.ScatterplotLayer;
+    lineLayerClass = mod.LineLayer;
+    textLayerClass = mod.TextLayer;
     initialized = true;
     syncLayers();
   }
 
   function syncLayers(): void {
-    if (!ScatterplotLayerClass || !LineLayerClass || !TextLayerClass) return;
+    if (!scatterplotLayerClass || !lineLayerClass || !textLayerClass) return;
 
     const linkData = buildLinkData();
 
     updateLayer(
       'comms-coverage',
-      new ScatterplotLayerClass({
+      new scatterplotLayerClass({
         id: 'comms-coverage',
         data: props.nodes,
         getPosition: getNodePosition,
@@ -137,7 +137,7 @@
 
     updateLayer(
       'comms-links',
-      new LineLayerClass({
+      new lineLayerClass({
         id: 'comms-links',
         data: linkData,
         getSourcePosition: getLinkSourcePos,
@@ -155,7 +155,7 @@
 
     updateLayer(
       'comms-dots',
-      new ScatterplotLayerClass({
+      new scatterplotLayerClass({
         id: 'comms-dots',
         data: props.nodes,
         getPosition: getNodePosition,
@@ -172,7 +172,7 @@
 
     updateLayer(
       'comms-labels',
-      new TextLayerClass({
+      new textLayerClass({
         id: 'comms-labels',
         data: props.nodes,
         getPosition: getNodePosition,

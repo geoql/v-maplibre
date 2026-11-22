@@ -13,12 +13,12 @@
     selectedPositionId: string | null;
   }>();
 
-  let PolygonLayerClass: typeof import('@deck.gl/layers').PolygonLayer | null =
+  let polygonLayerClass: typeof import('@deck.gl/layers').PolygonLayer | null =
     null;
-  let ScatterplotLayerClass:
+  let scatterplotLayerClass:
     | typeof import('@deck.gl/layers').ScatterplotLayer
     | null = null;
-  let TextLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
+  let textLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
   let initialized = false;
 
   const { updateLayer, removeLayer } = useDeckLayers();
@@ -61,9 +61,9 @@
   async function initLayers(): Promise<void> {
     if (initialized) return;
     const layersModule = await import('@deck.gl/layers');
-    PolygonLayerClass = layersModule.PolygonLayer;
-    ScatterplotLayerClass = layersModule.ScatterplotLayer;
-    TextLayerClass = layersModule.TextLayer;
+    polygonLayerClass = layersModule.PolygonLayer;
+    scatterplotLayerClass = layersModule.ScatterplotLayer;
+    textLayerClass = layersModule.TextLayer;
     initialized = true;
     syncLayers();
   }
@@ -86,9 +86,9 @@
   }
 
   function syncLayers(): void {
-    if (!PolygonLayerClass || !ScatterplotLayerClass || !TextLayerClass) return;
+    if (!polygonLayerClass || !scatterplotLayerClass || !textLayerClass) return;
 
-    const fanLayer = new PolygonLayerClass({
+    const fanLayer = new polygonLayerClass({
       id: 'artillery-fans',
       data: props.rangeFans,
       getPolygon: getFanPolygon,
@@ -104,7 +104,7 @@
 
     const positionData = buildPositionData();
 
-    const posLayer = new ScatterplotLayerClass({
+    const posLayer = new scatterplotLayerClass({
       id: 'artillery-positions',
       data: positionData,
       getPosition: getPositionFromDatum,
@@ -123,7 +123,7 @@
       text: pos.label,
     }));
 
-    const labelLayer = new TextLayerClass({
+    const labelLayer = new textLayerClass({
       id: 'artillery-labels',
       data: labelData,
       getPosition: getLabelPosition,

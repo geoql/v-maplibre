@@ -11,11 +11,11 @@
     routeCoords: [number, number][];
   }>();
 
-  let PathLayerClass: typeof import('@deck.gl/layers').PathLayer | null = null;
-  let ScatterplotLayerClass:
+  let pathLayerClass: typeof import('@deck.gl/layers').PathLayer | null = null;
+  let scatterplotLayerClass:
     | typeof import('@deck.gl/layers').ScatterplotLayer
     | null = null;
-  let TextLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
+  let textLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
   let initialized = false;
 
   const { updateLayer, removeLayer } = useDeckLayers();
@@ -43,18 +43,18 @@
   async function initLayers(): Promise<void> {
     if (initialized) return;
     const layersModule = await import('@deck.gl/layers');
-    PathLayerClass = layersModule.PathLayer;
-    ScatterplotLayerClass = layersModule.ScatterplotLayer;
-    TextLayerClass = layersModule.TextLayer;
+    pathLayerClass = layersModule.PathLayer;
+    scatterplotLayerClass = layersModule.ScatterplotLayer;
+    textLayerClass = layersModule.TextLayer;
     initialized = true;
     syncLayers();
   }
 
   function syncLayers(): void {
-    if (!PathLayerClass || !ScatterplotLayerClass || !TextLayerClass) return;
+    if (!pathLayerClass || !scatterplotLayerClass || !textLayerClass) return;
 
     if (props.routeCoords.length > 1) {
-      const pathLayer = new PathLayerClass({
+      const pathLayer = new pathLayerClass({
         id: 'troop-route',
         data: [{ path: props.routeCoords }],
         getPath: getRoutePath,
@@ -75,7 +75,7 @@
       index: i,
     }));
 
-    const wpLayer = new ScatterplotLayerClass({
+    const wpLayer = new scatterplotLayerClass({
       id: 'troop-waypoints',
       data: wpData,
       getPosition: getWaypointPosition,
@@ -93,7 +93,7 @@
       text: d.label,
     }));
 
-    const labelLayer = new TextLayerClass({
+    const labelLayer = new textLayerClass({
       id: 'troop-labels',
       data: labelData,
       getPosition: getLabelPosition,

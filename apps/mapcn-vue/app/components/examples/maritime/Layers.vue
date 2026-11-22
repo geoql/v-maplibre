@@ -25,15 +25,15 @@
     loopedTime: number;
   }>();
 
-  let PathLayerClass: typeof import('@deck.gl/layers').PathLayer | null = null;
-  let PolygonLayerClass: typeof import('@deck.gl/layers').PolygonLayer | null =
+  let pathLayerClass: typeof import('@deck.gl/layers').PathLayer | null = null;
+  let polygonLayerClass: typeof import('@deck.gl/layers').PolygonLayer | null =
     null;
-  let TripsLayerClass: typeof import('@deck.gl/geo-layers').TripsLayer | null =
+  let tripsLayerClass: typeof import('@deck.gl/geo-layers').TripsLayer | null =
     null;
-  let ScatterplotLayerClass:
+  let scatterplotLayerClass:
     | typeof import('@deck.gl/layers').ScatterplotLayer
     | null = null;
-  let TextLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
+  let textLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
   let initialized = false;
 
   const { updateLayer, removeLayer } = useDeckLayers();
@@ -89,26 +89,26 @@
       import('@deck.gl/geo-layers'),
       import('@deck.gl/layers'),
     ]);
-    TripsLayerClass = geoModule.TripsLayer;
-    PathLayerClass = layersModule.PathLayer;
-    PolygonLayerClass = layersModule.PolygonLayer;
-    ScatterplotLayerClass = layersModule.ScatterplotLayer;
-    TextLayerClass = layersModule.TextLayer;
+    tripsLayerClass = geoModule.TripsLayer;
+    pathLayerClass = layersModule.PathLayer;
+    polygonLayerClass = layersModule.PolygonLayer;
+    scatterplotLayerClass = layersModule.ScatterplotLayer;
+    textLayerClass = layersModule.TextLayer;
     initialized = true;
     syncLayers();
   }
 
   function syncLayers(): void {
     if (
-      !PathLayerClass ||
-      !PolygonLayerClass ||
-      !TripsLayerClass ||
-      !ScatterplotLayerClass ||
-      !TextLayerClass
+      !pathLayerClass ||
+      !polygonLayerClass ||
+      !tripsLayerClass ||
+      !scatterplotLayerClass ||
+      !textLayerClass
     )
       return;
 
-    const eezLayer = new PathLayerClass({
+    const eezLayer = new pathLayerClass({
       id: 'maritime-eez',
       data: [{ path: props.eezBoundary.polygon }],
       getPath: getEezPath,
@@ -120,7 +120,7 @@
     });
     updateLayer('maritime-eez', eezLayer);
 
-    const radarLayer = new PolygonLayerClass({
+    const radarLayer = new polygonLayerClass({
       id: 'maritime-radar-coverage',
       data: props.radarCircles,
       getPolygon: getRadarPolygon,
@@ -132,7 +132,7 @@
     });
     updateLayer('maritime-radar-coverage', radarLayer);
 
-    const radarStationLayer = new ScatterplotLayerClass({
+    const radarStationLayer = new scatterplotLayerClass({
       id: 'maritime-radar-stations',
       data: props.radars,
       getPosition: getRadarStationPosition,
@@ -149,7 +149,7 @@
       const ship = props.ships.find((s) => s.id === trip.shipId);
       if (!ship) continue;
 
-      const trailLayer = new TripsLayerClass({
+      const trailLayer = new tripsLayerClass({
         id: `maritime-trail-${trip.shipId}`,
         data: [trip],
         getPath: getTripPath,
@@ -180,7 +180,7 @@
       })
       .filter((d): d is ShipPositionDatum => d !== null);
 
-    const posLayer = new ScatterplotLayerClass({
+    const posLayer = new scatterplotLayerClass({
       id: 'maritime-positions',
       data: positionData,
       getPosition: getShipPosition,
@@ -199,7 +199,7 @@
       text: props.ships.find((s) => s.id === d.shipId)?.callsign ?? '',
     }));
 
-    const labelLayer = new TextLayerClass({
+    const labelLayer = new textLayerClass({
       id: 'maritime-labels',
       data: labelData,
       getPosition: getLabelPosition,

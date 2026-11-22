@@ -143,10 +143,10 @@
   const map = injectStrict(MapKey);
   const { addLayer, removeLayer, updateLayer } = useDeckOverlay(map);
 
-  const MultiCOGLayerClass = shallowRef<
+  const multiCogLayerClass = shallowRef<
     typeof import('@developmentseed/deck.gl-geotiff').MultiCOGLayer | null
   >(null);
-  const MultiCOGSourceClass = shallowRef<
+  const multiCogSourceClass = shallowRef<
     typeof import('@developmentseed/deck.gl-geotiff').MultiCOGSource | null
   >(null);
   // The scene opened here when a concurrencyLimiter is set, since that is an
@@ -163,7 +163,7 @@
   };
 
   const isOpenedSource = (input: unknown): input is MultiCOGSource =>
-    !!MultiCOGSourceClass.value && input instanceof MultiCOGSourceClass.value;
+    !!multiCogSourceClass.value && input instanceof multiCogSourceClass.value;
 
   const resolveSource = async (): Promise<void> => {
     const input = toRaw(props.sources);
@@ -171,11 +171,11 @@
       openedSource.value = null;
       return;
     }
-    const SourceClass = MultiCOGSourceClass.value;
-    if (!SourceClass) return;
+    const sourceClass = multiCogSourceClass.value;
+    if (!sourceClass) return;
     const request = ++openRequest;
     try {
-      const source = await SourceClass.open(input, {
+      const source = await sourceClass.open(input, {
         concurrencyLimiter: toRaw(props.concurrencyLimiter),
       });
       if (request !== openRequest) return;
@@ -188,7 +188,7 @@
   };
 
   const createLayer = () => {
-    if (!MultiCOGLayerClass.value) return null;
+    if (!multiCogLayerClass.value) return null;
     // Wait for the scene this component is opening.
     if (
       props.concurrencyLimiter !== undefined &&
@@ -238,7 +238,7 @@
       reportSource(loaded);
     };
 
-    const layer = new MultiCOGLayerClass.value(layerProps);
+    const layer = new multiCogLayerClass.value(layerProps);
     return markRaw(layer);
   };
 
@@ -250,8 +250,8 @@
         MULTICOG_PEER_INSTALL,
       );
 
-      MultiCOGLayerClass.value = markRaw(geotiffModule.MultiCOGLayer);
-      MultiCOGSourceClass.value = markRaw(geotiffModule.MultiCOGSource);
+      multiCogLayerClass.value = markRaw(geotiffModule.MultiCOGLayer);
+      multiCogSourceClass.value = markRaw(geotiffModule.MultiCOGSource);
 
       await resolveSource();
       const layer = createLayer();
@@ -286,7 +286,7 @@
   watch(
     [() => props.sources, () => props.concurrencyLimiter],
     async () => {
-      if (!MultiCOGLayerClass.value) return;
+      if (!multiCogLayerClass.value) return;
       await resolveSource();
       syncLayer();
     },

@@ -76,7 +76,7 @@
   const map = injectStrict(MapKey);
   const { addLayer, removeLayer, updateLayer } = useDeckOverlay(map);
 
-  const LayerClass = shallowRef<
+  const layerClass = shallowRef<
     typeof import('@deck.gl/geo-layers').TripsLayer | null
   >(null);
 
@@ -131,7 +131,7 @@
   };
 
   const createLayer = () => {
-    if (!LayerClass.value || !props.data) return null;
+    if (!layerClass.value || !props.data) return null;
     const trips = buildTrips(
       props.data,
       props.timestampsColumn ?? 'timestamps',
@@ -144,7 +144,7 @@
     }
     try {
       return markRaw(
-        new LayerClass.value({
+        new layerClass.value({
           ...filterDefined(
             props as unknown as Record<string, unknown>,
             EXCLUDE,
@@ -172,12 +172,12 @@
       () => import('@deck.gl/geo-layers'),
       TRIPS_PEER_INSTALL,
     );
-    LayerClass.value = markRaw(mod.TripsLayer);
+    layerClass.value = markRaw(mod.TripsLayer);
   };
 
   useMapReady(map, initializeLayer);
 
-  watch(LayerClass, (cls) => {
+  watch(layerClass, (cls) => {
     if (!cls || !props.data) return;
     const layer = createLayer();
     if (layer) addLayer(layer);
@@ -202,7 +202,7 @@
       () => props.pickable,
     ],
     () => {
-      if (!LayerClass.value || !props.data) return;
+      if (!layerClass.value || !props.data) return;
       const layer = createLayer();
       if (layer) updateLayer(props.id, layer);
     },

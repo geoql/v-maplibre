@@ -69,14 +69,14 @@
   const map = injectStrict(MapKey);
   const { addLayer, removeLayer, updateLayer } = useDeckOverlay(map);
 
-  const LayerClass = shallowRef<
+  const layerClass = shallowRef<
     typeof import('@deck.gl/layers').PathLayer | null
   >(null);
 
   const EXCLUDE = new Set(['id', 'data', 'getPath']);
 
   const createLayer = () => {
-    if (!LayerClass.value || !props.data) return null;
+    if (!layerClass.value || !props.data) return null;
     const extracted =
       extractLineStrings(props.data) ?? extractMultiLineStrings(props.data);
     if (!extracted) {
@@ -86,7 +86,7 @@
       return null;
     }
     try {
-      const layer = new LayerClass.value({
+      const layer = new layerClass.value({
         ...filterDefined(props as unknown as Record<string, unknown>, EXCLUDE),
         id: props.id,
         data: {
@@ -116,12 +116,12 @@
       () => import('@deck.gl/layers'),
       PATH_PEER_INSTALL,
     );
-    LayerClass.value = markRaw(mod.PathLayer);
+    layerClass.value = markRaw(mod.PathLayer);
   };
 
   useMapReady(map, initializeLayer);
 
-  watch(LayerClass, (cls) => {
+  watch(layerClass, (cls) => {
     if (!cls || !props.data) return;
     const layer = createLayer();
     if (layer) addLayer(layer);
@@ -130,7 +130,7 @@
   watch(
     () => props.data,
     () => {
-      if (!LayerClass.value || !props.data) return;
+      if (!layerClass.value || !props.data) return;
       const layer = createLayer();
       if (layer) updateLayer(props.id, layer);
     },
@@ -152,7 +152,7 @@
       () => props.pickable,
     ],
     () => {
-      if (!LayerClass.value || !props.data) return;
+      if (!layerClass.value || !props.data) return;
       const layer = createLayer();
       if (layer) updateLayer(props.id, layer);
     },

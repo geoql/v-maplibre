@@ -157,12 +157,12 @@
   const modules = shallowRef<LoadedModules | null>(null);
 
   // Shader modules for different render modes
-  const SetAlpha1 = {
+  const setAlpha1 = {
     name: 'set-alpha-1',
     inject: { 'fs:DECKGL_FILTER_COLOR': `color = vec4(color.rgb, 1.0);` },
   };
 
-  const FalseColorInfrared = {
+  const falseColorInfrared = {
     name: 'false-color-infrared',
     inject: {
       'fs:DECKGL_FILTER_COLOR': `
@@ -180,7 +180,7 @@
   // when tiles are FIRST FETCHED — cached tiles keep old shader modules.
 
   // Step 1: Compute NDVI from raw RGBA bands, store in color.r
-  const NDVICompute = {
+  const ndviCompute = {
     name: 'ndvi-compute',
     inject: {
       'fs:DECKGL_FILTER_COLOR': `
@@ -201,7 +201,7 @@ uniform ndviFilterUniforms {
 } ndviFilter;
 `;
 
-  const NDVIFilter = {
+  const ndviFilter = {
     name: 'ndviFilter',
     fs: ndviFilterUniformBlock,
     inject: {
@@ -222,7 +222,7 @@ uniform ndviFilterUniforms {
   } as const satisfies ShaderModule<{ ndviMin: number; ndviMax: number }>;
 
   // Step 3: Apply cfastie-inspired colormap gradient from color.r (NDVI value)
-  const NDVIColormap = {
+  const ndviColormap = {
     name: 'ndvi-colormap',
     inject: {
       'fs:DECKGL_FILTER_COLOR': `
@@ -269,25 +269,25 @@ uniform ndviFilterUniforms {
     ];
 
     if (mode === 'trueColor') {
-      return [...base, { module: SetAlpha1 }];
+      return [...base, { module: setAlpha1 }];
     }
 
     if (mode === 'falseColor') {
-      return [...base, { module: FalseColorInfrared }, { module: SetAlpha1 }];
+      return [...base, { module: falseColorInfrared }, { module: setAlpha1 }];
     }
 
     // NDVI pipeline: compute → filter → colormap → alpha
-    // NDVIFilter uses uniformTypes + getUniforms so uniform values update
+    // ndviFilter uses uniformTypes + getUniforms so uniform values update
     // per-draw via MeshTextureLayer.draw() WITHOUT re-rendering tiles.
     return [
       ...base,
-      { module: NDVICompute },
+      { module: ndviCompute },
       {
-        module: NDVIFilter,
+        module: ndviFilter,
         props: { ndviMin: ndviRange[0], ndviMax: ndviRange[1] },
       },
-      { module: NDVIColormap },
-      { module: SetAlpha1 },
+      { module: ndviColormap },
+      { module: setAlpha1 },
     ];
   }
 
@@ -298,7 +298,7 @@ uniform ndviFilterUniforms {
     const {
       MosaicLayer,
       COGLayer,
-      COGSource: COGSourceClass,
+      COGSource: cogSourceClass,
       CreateTexture,
     } = mods;
 
@@ -321,7 +321,7 @@ uniform ndviFilterUniforms {
       maxCacheSize: toRaw(props.maxCacheSize),
 
       getSource: (item, options) =>
-        COGSourceClass.open(item.assets.image.href, options),
+        cogSourceClass.open(item.assets.image.href, options),
       onSourceLoad: (item) => {
         emit('sourceLoad', item);
       },

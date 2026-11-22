@@ -12,12 +12,12 @@
     viewshedPolygons: ViewshedPolygon[];
   }>();
 
-  let PolygonLayerClass: typeof import('@deck.gl/layers').PolygonLayer | null =
+  let polygonLayerClass: typeof import('@deck.gl/layers').PolygonLayer | null =
     null;
-  let ScatterplotLayerClass:
+  let scatterplotLayerClass:
     | typeof import('@deck.gl/layers').ScatterplotLayer
     | null = null;
-  let TextLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
+  let textLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
   let initialized = false;
 
   const { updateLayer, removeLayer } = useDeckLayers();
@@ -50,9 +50,9 @@
   async function initLayers(): Promise<void> {
     if (initialized) return;
     const layersModule = await import('@deck.gl/layers');
-    PolygonLayerClass = layersModule.PolygonLayer;
-    ScatterplotLayerClass = layersModule.ScatterplotLayer;
-    TextLayerClass = layersModule.TextLayer;
+    polygonLayerClass = layersModule.PolygonLayer;
+    scatterplotLayerClass = layersModule.ScatterplotLayer;
+    textLayerClass = layersModule.TextLayer;
     initialized = true;
     syncLayers();
   }
@@ -66,9 +66,9 @@
   }
 
   function syncLayers(): void {
-    if (!PolygonLayerClass || !ScatterplotLayerClass || !TextLayerClass) return;
+    if (!polygonLayerClass || !scatterplotLayerClass || !textLayerClass) return;
 
-    const viewshedLayer = new PolygonLayerClass({
+    const viewshedLayer = new polygonLayerClass({
       id: 'viewshed-areas',
       data: props.viewshedPolygons,
       getPolygon: getViewshedPolygon,
@@ -84,7 +84,7 @@
 
     const observerData = buildObserverData();
 
-    const observerLayer = new ScatterplotLayerClass({
+    const observerLayer = new scatterplotLayerClass({
       id: 'viewshed-observers',
       data: observerData,
       getPosition: getObserverPosition,
@@ -103,7 +103,7 @@
       text: `${obs.label} (${obs.heightM}m)`,
     }));
 
-    const labelLayer = new TextLayerClass({
+    const labelLayer = new textLayerClass({
       id: 'viewshed-labels',
       data: labelData,
       getPosition: getLabelPosition,

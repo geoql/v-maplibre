@@ -19,12 +19,12 @@
 
   const { polygonCentroid } = useZonePlanner();
 
-  let PolygonLayerClass: typeof import('@deck.gl/layers').PolygonLayer | null =
+  let polygonLayerClass: typeof import('@deck.gl/layers').PolygonLayer | null =
     null;
-  let ScatterplotLayerClass:
+  let scatterplotLayerClass:
     | typeof import('@deck.gl/layers').ScatterplotLayer
     | null = null;
-  let TextLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
+  let textLayerClass: typeof import('@deck.gl/layers').TextLayer | null = null;
   let initialized = false;
 
   const { updateLayer, removeLayer } = useDeckLayers();
@@ -60,15 +60,15 @@
   async function initLayers(): Promise<void> {
     if (initialized) return;
     const layersModule = await import('@deck.gl/layers');
-    PolygonLayerClass = layersModule.PolygonLayer;
-    ScatterplotLayerClass = layersModule.ScatterplotLayer;
-    TextLayerClass = layersModule.TextLayer;
+    polygonLayerClass = layersModule.PolygonLayer;
+    scatterplotLayerClass = layersModule.ScatterplotLayer;
+    textLayerClass = layersModule.TextLayer;
     initialized = true;
     syncLayers();
   }
 
   function syncLayers(): void {
-    if (!PolygonLayerClass || !ScatterplotLayerClass || !TextLayerClass) return;
+    if (!polygonLayerClass || !scatterplotLayerClass || !textLayerClass) return;
 
     const polygonData: ZonePolygonDatum[] = props.zones.map((z) => ({
       polygon: z.polygon,
@@ -76,7 +76,7 @@
       outlineColor: OUTLINE_COLORS[z.type] ?? [255, 255, 255],
     }));
 
-    const polyLayer = new PolygonLayerClass({
+    const polyLayer = new polygonLayerClass({
       id: 'zone-polygons',
       data: polygonData,
       getPolygon,
@@ -95,7 +95,7 @@
       color: OUTLINE_COLORS[z.type] ?? [255, 255, 255],
     }));
 
-    const centerLayer = new ScatterplotLayerClass({
+    const centerLayer = new scatterplotLayerClass({
       id: 'zone-centers',
       data: centerData,
       getPosition: getCenterPosition,
@@ -113,7 +113,7 @@
       text: z.label,
     }));
 
-    const labelLayer = new TextLayerClass({
+    const labelLayer = new textLayerClass({
       id: 'zone-labels',
       data: labelData,
       getPosition: getLabelPosition,

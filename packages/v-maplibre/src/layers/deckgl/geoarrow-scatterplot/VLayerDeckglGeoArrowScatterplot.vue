@@ -73,14 +73,14 @@
   const map = injectStrict(MapKey);
   const { addLayer, removeLayer, updateLayer } = useDeckOverlay(map);
 
-  const LayerClass = shallowRef<
+  const layerClass = shallowRef<
     typeof import('@deck.gl/layers').ScatterplotLayer | null
   >(null);
 
   const EXCLUDE = new Set(['id', 'data']);
 
   const createLayer = () => {
-    if (!LayerClass.value || !props.data) return null;
+    if (!layerClass.value || !props.data) return null;
     const extracted = extractPoints(props.data);
     if (!extracted) {
       console.error(
@@ -89,7 +89,7 @@
       return null;
     }
     try {
-      const layer = new LayerClass.value({
+      const layer = new layerClass.value({
         ...filterDefined(props as unknown as Record<string, unknown>, EXCLUDE),
         id: props.id,
         data: {
@@ -117,12 +117,12 @@
       () => import('@deck.gl/layers'),
       SCATTERPLOT_PEER_INSTALL,
     );
-    LayerClass.value = markRaw(mod.ScatterplotLayer);
+    layerClass.value = markRaw(mod.ScatterplotLayer);
   };
 
   useMapReady(map, initializeLayer);
 
-  watch(LayerClass, (cls) => {
+  watch(layerClass, (cls) => {
     if (!cls || !props.data) return;
     const layer = createLayer();
     if (layer) addLayer(layer);
@@ -131,7 +131,7 @@
   watch(
     () => props.data,
     () => {
-      if (!LayerClass.value || !props.data) return;
+      if (!layerClass.value || !props.data) return;
       const layer = createLayer();
       if (layer) updateLayer(props.id, layer);
     },
@@ -156,7 +156,7 @@
       () => props.pickable,
     ],
     () => {
-      if (!LayerClass.value || !props.data) return;
+      if (!layerClass.value || !props.data) return;
       const layer = createLayer();
       if (layer) updateLayer(props.id, layer);
     },

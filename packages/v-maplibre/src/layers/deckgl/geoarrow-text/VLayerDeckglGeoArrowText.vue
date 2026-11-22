@@ -74,7 +74,7 @@
   const map = injectStrict(MapKey);
   const { addLayer, removeLayer, updateLayer } = useDeckOverlay(map);
 
-  const LayerClass = shallowRef<
+  const layerClass = shallowRef<
     typeof import('@deck.gl/layers').TextLayer | null
   >(null);
 
@@ -128,7 +128,7 @@
   };
 
   const createLayer = () => {
-    if (!LayerClass.value || !props.data) return null;
+    if (!layerClass.value || !props.data) return null;
     const items = buildItems(props.data, props.textColumn ?? 'name');
     if (!items) {
       console.error(
@@ -138,7 +138,7 @@
     }
     try {
       return markRaw(
-        new LayerClass.value({
+        new layerClass.value({
           ...filterDefined(
             props as unknown as Record<string, unknown>,
             EXCLUDE,
@@ -166,12 +166,12 @@
       () => import('@deck.gl/layers'),
       TEXT_PEER_INSTALL,
     );
-    LayerClass.value = markRaw(mod.TextLayer);
+    layerClass.value = markRaw(mod.TextLayer);
   };
 
   useMapReady(map, initializeLayer);
 
-  watch(LayerClass, (cls) => {
+  watch(layerClass, (cls) => {
     if (!cls || !props.data) return;
     const layer = createLayer();
     if (layer) addLayer(layer);
@@ -180,7 +180,7 @@
   watch(
     () => props.data,
     () => {
-      if (!LayerClass.value || !props.data) return;
+      if (!layerClass.value || !props.data) return;
       const layer = createLayer();
       if (layer) updateLayer(props.id, layer);
     },
@@ -208,7 +208,7 @@
       () => props.pickable,
     ],
     () => {
-      if (!LayerClass.value || !props.data) return;
+      if (!layerClass.value || !props.data) return;
       const layer = createLayer();
       if (layer) updateLayer(props.id, layer);
     },

@@ -109,10 +109,10 @@
   const map = injectStrict(MapKey);
   const { addLayer, removeLayer, updateLayer } = useDeckOverlay(map);
 
-  const ZarrLayerClass = shallowRef<
+  const zarrLayerClass = shallowRef<
     typeof import('@developmentseed/deck.gl-zarr').ZarrLayer | null
   >(null);
-  const ZarrSourceClass = shallowRef<
+  const zarrSourceClass = shallowRef<
     typeof import('@developmentseed/deck.gl-zarr').ZarrSource | null
   >(null);
   // `path` and `geoZarrMetadata` are options of ZarrSource.open() in
@@ -121,7 +121,7 @@
   let openRequest = 0;
 
   const isOpenedSource = (input: unknown): input is ZarrSource =>
-    !!ZarrSourceClass.value && input instanceof ZarrSourceClass.value;
+    !!zarrSourceClass.value && input instanceof zarrSourceClass.value;
 
   const needsOwnSource = (): boolean =>
     (props.variable !== undefined || props.metadata !== undefined) &&
@@ -132,13 +132,13 @@
       openedSource.value = null;
       return;
     }
-    const SourceClass = ZarrSourceClass.value;
+    const sourceClass = zarrSourceClass.value;
     const node = toRaw(props.node);
     // needsOwnSource() already excludes a ZarrSource; this narrows the type.
-    if (!SourceClass || isOpenedSource(node)) return;
+    if (!sourceClass || isOpenedSource(node)) return;
     const request = ++openRequest;
     try {
-      const source = await SourceClass.open(node, {
+      const source = await sourceClass.open(node, {
         path: toRaw(props.variable),
         geoZarrMetadata: toRaw(props.metadata),
       });
@@ -152,7 +152,7 @@
   };
 
   const createLayer = () => {
-    if (!ZarrLayerClass.value) return null;
+    if (!zarrLayerClass.value) return null;
     // Wait for the source this component is opening.
     if (needsOwnSource() && !openedSource.value) return null;
 
@@ -178,7 +178,7 @@
       layerProps.beforeId = toRaw(props.beforeId);
     }
 
-    const layer = new ZarrLayerClass.value(layerProps);
+    const layer = new zarrLayerClass.value(layerProps);
     return markRaw(layer);
   };
 
@@ -190,8 +190,8 @@
         ZARR_PEER_INSTALL,
       );
 
-      ZarrLayerClass.value = markRaw(zarrModule.ZarrLayer);
-      ZarrSourceClass.value = markRaw(zarrModule.ZarrSource);
+      zarrLayerClass.value = markRaw(zarrModule.ZarrLayer);
+      zarrSourceClass.value = markRaw(zarrModule.ZarrSource);
 
       await resolveSource();
       const layer = createLayer();
@@ -228,7 +228,7 @@
   watch(
     [() => props.node, () => props.variable, () => props.metadata],
     async () => {
-      if (!ZarrLayerClass.value) return;
+      if (!zarrLayerClass.value) return;
       await resolveSource();
       syncLayer();
     },
