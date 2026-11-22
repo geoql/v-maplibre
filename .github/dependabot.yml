@@ -30,6 +30,12 @@ updates:
       - dependency-name: '@loaders.gl/*'
         update-types:
           - 'version-update:semver-patch'
+      # vite-plus bundles vitest and pins it exactly; it refuses to start
+      # when @vitest/coverage-v8 differs ("A coverage provider must match
+      # the test runner version"). Move vitest and @vitest/* together with
+      # vite-plus, to the version vite-plus bundles, never on their own.
+      - dependency-name: 'vitest'
+      - dependency-name: '@vitest/*'
     groups:
       # Catch-all minor/patch — keep this FIRST so other matchers can't
       # accidentally split a patch update into its own PR.
