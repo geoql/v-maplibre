@@ -167,9 +167,11 @@
       openedSource.value = null;
       return;
     }
+    const SourceClass = COGSourceClass.value;
+    if (!SourceClass) return;
     const request = ++openRequest;
     try {
-      const source = await COGSourceClass.value!.open(input, {
+      const source = await SourceClass.open(input, {
         concurrencyLimiter: toRaw(props.concurrencyLimiter),
       });
       if (request !== openRequest) return;

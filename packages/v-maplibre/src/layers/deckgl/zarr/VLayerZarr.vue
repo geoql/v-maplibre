@@ -132,15 +132,16 @@
       openedSource.value = null;
       return;
     }
+    const SourceClass = ZarrSourceClass.value;
+    const node = toRaw(props.node);
+    // needsOwnSource() already excludes a ZarrSource; this narrows the type.
+    if (!SourceClass || isOpenedSource(node)) return;
     const request = ++openRequest;
     try {
-      const source = await ZarrSourceClass.value!.open(
-        toRaw(props.node) as ZarrInput,
-        {
-          path: toRaw(props.variable),
-          geoZarrMetadata: toRaw(props.metadata),
-        },
-      );
+      const source = await SourceClass.open(node, {
+        path: toRaw(props.variable),
+        geoZarrMetadata: toRaw(props.metadata),
+      });
       if (request !== openRequest) return;
       openedSource.value = markRaw(source);
       emit('sourceLoad', source);

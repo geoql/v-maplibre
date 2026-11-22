@@ -102,10 +102,9 @@
 
   onMounted(() => {
     installMaplibreWorkerUrl();
-    const options: MapOptions = {
-      ...props.options,
-      container: props.options.container ?? containerEl.value!,
-    };
+    const container = props.options.container ?? containerEl.value;
+    if (!container) return;
+    const options: MapOptions = { ...props.options, container };
     if (props.globalState !== undefined) {
       options.globalState = snapshotGlobalState();
     }

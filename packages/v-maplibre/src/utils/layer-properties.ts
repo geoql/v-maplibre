@@ -1,9 +1,4 @@
-import type {
-  LayerSpecification,
-  Map,
-  PaintPropertyEntry,
-  StyleLayer,
-} from 'maplibre-gl';
+import type { LayerSpecification, Map, PaintPropertyEntry } from 'maplibre-gl';
 
 type UnionToIntersection<U> = (
   U extends unknown ? (value: U) => void : never
@@ -86,14 +81,3 @@ export const setLayoutProperties = (
     if (shouldSet(name, value)) map.setLayoutProperty(layerId, name, value);
   }
 };
-
-/**
- * Whether `name` is a paint property that is set on `layer`.
- *
- * A key of the layer's serialized paint object is, by the paint spec type, a
- * paint property name.
- */
-export const isSetPaintProperty = (
-  layer: StyleLayer,
-  name: string,
-): name is PaintPropertyName => name in (layer.serialize().paint ?? {});

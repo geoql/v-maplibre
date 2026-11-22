@@ -171,9 +171,11 @@
       openedSource.value = null;
       return;
     }
+    const SourceClass = MultiCOGSourceClass.value;
+    if (!SourceClass) return;
     const request = ++openRequest;
     try {
-      const source = await MultiCOGSourceClass.value!.open(input, {
+      const source = await SourceClass.open(input, {
         concurrencyLimiter: toRaw(props.concurrencyLimiter),
       });
       if (request !== openRequest) return;
