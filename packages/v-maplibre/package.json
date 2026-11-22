@@ -100,7 +100,7 @@
     "verify:peers": "node scripts/verify-peer-graph.ts"
   },
   "dependencies": {
-    "maplibre-gl": "^6.16.0",
+    "maplibre-gl": "^6.19.0",
     "pmtiles": "^4.5.0"
   },
   "devDependencies": {
@@ -124,24 +124,24 @@
     "@tsdown/css": "^0.23.7",
     "@types/node": "^26.6.6",
     "@types/three": "^0.187.0",
-    "@vitejs/plugin-vue": "^6.0.10",
+    "@vitejs/plugin-vue": "^6.0.11",
     "@vitest/coverage-v8": "5.1.0",
-    "@vue/test-utils": "^2.5.1",
+    "@vue/test-utils": "^2.6.0",
     "3d-tiles-renderer": "^0.5.4",
     "3d-tiles-rendererjs-3dgs-plugin": "^0.3.1",
     "apache-arrow": "^21.2.0",
-    "gaussian-splat-lite": "^1.7.0",
+    "gaussian-splat-lite": "^1.9.0",
     "happy-dom": "^21.0.4",
     "maplibre-gl-lidar": "0.21.0",
     "maplibre-gl-wind": "^0.2.3",
     "three": "^0.187.0",
     "typescript": "^6.0.3",
     "unplugin-vue": "^8.0.1",
-    "vite-plus": "^1.5.0",
+    "vite-plus": "^1.7.0",
     "vitest": "5.1.0",
-    "vue": "^3.5.45",
+    "vue": "^3.5.46",
     "vue-tsc": "^3.3.14",
-    "zarrita": "^0.7.5"
+    "zarrita": "^0.7.6"
   },
   "peerDependencies": {
     "3d-tiles-renderer": "^0.5.0",
