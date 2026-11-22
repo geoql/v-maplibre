@@ -13,7 +13,8 @@ import { PNG } from 'pngjs';
 const args = process.argv.slice(2);
 const flag = args.indexOf('--threshold');
 const threshold = flag === -1 ? 0.001 : Number(args[flag + 1]);
-const [dirA, dirB] = args.filter((_, i) => i !== flag && i !== flag + 1);
+const [dirA, dirB] =
+  flag === -1 ? args : args.filter((_, i) => i !== flag && i !== flag + 1);
 if (!dirA || !dirB || Number.isNaN(threshold)) {
   console.error('usage: compare.ts <dirA> <dirB> [--threshold 0.001]');
   process.exit(2);
