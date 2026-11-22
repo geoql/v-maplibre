@@ -11,7 +11,7 @@
   import { mapEvents } from '../constants/events';
   import { MapKey, PMTileProtocolKey } from '../utils/symbols';
   import { installMaplibreWorkerUrl } from '../utils/maplibre-worker-url';
-  import { useDeckOverlay } from '../layers/deckgl/_shared/useDeckOverlay';
+  import { provideDeckOverlay } from '../layers/deckgl/_shared/deckOverlayContext';
 
   const props = withDefaults(
     defineProps<{
@@ -61,7 +61,7 @@
 
   // Initialize deck.gl overlay at VMap level so all children can access it
   // This provides DeckOverlayKey and DeckLayersKey to all descendants
-  useDeckOverlay(map, {
+  provideDeckOverlay(map, {
     globe: props.projection === 'globe',
     useDevicePixels: props.deckUseDevicePixels,
   });
@@ -103,7 +103,7 @@
   // cache and the worker pool. Without it every unmounted VMap (route change,
   // v-if, a list of map cards) kept its GPU context alive: iOS Safari kills
   // the tab after a few, and Chrome evicts the oldest live map once 16
-  // contexts exist. Registered after useDeckOverlay() above, so the deck.gl
+  // contexts exist. Registered after provideDeckOverlay() above, so the deck.gl
   // overlay is finalized first; children (layers, controls, markers) have
   // already unmounted by the time this runs.
   onUnmounted(() => {

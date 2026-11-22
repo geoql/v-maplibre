@@ -2,7 +2,7 @@
   import { ref, watch, computed, inject, onMounted } from 'vue';
   import { MapKey, injectStrict } from '../../utils';
   import type { PaintPropertyName } from '../../utils';
-  import { DeckLayersKey } from '../../layers/deckgl/_shared/useDeckOverlay';
+  import { DeckLayersKey } from '../../layers/deckgl/_shared/deckOverlayContext';
   import { useMapControl } from '../_shared';
   import type {
     ControlPosition,

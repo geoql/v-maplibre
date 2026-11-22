@@ -153,91 +153,13 @@ jobs:
         env:
           NODE_OPTIONS: --max-old-space-size=8192
 
-      # Chunk-graph guard for issue #114: the core entry must be installable
-      # with only vue / maplibre-gl / pmtiles. Walks every chunk reachable from
-      # dist/index.js (static + dynamic imports) and fails if any optional peer
-      # (deck.gl / lidar / wind / starfield / geotiff) is reachable.
+      # Chunk-graph guard for issues #114 and #187: the core entry must be
+      # installable with only vue / maplibre-gl / pmtiles. Walks every chunk
+      # reachable from dist/index.js (static + dynamic imports) and fails if
+      # any optional peer is reachable. Nitro follows the same graph, so a hit
+      # here is a failed `nuxt build` for core-only consumers.
       - name: Verify optional peers stay out of core entry
-        run: |
-          node --input-type=module <<'EOF'
-          import { readFileSync, existsSync } from 'node:fs';
-          import { resolve, dirname, join } from 'node:path';
-
-          const DIST = resolve('packages/v-maplibre/dist');
-          const ROOT = join(DIST, 'index.js');
-
-          const OPTIONAL_PEERS = [
-            '@deck.gl/core',
-            '@deck.gl/layers',
-            '@deck.gl/mapbox',
-            '@deck.gl/aggregation-layers',
-            '@deck.gl/geo-layers',
-            '@deck.gl/mesh-layers',
-            '@luma.gl/core',
-            '@luma.gl/engine',
-            '@luma.gl/shadertools',
-            '@developmentseed/deck.gl-geotiff',
-            '@developmentseed/deck.gl-raster',
-            '@developmentseed/deck.gl-zarr',
-            '@developmentseed/geotiff',
-            '@developmentseed/proj',
-            '@geoql/maplibre-gl-starfield',
-            'apache-arrow',
-            'maplibre-gl-lidar',
-            'maplibre-gl-wind',
-            'three',
-            'zarrita',
-          ];
-          const isOptionalPeer = (spec) =>
-            OPTIONAL_PEERS.some((p) => spec === p || spec.startsWith(`${p}/`));
-
-          // Match both `from '...'` (static) and `import('...')` (dynamic).
-          const SPEC_RE = /(?:from\s*|import\s*\(\s*)["']([^"']+)["']/g;
-
-          if (!existsSync(ROOT)) {
-            console.error(`[verify-peer-graph] missing ${ROOT} — build the library first.`);
-            process.exit(2);
-          }
-
-          const visited = new Set();
-          const queue = [ROOT];
-          const violations = [];
-
-          while (queue.length > 0) {
-            const file = queue.shift();
-            if (visited.has(file)) continue;
-            visited.add(file);
-
-            let code;
-            try {
-              code = readFileSync(file, 'utf8');
-            } catch {
-              continue;
-            }
-
-            for (const match of code.matchAll(SPEC_RE)) {
-              const spec = match[1];
-              if (isOptionalPeer(spec)) {
-                violations.push({ file: file.replace(`${DIST}/`, ''), spec });
-                continue;
-              }
-              if (spec.startsWith('.')) {
-                const target = resolve(dirname(file), spec);
-                const candidate = target.endsWith('.js') ? target : `${target}.js`;
-                if (existsSync(candidate)) queue.push(candidate);
-              }
-            }
-          }
-
-          if (violations.length > 0) {
-            console.error('[verify-peer-graph] FAIL: optional peers reachable from dist/index.js (core entry):');
-            for (const v of violations) console.error(`  ${v.file} -> ${v.spec}`);
-            console.error(`\nScanned ${visited.size} chunk(s). The core entry must only reference vue / maplibre-gl / pmtiles.`);
-            process.exit(1);
-          }
-
-          console.log(`[verify-peer-graph] PASS: no optional peers reachable from dist/index.js (scanned ${visited.size} chunk(s)).`);
-          EOF
+        run: pnpm --filter @geoql/v-maplibre run verify:peers
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v7

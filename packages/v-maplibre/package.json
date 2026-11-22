@@ -95,8 +95,9 @@
     "lint:fix": "vp lint --fix",
     "format": "vp fmt --write .",
     "format:check": "vp fmt --check .",
-    "prepublishOnly": "pnpm run lint && pnpm run format:check && pnpm run test:coverage && pnpm run build",
-    "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+    "prepublishOnly": "pnpm run lint && pnpm run format:check && pnpm run test:coverage && pnpm run build && pnpm run verify:peers",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json",
+    "verify:peers": "node scripts/verify-peer-graph.ts"
   },
   "dependencies": {
     "maplibre-gl": "^6.16.0",
