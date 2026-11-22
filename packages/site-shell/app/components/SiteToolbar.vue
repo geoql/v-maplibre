@@ -26,9 +26,11 @@
 </script>
 
 <template>
-  <!-- Own provider: the docs have no SidebarProvider to supply one. -->
-  <TooltipProvider>
-    <div class="pointer-events-none flex items-center gap-1">
+  <div class="pointer-events-none flex items-center gap-1">
+    <!-- The div is the single root (no comment before it) so the app's
+         position classes land on it. Own provider: the docs have no
+         SidebarProvider to supply one. -->
+    <TooltipProvider>
       <slot name="start"></slot>
       <Tooltip v-for="link in links" :key="link.to">
         <TooltipTrigger as-child>
@@ -66,6 +68,6 @@
       </Tooltip>
       <ThemeToggle />
       <slot></slot>
-    </div>
-  </TooltipProvider>
+    </TooltipProvider>
+  </div>
 </template>

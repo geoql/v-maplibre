@@ -68,3 +68,32 @@ describe('SiteToolbar', () => {
     expect(end).toBeGreaterThan(link);
   });
 });
+
+describe('SiteToolbar root', () => {
+  it('passes position classes from the parent to its root element', () => {
+    const wrapper = mount(SiteToolbar, {
+      attrs: { class: 'absolute left-3 top-3' },
+      global: {
+        stubs: {
+          Icon: true,
+          Tooltip: {
+            render() {
+              return this.$slots.default?.();
+            },
+          },
+          TooltipTrigger: {
+            render() {
+              return this.$slots.default?.();
+            },
+          },
+          TooltipContent: true,
+          ThemeToggle: true,
+        },
+      },
+    });
+    expect(wrapper.element.tagName).toBe('DIV');
+    expect(wrapper.classes()).toEqual(
+      expect.arrayContaining(['absolute', 'left-3', 'top-3']),
+    );
+  });
+});
