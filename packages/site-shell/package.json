@@ -1,0 +1,42 @@
+{
+  "name": "@geoql/site-shell",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Nuxt layer with the design shell shared by mapcn-vue.geoql.in and v-maplibre.geoql.in",
+  "type": "module",
+  "main": "./nuxt.config.ts",
+  "exports": {
+    ".": "./nuxt.config.ts",
+    "./shell.css": "./app/assets/css/shell.css"
+  },
+  "scripts": {
+    "test": "vp test run",
+    "lint": "vp lint"
+  },
+  "dependencies": {
+    "@iconify-json/lucide": "catalog:app:mapcn-vue",
+    "@iconify-json/simple-icons": "catalog:app:mapcn-vue",
+    "@nuxt/fonts": "catalog:app:mapcn-vue",
+    "@nuxt/icon": "catalog:app:mapcn-vue",
+    "@nuxtjs/color-mode": "catalog:app:mapcn-vue",
+    "@nuxtjs/tailwindcss": "catalog:app:mapcn-vue",
+    "@vueuse/core": "catalog:app:mapcn-vue",
+    "@vueuse/nuxt": "catalog:app:mapcn-vue",
+    "class-variance-authority": "catalog:app:mapcn-vue",
+    "clsx": "catalog:app:mapcn-vue",
+    "motion-v": "catalog:app:mapcn-vue",
+    "reka-ui": "catalog:app:mapcn-vue",
+    "shadcn-nuxt": "catalog:app:mapcn-vue",
+    "tailwind-merge": "catalog:app:mapcn-vue",
+    "tailwindcss": "catalog:app:mapcn-vue",
+    "tailwindcss-animate": "catalog:app:mapcn-vue",
+    "tw-animate-css": "catalog:app:mapcn-vue"
+  },
+  "devDependencies": {
+    "@vue/test-utils": "catalog:",
+    "happy-dom": "catalog:",
+    "nuxt": "catalog:app:mapcn-vue",
+    "vite-plus": "catalog:",
+    "vue": "catalog:"
+  }
+}

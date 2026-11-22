@@ -4,7 +4,7 @@
     WeaponType,
     WeaponConfig,
   } from '~/types/defense-artillery';
-  import { Slider } from '~/components/ui/slider';
+  import { Slider } from '#shell/components/ui/slider';
 
   const props = defineProps<{
     positions: ArtilleryPosition[];

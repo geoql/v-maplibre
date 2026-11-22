@@ -1,8 +1,8 @@
 <script setup lang="ts">
-  import { SidebarTrigger, useSidebar } from '~/components/ui/sidebar';
-  import Tooltip from '~/components/ui/tooltip/Tooltip.vue';
-  import TooltipContent from '~/components/ui/tooltip/TooltipContent.vue';
-  import TooltipTrigger from '~/components/ui/tooltip/TooltipTrigger.vue';
+  import { SidebarTrigger, useSidebar } from '#shell/components/ui/sidebar';
+  import Tooltip from '#shell/components/ui/tooltip/Tooltip.vue';
+  import TooltipContent from '#shell/components/ui/tooltip/TooltipContent.vue';
+  import TooltipTrigger from '#shell/components/ui/tooltip/TooltipTrigger.vue';
 
   const { state, setOpen } = useSidebar();
   const colorMode = useColorMode();

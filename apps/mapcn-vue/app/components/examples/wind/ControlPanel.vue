@@ -1,6 +1,6 @@
 <script setup lang="ts">
-  import { Slider } from '~/components/ui/slider';
-  import { Label } from '~/components/ui/label';
+  import { Slider } from '#shell/components/ui/slider';
+  import { Label } from '#shell/components/ui/label';
 
   const numParticles = defineModel<number[]>('numParticles', {
     required: true,

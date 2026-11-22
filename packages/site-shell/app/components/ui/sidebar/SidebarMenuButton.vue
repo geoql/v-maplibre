@@ -6,7 +6,7 @@
     Tooltip,
     TooltipContent,
     TooltipTrigger,
-  } from '@/components/ui/tooltip';
+  } from '#shell/components/ui/tooltip';
   import SidebarMenuButtonChild from './SidebarMenuButtonChild.vue';
   import { useSidebar } from './utils';
 

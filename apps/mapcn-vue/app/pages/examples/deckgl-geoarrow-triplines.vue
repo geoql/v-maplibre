@@ -3,7 +3,7 @@
   import { VLayerDeckglGeoArrowTrips } from '@geoql/v-maplibre/deck.gl';
   import { tableFromIPC } from 'apache-arrow';
   import type { Table } from 'apache-arrow';
-  import { Slider } from '~/components/ui/slider';
+  import { Slider } from '#shell/components/ui/slider';
 
   usePageGeo({
     title: 'GeoArrow Trips (deck.gl-geoarrow) - mapcn-vue Examples',

@@ -2,7 +2,7 @@
   import { VMap, VControlNavigation, VControlScale } from '@geoql/v-maplibre';
   import { VLayerCog } from '@geoql/v-maplibre/geotiff';
   import type { Map } from 'maplibre-gl';
-  import { Slider } from '~/components/ui/slider';
+  import { Slider } from '#shell/components/ui/slider';
 
   usePageGeo({
     title: 'Before / After Comparison - mapcn-vue Examples',
@@ -79,7 +79,7 @@
   const codeExample = `${SCRIPT_START}
 import { VMap, VControlNavigation } from '@geoql/v-maplibre';
 import { VLayerCog } from '@geoql/v-maplibre/geotiff';
-import { Slider } from '~/components/ui/slider';
+import { Slider } from '#shell/components/ui/slider';
 
 const BEFORE_COG = 'https://.../S2A_2018.tif';
 const AFTER_COG  = 'https://.../S2B_2024.tif';

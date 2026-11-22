@@ -20,16 +20,16 @@
     NumberFieldDecrement,
     NumberFieldIncrement,
     NumberFieldInput,
-  } from '~/components/ui/number-field';
-  import { Label } from '~/components/ui/label';
+  } from '#shell/components/ui/number-field';
+  import { Label } from '#shell/components/ui/label';
   import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-  } from '~/components/ui/select';
-  import { Slider } from '~/components/ui/slider';
+  } from '#shell/components/ui/select';
+  import { Slider } from '#shell/components/ui/slider';
   import { SampleAefRgb } from '~/utils/gpu/sample-aef-rgb';
   import { registerCspSafeZarrCodecs } from '~/utils/zarr-codecs';
 

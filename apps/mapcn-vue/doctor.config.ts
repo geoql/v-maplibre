@@ -26,11 +26,6 @@ export default {
     // One-off data-generation script: run by hand to rebuild the GeoArrow demo
     // fixtures in public/geoarrow/, never bundled or imported at runtime.
     'public/geoarrow/generate.ts',
-    // Vendored shadcn-vue primitives — generated/owned by the shadcn-vue CLI
-    // (`pnpm dlx shadcn-vue add ...`), not hand-authored app code. Excluded so
-    // upgrades stay clean and their upstream patterns (props destructure in a
-    // `computed()`, explicit reka-ui imports) are not counted as our slop.
-    'app/components/ui/**',
   ],
   rules: {
     // Nuxt's generated .nuxt/tsconfig.json already sets `strict: true`; the

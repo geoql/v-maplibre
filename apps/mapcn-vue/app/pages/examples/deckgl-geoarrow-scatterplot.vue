@@ -9,7 +9,7 @@
   import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import { tableFromIPC } from 'apache-arrow';
   import type { Table } from 'apache-arrow';
-  import { Slider } from '~/components/ui/slider';
+  import { Slider } from '#shell/components/ui/slider';
 
   usePageGeo({
     title: 'GeoArrow Points (deck.gl-geoarrow) - mapcn-vue Examples',

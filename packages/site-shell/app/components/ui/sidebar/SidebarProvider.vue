@@ -7,7 +7,7 @@
     useVModel,
   } from '@vueuse/core';
   import { TooltipProvider } from 'reka-ui';
-  import { cn } from '@/lib/utils';
+  import { cn } from '#shell/lib/utils';
   import {
     provideSidebarContext,
     SIDEBAR_COOKIE_MAX_AGE,

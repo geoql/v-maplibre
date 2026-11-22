@@ -8,21 +8,18 @@ const OPENPANEL_CLIENT_ID = '7abde857-674c-4614-b1d0-94c432caea3d';
 const LIBRARY_RELEASED_AT = '2026-06-10T16:13:11Z';
 
 export default defineNuxtConfig({
+  // Fonts, color mode, Tailwind, shadcn-vue, icons and motion come from the
+  // shared design layer (packages/site-shell).
+  extends: ['@geoql/site-shell'],
+
   modules: [
-    '@nuxtjs/color-mode',
-    '@nuxt/icon',
-    '@nuxt/fonts',
     '@nuxt/content',
-    'shadcn-nuxt',
-    '@vueuse/nuxt',
-    'motion-v/nuxt',
     'nuxt-og-image',
     '@nuxtjs/sitemap',
     '@nuxtjs/robots',
     'nuxt-schema-org',
     'nuxt-llms',
     'nuxt-security',
-    '@nuxtjs/tailwindcss',
     // GA4 through useScriptGoogleAnalytics (plugins/google-analytics.client.ts).
     // Plausible loads from plugins/plausible.client.ts, not a module: the
     // pa-*.js tracker needs the official init snippet, which neither
@@ -51,37 +48,6 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
-  // Explicit font manifest — skips @nuxt/fonts CSS auto-scanning that was
-  // taking 6.8s/file × 74 files = ~41s aggregated in the build. We use exactly
-  // two families (Geist + Geist Mono), both from Google. Declaring them here
-  // means the font module never has to scan main.css or any SFC <style> block.
-  fonts: {
-    // `global: true` registers the families app-wide; nuxt-og-image v7 reads
-    // fonts through @nuxt/fonts' `fonts:resolved` hook and only embeds
-    // global families, so the OG template renders in Geist instead of the
-    // bundled Inter fallback.
-    families: [
-      {
-        name: 'Geist',
-        provider: 'google',
-        weights: [300, 400, 500, 700, 800],
-        global: true,
-      },
-      {
-        name: 'Geist Mono',
-        provider: 'google',
-        weights: [400, 500, 700],
-        global: true,
-      },
-    ],
-    defaults: {
-      weights: [400, 700],
-      styles: ['normal'],
-      subsets: ['latin'],
-    },
-    processCSSVariables: false,
-  },
-
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
@@ -104,12 +70,6 @@ export default defineNuxtConfig({
     'maplibre-gl-lidar/style.css',
     '~/assets/css/main.css',
   ],
-
-  colorMode: {
-    classSuffix: '',
-    preference: 'system',
-    fallback: 'dark',
-  },
 
   content: {
     build: {
@@ -514,10 +474,5 @@ export default defineNuxtConfig({
         },
       },
     },
-  },
-
-  shadcn: {
-    prefix: '',
-    componentDir: './app/components/ui',
   },
 });

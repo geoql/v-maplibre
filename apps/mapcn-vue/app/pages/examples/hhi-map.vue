@@ -14,8 +14,8 @@
     SelectItem,
     SelectTrigger,
     SelectValue,
-  } from '~/components/ui/select';
-  import { Slider } from '~/components/ui/slider';
+  } from '#shell/components/ui/select';
+  import { Slider } from '#shell/components/ui/slider';
   import type { HhiConfig, Level } from '~/types/hhi';
 
   const EMPTY_LEVELS: Level[] = [];

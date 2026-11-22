@@ -10,7 +10,7 @@
     SelectItem,
     SelectTrigger,
     SelectValue,
-  } from '~/components/ui/select';
+  } from '#shell/components/ui/select';
 
   usePageGeo({
     title: 'Sentinel-2 Multi-Band - mapcn-vue Examples',

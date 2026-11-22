@@ -5,7 +5,7 @@
     ExampleSubsection,
   } from '~/types/examples';
   import { useClipboard } from '@vueuse/core';
-  import { slugify } from '~/lib/utils';
+  import { slugify } from '#shell/lib/utils';
 
   const props = defineProps<{
     category: ExampleCategory;

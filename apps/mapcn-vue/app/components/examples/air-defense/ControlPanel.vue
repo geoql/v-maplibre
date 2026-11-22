@@ -5,7 +5,7 @@
     RadarTierConfig,
     AirDefenseStats,
   } from '~/types/defense-air-defense';
-  import { Slider } from '~/components/ui/slider';
+  import { Slider } from '#shell/components/ui/slider';
 
   const props = defineProps<{
     activeAltitude: AltitudeLayer | 'all';
