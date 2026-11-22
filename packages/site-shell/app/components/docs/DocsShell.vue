@@ -6,6 +6,7 @@
    * data in; this component never queries a content collection.
    */
   import { MotionConfig } from 'motion-v';
+  import { ref } from 'vue';
   import {
     Sheet,
     SheetContent,
