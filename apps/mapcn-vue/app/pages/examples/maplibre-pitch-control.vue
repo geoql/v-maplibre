@@ -8,7 +8,7 @@
       'Interactive sliders for adjusting map pitch (tilt) and bearing (rotation).',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Pitch & Bearing Control',
     description:
       'Interactive sliders for adjusting map pitch (tilt) and bearing (rotation).',

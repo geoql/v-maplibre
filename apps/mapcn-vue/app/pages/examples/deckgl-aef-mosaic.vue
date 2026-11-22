@@ -20,16 +20,16 @@
     NumberFieldDecrement,
     NumberFieldIncrement,
     NumberFieldInput,
-  } from '~/components/ui/number-field';
-  import { Label } from '~/components/ui/label';
+  } from '#shell/components/ui/number-field';
+  import { Label } from '#shell/components/ui/label';
   import {
     Select,
     SelectContent,
     SelectItem,
     SelectTrigger,
     SelectValue,
-  } from '~/components/ui/select';
-  import { Slider } from '~/components/ui/slider';
+  } from '#shell/components/ui/select';
+  import { Slider } from '#shell/components/ui/slider';
   import { SampleAefRgb } from '~/utils/gpu/sample-aef-rgb';
   import { registerCspSafeZarrCodecs } from '~/utils/zarr-codecs';
 
@@ -39,7 +39,7 @@
       'AlphaEarth Foundations embedding mosaic via VLayerZarr. Int8 Texture2DArray + GPU dequant + RGB band tuning across 9 annual snapshots (2017–2025).',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'AEF Mosaic',
     description:
       'AlphaEarth Foundations embedding mosaic rendered with deck.gl-raster ZarrLayer + custom GPU shader.',

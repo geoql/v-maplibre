@@ -14,7 +14,7 @@
       'Entwine Point Tile (EPT) streaming for large point cloud datasets with viewport-based loading.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'EPT Streaming',
     description:
       'Entwine Point Tile (EPT) streaming for large point cloud datasets with viewport-based loading.',

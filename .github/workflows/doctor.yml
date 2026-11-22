@@ -86,3 +86,70 @@ jobs:
           project: ${{ github.repository }}
           pr-comment: true
           comment-mode: both
+
+  nuxt-doctor-docs:
+    name: 'Nuxt Doctor (docs app)'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6.1.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: 'pnpm'
+
+      # `postinstall: nuxt prepare` writes .nuxt/tsconfig.json for knip.
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Audit with nuxt-doctor
+        uses: geoql/doctor-action@v2
+        with:
+          framework: nuxt
+          preset: recommended
+          threshold: ${{ vars.DOCTOR_THRESHOLD || '0' }}
+          fail-on: error
+          working-directory: apps/docs
+          api-key: ${{ secrets.DOCTOR_API_KEY }}
+          project: ${{ github.repository }}
+          pr-comment: true
+          comment-mode: both
+
+  vue-doctor-site-shell:
+    name: 'Vue Doctor (site-shell layer)'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6.1.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 26
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Audit with vue-doctor
+        uses: geoql/doctor-action@v2
+        with:
+          framework: vue
+          preset: recommended
+          threshold: ${{ vars.DOCTOR_THRESHOLD || '0' }}
+          fail-on: error
+          working-directory: packages/site-shell
+          api-key: ${{ secrets.DOCTOR_API_KEY }}
+          project: ${{ github.repository }}
+          pr-comment: true
+          comment-mode: both

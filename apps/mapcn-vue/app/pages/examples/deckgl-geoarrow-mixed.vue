@@ -13,7 +13,7 @@
   import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import { tableFromIPC } from 'apache-arrow';
   import type { Table } from 'apache-arrow';
-  import { Slider } from '~/components/ui/slider';
+  import { Slider } from '#shell/components/ui/slider';
 
   usePageGeo({
     title: 'GeoArrow All Geometries (deck.gl-geoarrow) - mapcn-vue Examples',
@@ -21,7 +21,7 @@
       'Demonstrates Point, LineString, and Polygon geometries in a single view, loaded from three separate GeoArrow IPC files.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'GeoArrow All Geometries',
     description: 'Point, LineString, and Polygon from GeoArrow IPC files.',
     category: 'deck.gl',

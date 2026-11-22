@@ -14,8 +14,8 @@
     SelectItem,
     SelectTrigger,
     SelectValue,
-  } from '~/components/ui/select';
-  import { Slider } from '~/components/ui/slider';
+  } from '#shell/components/ui/select';
+  import { Slider } from '#shell/components/ui/slider';
   import type { HhiConfig, Level } from '~/types/hhi';
 
   const EMPTY_LEVELS: Level[] = [];
@@ -27,7 +27,7 @@
       'US Vehicle Market Concentration (Herfindahl-Hirschman Index) interactive census tract map with dynamic filtering by group, level, and year.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'HHI Map',
     description:
       'US Vehicle Market Concentration (HHI) Map - Interactive census tract viewer.',

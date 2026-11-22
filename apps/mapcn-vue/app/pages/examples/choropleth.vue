@@ -25,7 +25,7 @@
       'Color-coded region map showing data values by geographic area. Compare MapLibre GL and deck.gl implementations.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Choropleth Map',
     description:
       'Color-coded region map showing data values by geographic area. Compare MapLibre GL and deck.gl implementations.',

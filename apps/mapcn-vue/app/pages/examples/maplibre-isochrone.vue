@@ -22,7 +22,7 @@
       'Visualize travel time or distance zones showing areas reachable from a point.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Isochrone Map',
     description:
       'Visualize travel time or distance zones showing areas reachable from a point.',

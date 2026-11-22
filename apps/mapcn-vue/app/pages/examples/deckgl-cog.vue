@@ -15,7 +15,7 @@
       'GPU-accelerated Cloud-Optimized GeoTIFF visualization with automatic reprojection.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'COG Layer (deck.gl-raster)',
     description:
       'GPU-accelerated Cloud-Optimized GeoTIFF visualization with automatic reprojection.',

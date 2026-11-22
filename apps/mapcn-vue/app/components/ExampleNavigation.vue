@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { Separator } from '~/components/ui/separator';
+  import { Separator } from '#shell/components/ui/separator';
 
   import type { Example } from '~/types/examples';
 

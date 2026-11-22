@@ -8,7 +8,7 @@
       'Stream 3D building geometry rendered by three.js via OGC 3D Tiles on a MapLibre basemap.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: '3D Buildings',
     description:
       'Stream 3D building geometry rendered by three.js via OGC 3D Tiles on a MapLibre basemap.',

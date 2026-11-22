@@ -12,7 +12,7 @@
   import type { Map } from 'maplibre-gl';
   import type { RenderTileResult } from '@developmentseed/deck.gl-raster';
   import type { Array as ZarrArray, Readable } from 'zarrita';
-  import type { Slider } from '~/components/ui/slider';
+  import type { Slider } from '#shell/components/ui/slider';
   import type { ZarrSelection, ZarrTileData } from '~/types/zarr';
   import { registerCspSafeZarrCodecs } from '~/utils/zarr-codecs';
 
@@ -22,7 +22,7 @@
       'Render ECMWF Open Data GeoZarr temperature with deck.gl-raster ZarrLayer + zarrita. Single time slice, GPU-rendered.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'ECMWF GeoZarr',
     description:
       'GeoZarr temperature dataset rendered with deck.gl-raster ZarrLayer.',

@@ -15,7 +15,7 @@
       'Render NLCD Land Cover classification data with automatic colormap visualization.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Land Cover COG',
     description:
       'Render NLCD Land Cover classification data with automatic colormap visualization.',

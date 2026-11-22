@@ -5,7 +5,7 @@
       'Maritime defense visualization for strategic chokepoint monitoring with vessel-density heatmaps and ship-to-ship transfer detection.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Chokepoint Density & STS Detection',
     description:
       'deck.gl-over-MapLibre visualization for maritime defense: vessel-density hotspots and STS transfer detection at global chokepoints.',

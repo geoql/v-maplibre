@@ -3,7 +3,7 @@
   import { VLayerDeckglGeoArrowTrips } from '@geoql/v-maplibre/deck.gl';
   import { tableFromIPC } from 'apache-arrow';
   import type { Table } from 'apache-arrow';
-  import { Slider } from '~/components/ui/slider';
+  import { Slider } from '#shell/components/ui/slider';
 
   usePageGeo({
     title: 'GeoArrow Trips (deck.gl-geoarrow) - mapcn-vue Examples',
@@ -11,7 +11,7 @@
       'Animated travel paths from a GeoArrow IPC file rendered with VLayerDeckglGeoArrowTrips. Each trip has a timestamp column that controls the animation progress along the path.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'GeoArrow Trips',
     description: 'Animated travel paths from a GeoArrow IPC file.',
     category: 'deck.gl',

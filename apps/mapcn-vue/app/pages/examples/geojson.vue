@@ -13,7 +13,7 @@
     description: 'Render GeoJSON data on the map.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'GeoJSON Layer',
     description: 'Render GeoJSON data on the map.',
     category: 'Examples',

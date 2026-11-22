@@ -1,7 +1,19 @@
 export default defineNuxtConfig({
-  extends: ['docus'],
+  // Fonts, color mode, Tailwind, shadcn-vue, icons, motion and the docs
+  // shell come from the layer shared with mapcn-vue (packages/site-shell).
+  extends: ['@geoql/site-shell'],
 
   modules: [
+    '@nuxt/content',
+    '@nuxtjs/sitemap',
+    '@nuxtjs/robots',
+    'nuxt-schema-org',
+    'nuxt-llms',
+    // Markdown twins, /.well-known/api-catalog, /sitemap.md, the MCP server
+    // card and the discovery Link header on / (Docus shipped these).
+    'nuxt-agent-discovery',
+    '@nuxtjs/mcp-toolkit',
+    'nuxt-og-image',
     // GA4 through useScriptGoogleAnalytics (app/plugins/google-analytics.client.ts).
     // Plausible loads from app/plugins/plausible.client.ts, not a module: the
     // pa-*.js tracker needs the official init snippet, which neither
@@ -47,12 +59,73 @@ export default defineNuxtConfig({
       type: 'd1',
       bindingName: 'DB',
     },
+    build: {
+      markdown: {
+        highlight: {
+          theme: {
+            default: 'github-dark',
+            dark: 'github-dark',
+            light: 'github-light',
+          },
+          langs: ['vue', 'typescript', 'javascript', 'bash', 'json'],
+        },
+      },
+    },
+  },
+
+  css: ['~/assets/css/main.css'],
+
+  app: {
+    head: {
+      htmlAttrs: { lang: 'en' },
+      link: [{ rel: 'icon', href: '/favicon.ico' }],
+    },
+  },
+
+  agentDiscovery: {
+    discovery: {
+      mcpServerCard: {
+        endpoint: '/mcp',
+        name: 'v-maplibre',
+        description: 'Read the v-maplibre documentation: list pages, read one as markdown.',
+        documentation: 'https://v-maplibre.geoql.in',
+        repository: 'https://github.com/geoql/v-maplibre',
+        license: 'MIT',
+      },
+    },
+  },
+
+  mcp: {
+    name: 'v-maplibre',
+    // nuxt-llms owns llms.txt; the toolkit would add an MCP block to it.
+    llms: false,
+  },
+
+  ogImage: {
+    // Every page is prerendered, so OG images render at build time only.
+    zeroRuntime: true,
+  },
+
+  robots: {
+    // AI crawlers are welcome: we want the API docs cited.
+    groups: [{ userAgent: '*', allow: '/' }],
   },
 
   compatibilityDate: '2025-07-18',
 
   nitro: {
     preset: 'cloudflare_module',
+    // The MCP tools read the request through useEvent().
+    experimental: { asyncContext: true },
+    // Prerender every docs page (crawled from the home page and the nav).
+    // A failing page fails the build. autoSubfolderIndex: false writes
+    // /guide/getting-started.html, which Cloudflare static assets serve for
+    // /guide/getting-started without a trailing-slash redirect.
+    prerender: {
+      crawlLinks: true,
+      routes: ['/', '/sitemap.xml', '/openapi.json'],
+      autoSubfolderIndex: false,
+    },
     cloudflare: {
       nodeCompat: true,
       // deployConfig writes the merged binding spec to
@@ -89,6 +162,13 @@ export default defineNuxtConfig({
   },
 
   llms: {
-    domain: 'v-maplibre.geoql.in',
+    domain: 'https://v-maplibre.geoql.in',
+    title: 'v-maplibre',
+    description:
+      'Vue 3 components for MapLibre GL: maps, markers, popups, controls, MapLibre and deck.gl layers.',
+    full: {
+      title: 'v-maplibre documentation',
+      description: 'The full v-maplibre documentation in one file.',
+    },
   },
 });

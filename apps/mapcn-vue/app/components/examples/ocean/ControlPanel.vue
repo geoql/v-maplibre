@@ -1,8 +1,8 @@
 <script setup lang="ts">
   import type { OceanStats } from '~/types/maritime-ocean';
   import { THERMAL_RAMP } from '~/composables/use-maritime-ocean';
-  import { Slider } from '~/components/ui/slider';
-  import { Label } from '~/components/ui/label';
+  import { Slider } from '#shell/components/ui/slider';
+  import { Label } from '#shell/components/ui/label';
 
   defineProps<{
     showSst: boolean;

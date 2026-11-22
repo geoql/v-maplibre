@@ -9,7 +9,7 @@
   import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import { tableFromIPC } from 'apache-arrow';
   import type { Table } from 'apache-arrow';
-  import { Slider } from '~/components/ui/slider';
+  import { Slider } from '#shell/components/ui/slider';
 
   usePageGeo({
     title: 'GeoArrow Points (deck.gl-geoarrow) - mapcn-vue Examples',
@@ -17,7 +17,7 @@
       'City clusters from a native GeoArrow IPC file rendered with VLayerDeckglGeoArrowScatterplot. Each city is a point with an RGB color attribute.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'GeoArrow Points',
     description: 'City clusters from a native GeoArrow IPC file.',
     category: 'deck.gl',

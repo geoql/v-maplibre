@@ -12,7 +12,7 @@
     SidebarMenuButton,
     SidebarMenuItem,
     useSidebar,
-  } from '~/components/ui/sidebar';
+  } from '#shell/components/ui/sidebar';
 
   defineProps<{
     categories: ExampleCategory[];

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { Slider } from '~/components/ui/slider';
+  import { Slider } from '#shell/components/ui/slider';
 
   const props = defineProps<{
     modelValue: number[];

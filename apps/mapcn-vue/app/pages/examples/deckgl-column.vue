@@ -13,7 +13,7 @@
     description: '3D column/bar chart visualization on the map.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Column Layer (deck.gl)',
     description: '3D column/bar chart visualization on the map.',
     category: 'deck.gl',

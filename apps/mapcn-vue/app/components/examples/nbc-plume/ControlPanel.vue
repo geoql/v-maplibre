@@ -1,6 +1,6 @@
 <script setup lang="ts">
   import type { NbcStats, HazardType, DangerLevel } from '~/types/defense-nbc';
-  import { Slider } from '~/components/ui/slider';
+  import { Slider } from '#shell/components/ui/slider';
 
   const props = defineProps<{
     windDirection: number;

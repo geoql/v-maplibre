@@ -5,7 +5,7 @@
       'Animated route replay with timeline scrubbing using Valhalla routing API.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Trip Playback',
     description:
       'Animated route replay with timeline scrubbing using Valhalla routing API.',

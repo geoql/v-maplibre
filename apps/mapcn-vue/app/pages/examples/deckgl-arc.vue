@@ -13,7 +13,7 @@
     description: 'Origin-destination arc visualization.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Arc Layer (deck.gl)',
     description: 'Origin-destination arc visualization.',
     category: 'deck.gl',

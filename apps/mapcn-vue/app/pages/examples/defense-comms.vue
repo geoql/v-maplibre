@@ -7,7 +7,7 @@
       'Tactical communications network with HQ, relay, and field unit nodes connected by signal-strength links along the Arunachal Pradesh border.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Tactical Comms Network',
     description:
       'Communication nodes with signal-strength links and live degradation simulation.',

@@ -5,7 +5,7 @@
       'Multi-waypoint route planning for infantry patrols in Ladakh with real Valhalla pedestrian routing and elevation profile.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Ground Troop Navigation',
     description:
       'Multi-waypoint infantry patrol route planning with elevation profile.',

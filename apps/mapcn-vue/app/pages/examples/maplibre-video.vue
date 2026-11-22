@@ -12,7 +12,7 @@
     description: 'Overlay video on specific map coordinates.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Video Layer',
     description: 'Overlay video on specific map coordinates.',
     category: 'MapLibre',

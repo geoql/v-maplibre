@@ -8,7 +8,7 @@ overrides:
   # aborting the CF Workers build (nuxt/nuxt#35670). Fixed in Unhead 3.2.0+;
   # keep the floor above 3.2.1 so the Cloudflare build always resolves a good copy.
   unhead: '>=3.4.3'
-  # docus -> @nuxtjs/mcp-toolkit + devframe pull h3@2.0.1-rc.x, which wins the
+  # @nuxtjs/mcp-toolkit (docs MCP server) + devframe pull h3 v2, which wins the
   # shamefully-hoist for bare `h3` imports. @nuxt/content + nuxt-llms nitro
   # handlers then mix h3 v1 events with v2 setHeader and every prerender route
   # 500s ("Cannot read properties of undefined (reading 'set')"). mcp-toolkit
@@ -20,10 +20,9 @@ overrides:
   # "does not provide an export named 'H3'". It runs only in the dev server,
   # so it gets its own h3 v2 while everything else stays on v1.
   devframe>h3: ^2.0.5
-  # Single-version pins to avoid dual-resolution at docs `nuxt prepare`:
-  # docus@5.11 pulls @nuxt/content@3.13.0 (no zod3 chunk -> defineCollection
-  # throws via the zod3 placeholder), while @nuxt/ui pulls @nuxt/content@3.14.0.
-  # Pinning to 3.14 + zod 4 makes every path use the zod4 chunk.
+  # Single-version pins: the docs, mapcn-vue and nuxt-agent-discovery all
+  # load @nuxt/content, and two copies at `nuxt prepare` broke
+  # defineCollection (zod3 placeholder). One version + zod 4 everywhere.
   '@nuxt/content': ^3.17.0
   zod: ^4.6.7
   # A second @vue/* generation (3.5.41) survived the last dependency sweep
@@ -52,6 +51,11 @@ allowBuilds:
 catalogs:
   default:
     maplibre-gl: ^6.19.0
+    # Visual-regression harness (scripts/visual): Playwright + pixelmatch.
+    playwright: ^1.65.1
+    pixelmatch: ^8.0.0
+    pngjs: ^7.0.0
+    '@types/pngjs': ^6.0.5
     typescript: ^6.0.3
     vue: ^3.5.46
     vue-tsc: ^3.3.14
@@ -59,6 +63,10 @@ catalogs:
     vitest: 5.1.0
     vite-plus: 1.5.0
     '@vitest/coverage-v8': 5.1.0
+    # Component tests (packages/site-shell): vue APIs auto-imported as in Nuxt.
+    '@vue/test-utils': ^2.6.0
+    happy-dom: ^21.0.4
+    unplugin-auto-import: ^21.1.0
 
   pkg:mapcn-vue:
     '@vitejs/plugin-vue': ^6.0.11
@@ -69,24 +77,30 @@ catalogs:
     shadcn-vue: ^2.9.0
 
   app:docs:
-    '@comark/nuxt': ^0.9.2
-    # Direct dep so `.nuxt/content/types.d.ts` can augment '@nuxt/content'.
-    # Without it the augmentation becomes an unrelated ambient module, docus
-    # sees an empty `Collections`, and `DocsPage` resolves to `never`.
+    # SEO / agent surfaces (same majors as app:mapcn-vue).
+    '@nuxtjs/robots': ^7.0.2
+    '@nuxtjs/sitemap': ^9.1.0
+    nuxt-llms: ^0.3.2
+    nuxt-schema-org: ^7.0.1
+    # Agent discovery (markdown twins, api-catalog, sitemap.md, MCP card)
+    # and the /mcp endpoint, both previously pulled in by Docus.
+    nuxt-agent-discovery: ^0.8.2
+    '@nuxtjs/mcp-toolkit': ^0.24.3
+    # Direct dep so `.nuxt/content/types.d.ts` can augment '@nuxt/content'
+    # (typed queryCollection('docs') in the docs pages).
     '@nuxt/content': ^3.17.0
     '@nuxt/scripts': ^1.3.12
     '@openpanel/nuxt': ^0.4.4
     # agents 0.33 made the MCP packages optional peers with exact versions.
-    # docus -> @nuxtjs/mcp-toolkit serves MCP through `agents/mcp`, so the
-    # docs app installs them itself (versions = agents' peer pins).
+    # @nuxtjs/mcp-toolkit serves MCP through `agents/mcp`, so the docs app
+    # installs them itself (versions = agents' peer pins).
     '@modelcontextprotocol/sdk': 1.32.2
     '@modelcontextprotocol/server': 2.4.0
     agents: ^0.34.0
     better-sqlite3: ^13.2.0
-    docus: ^5.15.0
     nuxt: ^4.6.4
     wrangler: ^4.166.0
-    # Required by docus → @nuxt/content collection schema generation.
+    # zod: content collection schemas and the MCP tool input schemas.
     # CI fails on `nuxt prepare` without these because @nuxt/content 3.13.x
     # peer-requires zod (not bundled). Local installs sometimes resolve to
     # 3.14.x which sidesteps the requirement, but CI consistently pulls 3.13.x.

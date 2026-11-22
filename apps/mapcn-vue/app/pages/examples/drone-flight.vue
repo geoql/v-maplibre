@@ -5,7 +5,7 @@
       'Cinematic drone flight animation along a GeoJSON path with animated trail and camera follow.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Drone Flight',
     description: 'Cinematic drone flight animation along a GeoJSON path.',
     category: 'Examples',

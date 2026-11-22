@@ -8,7 +8,7 @@
       'Stream an OGC 3D Tiles tileset with KHR_gaussian_splatting SPZ splat tiles on the map.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: '3D Tiles Splat Layer',
     description:
       'Stream an OGC 3D Tiles tileset with KHR_gaussian_splatting SPZ splat tiles on the map.',

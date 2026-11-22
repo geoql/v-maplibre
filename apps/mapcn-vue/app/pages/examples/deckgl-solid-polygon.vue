@@ -13,7 +13,7 @@
     description: '3D extruded solid polygons visualization.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Solid Polygon Layer (deck.gl)',
     description: '3D extruded solid polygons visualization.',
     category: 'deck.gl',

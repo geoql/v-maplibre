@@ -4,7 +4,7 @@
   "typescript": true,
   "tailwind": {
     "config": "",
-    "css": "app/assets/css/main.css",
+    "css": "../../packages/site-shell/app/assets/css/shell.css",
     "baseColor": "neutral",
     "cssVariables": true,
     "prefix": ""
@@ -12,8 +12,8 @@
   "iconLibrary": "lucide",
   "aliases": {
     "components": "@/components",
-    "utils": "@/lib/utils",
-    "ui": "@/components/ui",
+    "utils": "#shell/lib/utils",
+    "ui": "#shell/components/ui",
     "lib": "@/lib",
     "composables": "@/composables"
   },

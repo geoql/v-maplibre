@@ -7,7 +7,7 @@ description: Project-level design skill for apps/mapcn-vue. Pins Tech Utility di
 
 Pinned direction: **Tech Utility** (Linear / Vercel / Stripe reference set).
 
-This skill overrides `design-discipline`'s `references/directions.md` defaults for everything inside `apps/mapcn-vue/`. The library (`packages/v-maplibre`) and the docs site (`apps/docs`) are out of scope.
+This skill overrides `design-discipline`'s `references/directions.md` defaults for everything inside `apps/mapcn-vue/`, `apps/docs/` and `packages/site-shell/`. The two sites share one design layer (`packages/site-shell`): tokens, fonts, toolbar, docs shell, content components and motion live there, so a change lands on mapcn-vue.geoql.in and v-maplibre.geoql.in together. The library (`packages/v-maplibre`) is out of scope.
 
 ---
 
@@ -158,17 +158,33 @@ If a future request asks for any of:
 
 ## File Inventory (where the design lives)
 
-| File                                          | Owns                                                         |
-| --------------------------------------------- | ------------------------------------------------------------ |
-| `app/assets/css/main.css`                     | All tokens, weight rules, base typography                    |
-| `app/pages/index.vue`                         | Homepage hero — the canonical surface                        |
-| `app/components/AppSidebar.vue`               | Sidebar shell                                                |
-| `app/components/FloatingToolbar.vue`          | Persistent top-left toolbar (sidebar trigger, GitHub, theme) |
-| `app/components/HomeFeatureCard.vue`          | Feature card primitive                                       |
-| `app/components/ComponentDemo.vue`            | Per-example demo header                                      |
-| `app/components/examples/index/Header.vue`    | Examples gallery header                                      |
-| `app/components/examples/index/FooterCta.vue` | Examples gallery footer CTA                                  |
-| `nuxt.config.ts`                              | `@nuxt/fonts` config                                         |
+Shared layer, `packages/site-shell/` (both sites):
+
+| File                                        | Owns                                                                 |
+| ------------------------------------------- | -------------------------------------------------------------------- |
+| `app/assets/css/shell.css`                  | All tokens, weight rules, base typography, prose, shiki, docs motion |
+| `nuxt.config.ts`                            | `@nuxt/fonts` (Geist), color mode, shadcn, Tailwind, icons, motion   |
+| `app/components/ui/**`                      | shadcn-vue primitives                                                |
+| `app/components/SiteToolbar.vue`            | Floating top-left toolbar (links, GitHub, theme toggle, app slots)   |
+| `app/components/docs/*`                     | Docs shell: nav rail, TOC, pager, mobile menu sheet                  |
+| `app/components/content/*`                  | Markdown components: callout, alert, code-group, code block, table   |
+| `app/components/SearchPalette.vue`          | ⌘K search                                                            |
+| `app/components/OgImage/SiteDoc.satori.vue` | OG card for both sites (`brand` / `domain` props)                    |
+
+mapcn-vue, `apps/mapcn-vue/`:
+
+| File                                          | Owns                                                      |
+| --------------------------------------------- | --------------------------------------------------------- |
+| `app/assets/css/main.css`                     | Map containers, popups, LiDAR control (imports shell.css) |
+| `app/pages/index.vue`                         | Homepage hero — the canonical surface                     |
+| `app/components/AppSidebar.vue`               | Examples sidebar                                          |
+| `app/components/FloatingToolbar.vue`          | Wraps SiteToolbar: sidebar trigger, FPS toggle            |
+| `app/components/HomeFeatureCard.vue`          | Feature card primitive                                    |
+| `app/components/ComponentDemo.vue`            | Per-example demo header                                   |
+| `app/components/examples/index/Header.vue`    | Examples gallery header                                   |
+| `app/components/examples/index/FooterCta.vue` | Examples gallery footer CTA                               |
+
+Docs, `apps/docs/`: `app/pages/index.vue` (home: oversized install command is its distinctive moment), `app/layouts/default.vue`, `app/error.vue`.
 
 ---
 

@@ -13,7 +13,7 @@
     description: 'Render filled and stroked polygons.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Polygon Layer (deck.gl)',
     description: 'Render filled and stroked polygons.',
     category: 'deck.gl',

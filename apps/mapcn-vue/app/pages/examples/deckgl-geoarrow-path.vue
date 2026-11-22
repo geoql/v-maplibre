@@ -3,7 +3,7 @@
   import { VLayerDeckglGeoArrowPath } from '@geoql/v-maplibre/deck.gl';
   import { tableFromIPC } from 'apache-arrow';
   import type { Table } from 'apache-arrow';
-  import { Slider } from '~/components/ui/slider';
+  import { Slider } from '#shell/components/ui/slider';
 
   usePageGeo({
     title: 'GeoArrow LineStrings (deck.gl-geoarrow) - mapcn-vue Examples',
@@ -11,7 +11,7 @@
       'Three famous travel routes rendered from a GeoArrow IPC file with VLayerDeckglGeoArrowPath. LineStrings are encoded as flat coordinate arrays.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'GeoArrow LineStrings',
     description: 'Famous travel routes from a GeoArrow IPC file.',
     category: 'deck.gl',

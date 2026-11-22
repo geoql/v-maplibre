@@ -13,7 +13,7 @@
     description: 'Render point cloud data on the map.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Point Cloud Layer (deck.gl)',
     description: 'Render point cloud data on the map.',
     category: 'deck.gl',

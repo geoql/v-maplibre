@@ -1,184 +1,120 @@
 # AGENTS.md - v-maplibre Documentation Guide
 
 > **For AI Coding Assistants (Claude Code, Cursor, Copilot, etc.)**
-> This file helps AI agents understand the codebase architecture, conventions, and best practices for the @geoql/v-maplibre documentation site.
+> Conventions for the @geoql/v-maplibre documentation site (v-maplibre.geoql.in).
 
 ---
 
 ## Project Overview
 
-**v-maplibre docs** is the API documentation site for the @geoql/v-maplibre library. Built with Docus (a Nuxt-based documentation theme), it provides comprehensive guides and API reference for Vue 3 MapLibre components.
+**v-maplibre docs** is the API reference for @geoql/v-maplibre. It is a Nuxt 4 app on plain **@nuxt/content** that extends the shared design layer **`@geoql/site-shell`** (`packages/site-shell`), the same layer mapcn-vue.geoql.in extends. The two sites share tokens, fonts, toolbar, docs page shell, content components and motion, so moving between them shows no seam. Docus is no longer used.
 
 ### Key Capabilities
-- **API Documentation**: Component reference for 50+ map components
-- **Getting Started Guides**: Installation and basic usage
-- **Layer Documentation**: MapLibre native, deck.gl, and specialty layers
-- **Search**: Built-in documentation search via Docus
-- **LLM Support**: `/llms.txt` endpoint for AI agent context
+
+- **API documentation** for the map components, layers and controls, written in Markdown under `content/`
+- **⌘K search** (`SearchPalette` from the layer, fed by `queryCollectionSearchSections`)
+- **Agent surfaces**: `/llms.txt`, `/llms-full.txt`, `.md` twins of every page, `/sitemap.md`, `/.well-known/api-catalog`, the MCP server card, `/openapi.json`, and an MCP server at `/mcp` (tools `list-pages`, `get-page`)
+- **OG images** for every page, rendered at build time from the layer's `SiteDoc` template
 
 ---
 
 ## Skills Integration & Priority
 
-This app uses **three** project-pinned skills from [`.agents/skills/`](../../.agents/skills/):
+Load from [`.agents/skills/`](../../.agents/skills/):
 
-| Skill | When to Load |
-| ----- | ------------ |
-| [`nuxt-best-practices`](../../.agents/skills/nuxt-best-practices/SKILL.md) | Nuxt config / data loading / Nitro / server routes |
-| [`nuxt-seo-best-practices`](../../.agents/skills/nuxt-seo-best-practices/SKILL.md) | SEO / OG images / Cloudflare config / JSON-LD |
-| [`nuxt-geo-best-practices`](../../.agents/skills/nuxt-geo-best-practices/SKILL.md) | Generative-Engine Optimization (llms.txt, AI crawler allowlist) |
+| Skill                                                                                  | When to Load                                                     |
+| -------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| [`mapcn-vue-design`](../../.agents/skills/mapcn-vue-design/SKILL.md)                   | Any visual change: the docs use the same Tech Utility direction  |
+| [`nuxt-best-practices`](../../.agents/skills/nuxt-best-practices/SKILL.md)             | Nuxt config, data loading, Nitro, server routes                  |
+| [`nuxt-seo-best-practices`](../../.agents/skills/nuxt-seo-best-practices/SKILL.md)     | SEO, OG images, Cloudflare config, JSON-LD                       |
+| [`nuxt-geo-best-practices`](../../.agents/skills/nuxt-geo-best-practices/SKILL.md)     | llms.txt, AI crawler access, citation-friendly content           |
+| [`vue-best-practices`](../../.agents/skills/vue-best-practices/SKILL.md)               | Vue components in `app/` or in the layer                         |
 
-`vue-best-practices` is rarely needed (no custom Vue components — Docus owns its theme). `mapcn-vue-design` does **not** apply (Docus owns layout and tokens).
-
-**Priority rule: This AGENTS.md ALWAYS takes precedence over generic skills when they conflict.**
+**Priority rule: this AGENTS.md takes precedence over generic skills when they conflict.**
 
 ### Known Conflicts (AGENTS.md wins)
 
-| Skill Says | AGENTS.md Says (Use This) |
-| ---------- | ------------------------- |
-| Build custom layouts and components | **Don't.** Docus owns the theme. Write content (Markdown) only — see Rule #5 below |
-| Use `useFetch` / `useAsyncData` for data | **Docus handles content loading via `@nuxt/content`** + Cloudflare D1 binding (`DB`). Don't add manual fetch layers. |
-| Custom OG image generation | Docus handles OG image generation via its built-in theme — `nuxt-seo-best-practices` Satori patterns DO NOT apply here |
-| Pinia for state | **Not needed.** Docus pages are mostly static markdown. Theme toggle uses `@nuxtjs/color-mode`. |
-| `useState` for global state | **Not needed** for this site. If state ever becomes necessary, use `useState`. |
-| Static `robots.txt` blocking AI bots | **Allow** GPTBot / ClaudeBot / PerplexityBot / Google-Extended — we want AI citations of the API docs |
-| Build `llms.txt` from scratch | Docus auto-generates `llms.txt` and `llms-full.txt` from `content/` (see `nuxt.config.ts` `llms` block) — extend the generator config, don't rewrite |
-
-### What Skills Add (Not in AGENTS.md)
-
-- **`nuxt-best-practices`** — Nitro Cloudflare preset config, env var conventions, route grouping
-- **`nuxt-seo-best-practices`** — Sitemap generation, robots.txt strategy when self-hosted, structured-data schemas
-- **`nuxt-geo-best-practices`** — `llms.txt` schema, citation-friendly content rules (high info density, plain language, statistics over fluff), JSON-LD entity clarity
+| Skill Says                              | AGENTS.md Says (Use This)                                                                                                                       |
+| --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| Style components locally                | **Shared surfaces live in `packages/site-shell`.** A change to the toolbar, docs shell, prose or tokens goes in the layer, so both sites get it. |
+| Add new design tokens freely            | **Use the existing semantic tokens** (`primary`, `success`, `warning`, `destructive`, `muted`…). New tokens go in the layer's `shell.css`.      |
+| Fetch data in components                | **Pages query `@nuxt/content`; layer components only take props.** Layer components never call `queryCollection`.                               |
+| Block AI bots in robots.txt             | **Allow** all crawlers: we want the API docs cited.                                                                                             |
+| Build llms.txt / markdown routes by hand | `nuxt-llms` + `nuxt-agent-discovery` generate them from `content/`. Configure, don't rewrite.                                                  |
+| VueUse `useDark` / `useColorMode`        | **Never.** Only `@nuxtjs/color-mode` (configured in the layer).                                                                                |
 
 ---
 
 ## CRITICAL RULES
 
-### Rule #1: Documentation Lives in `content/` Directory
-
-All documentation is Markdown files in the `content/` directory:
+### Rule #1: Documentation lives in `content/`
 
 ```
 content/
-├── index.md                    # Homepage
-├── 1.guide/                    # Getting started
-│   ├── 1.getting-started.md
-│   └── 2.examples.md
-├── 2.components/               # Component docs
-│   ├── 1.map.md
-│   └── 2.markers.md
-├── 3.layers/                   # Layer docs
-│   ├── 1.deckgl-overview.md
-│   ├── 2.core-layers.md
-│   └── ...
-└── 4.controls/                 # Control docs
-    └── 1.lidar.md
+├── 1.guide/          # /guide/*
+├── 2.components/     # /components/*
+├── 3.layers/         # /layers/*
+└── 4.controls/       # /controls/*
 ```
 
-### Rule #2: Use Numeric Prefixes for Ordering
+The home page is `app/pages/index.vue` (Vue), not Markdown. Every other page is a Markdown file.
 
-Files and folders are sorted by numeric prefix:
+### Rule #2: Numeric prefixes order files and are stripped from URLs
 
-```markdown
-<!-- 1.guide/1.getting-started.md appears before 1.guide/2.examples.md -->
-```
+`content/3.layers/5.raster-layers.md` → `/layers/raster-layers`. The nav groups pages by their first folder (`app/utils/docs-nav.ts` maps folder → label and fallback icon). Renaming a file changes its URL: indexed URLs are pinned by `tests/e2e/oracle.json`.
 
-### Rule #3: Follow Docus Markdown Conventions
+### Rule #3: Content components
 
-Docus extends standard Markdown with special components:
+The layer implements the MDC components the content uses:
 
 ```markdown
-# Page Title
+::callout{icon="i-lucide-info" color="success" to="/guide/peer-dependencies"}
+Callout text (a link when `to` is set).
+::
 
-::alert{type="info"}
-This is an info alert.
+::alert{type="warning"}
+Info / success / warning / danger alert.
 ::
 
 ::code-group
-```vue [Basic Usage]
-<VMap :options="mapOptions" />
+```bash [pnpm]
+pnpm add @geoql/v-maplibre maplibre-gl
 ```
 
-```vue [With Marker]
-<VMap :options="mapOptions">
-  <VMarker :coordinates="[0, 0]" />
-</VMap>
+```bash [npm]
+npm i @geoql/v-maplibre maplibre-gl
 ```
 ::
-
-::callout{type="warning"}
-Important warning message.
-::
 ```
 
-### Rule #4: Component Documentation Structure
+Code blocks get a copy button. A component not in this list does not render: add it to `packages/site-shell/app/components/content/` first.
 
-Each component doc should follow this pattern:
+### Rule #4: Component documentation structure
+
+Each component page: a short description, then `## Props`, `## Events`, `## Slots` tables, then `## Example`.
+
+### Rule #5: Frontmatter
 
 ```markdown
-# ComponentName
-
-Brief description of what the component does.
-
-## Props
-
-| Prop | Type | Default | Description |
-|------|------|---------|-------------|
-| `options` | `MapOptions` | - | Map configuration options |
-| `center` | `[number, number]` | - | Initial center coordinates |
-
-## Events
-
-| Event | Payload | Description |
-|-------|---------|-------------|
-| `load` | `Map` | Emitted when map is loaded |
-| `click` | `MapMouseEvent` | Emitted on map click |
-
-## Slots
-
-| Slot | Description |
-|------|-------------|
-| `default` | Map content (markers, layers, etc.) |
-
-## Example
-
-::code-group
-```vue [Template]
-<VMap :options="mapOptions" @load="onMapLoad">
-  <VMarker :coordinates="[-74.5, 40]" />
-</VMap>
+---
+title: Raster Layers
+description: Cloud-Optimized GeoTIFF and satellite imagery visualization
+icon: i-lucide-image   # optional; the nav falls back to the folder icon
+---
 ```
-
-```typescript [Script]
-const mapOptions = {
-  style: 'https://demotiles.maplibre.org/style.json',
-  center: [-74.5, 40],
-  zoom: 9,
-};
-
-function onMapLoad(map: Map) {
-  console.log('Map loaded:', map);
-}
-```
-::
-```
-
-### Rule #5: No Custom Vue Components
-
-This is a documentation site. Do NOT create custom Vue components. All content should be in Markdown using Docus components.
 
 ---
 
 ## Tech Stack
 
-| Component | Technology |
-|-----------|------------|
-| **Framework** | Nuxt 4 |
-| **Theme** | Docus (documentation theme) |
-| **Content** | @nuxt/content v3 |
-| **Database** | Cloudflare D1 (for content) |
-| **Hosting** | Cloudflare Pages |
-| **Analytics** | Plausible + OpenPanel + GA4 via `useAnalytics()` (`app/composables/use-analytics.ts`) |
+| Component     | Technology                                                                  |
+| ------------- | --------------------------------------------------------------------------- |
+| Framework     | Nuxt 4                                                                      |
+| Design layer  | `@geoql/site-shell` (Tailwind v4, shadcn-vue, Geist, motion-v, color-mode)  |
+| Content       | @nuxt/content v3, Cloudflare D1 (`DB`)                                      |
+| Agents / SEO  | nuxt-llms, nuxt-agent-discovery, @nuxtjs/mcp-toolkit, nuxt-og-image, sitemap, robots, schema-org |
+| Hosting       | Cloudflare Workers (`cloudflare_module`); every page is prerendered        |
+| Analytics     | Plausible + OpenPanel + GA4 via `useAnalytics()`                            |
 
 ---
 
@@ -186,161 +122,23 @@ This is a documentation site. Do NOT create custom Vue components. All content s
 
 ```
 apps/docs/
-├── content/
-│   ├── index.md                 # Homepage
-│   ├── 1.guide/                 # Getting started guides
-│   │   ├── 1.getting-started.md
-│   │   └── 2.examples.md
-│   ├── 2.components/            # Component documentation
-│   │   ├── 1.map.md
-│   │   └── 2.markers.md
-│   ├── 3.layers/                # Layer documentation
-│   │   ├── 1.deckgl-overview.md
-│   │   ├── 2.core-layers.md
-│   │   ├── 3.aggregation-layers.md
-│   │   ├── 4.geo-layers.md
-│   │   ├── 5.raster-layers.md
-│   │   └── 6.wind-layers.md
-│   └── 4.controls/              # Control documentation
-│       └── 1.lidar.md
-│
-├── public/
-│   └── favicon.ico
-│
-├── .npmrc
-├── eslint.config.js
-├── nuxt.config.ts               # Docus + Nuxt configuration
-├── package.json
-├── tsconfig.json
-└── wrangler.json                # Cloudflare Pages config
-```
-
----
-
-## Configuration
-
-### nuxt.config.ts
-
-```typescript
-export default defineNuxtConfig({
-  extends: ['docus'],
-
-  modules: [
-    '@nuxt/scripts', // GA4 (Plausible loads from app/plugins/plausible.client.ts)
-    '@openpanel/nuxt',
-  ],
-
-  site: {
-    name: 'v-maplibre',
-    description: 'Vue 3 components for MapLibre GL',
-    url: 'https://v-maplibre.geoql.in',
-  },
-
-  content: {
-    database: {
-      type: 'd1',
-      bindingName: 'DB',
-    },
-  },
-
-  llms: {
-    domain: 'v-maplibre.geoql.in',
-  },
-
-  nitro: {
-    preset: 'cloudflare-pages',
-  },
-});
-```
-
----
-
-## Writing Documentation
-
-### Frontmatter
-
-Each page can have YAML frontmatter:
-
-```markdown
----
-title: Getting Started
-description: Learn how to install and use @geoql/v-maplibre
-navigation:
-  icon: i-lucide-rocket
----
-
-# Getting Started
-...
-```
-
-### Code Blocks
-
-Use triple backticks with language identifier:
-
-````markdown
-```vue
-<script setup>
-import { VMap } from '@geoql/v-maplibre';
-</script>
-```
-
-```typescript
-const options: MapOptions = {
-  style: '...',
-};
-```
-
-```bash
-pnpm add @geoql/v-maplibre maplibre-gl
-```
-````
-
-### Docus Components
-
-**Alert:**
-```markdown
-::alert{type="info"}
-Information message.
-::
-
-::alert{type="warning"}
-Warning message.
-::
-
-::alert{type="danger"}
-Error/danger message.
-::
-```
-
-**Code Group (tabs):**
-```markdown
-::code-group
-```bash [npm]
-npm install @geoql/v-maplibre
-```
-
-```bash [pnpm]
-pnpm add @geoql/v-maplibre
-```
-
-```bash [yarn]
-yarn add @geoql/v-maplibre
-```
-::
-```
-
-**Callout:**
-```markdown
-::callout{type="tip"}
-Pro tip content here.
-::
-```
-
-**Card:**
-```markdown
-::card{title="Card Title" icon="i-lucide-map"}
-Card content goes here.
-::
+├── app/
+│   ├── app.vue                  # skip link + layout
+│   ├── error.vue                # styled 404 / error page
+│   ├── layouts/default.vue      # SiteToolbar + ⌘K search
+│   ├── pages/index.vue          # home page
+│   ├── pages/[...slug].vue      # every docs page, rendered in DocsShell
+│   ├── utils/docs-nav.ts        # nav grouping
+│   └── plugins/                 # analytics
+├── content/                     # Markdown docs
+├── server/
+│   ├── mcp/tools/               # list-pages, get-page
+│   ├── plugins/agent-discovery.ts
+│   └── routes/openapi.json.get.ts
+├── tests/unit/                  # Vitest unit tests
+├── tests/e2e/                   # URL + agent-surface tests (need a served build)
+├── content.config.ts
+└── nuxt.config.ts
 ```
 
 ---
@@ -348,75 +146,26 @@ Card content goes here.
 ## Development Commands
 
 ```bash
-# Development (from this directory)
-pnpm run dev              # Start dev server
-
-# From monorepo root
-pnpm install              # Installs all workspace projects (including docs)
-pnpm run dev:docs         # Start docs dev server
-
-# Build
-pnpm run build            # Build for production
-
-# Linting
-pnpm run lint             # Run oxlint + eslint
-pnpm --filter @geoql/v-maplibre-docs run lint:fix         # Fix lint issues
+pnpm run dev:docs                                   # dev server (repo root)
+pnpm run build:docs                                 # production build
+pnpm --filter @geoql/v-maplibre-docs run test       # unit tests
+# e2e against a served build:
+cd apps/docs && npx wrangler dev --config .output/server/wrangler.json --port 8799
+DOCS_BASE_URL=http://localhost:8799 pnpm --filter @geoql/v-maplibre-docs run test:e2e
 ```
+
+Visual checks: `node scripts/visual/docs-mobile.ts`, `docs-behaviour.ts`, `docs-search.ts` (repo root).
 
 ---
 
-## Deployment
+## DO NOT
 
-### Cloudflare Pages
-
-Configured in `wrangler.json`:
-
-```json
-{
-  "name": "v-maplibre-docs",
-  "pages_build_output_dir": ".output/public"
-}
-```
-
-### D1 Database
-
-Content is stored in Cloudflare D1 for fast edge retrieval:
-
-```typescript
-content: {
-  database: {
-    type: 'd1',
-    bindingName: 'DB',
-  },
-}
-```
+- Re-add Docus or Nuxt UI
+- Style shared surfaces in this app: change the layer
+- Use raw Tailwind colors, gradient text, `rounded-2xl`+, shadows for elevation, or fonts other than Geist / Geist Mono
+- Rename content files without updating `tests/e2e/oracle.json` and adding a redirect
 
 ---
 
-## AI Assistant Guidelines
-
-### Adding New Documentation
-
-1. Create Markdown file in appropriate `content/` subdirectory
-2. Use numeric prefix for ordering (e.g., `3.new-topic.md`)
-3. Add frontmatter with title and description
-4. Follow component documentation structure for API docs
-5. Use Docus components for enhanced formatting
-
-### Updating Existing Docs
-
-1. Edit the Markdown file directly
-2. Maintain consistent structure with other docs
-3. Update navigation order (numeric prefix) if needed
-
-### DO NOT
-
-- Create Vue components (use Markdown + Docus components)
-- Add custom CSS (Docus handles theming)
-- Modify `nuxt.config.ts` unless necessary
-- Create files outside `content/` for documentation
-
----
-
-**Last Updated:** 2026-05-12
+**Last Updated:** 2026-11-22
 **Maintainer:** GeoQL Team

@@ -13,7 +13,7 @@
     description: 'Render continuous paths with multiple vertices.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Path Layer (deck.gl)',
     description: 'Render continuous paths with multiple vertices.',
     category: 'deck.gl',

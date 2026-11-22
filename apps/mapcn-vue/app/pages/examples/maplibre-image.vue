@@ -12,7 +12,7 @@
     description: 'Overlay images on specific map coordinates.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Image Layer',
     description: 'Overlay images on specific map coordinates.',
     category: 'MapLibre',

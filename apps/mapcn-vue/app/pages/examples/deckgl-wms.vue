@@ -7,7 +7,7 @@
     description: 'Web Map Service (WMS) integration with deck.gl.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'WMS Layer (deck.gl)',
     description: 'Web Map Service (WMS) integration with deck.gl.',
     category: 'deck.gl',

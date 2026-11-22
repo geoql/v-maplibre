@@ -5,7 +5,7 @@
       'NBC hazard plume dispersion modeling with wind-driven Gaussian dispersion zones on a MapLibre map.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'NBC Plume Dispersion',
     description:
       'Model nuclear, biological, and chemical hazard plume spread with wind control.',

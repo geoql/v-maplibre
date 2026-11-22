@@ -5,7 +5,7 @@
       'Global weather explorer with real-time data from Open-Meteo. Temperature markers, air quality index, city search, and 7-day forecasts.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Weather Dashboard',
     description:
       'Global weather explorer with real-time temperature and air quality data.',

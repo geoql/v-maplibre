@@ -14,7 +14,7 @@
     description: 'Great circle arcs for global flight paths.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Great Circle Layer (deck.gl)',
     description: 'Great circle arcs for global flight paths.',
     category: 'deck.gl',

@@ -8,7 +8,7 @@
       'Draw danger zones (minefields, restricted areas) on the map and visualize safe corridors between them.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Defense Zone Planner',
     description:
       'Interactive minefield and danger zone planning with terra-draw on MapLibre GL.',

@@ -3,7 +3,7 @@
   import { VLayerDeckglGeoArrowPath } from '@geoql/v-maplibre/deck.gl';
   import { tableFromIPC } from 'apache-arrow';
   import type { Table } from 'apache-arrow';
-  import { Slider } from '~/components/ui/slider';
+  import { Slider } from '#shell/components/ui/slider';
 
   usePageGeo({
     title: 'GeoArrow MultiLineStrings (deck.gl-geoarrow) - mapcn-vue Examples',
@@ -11,7 +11,7 @@
       'Country boundary lines from a GeoArrow IPC file rendered with VLayerDeckglGeoArrowPath. The MultiLineString geometry is encoded as a list of coordinate rings.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'GeoArrow MultiLineStrings',
     description: 'Country boundary lines from a GeoArrow IPC file.',
     category: 'deck.gl',

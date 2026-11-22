@@ -14,7 +14,7 @@
       'Filter LiDAR point clouds by ASPRS classification types like ground, buildings, and vegetation.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Classification Filter',
     description:
       'Filter LiDAR point clouds by ASPRS classification types like ground, buildings, and vegetation.',

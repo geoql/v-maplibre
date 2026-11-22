@@ -30,14 +30,20 @@ jobs:
         id: filter
         with:
           filters: |
+            # packages/site-shell is the design layer both sites extend:
+            # a change to it must rebuild and redeploy both.
             mapcn:
               - 'apps/mapcn-vue/**'
               - 'packages/v-maplibre/**'
               - 'packages/mapcn-vue/**'
+              - 'packages/site-shell/**'
               - 'pnpm-lock.yaml'
               - 'pnpm-workspace.yaml'
             docs:
               - 'apps/docs/**'
+              - 'packages/site-shell/**'
+              - 'pnpm-lock.yaml'
+              - 'pnpm-workspace.yaml'
 
   quality:
     name: 'Lint & Format'

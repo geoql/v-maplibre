@@ -13,7 +13,7 @@
     description: 'H3 hexagonal grid visualization.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'H3 Hexagon Layer (deck.gl)',
     description: 'H3 hexagonal grid visualization.',
     category: 'deck.gl',

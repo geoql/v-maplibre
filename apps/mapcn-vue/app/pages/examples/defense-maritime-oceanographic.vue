@@ -5,7 +5,7 @@
       'Oceanographic situational awareness for the Arabian Sea: procedural sea-surface temperature field and animated surface current vectors via deck.gl TripsLayer.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Sea-Surface Temperature + Surface Currents',
     description:
       'Oceanographic visualization of Arabian Sea SST and surface currents with animated current streamlines.',

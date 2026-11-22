@@ -5,7 +5,7 @@
       'SAR grid overlay with probability heat mapping, helicopter sweep paths, and sector tracking for disaster response.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Search & Rescue Grid',
     description:
       'SAR grid with probability zones, animated helicopter sweeps, and sector tracking near Uttarakhand.',

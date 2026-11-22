@@ -11,7 +11,7 @@
       'Defense multi-spectral imagery comparison with swipe slider between thermal, IR, and optical sensor views.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Multi-Spectral Compare',
     description: 'Defense multi-spectral imagery comparison with swipe slider.',
     category: 'MapLibre',

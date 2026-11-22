@@ -1,5 +1,5 @@
 <script setup lang="ts">
-  import { SidebarInset, SidebarProvider } from '~/components/ui/sidebar';
+  import { SidebarInset, SidebarProvider } from '#shell/components/ui/sidebar';
 
   const { categories } = useExamplesData();
 </script>

@@ -4,8 +4,8 @@
     SensorNetworkStats,
     SensorTypeConfig,
   } from '~/types/defense-sensor';
-  import { Slider } from '~/components/ui/slider';
-  import { Label } from '~/components/ui/label';
+  import { Slider } from '#shell/components/ui/slider';
+  import { Label } from '#shell/components/ui/label';
 
   const props = defineProps<{
     activeSensorTypes: Set<SensorType>;

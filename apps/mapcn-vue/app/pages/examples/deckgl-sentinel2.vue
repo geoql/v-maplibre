@@ -10,7 +10,7 @@
     SelectItem,
     SelectTrigger,
     SelectValue,
-  } from '~/components/ui/select';
+  } from '#shell/components/ui/select';
 
   usePageGeo({
     title: 'Sentinel-2 Multi-Band - mapcn-vue Examples',
@@ -18,7 +18,7 @@
       'Sentinel-2 multi-band compositing from separate COGs at different native resolutions. True Color, False Color, and SWIR presets rendered entirely client-side.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Sentinel-2 Multi-Band',
     description:
       'Multi-band composite Sentinel-2 imagery rendered with deck.gl-raster MultiCOGLayer.',

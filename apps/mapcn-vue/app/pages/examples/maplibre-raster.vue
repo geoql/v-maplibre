@@ -11,7 +11,7 @@
     description: 'Display raster tile layers on the map.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Raster Layer',
     description: 'Display raster tile layers on the map.',
     category: 'MapLibre',

@@ -13,7 +13,7 @@
     description: 'Visualize data using Google S2 geometry cells.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'S2 Layer (deck.gl)',
     description: 'Visualize data using Google S2 geometry cells.',
     category: 'deck.gl',

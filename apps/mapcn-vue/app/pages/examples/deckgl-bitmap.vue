@@ -7,7 +7,7 @@
     description: 'Georeferenced image overlay on the map.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Bitmap Layer (deck.gl)',
     description: 'Georeferenced image overlay on the map.',
     category: 'deck.gl',

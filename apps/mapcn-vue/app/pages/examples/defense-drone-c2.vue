@@ -8,7 +8,7 @@
       'Command & Control dashboard with multiple drones and UGVs tracked on a 3D map in real-time.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Multi-Drone C2 Dashboard',
     description:
       'Real-time command & control for 4 UAVs + 2 UGVs over the Thar Desert.',

@@ -3,7 +3,7 @@
   import { VLayerDeckglGeoArrowText } from '@geoql/v-maplibre/deck.gl';
   import { tableFromIPC } from 'apache-arrow';
   import type { Table } from 'apache-arrow';
-  import { Slider } from '~/components/ui/slider';
+  import { Slider } from '#shell/components/ui/slider';
 
   usePageGeo({
     title: 'GeoArrow Text Labels (deck.gl-geoarrow) - mapcn-vue Examples',
@@ -11,7 +11,7 @@
       'City name labels from a GeoArrow IPC file with a text column rendered via VLayerDeckglGeoArrowText. The geometry is Point (struct x/y) and the name column provides the label text.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'GeoArrow Text Labels',
     description: 'City name labels from a GeoArrow IPC file.',
     category: 'deck.gl',

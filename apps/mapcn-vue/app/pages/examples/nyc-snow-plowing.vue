@@ -17,7 +17,7 @@
       '3D visualization of snow accumulation on NYC streets using DSNY data.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'NYC Snow Plowing',
     description:
       '3D visualization of snow accumulation on NYC streets using DSNY data.',

@@ -9,7 +9,7 @@
       'Real-time sun tracking based on your location and current time.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Globe Day/Night',
     description:
       'Real-time sun tracking based on your location and current time.',

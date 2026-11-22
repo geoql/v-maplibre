@@ -2,9 +2,9 @@
 
 > API documentation for @geoql/v-maplibre
 
-Built with [Docus](https://docus.dev) - a Nuxt-based documentation theme.
+Nuxt 4 + [@nuxt/content](https://content.nuxt.com), on the design layer shared with mapcn-vue (`packages/site-shell`). See [AGENTS.md](./AGENTS.md).
 
-**Note:** This app is a member of the root pnpm workspace and uses the `app:docs` catalog in `pnpm-workspace.yaml` for its Docus-specific dependencies. Run `pnpm install` at the repo root to install everything.
+**Note:** This app is a member of the root pnpm workspace and uses the `app:docs` catalog in `pnpm-workspace.yaml` for its docs-only dependencies. Run `pnpm install` at the repo root to install everything.
 
 ## Development
 
@@ -51,5 +51,5 @@ pnpm run build
 ## Tech Stack
 
 - [Nuxt](https://nuxt.com)
-- [Docus](https://docus.dev)
+- [Nuxt Content](https://content.nuxt.com)
 - [@nuxt/content](https://content.nuxt.com)

@@ -13,7 +13,7 @@
     description: '3D grid cell visualization for aggregated data.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Grid Cell Layer (deck.gl)',
     description: '3D grid cell visualization for aggregated data.',
     category: 'deck.gl',

@@ -5,7 +5,7 @@
       'Interactive artillery range planning demo with range fan polygons, weapon types, and bearing control on a MapLibre map.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Artillery Range Planner',
     description:
       'Place gun positions and visualize range fans with min/max range arcs.',

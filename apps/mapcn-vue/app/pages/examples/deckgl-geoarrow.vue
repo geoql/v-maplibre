@@ -9,8 +9,8 @@
   import type { CategoryLegendItem } from '@geoql/v-maplibre';
   import { tableFromIPC } from 'apache-arrow';
   import type { Table } from 'apache-arrow';
-  import { Button } from '~/components/ui/button';
-  import { Slider } from '~/components/ui/slider';
+  import { Button } from '#shell/components/ui/button';
+  import { Slider } from '#shell/components/ui/slider';
 
   usePageGeo({
     title: 'GeoArrow Polygons (deck.gl-geoarrow) - mapcn-vue Examples',
@@ -18,7 +18,7 @@
       'Country boundaries from a native GeoArrow IPC file rendered with VLayerDeckglGeoArrowPolygon. Zero GeoJSON parsing: Arrow RecordBatch goes straight to the GPU.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'GeoArrow Polygons',
     description:
       'Natural Earth countries from a native GeoArrow IPC file rendered with deck.gl-geoarrow.',

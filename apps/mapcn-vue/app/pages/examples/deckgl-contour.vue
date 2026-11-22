@@ -14,7 +14,7 @@
     description: 'Contour lines for density visualization.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Contour Layer (deck.gl)',
     description: 'Contour lines for density visualization.',
     category: 'deck.gl',

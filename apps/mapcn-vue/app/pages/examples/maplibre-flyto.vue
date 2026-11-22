@@ -13,7 +13,7 @@
       'Smooth camera animations with flyTo, easeTo, and jumpTo methods.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'FlyTo Animation',
     description:
       'Smooth camera animations with flyTo, easeTo, and jumpTo methods.',

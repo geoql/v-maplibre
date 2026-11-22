@@ -9,7 +9,7 @@
    *    (description, code block, install command, prev/next nav).
    *  - Sheet uses `side="bottom"` so the map stays visible above it.
    */
-  import { SidebarTrigger } from '~/components/ui/sidebar';
+  import { SidebarTrigger } from '#shell/components/ui/sidebar';
   import {
     Sheet,
     SheetContent,
@@ -17,7 +17,7 @@
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-  } from '~/components/ui/sheet';
+  } from '#shell/components/ui/sheet';
 
   interface Props {
     title?: string;
