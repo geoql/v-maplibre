@@ -77,7 +77,11 @@ catalogs:
     shadcn-vue: ^2.9.0
 
   app:docs:
-    '@comark/nuxt': ^0.9.2
+    # SEO / agent surfaces (same majors as app:mapcn-vue).
+    '@nuxtjs/robots': ^7.0.2
+    '@nuxtjs/sitemap': ^9.1.0
+    nuxt-llms: ^0.3.2
+    nuxt-schema-org: ^7.0.1
     # Direct dep so `.nuxt/content/types.d.ts` can augment '@nuxt/content'.
     # Without it the augmentation becomes an unrelated ambient module, docus
     # sees an empty `Collections`, and `DocsPage` resolves to `never`.
@@ -91,7 +95,6 @@ catalogs:
     '@modelcontextprotocol/server': 2.4.0
     agents: ^0.34.0
     better-sqlite3: ^13.2.0
-    docus: ^5.15.0
     nuxt: ^4.6.4
     wrangler: ^4.166.0
     # Required by docus → @nuxt/content collection schema generation.

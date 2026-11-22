@@ -9,17 +9,21 @@
     "lint": "vp lint",
     "lint:fix": "vp lint --fix",
     "postinstall": "nuxt prepare",
-    "test": "vp test run tests",
-    "typecheck": "nuxt typecheck"
+    "test": "vp test run tests/unit",
+    "typecheck": "nuxt typecheck",
+    "test:e2e": "vp test run tests/e2e"
   },
   "dependencies": {
-    "@comark/nuxt": "catalog:app:docs",
+    "@geoql/site-shell": "workspace:*",
     "@nuxt/content": "catalog:app:docs",
     "@nuxt/scripts": "catalog:app:docs",
+    "@nuxtjs/robots": "catalog:app:docs",
+    "@nuxtjs/sitemap": "catalog:app:docs",
     "@openpanel/nuxt": "catalog:app:docs",
     "better-sqlite3": "catalog:app:docs",
-    "docus": "catalog:app:docs",
     "nuxt": "catalog:app:docs",
+    "nuxt-llms": "catalog:app:docs",
+    "nuxt-schema-org": "catalog:app:docs",
     "zod": "catalog:app:docs",
     "zod-to-json-schema": "catalog:app:docs"
   },

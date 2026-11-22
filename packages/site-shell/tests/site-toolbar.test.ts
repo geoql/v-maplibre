@@ -29,6 +29,7 @@ const mountToolbar = (slots = {}) =>
         ClientOnly: passthrough,
         NuxtLink: { props: ['to'], template: '<a :href="to"><slot /></a>' },
         Tooltip: passthrough,
+        TooltipProvider: passthrough,
         TooltipTrigger: passthrough,
         TooltipContent: true,
         ThemeToggle: true,

@@ -57,6 +57,15 @@ describe('Callout', () => {
     expect(icon.attributes('data-icon')).toBe('lucide:book');
   });
 
+  it('maps the Docus colour to a token', () => {
+    const icon = mount(Callout, {
+      props: { color: 'success' },
+      slots: { default: 'x' },
+      global: { stubs },
+    }).find('[data-icon]');
+    expect(icon.classes()).toContain('text-success');
+  });
+
   it('renders no link without `to`', () => {
     expect(
       mount(Callout, { slots: { default: 'x' }, global: { stubs } })

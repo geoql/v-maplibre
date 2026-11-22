@@ -104,6 +104,15 @@
   grid-template-columns: 8fr 4fr;
 }
 
+/* Numbered index rows: 3rem number column, then content. */
+@utility grid-cols-index {
+  grid-template-columns: 3rem 1fr;
+}
+
+@utility grid-cols-index-wide {
+  grid-template-columns: 3rem 16rem 1fr auto;
+}
+
 /* Blueprint grid backgrounds */
 @utility bg-grid {
   background-image:
@@ -172,6 +181,8 @@
   --text-caption: 0.6875rem;
   --text-note: 0.8125rem;
   --text-display: clamp(4rem, 8vw, 7.5rem);
+  /* Oversized install command, the docs home's typographic moment. */
+  --text-install: clamp(1.125rem, 2.9vw, 2.75rem);
 
   --tracking-caps: 0.18em;
   --tracking-caps-sm: 0.15em;
