@@ -5,7 +5,6 @@
   import TooltipTrigger from '#shell/components/ui/tooltip/TooltipTrigger.vue';
 
   const { state, setOpen } = useSidebar();
-  const colorMode = useColorMode();
   const route = useRoute();
   const { showFps, toggle: toggleFps } = useFpsMeter();
 
@@ -25,10 +24,6 @@
 
   onMounted(() => document.addEventListener('keydown', handleEscape));
   onUnmounted(() => document.removeEventListener('keydown', handleEscape));
-
-  function toggleColorMode() {
-    colorMode.preference = colorMode.value === 'dark' ? 'light' : 'dark';
-  }
 </script>
 
 <template>
@@ -43,57 +38,18 @@
   </Transition>
 
   <!-- Floating toolbar — hidden when sidebar is open OR on mobile example pages -->
-  <div
-    class="pointer-events-none absolute left-3 top-3 z-30 flex items-center gap-1 transition-opacity duration-200"
+  <SiteToolbar
+    class="absolute left-3 top-3 z-30 transition-opacity duration-200"
     :class="[
       isExpanded ? 'opacity-0' : 'opacity-100',
       isExamplePage ? 'hidden md:flex' : '',
     ]"
   >
-    <SidebarTrigger
-      class="pointer-events-auto rounded-lg bg-background/80 backdrop-blur-sm"
-    />
-    <Tooltip>
-      <TooltipTrigger as-child>
-        <a
-          href="https://github.com/geoql/v-maplibre"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="pointer-events-auto inline-flex size-7 items-center justify-center rounded-lg bg-background/80 text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
-        >
-          <Icon name="simple-icons:github" class="size-4" />
-          <span class="sr-only">GitHub</span>
-        </a>
-      </TooltipTrigger>
-      <TooltipContent>GitHub</TooltipContent>
-    </Tooltip>
-    <Tooltip>
-      <TooltipTrigger as-child>
-        <button
-          class="pointer-events-auto inline-flex size-7 items-center justify-center rounded-lg bg-background/80 text-muted-foreground backdrop-blur-sm transition-colors hover:text-foreground"
-          @click="toggleColorMode"
-        >
-          <!-- Both icons render; CSS picks one from the `.dark` class. The
-            server cannot know the resolved mode, so a value-based icon
-            mismatched on hydration in dark mode. -->
-          <!-- Wrapper spans carry the display toggle: the icon's own
-            `.iconify` rule sets `display` and would override it. -->
-          <span class="contents dark:hidden">
-            <Icon name="lucide:moon" class="size-4" />
-          </span>
-          <span class="hidden dark:contents">
-            <Icon name="lucide:sun" class="size-4" />
-          </span>
-          <span class="sr-only">Toggle theme</span>
-        </button>
-      </TooltipTrigger>
-      <TooltipContent>
-        <ClientOnly>
-          {{ colorMode.value === 'dark' ? 'Light mode' : 'Dark mode' }}
-          <template #fallback>Dark mode</template>
-        </ClientOnly>
-      </TooltipContent>
-    </Tooltip>
+    <template #start>
+      <SidebarTrigger
+        class="pointer-events-auto rounded-lg bg-background/80 backdrop-blur-sm"
+      />
+    </template>
     <Tooltip>
       <TooltipTrigger as-child>
         <button
@@ -113,5 +69,5 @@
       </TooltipTrigger>
       <TooltipContent>{{ showFps ? 'Hide FPS' : 'Show FPS' }}</TooltipContent>
     </Tooltip>
-  </div>
+  </SiteToolbar>
 </template>

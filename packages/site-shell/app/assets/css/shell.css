@@ -465,3 +465,25 @@
 .prose strong {
   @apply font-semibold text-foreground;
 }
+
+/* ─── Docs motion ─── */
+
+/* Route change between docs pages: the article fades and settles 4px.
+   The reduced-motion block above cuts the duration to ~0. */
+.docs-page-enter-active,
+.docs-page-leave-active {
+  transition:
+    opacity 160ms cubic-bezier(0.2, 0, 0, 1),
+    transform 160ms cubic-bezier(0.2, 0, 0, 1);
+}
+
+.docs-page-enter-from,
+.docs-page-leave-to {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+/* Hash links land below the floating toolbar. */
+.prose :is(h1, h2, h3, h4)[id] {
+  scroll-margin-top: 5rem;
+}

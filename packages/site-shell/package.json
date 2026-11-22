@@ -33,6 +33,7 @@
     "tw-animate-css": "catalog:app:mapcn-vue"
   },
   "devDependencies": {
+    "@vitejs/plugin-vue": "catalog:pkg:mapcn-vue",
     "@vue/test-utils": "catalog:",
     "happy-dom": "catalog:",
     "nuxt": "catalog:app:mapcn-vue",
