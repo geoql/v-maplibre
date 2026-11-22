@@ -1,5 +1,40 @@
 # Changelog
 
+## [4.0.0](https://github.com/geoql/v-maplibre/compare/v3.1.2...v4.0.0) (2026-11-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* **v-maplibre:** the raster and Zarr layers need @developmentseed/* 0.10. VLayerMultiCog `sources` values are URLs (or opened GeoTIFFs), not { url } objects. VLayerCog `geotiff` no longer accepts a Blob.
+
+### Features
+
+* **v-maplibre:** move the raster and Zarr layers to deck.gl-raster 0.10 ([7f61c35](https://github.com/geoql/v-maplibre/commit/7f61c35314c766df2591267bd7b1e1760b99e519))
+
+
+### Bug Fixes
+
+* **v-maplibre:** add layers again after map.setStyle() ([111a20d](https://github.com/geoql/v-maplibre/commit/111a20d8909b297176fdfe61cf9f8c0210354353)), closes [#188](https://github.com/geoql/v-maplibre/issues/188)
+* **v-maplibre:** clear vue-doctor findings from the 4.0 work ([0613c27](https://github.com/geoql/v-maplibre/commit/0613c27e0542eaed0b3c1991b340fe8c08d46012))
+* **v-maplibre:** give deck.gl a map.transform on maplibre-gl 6.19 ([1f5d885](https://github.com/geoql/v-maplibre/commit/1f5d885f3cf60d0d10ecdad35d3c82de422034bb))
+* **v-maplibre:** keep [@deck](https://github.com/deck).gl/mapbox out of the core entry ([0f94be2](https://github.com/geoql/v-maplibre/commit/0f94be26022d3c56babba65208ed3a9432ad7ca1)), closes [#187](https://github.com/geoql/v-maplibre/issues/187)
+* **v-maplibre:** use the VMap element as the map container by default ([9ebadc7](https://github.com/geoql/v-maplibre/commit/9ebadc745fc14e3e8a604482e7833130dea8cc2a))
+
+
+### Documentation
+
+* document @developmentseed/* 0.10 for v4 ([1055a91](https://github.com/geoql/v-maplibre/commit/1055a910d6932872c917730e033a9a29ae2c08b5))
+
+
+### Miscellaneous
+
+* **deps:** update dependencies ([8870df4](https://github.com/geoql/v-maplibre/commit/8870df4ef7457efbf8bbf05f05b3a40539773e05))
+
+
+### Code Refactoring
+
+* name local variables in camelCase ([8143329](https://github.com/geoql/v-maplibre/commit/81433298159a372832bd53f98a2fae3073eb9f2f))
+
 ## [3.1.2](https://github.com/geoql/v-maplibre/compare/v3.1.1...v3.1.2) (2026-11-07)
 
 

@@ -1,6 +1,6 @@
 {
   "name": "@geoql/v-maplibre",
-  "version": "3.1.2",
+  "version": "4.0.0",
   "exports": {
     ".": "./dist/index.js",
     "./deck.gl": "./dist/deckgl.js",
