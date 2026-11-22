@@ -5,7 +5,7 @@
       'Military supply convoy tracking with animated routes, checkpoints, and ETA across the Rajasthan corridor.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Logistics Convoy Tracker',
     description:
       'Track 3 military convoys moving along supply routes in Rajasthan with real-time checkpoints and ETA.',

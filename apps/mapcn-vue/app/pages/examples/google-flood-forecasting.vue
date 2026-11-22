@@ -8,7 +8,7 @@
       'Live flood severity, inundation maps, and gauge forecasts powered by Google Flood Forecasting API across 20+ countries.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Real-Time Flood Monitoring',
     description:
       'Live flood severity and gauge forecasts from Google Flood Forecasting API.',

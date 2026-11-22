@@ -13,7 +13,7 @@
     description: 'Visualize data using Bing Maps Quadkey tiles.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Quadkey Layer (deck.gl)',
     description: 'Visualize data using Bing Maps Quadkey tiles.',
     category: 'deck.gl',

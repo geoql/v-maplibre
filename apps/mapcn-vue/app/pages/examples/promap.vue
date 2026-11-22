@@ -8,7 +8,7 @@
       'Interactive US home price bubble map at the ZIP code level with LocalView: viewport-based quintile re-bucketing that reveals local variation.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Home Price Explorer',
     description: 'US ZIP-level home price bubbles with LocalView re-bucketing.',
     category: 'Examples',

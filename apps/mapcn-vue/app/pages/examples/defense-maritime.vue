@@ -7,7 +7,7 @@
       'Indian Navy coastal surveillance with ship tracking, EEZ boundary, and coastal radar coverage.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Maritime Domain Awareness',
     description:
       "Ship tracking, EEZ monitoring, and coastal radar coverage along India's western coast.",

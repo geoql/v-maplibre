@@ -4,7 +4,7 @@
     description: 'Cluster large datasets of points.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Clustered Points',
     description: 'Cluster large datasets of points.',
     category: 'Examples',

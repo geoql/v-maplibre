@@ -27,7 +27,7 @@
       'Client-side COG mosaic of NAIP imagery from Microsoft Planetary Computer with multiple render modes.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'NAIP Mosaic',
     description:
       'Client-side COG mosaic of NAIP imagery from Microsoft Planetary Computer with multiple render modes.',

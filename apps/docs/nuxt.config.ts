@@ -9,6 +9,11 @@ export default defineNuxtConfig({
     '@nuxtjs/robots',
     'nuxt-schema-org',
     'nuxt-llms',
+    // Markdown twins, /.well-known/api-catalog, /sitemap.md, the MCP server
+    // card and the discovery Link header on / (Docus shipped these).
+    'nuxt-agent-discovery',
+    '@nuxtjs/mcp-toolkit',
+    'nuxt-og-image',
     // GA4 through useScriptGoogleAnalytics (app/plugins/google-analytics.client.ts).
     // Plausible loads from app/plugins/plausible.client.ts, not a module: the
     // pa-*.js tracker needs the official init snippet, which neither
@@ -77,6 +82,30 @@ export default defineNuxtConfig({
     },
   },
 
+  agentDiscovery: {
+    discovery: {
+      mcpServerCard: {
+        endpoint: '/mcp',
+        name: 'v-maplibre',
+        description: 'Read the v-maplibre documentation: list pages, read one as markdown.',
+        documentation: 'https://v-maplibre.geoql.in',
+        repository: 'https://github.com/geoql/v-maplibre',
+        license: 'MIT',
+      },
+    },
+  },
+
+  mcp: {
+    name: 'v-maplibre',
+    // nuxt-llms owns llms.txt; the toolkit would add an MCP block to it.
+    llms: false,
+  },
+
+  ogImage: {
+    // Every page is prerendered, so OG images render at build time only.
+    zeroRuntime: true,
+  },
+
   robots: {
     // AI crawlers are welcome: we want the API docs cited.
     groups: [{ userAgent: '*', allow: '/' }],
@@ -86,13 +115,15 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'cloudflare_module',
+    // The MCP tools read the request through useEvent().
+    experimental: { asyncContext: true },
     // Prerender every docs page (crawled from the home page and the nav).
     // A failing page fails the build. autoSubfolderIndex: false writes
     // /guide/getting-started.html, which Cloudflare static assets serve for
     // /guide/getting-started without a trailing-slash redirect.
     prerender: {
       crawlLinks: true,
-      routes: ['/', '/sitemap.xml'],
+      routes: ['/', '/sitemap.xml', '/openapi.json'],
       autoSubfolderIndex: false,
     },
     cloudflare: {

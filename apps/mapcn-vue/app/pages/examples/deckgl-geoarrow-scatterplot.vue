@@ -17,7 +17,7 @@
       'City clusters from a native GeoArrow IPC file rendered with VLayerDeckglGeoArrowScatterplot. Each city is a point with an RGB color attribute.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'GeoArrow Points',
     description: 'City clusters from a native GeoArrow IPC file.',
     category: 'deck.gl',

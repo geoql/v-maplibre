@@ -5,7 +5,7 @@
       'IDW interpolated heatmap showing real-time temperature data from OpenWeatherMap.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Interpolate Heatmap',
     description:
       'IDW interpolated heatmap showing real-time temperature data from OpenWeatherMap.',

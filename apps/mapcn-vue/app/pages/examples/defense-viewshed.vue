@@ -5,7 +5,7 @@
       'Interactive terrain viewshed analysis demo. Place observer points and visualize visible terrain areas with adjustable observer height.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Terrain Viewshed Analysis',
     description:
       'Place observers and simulate line-of-sight terrain visibility.',

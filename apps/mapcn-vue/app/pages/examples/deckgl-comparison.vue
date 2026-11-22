@@ -10,7 +10,7 @@
       'Compare two COG layers side by side with a draggable swipe slider. Useful for change detection, time-series and A/B raster comparison.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Before / After Comparison',
     description: 'Compare two COG layers with a draggable opacity slider.',
     category: 'deck.gl',

@@ -5,7 +5,7 @@
       'Layered air defense radar coverage demo with SHORAD, MRSAM, and LRSAM tiers, altitude filtering, and animated radar sweep.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Air Defense Radar',
     description:
       'Visualize layered radar coverage at different altitudes with SAM site positions.',

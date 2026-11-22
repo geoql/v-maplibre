@@ -13,7 +13,7 @@
     description: 'Render line segments between points.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Line Layer (deck.gl)',
     description: 'Render line segments between points.',
     category: 'deck.gl',

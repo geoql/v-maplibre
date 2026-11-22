@@ -10,7 +10,7 @@
       'Dynamic basemap/style switching between satellite, terrain, streets, and more.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Layer Switcher',
     description:
       'Dynamic basemap/style switching between satellite, terrain, streets, and more.',

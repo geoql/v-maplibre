@@ -13,7 +13,7 @@
     description: 'Visualize clustered H3 hexagon regions.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'H3 Cluster Layer (deck.gl)',
     description: 'Visualize clustered H3 hexagon regions.',
     category: 'deck.gl',

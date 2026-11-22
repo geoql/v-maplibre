@@ -11,7 +11,7 @@
       'City name labels from a GeoArrow IPC file with a text column rendered via VLayerDeckglGeoArrowText. The geometry is Point (struct x/y) and the name column provides the label text.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'GeoArrow Text Labels',
     description: 'City name labels from a GeoArrow IPC file.',
     category: 'deck.gl',

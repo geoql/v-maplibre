@@ -11,7 +11,7 @@
       'Country boundary lines from a GeoArrow IPC file rendered with VLayerDeckglGeoArrowPath. The MultiLineString geometry is encoded as a list of coordinate rings.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'GeoArrow MultiLineStrings',
     description: 'Country boundary lines from a GeoArrow IPC file.',
     category: 'deck.gl',

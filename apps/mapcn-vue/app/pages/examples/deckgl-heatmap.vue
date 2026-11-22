@@ -13,7 +13,7 @@
     description: 'Density heatmap visualization.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Heatmap (deck.gl)',
     description: 'Density heatmap visualization.',
     category: 'deck.gl',

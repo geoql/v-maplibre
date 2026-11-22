@@ -71,7 +71,7 @@
     ),
   ]);
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Frequently Asked Questions',
     description:
       'Answers to the questions developers ask most often about mapcn-vue.',

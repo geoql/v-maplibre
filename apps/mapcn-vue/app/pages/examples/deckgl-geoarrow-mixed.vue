@@ -21,7 +21,7 @@
       'Demonstrates Point, LineString, and Polygon geometries in a single view, loaded from three separate GeoArrow IPC files.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'GeoArrow All Geometries',
     description: 'Point, LineString, and Polygon from GeoArrow IPC files.',
     category: 'deck.gl',

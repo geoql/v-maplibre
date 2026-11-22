@@ -13,7 +13,7 @@
     description: '3D grid aggregation visualization.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Grid Layer (deck.gl)',
     description: '3D grid aggregation visualization.',
     category: 'deck.gl',

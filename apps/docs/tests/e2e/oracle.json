@@ -22,7 +22,7 @@
   "agentSurfaces": [
     { "path": "/llms.txt", "status": 200, "contentType": "text/plain" },
     { "path": "/llms-full.txt", "status": 200, "contentType": "text/plain" },
-    { "path": "/sitemap.xml", "status": 200, "contentType": "application/xml" },
+    { "path": "/sitemap.xml", "status": 200, "contentType": "text/xml" },
     { "path": "/sitemap.md", "status": 200, "contentType": "text/markdown" },
     { "path": "/guide/getting-started.md", "status": 200, "contentType": "text/markdown" },
     { "path": "/.well-known/api-catalog", "status": 200, "contentType": "application/linkset+json" },

@@ -8,7 +8,7 @@
       'Render a georeferenced Gaussian splat (.spz) on the map with Spark and three.js.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Gaussian Splat Layer',
     description:
       'Render a georeferenced Gaussian splat (.spz) on the map with Spark and three.js.',

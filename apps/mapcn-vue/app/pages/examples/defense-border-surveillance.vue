@@ -7,7 +7,7 @@
       'Defense border surveillance demo showing the India-China LAC with camera positions, patrol routes, and intrusion detection zones.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Border Surveillance Dashboard',
     description:
       'LAC sector surveillance with 8 cameras, 2 patrols, and 3 intrusion zones.',

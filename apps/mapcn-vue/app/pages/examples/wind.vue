@@ -7,7 +7,7 @@
       'Real-time wind particle visualization using live data from OpenWeatherMap.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Wind Animation',
     description:
       'Real-time wind particle visualization using live data from OpenWeatherMap.',

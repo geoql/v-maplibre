@@ -4,11 +4,17 @@
       title?: string;
       description?: string;
       category?: string;
+      /** Site name in the footer. */
+      brand?: string;
+      /** Site domain in the footer. */
+      domain?: string;
     }>(),
     {
       title: 'mapcn-vue',
       description: 'Beautiful map components for Vue.',
       category: '',
+      brand: 'mapcn-vue',
+      domain: 'mapcn-vue.geoql.in',
     },
   );
 </script>
@@ -99,10 +105,10 @@
           letterSpacing: '-0.02em',
         }"
       >
-        mapcn-vue
+        {{ brand }}
       </div>
       <div :style="{ fontSize: '18px', color: '#6b6a7a' }">
-        mapcn-vue.geoql.in
+        {{ domain }}
       </div>
     </div>
   </div>

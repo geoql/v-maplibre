@@ -43,6 +43,14 @@
     ogDescription: () => page.value?.description,
     ogType: 'article',
   });
+
+  defineOgImage('SiteDoc', {
+    title: page.value.title,
+    description: page.value.description ?? '',
+    category: nav.value.find((g) => g.items.some((i) => i.active))?.label ?? 'Docs',
+    brand: 'v-maplibre',
+    domain: 'v-maplibre.geoql.in',
+  });
 </script>
 
 <template>

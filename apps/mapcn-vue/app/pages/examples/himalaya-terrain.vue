@@ -19,7 +19,7 @@
       'Native MapLibre 3D terrain from a Terrain-RGB tileset: Garhwal Himalaya relief with hillshade and a maps.guru basemap drape.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Himalaya 3D Terrain',
     description:
       'Native MapLibre setTerrain + hillshade from a Terrain-RGB tileset.',

@@ -11,7 +11,7 @@
       'Animated travel paths from a GeoArrow IPC file rendered with VLayerDeckglGeoArrowTrips. Each trip has a timestamp column that controls the animation progress along the path.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'GeoArrow Trips',
     description: 'Animated travel paths from a GeoArrow IPC file.',
     category: 'deck.gl',

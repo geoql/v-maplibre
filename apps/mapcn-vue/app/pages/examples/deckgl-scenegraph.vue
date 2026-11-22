@@ -12,7 +12,7 @@
     description: 'Render 3D glTF/GLB models on the map.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Scenegraph Layer (deck.gl)',
     description: 'Render 3D glTF/GLB models on the map.',
     category: 'deck.gl',

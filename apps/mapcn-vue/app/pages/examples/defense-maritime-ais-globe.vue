@@ -7,7 +7,7 @@
       'Worldwide vessel tracking on a globe view with AIS-gap detection highlighting dark ships operating outside normal maritime communication channels.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Global AIS + Dark Fleet Detection',
     description:
       'Worldwide vessel tracking with AIS-gap anomaly detection identifying dark vessels across major shipping lanes.',

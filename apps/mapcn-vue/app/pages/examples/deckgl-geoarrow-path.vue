@@ -11,7 +11,7 @@
       'Three famous travel routes rendered from a GeoArrow IPC file with VLayerDeckglGeoArrowPath. LineStrings are encoded as flat coordinate arrays.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'GeoArrow LineStrings',
     description: 'Famous travel routes from a GeoArrow IPC file.',
     category: 'deck.gl',

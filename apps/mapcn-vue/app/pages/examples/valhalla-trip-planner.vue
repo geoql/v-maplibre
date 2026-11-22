@@ -5,7 +5,7 @@
       'Multi-day itinerary generator with POI suggestions using Valhalla routing.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Trip Planner',
     description:
       'Multi-day itinerary generator with POI suggestions using Valhalla routing.',

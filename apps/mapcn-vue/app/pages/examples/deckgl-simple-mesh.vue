@@ -14,7 +14,7 @@
     description: 'Render instanced 3D meshes on the map.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Simple Mesh Layer (deck.gl)',
     description: 'Render instanced 3D meshes on the map.',
     category: 'deck.gl',

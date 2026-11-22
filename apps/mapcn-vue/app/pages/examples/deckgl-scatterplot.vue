@@ -13,7 +13,7 @@
     description: 'High-performance scatterplot visualization.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Scatterplot (deck.gl)',
     description: 'High-performance scatterplot visualization.',
     category: 'deck.gl',

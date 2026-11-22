@@ -70,7 +70,7 @@
     ogType: 'article',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: page.value.title ?? 'mapcn-vue',
     description: page.value.description ?? '',
     category: 'Documentation',

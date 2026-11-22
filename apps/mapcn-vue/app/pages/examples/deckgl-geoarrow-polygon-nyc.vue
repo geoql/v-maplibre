@@ -18,7 +18,7 @@
       'NYC borough outlines from a synthetic GeoArrow IPC file rendered with VLayerDeckglGeoArrowPolygon. Demonstrates MultiPolygon geometry with multiple disjoint shapes.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'GeoArrow NYC Polygons',
     description: 'NYC borough outlines from a GeoArrow IPC file.',
     category: 'deck.gl',

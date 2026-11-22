@@ -28,7 +28,7 @@
     }).format(new Date(library.releasedAt)),
   );
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Beautiful maps, made simple.',
     description:
       'Map components for Vue. Built on MapLibre, styled with Tailwind CSS.',

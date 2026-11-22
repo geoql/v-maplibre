@@ -14,7 +14,7 @@
       'Load and manage multiple LiDAR point cloud datasets simultaneously.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Multiple Point Clouds',
     description:
       'Load and manage multiple LiDAR point cloud datasets simultaneously.',

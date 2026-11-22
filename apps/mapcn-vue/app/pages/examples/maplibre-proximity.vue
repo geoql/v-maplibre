@@ -22,7 +22,7 @@
       'Visualize distances and connections between multiple locations.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Proximity Map',
     description:
       'Visualize distances and connections between multiple locations.',

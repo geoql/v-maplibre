@@ -18,7 +18,7 @@
       'Country boundaries from a native GeoArrow IPC file rendered with VLayerDeckglGeoArrowPolygon. Zero GeoJSON parsing: Arrow RecordBatch goes straight to the GPU.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'GeoArrow Polygons',
     description:
       'Natural Earth countries from a native GeoArrow IPC file rendered with deck.gl-geoarrow.',

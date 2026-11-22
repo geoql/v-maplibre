@@ -16,7 +16,7 @@
       'Interactive map examples built with mapcn-vue components.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Examples',
     description: 'Interactive map examples built with mapcn-vue components.',
     category: 'Examples',

@@ -5,7 +5,7 @@
       'Interactive tactical map with animated troop movement replay over the Ladakh region.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: '3D Battlefield Terrain',
     description: 'Interactive 3D terrain with animated troop movement replay.',
     category: 'Examples',

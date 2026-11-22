@@ -25,7 +25,7 @@
       'Interactive legend with click-to-filter functionality for MapLibre layers.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Interactive Legend',
     description:
       'Interactive legend with click-to-filter functionality for MapLibre layers.',

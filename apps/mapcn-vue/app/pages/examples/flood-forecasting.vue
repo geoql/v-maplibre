@@ -24,7 +24,7 @@
       'Global flood visualization powered by Google Groundsource: 2.6M+ historical flash flood events from 2000 to 2026.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Flood Forecasting',
     description:
       'Global flood visualization with 2.6M+ historical events from Google Groundsource.',

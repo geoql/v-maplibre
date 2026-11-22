@@ -7,7 +7,7 @@
       'Monte-Carlo stochastic drift modeling for search-and-rescue and oil-spill response. deck.gl-over-MapLibre with particle advection, probability cone, and animated trails.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'SAR / Spill Drift Trajectory',
     description:
       'Stochastic drift modeling with Monte-Carlo particle advection under wind and current forces.',

@@ -4,7 +4,7 @@
     description: 'A simple map with navigation controls.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Basic Map',
     description: 'A simple map with navigation controls.',
     category: 'Examples',

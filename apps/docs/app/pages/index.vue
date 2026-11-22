@@ -77,6 +77,14 @@ ${SCRIPT_END}
     ogTitle: 'v-maplibre',
     ogDescription: 'Vue 3 components for MapLibre GL.',
   });
+
+  defineOgImage('SiteDoc', {
+    title: 'v-maplibre',
+    description: 'Vue 3 components for MapLibre GL.',
+    category: 'API reference',
+    brand: 'v-maplibre',
+    domain: 'v-maplibre.geoql.in',
+  });
 </script>
 
 <template>

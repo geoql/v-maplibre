@@ -131,7 +131,7 @@ export default defineNuxtConfig({
   ogImage: {
     // No `defaults.component` — nuxt-og-image v6 removed that field. The
     // module auto-selects the first non-community component in
-    // app/components/OgImage/ (MapcnDoc.satori.vue) as the default.
+    // app/components/OgImage/ (the site-shell layer's SiteDoc.satori.vue) as the default.
     // Per-page overrides still use `defineOgImage({ component: '...' })`.
     //
     // Skip per-request cache storage during prerender (we generate all OG

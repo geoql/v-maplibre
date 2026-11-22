@@ -8,7 +8,7 @@
     description: 'Generic tile layer for loading raster or vector tiles.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Tile Layer (deck.gl)',
     description: 'Generic tile layer for loading raster or vector tiles.',
     category: 'deck.gl',

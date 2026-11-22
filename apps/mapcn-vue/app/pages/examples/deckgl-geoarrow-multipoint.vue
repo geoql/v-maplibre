@@ -17,7 +17,7 @@
       'Individual city locations from a GeoArrow IPC file rendered with VLayerDeckglGeoArrowScatterplot. Each city is stored as a Point in a MultiPoint geometry collection.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'GeoArrow Multipoint',
     description: 'City points from a GeoArrow IPC file.',
     category: 'deck.gl',

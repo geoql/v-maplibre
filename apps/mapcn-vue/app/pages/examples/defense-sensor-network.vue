@@ -7,7 +7,7 @@
       'Distributed sensor network with electronic warfare coverage zones and simulated threat detection along the Arunachal Pradesh border.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Sensor Network & EW Coverage',
     description:
       'Distributed sensor network with electronic warfare coverage zones and simulated threat detection.',

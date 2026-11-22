@@ -5,7 +5,7 @@
       'Global submarine cable network mapped against Exclusive Economic Zones with real-time risk scoring at chokepoints.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Submarine Cables & EEZ',
     description:
       'Undersea cable infrastructure with EEZ overlay and risk-colored segments at strategic chokepoints.',

@@ -13,7 +13,7 @@
     description: 'Render GeoJSON data with deck.gl for high performance.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'GeoJSON Layer (deck.gl)',
     description: 'Render GeoJSON data with deck.gl for high performance.',
     category: 'deck.gl',

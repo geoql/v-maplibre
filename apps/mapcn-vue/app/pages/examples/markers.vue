@@ -11,7 +11,7 @@
     description: 'Interactive markers with popup information.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Markers & Popups',
     description: 'Interactive markers with popup information.',
     category: 'Examples',

@@ -13,7 +13,7 @@
     description: 'Render icons/sprites at geographic locations.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Icon Layer (deck.gl)',
     description: 'Render icons/sprites at geographic locations.',
     category: 'deck.gl',

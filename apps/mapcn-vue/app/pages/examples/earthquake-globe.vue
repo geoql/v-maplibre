@@ -17,7 +17,7 @@
     description: 'Live 3D globe showing worldwide seismic activity from USGS.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Earthquake Globe',
     description: 'Live 3D globe showing worldwide seismic activity from USGS.',
     category: 'Examples',

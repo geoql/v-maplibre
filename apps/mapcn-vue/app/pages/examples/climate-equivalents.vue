@@ -10,7 +10,7 @@
     dateModified: '2026-06-06',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Climate Equivalents',
     description:
       'Click a country to see its climate zones matched to other countries worldwide.',

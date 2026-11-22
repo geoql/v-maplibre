@@ -7,7 +7,7 @@
     description: 'Render text labels at geographic locations.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Text Layer (deck.gl)',
     description: 'Render text labels at geographic locations.',
     category: 'deck.gl',

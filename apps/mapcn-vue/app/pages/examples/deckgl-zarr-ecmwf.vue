@@ -22,7 +22,7 @@
       'Render ECMWF Open Data GeoZarr temperature with deck.gl-raster ZarrLayer + zarrita. Single time slice, GPU-rendered.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'ECMWF GeoZarr',
     description:
       'GeoZarr temperature dataset rendered with deck.gl-raster ZarrLayer.',

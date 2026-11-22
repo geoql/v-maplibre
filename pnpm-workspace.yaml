@@ -82,6 +82,10 @@ catalogs:
     '@nuxtjs/sitemap': ^9.1.0
     nuxt-llms: ^0.3.2
     nuxt-schema-org: ^7.0.1
+    # Agent discovery (markdown twins, api-catalog, sitemap.md, MCP card)
+    # and the /mcp endpoint, both previously pulled in by Docus.
+    nuxt-agent-discovery: ^0.8.2
+    '@nuxtjs/mcp-toolkit': ^0.24.3
     # Direct dep so `.nuxt/content/types.d.ts` can augment '@nuxt/content'.
     # Without it the augmentation becomes an unrelated ambient module, docus
     # sees an empty `Collections`, and `DocsPage` resolves to `never`.
@@ -89,15 +93,15 @@ catalogs:
     '@nuxt/scripts': ^1.3.12
     '@openpanel/nuxt': ^0.4.4
     # agents 0.33 made the MCP packages optional peers with exact versions.
-    # docus -> @nuxtjs/mcp-toolkit serves MCP through `agents/mcp`, so the
-    # docs app installs them itself (versions = agents' peer pins).
+    # @nuxtjs/mcp-toolkit serves MCP through `agents/mcp`, so the docs app
+    # installs them itself (versions = agents' peer pins).
     '@modelcontextprotocol/sdk': 1.32.2
     '@modelcontextprotocol/server': 2.4.0
     agents: ^0.34.0
     better-sqlite3: ^13.2.0
     nuxt: ^4.6.4
     wrangler: ^4.166.0
-    # Required by docus → @nuxt/content collection schema generation.
+    # zod: content collection schemas and the MCP tool input schemas.
     # CI fails on `nuxt prepare` without these because @nuxt/content 3.13.x
     # peer-requires zod (not bundled). Local installs sometimes resolve to
     # 3.14.x which sidesteps the requirement, but CI consistently pulls 3.13.x.

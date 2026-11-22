@@ -7,7 +7,7 @@
       'Swipe-style map comparison control with vertical and horizontal orientation.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Map Compare',
     description:
       'Swipe-style map comparison control with vertical and horizontal orientation.',

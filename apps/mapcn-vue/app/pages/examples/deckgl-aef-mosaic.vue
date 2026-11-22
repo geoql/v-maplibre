@@ -39,7 +39,7 @@
       'AlphaEarth Foundations embedding mosaic via VLayerZarr. Int8 Texture2DArray + GPU dequant + RGB band tuning across 9 annual snapshots (2017–2025).',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'AEF Mosaic',
     description:
       'AlphaEarth Foundations embedding mosaic rendered with deck.gl-raster ZarrLayer + custom GPU shader.',

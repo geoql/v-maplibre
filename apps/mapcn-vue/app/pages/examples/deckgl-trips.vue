@@ -13,7 +13,7 @@
     description: 'Animated path visualization.',
   });
 
-  defineOgImage('MapcnDoc', {
+  defineOgImage('SiteDoc', {
     title: 'Trips Animation (deck.gl)',
     description: 'Animated path visualization.',
     category: 'deck.gl',
