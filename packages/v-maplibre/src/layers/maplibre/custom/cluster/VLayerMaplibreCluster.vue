@@ -256,8 +256,12 @@
   };
 
   // Setup click handlers for layers
+  // Layer-scoped map listeners outlive setStyle(), so a re-add after a style
+  // switch must not register them a second time.
+  let eventsBoundTo: Map | null = null;
   const setupLayerEvents = (mapInstance: Map) => {
-    if (!mapInstance) return;
+    if (!mapInstance || eventsBoundTo === mapInstance) return;
+    eventsBoundTo = mapInstance;
 
     try {
       // Click handler for clusters

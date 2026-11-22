@@ -90,6 +90,11 @@
     boundMap = mapInstance;
 
     styleLoadHandler = () => {
+      // setStyle() drops every source and layer this component added, and
+      // fires style.load (#188). Re-add them from the current props.
+      if (initialized.value && !mapInstance.getLayer(props.layerId)) {
+        initialized.value = false;
+      }
       tryAddLayer();
     };
     mapInstance.on('style.load', styleLoadHandler);
@@ -183,8 +188,12 @@
       console.error('Error updating vector layer:', error);
     }
   };
+  // Layer-scoped map listeners outlive setStyle(), so a re-add after a style
+  // switch must not register them a second time.
+  let eventsBoundTo: Map | null = null;
   const setupLayerEvents = (mapInstance: Map) => {
-    if (!mapInstance) return;
+    if (!mapInstance || eventsBoundTo === mapInstance) return;
+    eventsBoundTo = mapInstance;
 
     try {
       mapLayerEvents.forEach((eventName) => {

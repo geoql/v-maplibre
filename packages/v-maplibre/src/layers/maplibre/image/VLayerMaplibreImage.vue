@@ -88,6 +88,11 @@
     boundMap = mapInstance;
 
     styleLoadHandler = () => {
+      // setStyle() drops every source and layer this component added, and
+      // fires style.load (#188). Re-add them from the current props.
+      if (initialized.value && !mapInstance.getLayer(props.layerId)) {
+        initialized.value = false;
+      }
       tryAddLayer();
     };
     mapInstance.on('style.load', styleLoadHandler);

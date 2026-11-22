@@ -89,12 +89,18 @@
     if (!mapInstance) return;
 
     mapInstance.on('style.load', () => {
+      // A style switch (setStyle) keeps `loaded` true, so the loaded watcher
+      // does not run; re-add the layers the new style dropped (#188).
+      const switched = loaded.value;
       const styleTimeout = () => {
         if (!isStyleReady(mapInstance)) {
           loaded.value = false;
           setTimeout(styleTimeout, 200);
         } else {
           loaded.value = true;
+          if (switched) {
+            if (!mapInstance.getLayer(props.id)) addLayer();
+          }
         }
       };
       styleTimeout();

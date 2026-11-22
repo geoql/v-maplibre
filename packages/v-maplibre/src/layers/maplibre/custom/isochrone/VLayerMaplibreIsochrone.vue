@@ -125,12 +125,20 @@
     if (!mapInstance) return;
 
     mapInstance.on('style.load', () => {
+      // A style switch (setStyle) keeps `loaded` true, so the loaded watcher
+      // does not run; re-add the layers the new style dropped (#188).
+      const switched = loaded.value;
       const styleTimeout = () => {
         if (!isStyleReady(mapInstance)) {
           loaded.value = false;
           setTimeout(styleTimeout, 200);
         } else {
           loaded.value = true;
+          if (switched) {
+            if (initialized.value && !mapInstance.getLayer(fillLayerId.value)) {
+              addLayers();
+            }
+          }
         }
       };
       styleTimeout();
@@ -259,8 +267,13 @@
     }
   };
 
+  // Layer-scoped map listeners outlive setStyle(), so a re-add after a style
+  // switch must not register them a second time.
+  let eventsBoundTo: Map | null = null;
   const setupLayerEvents = (mapInstance: Map) => {
-    if (!mapInstance || !props.interactive) return;
+    if (!mapInstance || !props.interactive || eventsBoundTo === mapInstance)
+      return;
+    eventsBoundTo = mapInstance;
 
     try {
       // Click handler on fill layer
