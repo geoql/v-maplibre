@@ -14,12 +14,13 @@
 | ------------------------------------------ | --------------------------------------- |
 | [@geoql/v-maplibre](./packages/v-maplibre) | Vue 3 components for MapLibre GL        |
 | [mapcn-vue](./packages/mapcn-vue)          | shadcn-vue style map component registry |
+| [site-shell](./packages/site-shell)        | Private Nuxt layer shared by both sites |
 
 ## Apps
 
 | App                           | Description                      |
 | ----------------------------- | -------------------------------- |
-| [docs](./apps/docs)           | API documentation (Docus)        |
+| [docs](./apps/docs)           | API documentation (Nuxt Content) |
 | [mapcn-vue](./apps/mapcn-vue) | mapcn-vue showcase site (Nuxt 4) |
 
 ## For AI Coding Assistants
@@ -113,7 +114,7 @@ Associated TypeScript types (e.g. `MosaicSource`, `WindDataPoint`, `LidarControl
 
 ## Development
 
-This monorepo uses [pnpm v11](https://pnpm.io) workspaces. All four projects (`packages/v-maplibre`, `packages/mapcn-vue`, `apps/mapcn-vue`, `apps/docs`) live in a single workspace with a single `pnpm-lock.yaml`.
+This monorepo uses [pnpm v11](https://pnpm.io) workspaces. All five projects (`packages/v-maplibre`, `packages/mapcn-vue`, `packages/site-shell`, `apps/mapcn-vue`, `apps/docs`) live in a single workspace with a single `pnpm-lock.yaml`.
 
 ```bash
 # Install all dependencies in one go
@@ -121,7 +122,7 @@ pnpm install
 
 # Development
 pnpm run dev:lib      # Watch mode for library
-pnpm run dev:docs     # Docus documentation
+pnpm run dev:docs     # API documentation
 pnpm run dev:mapcn    # mapcn-vue site
 
 # Build
@@ -147,13 +148,14 @@ pnpm run release
 v-maplibre/
 ├── packages/
 │   ├── v-maplibre/        # Main library (npm: @geoql/v-maplibre)
+│   ├── site-shell/        # Private Nuxt layer: design shell for both sites
 │   └── mapcn-vue/         # shadcn-vue registry components
 │       ├── components.json           # shadcn-vue standard config
 │       ├── scripts/build-registry.ts # Custom registry builder
 │       ├── registry/new-york/        # Source components (one folder per component)
 │       └── public/r/                 # Generated registry JSONs
 ├── apps/
-│   ├── docs/              # Docus documentation (workspace member, own catalog)
+│   ├── docs/              # API documentation (Nuxt Content, own catalog)
 │   └── mapcn-vue/         # Nuxt 4 showcase site
 ├── package.json           # pnpm workspaces root
 ├── pnpm-workspace.yaml    # Workspace packages + catalogs

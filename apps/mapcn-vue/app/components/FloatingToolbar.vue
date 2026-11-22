@@ -3,12 +3,22 @@
   import Tooltip from '#shell/components/ui/tooltip/Tooltip.vue';
   import TooltipContent from '#shell/components/ui/tooltip/TooltipContent.vue';
   import TooltipTrigger from '#shell/components/ui/tooltip/TooltipTrigger.vue';
+  import type { SiteLink } from '#shell/types/docs';
 
   const { state, setOpen } = useSidebar();
   const route = useRoute();
   const { showFps, toggle: toggleFps } = useFpsMeter();
 
   const isExpanded = computed(() => state.value === 'expanded');
+
+  const links: SiteLink[] = [
+    {
+      label: 'API docs',
+      to: 'https://v-maplibre.geoql.in',
+      icon: 'lucide:book-open',
+      external: true,
+    },
+  ];
 
   // Example pages on mobile own the top-left area (custom toggles, legends,
   // loading overlays). The peek-bar already exposes "Back to Examples" and the
@@ -39,6 +49,7 @@
 
   <!-- Floating toolbar — hidden when sidebar is open OR on mobile example pages -->
   <SiteToolbar
+    :links="links"
     class="absolute left-3 top-3 z-30 transition-opacity duration-200"
     :class="[
       isExpanded ? 'opacity-0' : 'opacity-100',

@@ -45,7 +45,7 @@ This installs Husky hooks for:
 
 ```bash
 pnpm run dev:lib      # Watch mode for library
-pnpm run dev:docs     # Docus documentation
+pnpm run dev:docs     # API documentation
 pnpm run dev:mapcn    # mapcn-vue site
 ```
 
@@ -219,7 +219,7 @@ v-maplibre/
 │   ├── popups/            # Popup components
 │   └── utils/             # Utilities
 ├── test/                  # Test files
-├── docs/                  # Documentation (Docus)
+├── docs/                  # API documentation (Nuxt Content)
 └── .github/               # GitHub workflows
 ```
 

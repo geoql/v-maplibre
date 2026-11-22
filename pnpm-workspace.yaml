@@ -8,7 +8,7 @@ overrides:
   # aborting the CF Workers build (nuxt/nuxt#35670). Fixed in Unhead 3.2.0+;
   # keep the floor above 3.2.1 so the Cloudflare build always resolves a good copy.
   unhead: '>=3.4.3'
-  # docus -> @nuxtjs/mcp-toolkit + devframe pull h3@2.0.1-rc.x, which wins the
+  # @nuxtjs/mcp-toolkit (docs MCP server) + devframe pull h3 v2, which wins the
   # shamefully-hoist for bare `h3` imports. @nuxt/content + nuxt-llms nitro
   # handlers then mix h3 v1 events with v2 setHeader and every prerender route
   # 500s ("Cannot read properties of undefined (reading 'set')"). mcp-toolkit
@@ -20,10 +20,9 @@ overrides:
   # "does not provide an export named 'H3'". It runs only in the dev server,
   # so it gets its own h3 v2 while everything else stays on v1.
   devframe>h3: ^2.0.5
-  # Single-version pins to avoid dual-resolution at docs `nuxt prepare`:
-  # docus@5.11 pulls @nuxt/content@3.13.0 (no zod3 chunk -> defineCollection
-  # throws via the zod3 placeholder), while @nuxt/ui pulls @nuxt/content@3.14.0.
-  # Pinning to 3.14 + zod 4 makes every path use the zod4 chunk.
+  # Single-version pins: the docs, mapcn-vue and nuxt-agent-discovery all
+  # load @nuxt/content, and two copies at `nuxt prepare` broke
+  # defineCollection (zod3 placeholder). One version + zod 4 everywhere.
   '@nuxt/content': ^3.17.0
   zod: ^4.6.7
   # A second @vue/* generation (3.5.41) survived the last dependency sweep
@@ -86,9 +85,8 @@ catalogs:
     # and the /mcp endpoint, both previously pulled in by Docus.
     nuxt-agent-discovery: ^0.8.2
     '@nuxtjs/mcp-toolkit': ^0.24.3
-    # Direct dep so `.nuxt/content/types.d.ts` can augment '@nuxt/content'.
-    # Without it the augmentation becomes an unrelated ambient module, docus
-    # sees an empty `Collections`, and `DocsPage` resolves to `never`.
+    # Direct dep so `.nuxt/content/types.d.ts` can augment '@nuxt/content'
+    # (typed queryCollection('docs') in the docs pages).
     '@nuxt/content': ^3.17.0
     '@nuxt/scripts': ^1.3.12
     '@openpanel/nuxt': ^0.4.4

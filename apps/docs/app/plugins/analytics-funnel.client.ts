@@ -5,11 +5,10 @@ import {
 } from '~/utils/analytics-funnel';
 
 /**
- * Funnel events for the Docus site. Docus owns every page and component, so
- * the events come from one plugin instead of component code:
+ * Funnel events for the docs site, from one plugin instead of component code:
  * - `component_viewed` after each render of a components/layers/controls page
  * - `install_command_copied` / `code_copied` when a code block's copy button
- *   is clicked (Nuxt UI ProsePre: a button next to the `<pre>`)
+ *   is clicked (site-shell ProsePre: a button next to the `<pre>`)
  * - `outbound_click` for every link to GitHub or npm
  */
 // The explicit `void` return keeps this plugin out of NuxtApp's injection

@@ -11,12 +11,13 @@
 
 **v-maplibre** is a monorepo for Vue 3 MapLibre GL components, including the core library and shadcn-vue compatible registry.
 
-| Package/App           | Description                                        | Guide                                                              |
-| --------------------- | -------------------------------------------------- | ------------------------------------------------------------------ |
-| `packages/v-maplibre` | Core Vue 3 component library (`@geoql/v-maplibre`) | [`packages/v-maplibre/AGENTS.md`](./packages/v-maplibre/AGENTS.md) |
-| `packages/mapcn-vue`  | shadcn-vue compatible registry                     | [`packages/mapcn-vue/AGENTS.md`](./packages/mapcn-vue/AGENTS.md)   |
-| `apps/mapcn-vue`      | Showcase site with examples (Nuxt 4)               | [`apps/mapcn-vue/AGENTS.md`](./apps/mapcn-vue/AGENTS.md)           |
-| `apps/docs`           | API documentation (Docus)                          | [`apps/docs/AGENTS.md`](./apps/docs/AGENTS.md)                     |
+| Package/App           | Description                                           | Guide                                                              |
+| --------------------- | ----------------------------------------------------- | ------------------------------------------------------------------ |
+| `packages/v-maplibre` | Core Vue 3 component library (`@geoql/v-maplibre`)    | [`packages/v-maplibre/AGENTS.md`](./packages/v-maplibre/AGENTS.md) |
+| `packages/mapcn-vue`  | shadcn-vue compatible registry                        | [`packages/mapcn-vue/AGENTS.md`](./packages/mapcn-vue/AGENTS.md)   |
+| `apps/mapcn-vue`      | Showcase site with examples (Nuxt 4)                  | [`apps/mapcn-vue/AGENTS.md`](./apps/mapcn-vue/AGENTS.md)           |
+| `packages/site-shell` | Private Nuxt layer: design shell shared by both sites | [`apps/docs/AGENTS.md`](./apps/docs/AGENTS.md#project-overview)    |
+| `apps/docs`           | API documentation (Nuxt 4 + @nuxt/content)            | [`apps/docs/AGENTS.md`](./apps/docs/AGENTS.md)                     |
 
 ---
 
@@ -48,7 +49,7 @@ Skills are GENERIC (they apply to many Vue/Nuxt projects). Per-package `AGENTS.m
 | `packages/v-maplibre` | [Known Conflicts](./packages/v-maplibre/AGENTS.md#known-conflicts-agentsmd-wins) — `injectMap` / `useDeckOverlay` / manual lifecycle / no `reactive()`                         |
 | `packages/mapcn-vue`  | [Known Conflicts](./packages/mapcn-vue/AGENTS.md#known-conflicts-agentsmd-wins) — copy-paste self-containment overrides "DRY" guidance                                         |
 | `apps/mapcn-vue`      | [Known Conflicts](./apps/mapcn-vue/AGENTS.md#known-conflicts-agentsmd-wins) — Tech Utility direction pinned, semantic tokens only, no banned fonts, shadcn-vue inputs required |
-| `apps/docs`           | [Known Conflicts](./apps/docs/AGENTS.md#known-conflicts-agentsmd-wins) — Docus owns theme, no custom Vue, AI crawlers allowed                                                  |
+| `apps/docs`           | [Known Conflicts](./apps/docs/AGENTS.md#known-conflicts-agentsmd-wins) — shared surfaces live in `packages/site-shell`, semantic tokens only, AI crawlers allowed              |
 
 | Skill                     | Path                                                                                                   | When to Load                                                                                                                                                                       |
 | ------------------------- | ------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -65,7 +66,8 @@ Skills are GENERIC (they apply to many Vue/Nuxt projects). Per-package `AGENTS.m
 | `packages/v-maplibre` | `vue-best-practices`                                                                                                                                   |
 | `packages/mapcn-vue`  | `vue-best-practices`                                                                                                                                   |
 | `apps/mapcn-vue`      | `mapcn-vue-design` (FIRST, for any visual work) → `nuxt-best-practices` → `nuxt-seo-best-practices` → `nuxt-geo-best-practices` → `vue-best-practices` |
-| `apps/docs`           | `nuxt-best-practices` → `nuxt-seo-best-practices` → `nuxt-geo-best-practices`                                                                          |
+| `apps/docs`           | `mapcn-vue-design` (FIRST, for any visual work) → `nuxt-best-practices` → `nuxt-seo-best-practices` → `nuxt-geo-best-practices` → `vue-best-practices` |
+| `packages/site-shell` | `mapcn-vue-design` → `vue-best-practices`                                                                                                              |
 
 ### Skills Catalog (detailed)
 
@@ -116,7 +118,8 @@ You receive a task. Before writing code:
    │   ├── llms.txt / AI search?  → load `nuxt-geo-best-practices`
    │   └── Vue component / hook?  → load `vue-best-practices`
    └── apps/docs
-       ├── content / Docus only?  → no skill required (markdown only)
+       ├── content (Markdown) only? → no skill required
+       ├── any visual work?       → load `mapcn-vue-design` FIRST (shared design layer)
        ├── Nuxt config?           → load `nuxt-best-practices`
        ├── SEO / OG / meta?       → load `nuxt-seo-best-practices`
        └── llms.txt / AI search?  → load `nuxt-geo-best-practices`
@@ -153,7 +156,7 @@ v-maplibre/
 │   │   ├── server/          # API routes (registry, valhalla)
 │   │   └── content/         # Markdown docs
 │   │
-│   └── docs/                # Docus documentation site
+│   └── docs/                # API docs (Nuxt 4 + @nuxt/content, extends packages/site-shell)
 │       └── content/         # API reference markdown
 │
 ├── .agents/
@@ -211,7 +214,8 @@ pnpm run update:deps   # runs `pnpm dlx taze -I -r`
 ```
 packages/mapcn-vue ──depends on──> packages/v-maplibre
 apps/mapcn-vue ─────depends on──> packages/v-maplibre (workspace:*)
-apps/docs ──────────workspace member (own deps, no cross-package link)
+apps/docs ──────────depends on──> packages/site-shell (workspace:*)
+apps/mapcn-vue ─────depends on──> packages/site-shell (workspace:*)
 ```
 
 ---
@@ -306,7 +310,7 @@ This monorepo uses **pnpm workspace catalogs** for centralized dependency versio
 3. Use `workspace:*` only for internal monorepo package references
 4. Run `pnpm install` to refresh `pnpm-lock.yaml`
 
-`apps/docs` uses its own catalog (`app:docs`) for Docus-specific packages so its heavier dep tree stays isolated from the library catalog while still sharing the root lockfile.
+`apps/docs` uses its own catalog (`app:docs`) for docs-only packages (content, agent discovery, MCP). `packages/site-shell` references the `app:mapcn-vue` catalog entries, so both sites share one version of every design dependency.
 
 ---
 
@@ -342,5 +346,5 @@ pnpm run release  # Runs lint, format, test, build, then publishes
 
 ---
 
-**Last Updated:** 2026-05-12
+**Last Updated:** 2026-11-22
 **Maintainer:** GeoQL Team
