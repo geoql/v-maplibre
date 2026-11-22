@@ -1,4 +1,4 @@
-import { onMounted, onUnmounted, ref, type Ref } from 'vue';
+import type { Ref } from 'vue';
 import { activeHeadingId } from '#shell/utils/active-heading';
 
 /**

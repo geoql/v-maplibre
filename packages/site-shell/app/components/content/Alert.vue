@@ -1,6 +1,5 @@
 <script setup lang="ts">
   /** `::alert{type="warning"}` in Markdown. */
-  import { computed } from 'vue';
   const props = withDefaults(
     defineProps<{ type?: 'info' | 'success' | 'warning' | 'danger' }>(),
     { type: 'info' },
@@ -43,7 +42,7 @@
       class="mt-0.5 size-4 shrink-0"
       :class="style.tone"
     />
-    <div class="min-w-0 [&_a]:underline [&_code]:font-mono [&_p]:m-0">
+    <div class="slot-flush min-w-0">
       <slot></slot>
     </div>
   </div>

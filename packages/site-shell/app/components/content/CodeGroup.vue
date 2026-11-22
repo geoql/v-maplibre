@@ -5,8 +5,9 @@
    * underline slides between tabs (off under reduced motion).
    */
   import { motion } from 'motion-v';
-  import { computed, provide, ref, useId, useSlots, type VNode } from 'vue';
+  import type { VNode } from 'vue';
   import { IN_CODE_GROUP } from '#shell/utils/code-group';
+  import { INDICATOR_TRANSITION } from '#shell/utils/motion';
 
   provide(IN_CODE_GROUP, true);
 
@@ -35,7 +36,7 @@
     >
       <button
         v-for="(node, index) in blocks"
-        :key="index"
+        :key="label(node, index)"
         role="tab"
         type="button"
         :aria-selected="selected === index ? 'true' : 'false'"
@@ -52,11 +53,11 @@
           v-if="selected === index"
           :layout-id="`code-group-${groupId}`"
           class="absolute inset-x-2 -bottom-px h-px bg-primary"
-          :transition="{ duration: 0.18, ease: [0.2, 0, 0, 1] }"
+          :transition="INDICATOR_TRANSITION"
         ></motion.span>
       </button>
     </div>
-    <div role="tabpanel" class="[&_pre]:!my-0 [&>div]:!my-0">
+    <div role="tabpanel" class="code-group-panel">
       <component :is="blocks[selected]" />
     </div>
   </div>

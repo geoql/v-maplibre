@@ -13,6 +13,17 @@ const appDir = fileURLToPath(new URL('./app', import.meta.url));
  * so Tailwind compiles one stylesheet per app.
  */
 export default defineNuxtConfig({
+  // Used when the layer is prepared on its own (typecheck); each app's own
+  // compatibilityDate takes precedence.
+  compatibilityDate: '2025-07-18',
+
+  app: {
+    head: {
+      // Both sites are English.
+      htmlAttrs: { lang: 'en' },
+    },
+  },
+
   modules: [
     '@nuxtjs/color-mode',
     '@nuxt/icon',

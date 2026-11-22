@@ -6,7 +6,6 @@
    * data in; this component never queries a content collection.
    */
   import { MotionConfig } from 'motion-v';
-  import { ref } from 'vue';
   import {
     Sheet,
     SheetContent,
@@ -39,7 +38,6 @@
     <div class="relative min-h-dvh">
       <div class="fixed inset-0 -z-10">
         <div class="absolute inset-0 bg-background"></div>
-        <div class="absolute inset-0 bg-grid opacity-30"></div>
       </div>
 
       <div class="container max-w-screen-2xl py-10">

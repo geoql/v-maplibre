@@ -6,8 +6,18 @@
   import { motion } from 'motion-v';
   import { useActiveHeading } from '#shell/composables/use-active-heading';
   import type { TocItem } from '#shell/types/docs';
+  import { INDICATOR_TRANSITION } from '#shell/utils/motion';
 
   defineProps<{ items: TocItem[] }>();
+
+  function linkClass(item: TocItem): string {
+    const indent = item.level === 3 ? 'pl-8' : 'pl-4';
+    const tone =
+      active.value === item.id
+        ? 'font-medium text-primary'
+        : 'text-muted-foreground hover:text-foreground';
+    return `${indent} ${tone}`;
+  }
 
   const active = useActiveHeading(
     '.prose h1[id], .prose h2[id], .prose h3[id], .prose h4[id]',
@@ -31,18 +41,13 @@
         :href="`#${item.id}`"
         :aria-current="active === item.id ? 'true' : undefined"
         class="relative py-1.5 text-sm transition-colors"
-        :class="[
-          item.level === 3 ? 'pl-8' : 'pl-4',
-          active === item.id
-            ? 'font-medium text-primary'
-            : 'text-muted-foreground hover:text-foreground',
-        ]"
+        :class="linkClass(item)"
       >
         <motion.span
           v-if="active === item.id"
           layout-id="docs-toc-indicator"
           class="absolute inset-y-0 -left-px w-px bg-primary"
-          :transition="{ duration: 0.18, ease: [0.2, 0, 0, 1] }"
+          :transition="INDICATOR_TRANSITION"
         ></motion.span>
         {{ item.text }}
       </a>

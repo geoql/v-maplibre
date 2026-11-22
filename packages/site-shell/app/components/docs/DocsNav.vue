@@ -5,6 +5,7 @@
    */
   import { motion } from 'motion-v';
   import type { DocsNavGroup } from '#shell/types/docs';
+  import { INDICATOR_TRANSITION } from '#shell/utils/motion';
 
   defineProps<{
     groups: DocsNavGroup[];
@@ -42,7 +43,7 @@
             v-if="item.active"
             :layout-id="indicatorId ?? 'docs-nav-indicator'"
             class="absolute inset-y-0 -left-px w-px bg-primary"
-            :transition="{ duration: 0.18, ease: [0.2, 0, 0, 1] }"
+            :transition="INDICATOR_TRANSITION"
           ></motion.span>
           <Icon :name="item.icon" class="size-3.5" />
           {{ item.title }}

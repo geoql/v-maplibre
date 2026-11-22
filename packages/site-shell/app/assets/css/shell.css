@@ -113,6 +113,21 @@
   grid-template-columns: 3rem 16rem 1fr auto;
 }
 
+/* Markdown slotted into callouts and alerts: paragraphs sit flush. */
+@utility slot-flush {
+  & p {
+    margin: 0;
+  }
+
+  & a {
+    text-decoration-line: underline;
+  }
+
+  & code {
+    font-family: var(--font-mono);
+  }
+}
+
 /* Blueprint grid backgrounds */
 @utility bg-grid {
   background-image:
@@ -446,7 +461,19 @@
 }
 
 .prose pre {
-  @apply rounded-xl border border-border/50 p-4 overflow-x-auto;
+  @apply rounded-lg border border-border/50 p-4 overflow-x-auto;
+}
+
+/* Code block under a file-name header: the header carries the top corners. */
+.prose .code-block-titled > pre {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* Inside a code group the group's frame is the border. */
+.prose .code-group-panel pre {
+  border: 0;
+  border-radius: 0;
 }
 
 .prose pre code {

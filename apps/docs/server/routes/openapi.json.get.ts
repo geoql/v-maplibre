@@ -1,10 +1,11 @@
+import type { H3Event } from 'h3';
 import { agentDiscoveryOpenApi, getAgentSiteUrl } from '#agent-discovery';
 
 /**
  * What an agent can call on this site: the markdown twin of every page, the
  * discovery documents and the MCP endpoint (the document Docus published).
  */
-export default defineEventHandler((event) => {
+export default defineEventHandler((event: H3Event) => {
   const discovery = agentDiscoveryOpenApi(event);
   return {
     openapi: '3.1.0',

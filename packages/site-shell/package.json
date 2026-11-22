@@ -11,7 +11,8 @@
   },
   "scripts": {
     "test": "vp test run",
-    "lint": "vp lint"
+    "lint": "vp lint",
+    "typecheck": "nuxi prepare && vue-tsc --noEmit -p .nuxt/tsconfig.app.json"
   },
   "dependencies": {
     "@iconify-json/lucide": "catalog:app:mapcn-vue",
@@ -37,7 +38,10 @@
     "@vue/test-utils": "catalog:",
     "happy-dom": "catalog:",
     "nuxt": "catalog:app:mapcn-vue",
+    "typescript": "catalog:",
+    "unplugin-auto-import": "catalog:",
     "vite-plus": "catalog:",
-    "vue": "catalog:"
+    "vue": "catalog:",
+    "vue-tsc": "catalog:"
   }
 }

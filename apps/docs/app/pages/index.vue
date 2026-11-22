@@ -1,5 +1,4 @@
 <script setup lang="ts">
-  import { ref } from 'vue';
   import libraryPkg from '../../../../packages/v-maplibre/package.json' with { type: 'json' };
 
   const INSTALL = 'pnpm add @geoql/v-maplibre maplibre-gl';
@@ -175,7 +174,6 @@ ${SCRIPT_END}
       <aside
         class="relative flex flex-col justify-center border-t border-border/60 bg-card/40 px-6 py-12 md:px-12 lg:border-t-0 lg:border-l lg:px-8"
       >
-        <div class="absolute inset-0 -z-10 bg-grid-faint"></div>
         <p
           class="mb-4 font-mono text-2xs tracking-caps-sm text-muted-foreground uppercase"
         >

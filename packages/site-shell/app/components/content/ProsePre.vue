@@ -3,7 +3,6 @@
    * Code blocks from Markdown, with a copy button. Inside `::code-group`
    * the group's tabs carry the file name, so the block hides its own.
    */
-  import { inject, onBeforeUnmount, ref } from 'vue';
   import { IN_CODE_GROUP } from '#shell/utils/code-group';
 
   const props = withDefaults(
@@ -26,6 +25,8 @@
   );
 
   const inGroup = inject(IN_CODE_GROUP, false);
+  /** A file-name header sits above the block (never inside a code group). */
+  const titled = computed(() => Boolean(props.filename) && inGroup === false);
   const copied = ref(false);
   let timer: ReturnType<typeof setTimeout> | undefined;
 
@@ -40,27 +41,25 @@
 </script>
 
 <template>
-  <div class="group/code relative my-6">
+  <div
+    class="group/code relative"
+    :class="[inGroup ? '' : 'my-6', titled ? 'code-block-titled' : '']"
+  >
     <div
-      v-if="filename && !inGroup"
+      v-if="titled"
       class="rounded-t-md border border-b-0 border-border bg-muted/40 px-4 py-2 font-mono text-caption tracking-caps text-muted-foreground uppercase"
     >
       {{ filename }}
     </div>
-    <pre
-      :class="[
-        props.class,
-        filename && !inGroup ? '!mt-0 !rounded-t-none' : '',
-      ]"
-    ><slot></slot></pre>
+    <pre :class="props.class"><slot></slot></pre>
     <button
       data-copy
       type="button"
       :aria-label="copied ? 'Copied' : 'Copy code'"
-      class="absolute right-2 top-2 inline-flex size-7 items-center justify-center rounded-md border border-border bg-background/80 text-muted-foreground opacity-0 backdrop-blur-sm transition-[opacity,color] duration-150 group-hover/code:opacity-100 hover:text-foreground focus-visible:opacity-100"
+      class="absolute right-2 top-2 inline-flex size-7 items-center justify-center rounded-md border border-border bg-background/80 text-muted-foreground opacity-0 backdrop-blur-sm transition duration-150 group-hover/code:opacity-100 hover:text-foreground focus-visible:opacity-100"
       :class="[
         copied ? 'text-success opacity-100' : '',
-        filename && !inGroup ? 'top-11' : '',
+        titled ? 'top-11' : '',
       ]"
       @click="copy"
     >

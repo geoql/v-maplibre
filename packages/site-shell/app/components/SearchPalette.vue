@@ -5,7 +5,6 @@
    * with an optional #hash). Open/close scales and fades in 150 ms; the
    * reduced-motion rule turns that off.
    */
-  import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
   import {
     DialogContent,
     DialogDescription,
