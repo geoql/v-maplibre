@@ -63,12 +63,12 @@ pnpm add @deck.gl/geo-layers
 pnpm add @deck.gl/mesh-layers
 
 # Cloud-Optimized GeoTIFF — import from '@geoql/v-maplibre/geotiff'
-# VLayerCog, VLayerMultiCog, VLayerMosaic
-pnpm add @developmentseed/deck.gl-geotiff @developmentseed/deck.gl-raster @developmentseed/geotiff @developmentseed/proj
+# VLayerCog, VLayerMultiCog, VLayerMosaic (@developmentseed/* 0.10)
+pnpm add @developmentseed/deck.gl-geotiff@^0.10 @developmentseed/deck.gl-raster@^0.10 @developmentseed/geotiff@^0.10 @developmentseed/proj@^0.10
 
 # Zarr — import from '@geoql/v-maplibre/geotiff'
 # VLayerZarr
-pnpm add @developmentseed/deck.gl-zarr zarrita
+pnpm add @developmentseed/deck.gl-zarr@^0.10 @developmentseed/deck.gl-raster@^0.10 @developmentseed/proj@^0.10 zarrita
 
 # GeoArrow — import from '@geoql/v-maplibre/deck.gl'
 # VLayerDeckglGeoArrowScatterplot, VLayerDeckglGeoArrowPath,
@@ -239,10 +239,12 @@ High-performance WebGL visualization layers powered by deck.gl:
 - `VLayerDeckglPointCloud` - LiDAR/photogrammetry point clouds
 - `VLayerDeckglSolidPolygon` - 3D extruded solid polygons
 
-**Raster Layers** (requires `@developmentseed/deck.gl-raster` and `@developmentseed/deck.gl-geotiff`)
+**Raster Layers** (require `@developmentseed/*` **0.10**: `deck.gl-raster`, `deck.gl-geotiff`, `geotiff`, `proj`; Zarr also `deck.gl-zarr` + `zarrita`)
 
 - `VLayerCog` - Cloud-Optimized GeoTIFF visualization (GPU-accelerated, auto-reprojection)
-- `VLayerMosaic` - Client-side COG mosaic from STAC items (requires `flatbush`, `proj4`)
+- `VLayerMultiCog` - Multi-band composite from separate COGs (e.g. Sentinel-2)
+- `VLayerMosaic` - Client-side COG mosaic from STAC items
+- `VLayerZarr` - GeoZarr arrays with reprojection
 
 **GeoArrow Layers** (requires `@deck.gl/layers` + `apache-arrow`; trips also needs `@deck.gl/geo-layers`)
 
