@@ -2,14 +2,15 @@
  * Opens every mapcn-vue example page and reports page errors and console
  * errors. Exits 1 if any page has one.
  *
- * Usage: node scripts/visual/examples-sweep.ts <baseUrl> [ignorePattern]
+ * Usage: node scripts/visual/examples-sweep.ts <baseUrl> [ignorePattern] [slug...]
  * The example list comes from apps/mapcn-vue/app/pages/examples/*.vue.
- * `ignorePattern` (a regex) skips known third-party noise, e.g. tile 5xx.
+ * `ignorePattern` (a regex, '' for none) skips known third-party noise.
+ * Extra arguments limit the sweep to those example slugs.
  */
 import { readdirSync } from 'node:fs';
 import { chromium } from 'playwright';
 
-const [baseUrl, ignore] = process.argv.slice(2);
+const [baseUrl, ignore, ...only] = process.argv.slice(2);
 if (!baseUrl) {
   console.error('usage: examples-sweep.ts <baseUrl> [ignorePattern]');
   process.exit(2);
@@ -21,6 +22,7 @@ const slugs = readdirSync(
 )
   .filter((f) => f.endsWith('.vue') && f !== 'index.vue')
   .map((f) => f.replace(/\.vue$/, ''))
+  .filter((slug) => only.length === 0 || only.includes(slug))
   .sort();
 
 const browser = await chromium.launch({ channel: 'chrome' });

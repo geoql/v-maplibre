@@ -1,4 +1,4 @@
-export default defineCachedEventHandler(
+export default defineEdgeCachedHandler(
   async (event) => {
     const query = getQuery(event);
     const fromDate =
@@ -32,9 +32,5 @@ export default defineCachedEventHandler(
   },
   {
     maxAge: 60 * 30,
-    getKey: (event) => {
-      const query = getQuery(event);
-      return `floods:${query.fromDate || 'default'}:${query.toDate || 'default'}:${query.alertLevel || 'all'}`;
-    },
   },
 );

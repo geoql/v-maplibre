@@ -8,7 +8,9 @@ import type {
   ActiveStopFilter,
 } from '~/types/actransit';
 
-const API_BASE = 'https://actransit.val.run';
+// Same-origin proxy (server/routes/api/actransit/[feed].ts) for
+// https://actransit.val.run.
+const API_BASE = '/api/actransit';
 const REFRESH_INTERVAL_MS = 30000;
 const MAX_MINUTES_AGO = 8;
 

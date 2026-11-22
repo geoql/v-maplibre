@@ -1,4 +1,4 @@
-export default defineCachedEventHandler(
+export default defineEdgeCachedHandler(
   async (event) => {
     const query = getQuery(event);
     const json = query.json as string;
@@ -38,9 +38,5 @@ export default defineCachedEventHandler(
   },
   {
     maxAge: 60 * 60,
-    getKey: (event) => {
-      const query = getQuery(event);
-      return `valhalla:${query.endpoint || 'route'}:${query.json}`;
-    },
   },
 );

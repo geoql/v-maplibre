@@ -1,6 +1,6 @@
 import type { NominatimResponse } from '../../types/geocode';
 
-export default defineCachedEventHandler(
+export default defineEdgeCachedHandler(
   async (event) => {
     const query = getQuery(event);
     const lat = query.lat as string;
@@ -39,9 +39,5 @@ export default defineCachedEventHandler(
   },
   {
     maxAge: 60 * 60 * 24,
-    getKey: (event) => {
-      const query = getQuery(event);
-      return `geocode:${query.lat}:${query.lon}`;
-    },
   },
 );

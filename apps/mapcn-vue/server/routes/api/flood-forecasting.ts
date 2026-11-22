@@ -46,7 +46,7 @@ function isValidEndpoint(endpoint: string): boolean {
   );
 }
 
-export default defineCachedEventHandler(
+export default defineEdgeCachedHandler(
   async (event) => {
     const config = useRuntimeConfig();
     const apiKey = config.googleFloodApiKey as string;
@@ -108,19 +108,5 @@ export default defineCachedEventHandler(
   },
   {
     maxAge: 60 * 15,
-    getKey: async (event) => {
-      const query = getQuery(event);
-      const endpoint = (query.endpoint as string) || 'significantEvents:search';
-
-      // Include POST body in cache key so different regions/params don't collide
-      if (POST_ENDPOINTS.has(endpoint)) {
-        const body = await readValidatedBody(event, parseProxyBody).catch(
-          (): Record<string, unknown> => ({}),
-        );
-        return `flood-forecasting:${endpoint}:${JSON.stringify(query)}:${JSON.stringify(body)}`;
-      }
-
-      return `flood-forecasting:${endpoint}:${JSON.stringify(query)}`;
-    },
   },
 );
