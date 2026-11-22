@@ -34,6 +34,22 @@ describe('VMap', () => {
     remove.mockRestore();
   });
 
+  // MapLibre throws "Invalid type: 'container' must be a String or
+  // HTMLElement" without a container, so VMap uses its own element.
+  it('uses its own element as the container when options.container is not set', async () => {
+    const { container: _omit, ...withoutContainer } = defaultOptions;
+    void _omit;
+    const wrapper = mount(VMap, {
+      props: { options: withoutContainer },
+      attachTo: document.body,
+    });
+    await wrapper.vm.$nextTick();
+
+    expect(MockMap.lastInstance?.options.container).toBe(wrapper.element);
+    expect(wrapper.attributes('id')).toBeUndefined();
+    wrapper.unmount();
+  });
+
   it('renders correctly', () => {
     const wrapper = mount(VMap, {
       props: {

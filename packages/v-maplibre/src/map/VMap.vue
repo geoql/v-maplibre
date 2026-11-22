@@ -53,6 +53,9 @@
   }
 
   const map: Ref<Map | null> = shallowRef(null); // Initialize as null
+  // The element this component renders. It is the map container when
+  // `options.container` is not set.
+  const containerEl = ref<HTMLElement | null>(null);
   const loaded: Ref<boolean> = ref(false);
   const events: Ref<Array<keyof MapEventType>> = ref(mapEvents);
 
@@ -85,7 +88,10 @@
 
   onMounted(() => {
     installMaplibreWorkerUrl();
-    const options: MapOptions = { ...props.options };
+    const options: MapOptions = {
+      ...props.options,
+      container: props.options.container ?? containerEl.value!,
+    };
     if (props.globalState !== undefined) {
       options.globalState = snapshotGlobalState();
     }
@@ -174,7 +180,11 @@
 </script>
 
 <template>
-  <div :id="`${options?.container}`" class="v-map-container">
+  <div
+    ref="containerEl"
+    :id="typeof options?.container === 'string' ? options.container : undefined"
+    class="v-map-container"
+  >
     <slot v-if="loaded">
       <slot></slot>
     </slot>
