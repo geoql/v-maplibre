@@ -54,3 +54,6 @@ TODO.local.md
 docs/*.pdf
 .omo
 .cortexkit
+
+# Visual-regression screenshots (scripts/visual)
+.visual/

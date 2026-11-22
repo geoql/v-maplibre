@@ -34,9 +34,13 @@
   "devDependencies": {
     "@commitlint/cli": "^21.2.4",
     "@commitlint/config-conventional": "^21.2.4",
+    "@types/pngjs": "catalog:",
     "husky": "^9.1.7",
     "is-ci": "^4.1.0",
     "lint-staged": "^17.6.1",
+    "pixelmatch": "catalog:",
+    "playwright": "catalog:",
+    "pngjs": "catalog:",
     "typescript": "^6.0.3",
     "vite-plus": "catalog:",
     "zod": "^4.6.7",

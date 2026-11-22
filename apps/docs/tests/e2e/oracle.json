@@ -1,0 +1,34 @@
+{
+  "capturedFrom": "https://v-maplibre.geoql.in (Docus 5.15.0), 2026-11-22",
+  "urls": [
+    "/",
+    "/components/map",
+    "/components/markers",
+    "/controls/layer",
+    "/controls/legend",
+    "/controls/lidar",
+    "/guide/examples",
+    "/guide/getting-started",
+    "/guide/peer-dependencies",
+    "/layers/aggregation-layers",
+    "/layers/core-layers",
+    "/layers/deckgl-overview",
+    "/layers/geo-layers",
+    "/layers/geoarrow-layers",
+    "/layers/maplibre-layers",
+    "/layers/raster-layers",
+    "/layers/wind-layers"
+  ],
+  "agentSurfaces": [
+    { "path": "/llms.txt", "status": 200, "contentType": "text/plain" },
+    { "path": "/llms-full.txt", "status": 200, "contentType": "text/plain" },
+    { "path": "/sitemap.xml", "status": 200, "contentType": "application/xml" },
+    { "path": "/sitemap.md", "status": 200, "contentType": "text/markdown" },
+    { "path": "/guide/getting-started.md", "status": 200, "contentType": "text/markdown" },
+    { "path": "/.well-known/api-catalog", "status": 200, "contentType": "application/linkset+json" },
+    { "path": "/.well-known/mcp/server-card.json", "status": 200, "contentType": "application/json" },
+    { "path": "/openapi.json", "status": 200, "contentType": "application/json" },
+    { "path": "/robots.txt", "status": 200, "contentType": "text/plain" }
+  ],
+  "mcpTools": ["get-page", "list-pages"]
+}
