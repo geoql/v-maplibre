@@ -1,7 +1,8 @@
 /**
  * Types for ACTransit real-time bus tracking visualization
  *
- * Data comes from https://actransit.val.run API endpoints:
+ * Data comes from https://actransit.val.run, through the same-origin proxy
+ * /api/actransit/<feed>:
  * - /bus_locations - Current bus positions
  * - /bus_locations_history - Historical positions
  * - /route_stop_predictions - Stop locations and route info

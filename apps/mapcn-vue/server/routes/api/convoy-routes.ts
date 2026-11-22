@@ -117,7 +117,7 @@ function buildCheckpoints(
   });
 }
 
-export default defineCachedEventHandler(
+export default defineEdgeCachedHandler(
   async () => {
     const results = await Promise.all(
       CONVOYS.map(async (convoy): Promise<ConvoyRouteResult> => {
@@ -139,6 +139,5 @@ export default defineCachedEventHandler(
   },
   {
     maxAge: 60 * 60 * 24,
-    getKey: () => 'convoy-routes',
   },
 );

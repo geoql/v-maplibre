@@ -276,7 +276,7 @@ function calculateBudget(daysCount: number): string {
   return `$${Math.round(estimatedBudget / 100) * 100}`;
 }
 
-export default defineCachedEventHandler(
+export default defineEdgeCachedHandler(
   async (event) => {
     const query = getQuery(event);
     const waypointsParam = query.waypoints as string | undefined;
@@ -337,10 +337,5 @@ export default defineCachedEventHandler(
   },
   {
     maxAge: 60 * 30,
-    getKey: (event) => {
-      const query = getQuery(event);
-      const seed = query.seed || 'default';
-      return `trip-planner:${query.waypoints || 'pch'}:${seed}`;
-    },
   },
 );
