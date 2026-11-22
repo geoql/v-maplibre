@@ -43,6 +43,16 @@ class MockMap {
     this._zoom = options.zoom || 0;
   }
 
+  getContainer(): HTMLElement {
+    return typeof this._container === 'string'
+      ? document.getElementById(this._container)!
+      : this._container;
+  }
+
+  getCenterElevation(): number {
+    return 0;
+  }
+
   on(event: string, callback: EventCallback) {
     if (!this._listeners.has(event)) {
       this._listeners.set(event, new Set());

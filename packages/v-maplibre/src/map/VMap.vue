@@ -69,21 +69,35 @@
     useDevicePixels: props.deckUseDevicePixels,
   });
 
-  // MapLibre v6 removed `map.transform` (now internal at `map._camera.transform`),
-  // but @deck.gl/mapbox (incl. 9.4 alpha) still reads `map.transform.height/_nearZ/_farZ`
-  // during every render. Without this getter the deck overlay throws inside the
-  // map's render loop and blanks the entire canvas.
+  // MapLibre v6 removed `map.transform` (internal at `map._camera.transform`
+  // until 6.18, gone in 6.19), but @deck.gl/mapbox (incl. 9.4 alpha) still
+  // reads `map.transform.height/elevation/_nearZ/_farZ` for terrain and
+  // interleaved overlays. Without this getter the deck overlay throws there.
   const restoreTransformCompat = (instance: Map): void => {
     const compat = instance as Map & {
       transform?: unknown;
-      _camera?: { transform: unknown };
+      _camera?: { transform?: unknown };
     };
-    if (compat.transform === undefined && compat._camera) {
-      Object.defineProperty(instance, 'transform', {
-        get: () => compat._camera!.transform,
-        configurable: true,
-      });
-    }
+    if (compat.transform !== undefined) return;
+    // maplibre-gl 6.19 keeps the camera in a state store and has no
+    // transform object at all. Build the fields deck.gl reads (height,
+    // elevation; _nearZ / _farZ stay undefined, so deck uses its own planes
+    // or the render call's nearZ / farZ) from the public API.
+    const fromPublicApi = {
+      get width(): number {
+        return instance.getContainer().clientWidth;
+      },
+      get height(): number {
+        return instance.getContainer().clientHeight;
+      },
+      get elevation(): number {
+        return instance.getCenterElevation();
+      },
+    };
+    Object.defineProperty(instance, 'transform', {
+      get: () => compat._camera?.transform ?? fromPublicApi,
+      configurable: true,
+    });
   };
 
   onMounted(() => {

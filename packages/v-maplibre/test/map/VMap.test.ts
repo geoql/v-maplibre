@@ -50,6 +50,25 @@ describe('VMap', () => {
     wrapper.unmount();
   });
 
+  // @deck.gl/mapbox reads map.transform.height and .elevation for terrain
+  // and interleaved overlays; maplibre-gl 6.19 has no transform object.
+  it('gives deck.gl a map.transform built from the public API', async () => {
+    const wrapper = mount(VMap, {
+      props: { options: { style: defaultOptions.style } },
+      attachTo: document.body,
+    });
+    await wrapper.vm.$nextTick();
+    Object.defineProperty(wrapper.element, 'clientHeight', { value: 480 });
+    const map = MockMap.lastInstance!;
+    vi.spyOn(map, 'getCenterElevation').mockReturnValue(1234);
+
+    const transform = (map as unknown as { transform: Record<string, number> })
+      .transform;
+    expect(transform.height).toBe(480);
+    expect(transform.elevation).toBe(1234);
+    wrapper.unmount();
+  });
+
   it('renders correctly', () => {
     const wrapper = mount(VMap, {
       props: {
