@@ -15,9 +15,9 @@
   /**
    * VLayerZarr — GeoZarr tile rendering with reprojection.
    *
-   * Wraps @developmentseed/deck.gl-zarr ZarrLayer.
-   * The caller MUST open the zarr store with zarrita and pass the opened
-   * Array/Group as `node`, plus `selection` for non-spatial dims, plus
+   * Wraps @developmentseed/deck.gl-zarr 0.10 ZarrLayer.
+   * The caller passes a zarrita store, an opened Array/Group, or a
+   * `ZarrSource` as `node`, plus `selection` for non-spatial dims, plus
    * `getTileData` + `renderTile` callbacks. This wrapper is intentionally
    * thin — ZarrLayer is data-format / shader-pipeline agnostic by design.
    *
@@ -32,6 +32,8 @@
   import type {
     GetTileDataOptions,
     SliceInput,
+    ZarrInput,
+    ZarrSource,
   } from '@developmentseed/deck.gl-zarr';
   import type * as zarr from 'zarrita';
   import { injectStrict, MapKey, requirePeer } from '../../../utils';
@@ -43,13 +45,15 @@
   interface Props {
     id: string;
     /**
-     * Pre-opened zarrita Array OR Group. The caller builds the store
-     * (e.g. zarr.FetchStore + withConsolidatedMetadata) and opens it.
+     * The data: a zarrita store (e.g. zarr.FetchStore +
+     * withConsolidatedMetadata), an opened Array or Group, or a `ZarrSource`
+     * from `ZarrSource.open()` (share one source across layers).
      */
-    node: zarr.Array<zarr.DataType, zarr.Readable> | zarr.Group<zarr.Readable>;
+    node: ZarrInput | ZarrSource;
     /**
-     * Optional path to a variable within the store. Only used when `node`
-     * is a Group. Ignored for direct Array nodes.
+     * Path to the array within a store or group (ZarrSource's `path`). An
+     * array inherits its group's GeoZarr attributes. Ignored when `node` is a
+     * `ZarrSource`.
      */
     variable?: string;
     /**
@@ -59,8 +63,9 @@
      */
     selection: Record<string, SliceInput>;
     /**
-     * Optional raw group attrs override. Use when the data source lacks
-     * GeoZarr metadata and you want to inject it.
+     * GeoZarr metadata to use instead of the store's attributes (ZarrSource's
+     * `geoZarrMetadata`). Use it when the data lacks GeoZarr metadata.
+     * Ignored when `node` is a `ZarrSource`.
      */
     metadata?: unknown;
     /**
@@ -95,6 +100,10 @@
   const emit = defineEmits<{
     click: [info: PickingInfo];
     hover: [info: PickingInfo];
+    /** The data could not be opened or a tile failed. */
+    error: [error: Error];
+    /** The Zarr source was opened. */
+    sourceLoad: [source: ZarrSource];
   }>();
 
   const map = injectStrict(MapKey);
@@ -103,16 +112,52 @@
   const ZarrLayerClass = shallowRef<
     typeof import('@developmentseed/deck.gl-zarr').ZarrLayer | null
   >(null);
-  const epsgResolverFn = shallowRef<
-    typeof import('@developmentseed/proj').epsgResolver | null
+  const ZarrSourceClass = shallowRef<
+    typeof import('@developmentseed/deck.gl-zarr').ZarrSource | null
   >(null);
+  // `path` and `geoZarrMetadata` are options of ZarrSource.open() in
+  // deck.gl-zarr 0.10, so the source is opened here when either is set.
+  const openedSource = shallowRef<ZarrSource | null>(null);
+  let openRequest = 0;
+
+  const isOpenedSource = (input: unknown): input is ZarrSource =>
+    !!ZarrSourceClass.value && input instanceof ZarrSourceClass.value;
+
+  const needsOwnSource = (): boolean =>
+    (props.variable !== undefined || props.metadata !== undefined) &&
+    !isOpenedSource(toRaw(props.node));
+
+  const resolveSource = async (): Promise<void> => {
+    if (!needsOwnSource()) {
+      openedSource.value = null;
+      return;
+    }
+    const request = ++openRequest;
+    try {
+      const source = await ZarrSourceClass.value!.open(
+        toRaw(props.node) as ZarrInput,
+        {
+          path: toRaw(props.variable),
+          geoZarrMetadata: toRaw(props.metadata),
+        },
+      );
+      if (request !== openRequest) return;
+      openedSource.value = markRaw(source);
+      emit('sourceLoad', source);
+    } catch (error) {
+      if (request !== openRequest) return;
+      emit('error', error instanceof Error ? error : new Error(String(error)));
+    }
+  };
 
   const createLayer = () => {
     if (!ZarrLayerClass.value) return null;
+    // Wait for the source this component is opening.
+    if (needsOwnSource() && !openedSource.value) return null;
 
     const layerProps: Record<string, unknown> = {
       id: toRaw(props.id),
-      node: toRaw(props.node),
+      source: openedSource.value ?? toRaw(props.node),
       selection: toRaw(props.selection),
       getTileData: props.getTileData,
       renderTile: props.renderTile,
@@ -121,15 +166,13 @@
       pickable: toRaw(props.pickable),
     };
 
-    if (epsgResolverFn.value) {
-      layerProps.epsgResolver = epsgResolverFn.value;
-    }
-    if (props.variable !== undefined) {
-      layerProps.variable = toRaw(props.variable);
-    }
-    if (props.metadata !== undefined) {
-      layerProps.metadata = toRaw(props.metadata);
-    }
+    // Called only when the layer opens the source itself.
+    layerProps.onSourceLoad = (source: ZarrSource) => {
+      emit('sourceLoad', source);
+    };
+    layerProps.onError = (error: Error) => {
+      emit('error', error);
+    };
     if (props.beforeId !== undefined) {
       layerProps.beforeId = toRaw(props.beforeId);
     }
@@ -140,22 +183,16 @@
 
   const initializeLayer = async () => {
     try {
-      const [zarrModule, projModule] = await Promise.all([
-        requirePeer(
-          '@developmentseed/deck.gl-zarr',
-          () => import('@developmentseed/deck.gl-zarr'),
-          ZARR_PEER_INSTALL,
-        ),
-        requirePeer(
-          '@developmentseed/proj',
-          () => import('@developmentseed/proj'),
-          ZARR_PEER_INSTALL,
-        ),
-      ]);
+      const zarrModule = await requirePeer(
+        '@developmentseed/deck.gl-zarr',
+        () => import('@developmentseed/deck.gl-zarr'),
+        ZARR_PEER_INSTALL,
+      );
 
       ZarrLayerClass.value = markRaw(zarrModule.ZarrLayer);
-      epsgResolverFn.value = projModule.epsgResolver;
+      ZarrSourceClass.value = markRaw(zarrModule.ZarrSource);
 
+      await resolveSource();
       const layer = createLayer();
       if (layer) {
         addLayer(layer);
@@ -163,7 +200,7 @@
     } catch (error) {
       console.error('[deck.gl-raster] Error loading ZarrLayer:', error);
       console.error(
-        'Make sure @developmentseed/deck.gl-zarr, @developmentseed/proj, and zarrita are installed',
+        'Make sure @developmentseed/deck.gl-zarr and zarrita are installed',
       );
     }
   };
@@ -182,12 +219,23 @@
     { immediate: true },
   );
 
+  const syncLayer = (): void => {
+    const layer = createLayer();
+    if (layer) updateLayer(props.id, layer);
+  };
+
+  watch(
+    [() => props.node, () => props.variable, () => props.metadata],
+    async () => {
+      if (!ZarrLayerClass.value) return;
+      await resolveSource();
+      syncLayer();
+    },
+  );
+
   watch(
     [
-      () => props.node,
-      () => props.variable,
       () => props.selection,
-      () => props.metadata,
       () => props.opacity,
       () => props.visible,
       // Callbacks must be watched too: ZarrLayer captures `renderTile` and
@@ -197,12 +245,7 @@
       () => props.renderTile,
       () => props.getTileData,
     ],
-    () => {
-      const layer = createLayer();
-      if (layer) {
-        updateLayer(props.id, layer);
-      }
-    },
+    syncLayer,
     { deep: true },
   );
 

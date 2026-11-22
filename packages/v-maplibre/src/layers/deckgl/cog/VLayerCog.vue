@@ -10,12 +10,16 @@
    * @requires `@developmentseed/geotiff`
    * @requires `@developmentseed/proj`
    *
+   * Targets `@developmentseed/deck.gl-geotiff` 0.10: the layer takes its data
+   * as `source` and reports it through `onSourceLoad`.
+   *
    * Install with:
    * `pnpm add @deck.gl/core @deck.gl/mapbox @deck.gl/layers @developmentseed/deck.gl-geotiff @developmentseed/deck.gl-raster @developmentseed/geotiff @developmentseed/proj`
    */
   import { onBeforeUnmount, watch, shallowRef, toRaw, markRaw } from 'vue';
   import type { Color, PickingInfo } from '@deck.gl/core';
-  import type { ConcurrencyLimiter } from '@developmentseed/geotiff';
+  import type { COGInput, COGSource } from '@developmentseed/deck.gl-geotiff';
+  import type { ConcurrencyLimiter, GeoTIFF } from '@developmentseed/geotiff';
   import { injectStrict, MapKey, requirePeer } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
 
@@ -25,9 +29,10 @@
   interface Props {
     id: string;
     /**
-     * GeoTIFF source - URL string, ArrayBuffer, Blob, or geotiff.js instance
+     * The COG: a URL, an ArrayBuffer, an opened `GeoTIFF`, or a `COGSource`
+     * from `COGSource.open()` (share one source across layers).
      */
-    geotiff: string | ArrayBuffer | Blob | object;
+    geotiff: COGInput | COGSource;
     /**
      * Tile size in pixels
      */
@@ -49,7 +54,8 @@
      */
     refinementStrategy?: 'best-available' | 'no-overlap' | 'never';
     /**
-     * Maximum concurrent requests
+     * Maximum concurrent tile requests. Defaults to the library's 256; the
+     * per-origin `concurrencyLimiter` caps the actual network requests.
      */
     maxRequests?: number;
     /**
@@ -85,12 +91,11 @@
      */
     debugOpacity?: number;
     /**
-     * Per-origin request limiter for tile fetches (deck.gl-geotiff 0.8+).
-     * Omit it to share the library default (6 requests per origin, the
-     * HTTP/1.1 browser limit). Pass `null` to turn limiting off for
-     * HTTP/2 or HTTP/3 sources, or a `PerOriginSemaphore` from
-     * `@developmentseed/geotiff` for a custom limit. Ignored when `geotiff`
-     * is an already-opened GeoTIFF instance.
+     * Per-origin request limiter for tile fetches. Omit it to share the
+     * library default (6 requests per origin, the HTTP/1.1 browser limit).
+     * Pass `null` to turn limiting off for HTTP/2 or HTTP/3 sources, or a
+     * `PerOriginSemaphore` from `@developmentseed/geotiff` for a custom limit.
+     * Ignored when `geotiff` is already a `COGSource`.
      */
     concurrencyLimiter?: ConcurrencyLimiter | null;
   }
@@ -99,7 +104,6 @@
     tileSize: 256,
     minZoom: 0,
     refinementStrategy: 'best-available',
-    maxRequests: 6,
     opacity: 1,
     visible: true,
     pickable: false,
@@ -111,10 +115,12 @@
   const emit = defineEmits<{
     click: [info: PickingInfo];
     hover: [info: PickingInfo];
-    /** The COG could not be opened or a tile failed (deck.gl-geotiff 0.8+). */
+    /** The COG could not be opened or a tile failed. */
     error: [error: Error];
+    /** The COG source was opened. */
+    sourceLoad: [source: COGSource];
     geotiffLoad: [
-      tiff: unknown,
+      tiff: GeoTIFF,
       options: {
         geographicBounds: {
           west: number;
@@ -133,16 +139,59 @@
   const COGLayerClass = shallowRef<
     typeof import('@developmentseed/deck.gl-geotiff').COGLayer | null
   >(null);
-  const epsgResolverFn = shallowRef<
-    typeof import('@developmentseed/proj').epsgResolver | null
+  const COGSourceClass = shallowRef<
+    typeof import('@developmentseed/deck.gl-geotiff').COGSource | null
   >(null);
+  // The source opened here when a concurrencyLimiter is set, since that is
+  // an option of COGSource.open() in deck.gl-geotiff 0.10.
+  const openedSource = shallowRef<COGSource | null>(null);
+  let openRequest = 0;
+
+  const reportSource = (source: COGSource): void => {
+    emit('sourceLoad', source);
+    emit('geotiffLoad', source.geotiff, {
+      geographicBounds: source.geographicBounds,
+    });
+  };
+
+  const isOpenedSource = (input: unknown): input is COGSource =>
+    !!COGSourceClass.value && input instanceof COGSourceClass.value;
+
+  /**
+   * Opens the COG here when `concurrencyLimiter` is set (it is an option of
+   * `COGSource.open()`); otherwise the layer opens it itself.
+   */
+  const resolveSource = async (): Promise<void> => {
+    const input = toRaw(props.geotiff);
+    if (props.concurrencyLimiter === undefined || isOpenedSource(input)) {
+      openedSource.value = null;
+      return;
+    }
+    const request = ++openRequest;
+    try {
+      const source = await COGSourceClass.value!.open(input, {
+        concurrencyLimiter: toRaw(props.concurrencyLimiter),
+      });
+      if (request !== openRequest) return;
+      openedSource.value = markRaw(source);
+      reportSource(source);
+    } catch (error) {
+      if (request !== openRequest) return;
+      emit('error', error instanceof Error ? error : new Error(String(error)));
+    }
+  };
 
   const createLayer = () => {
     if (!COGLayerClass.value) return null;
+    // Wait for the source this component is opening.
+    if (props.concurrencyLimiter !== undefined && !openedSource.value) {
+      if (!isOpenedSource(toRaw(props.geotiff))) return null;
+    }
 
+    const source = openedSource.value ?? toRaw(props.geotiff);
     const layerProps: Record<string, unknown> = {
       id: toRaw(props.id),
-      geotiff: toRaw(props.geotiff),
+      source,
       opacity: toRaw(props.opacity),
       visible: toRaw(props.visible),
       pickable: toRaw(props.pickable),
@@ -151,31 +200,14 @@
       debugOpacity: toRaw(props.debugOpacity),
     };
 
-    if (epsgResolverFn.value) {
-      layerProps.epsgResolver = epsgResolverFn.value;
-    }
-
-    layerProps.onGeoTIFFLoad = (
-      tiff: unknown,
-      options: {
-        geographicBounds: {
-          west: number;
-          south: number;
-          east: number;
-          north: number;
-        };
-      },
-    ) => {
-      emit('geotiffLoad', tiff, options);
+    // Called only when the layer opens the source itself.
+    layerProps.onSourceLoad = (loaded: COGSource) => {
+      reportSource(loaded);
     };
     layerProps.onError = (error: Error) => {
       emit('error', error);
     };
 
-    // `undefined` keeps the library's shared default limiter; `null` is a
-    // deliberate opt-out, so only an omitted prop is skipped.
-    if (props.concurrencyLimiter !== undefined)
-      layerProps.concurrencyLimiter = toRaw(props.concurrencyLimiter);
     if (props.tileSize !== 256) layerProps.tileSize = toRaw(props.tileSize);
     if (props.maxZoom !== undefined) layerProps.maxZoom = toRaw(props.maxZoom);
     if (props.minZoom !== 0) layerProps.minZoom = toRaw(props.minZoom);
@@ -183,7 +215,7 @@
       layerProps.maxCacheSize = toRaw(props.maxCacheSize);
     if (props.refinementStrategy !== 'best-available')
       layerProps.refinementStrategy = toRaw(props.refinementStrategy);
-    if (props.maxRequests !== 6)
+    if (props.maxRequests !== undefined)
       layerProps.maxRequests = toRaw(props.maxRequests);
     if (props.highlightColor !== undefined)
       layerProps.highlightColor = toRaw(props.highlightColor);
@@ -194,24 +226,23 @@
     return markRaw(layer);
   };
 
+  const syncLayer = (): void => {
+    const layer = createLayer();
+    if (layer) updateLayer(props.id, layer);
+  };
+
   const initializeLayer = async () => {
     try {
-      const [geotiffModule, projModule] = await Promise.all([
-        requirePeer(
-          '@developmentseed/deck.gl-geotiff',
-          () => import('@developmentseed/deck.gl-geotiff'),
-          COG_PEER_INSTALL,
-        ),
-        requirePeer(
-          '@developmentseed/proj',
-          () => import('@developmentseed/proj'),
-          COG_PEER_INSTALL,
-        ),
-      ]);
+      const geotiffModule = await requirePeer(
+        '@developmentseed/deck.gl-geotiff',
+        () => import('@developmentseed/deck.gl-geotiff'),
+        COG_PEER_INSTALL,
+      );
 
       COGLayerClass.value = markRaw(geotiffModule.COGLayer);
-      epsgResolverFn.value = projModule.epsgResolver;
+      COGSourceClass.value = markRaw(geotiffModule.COGSource);
 
+      await resolveSource();
       const layer = createLayer();
       if (layer) {
         addLayer(layer);
@@ -236,9 +267,14 @@
     { immediate: true },
   );
 
+  watch([() => props.geotiff, () => props.concurrencyLimiter], async () => {
+    if (!COGLayerClass.value) return;
+    await resolveSource();
+    syncLayer();
+  });
+
   watch(
     [
-      () => props.geotiff,
       () => props.tileSize,
       () => props.maxZoom,
       () => props.minZoom,
@@ -246,14 +282,8 @@
       () => props.visible,
       () => props.debug,
       () => props.debugOpacity,
-      () => props.concurrencyLimiter,
     ],
-    () => {
-      const layer = createLayer();
-      if (layer) {
-        updateLayer(props.id, layer);
-      }
-    },
+    syncLayer,
     { deep: true },
   );
 

@@ -4,7 +4,8 @@
 
   export interface MapLayerCogProps {
     id: string;
-    geotiff: string | ArrayBuffer | Blob | object;
+    /** A URL, an ArrayBuffer, an opened GeoTIFF, or a COGSource. */
+    geotiff: string | URL | ArrayBuffer | object;
     tileSize?: number;
     maxZoom?: number;
     minZoom?: number;
@@ -25,7 +26,6 @@
     tileSize: 256,
     minZoom: 0,
     refinementStrategy: 'best-available',
-    maxRequests: 6,
     opacity: 1,
     visible: true,
     pickable: false,

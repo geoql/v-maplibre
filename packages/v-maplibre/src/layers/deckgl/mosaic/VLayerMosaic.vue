@@ -16,8 +16,9 @@
   /**
    * VLayerMosaic - Client-side COG mosaic layer for STAC items
    *
-   * Uses @developmentseed/deck.gl-geotiff v0.3.0 MosaicLayer for efficient
-   * client-side rendering of multiple COGs from STAC APIs.
+   * Uses the @developmentseed/deck.gl-geotiff 0.10 MosaicLayer for efficient
+   * client-side rendering of multiple COGs from STAC APIs. Each item opens as
+   * a COGSource; items out of view drop their layers and GPU memory.
    *
    * @see https://github.com/developmentseed/deck.gl-raster/blob/main/examples/naip-mosaic/src/App.tsx
    */
@@ -29,11 +30,11 @@
   import type { ShaderModule } from '@luma.gl/shadertools';
   import type {
     COGLayerProps,
+    COGSource,
     GetTileDataOptions,
+    MosaicItem,
     MosaicLayerProps,
-    MosaicSource as BaseMosaicSource,
   } from '@developmentseed/deck.gl-geotiff';
-  import type { EpsgResolver } from '@developmentseed/proj';
   import { injectStrict, MapKey, requirePeer } from '../../../utils';
   import { useDeckOverlay } from '../_shared/useDeckOverlay';
 
@@ -41,10 +42,11 @@
     'pnpm add @deck.gl/core @deck.gl/layers @deck.gl/mapbox @developmentseed/deck.gl-geotiff @developmentseed/deck.gl-raster @developmentseed/geotiff @developmentseed/proj';
 
   /**
-   * A STAC-like item with bounding box and COG asset URL
-   * Extends the base MosaicSource from deck.gl-geotiff with asset info
+   * A STAC-like item with bounding box and COG asset URL.
+   * Extends deck.gl-geotiff's MosaicItem with asset info. Without an `id`,
+   * the asset URL keys the layer's cache of opened sources.
    */
-  export interface MosaicSource extends BaseMosaicSource {
+  export interface MosaicSource extends MosaicItem {
     /** Asset containing the COG URL */
     assets: {
       image: { href: string };
@@ -148,9 +150,8 @@
   interface LoadedModules {
     MosaicLayer: typeof import('@developmentseed/deck.gl-geotiff').MosaicLayer;
     COGLayer: typeof import('@developmentseed/deck.gl-geotiff').COGLayer;
+    COGSource: typeof import('@developmentseed/deck.gl-geotiff').COGSource;
     CreateTexture: RasterModule['module'];
-    fromUrl: typeof GeoTIFF.fromUrl;
-    resolveEpsg: EpsgResolver;
   }
 
   const modules = shallowRef<LoadedModules | null>(null);
@@ -294,9 +295,19 @@ uniform ndviFilterUniforms {
     const mods = modules.value;
     if (!mods || !props.sources.length) return null;
 
-    const { MosaicLayer, COGLayer, CreateTexture, fromUrl, resolveEpsg } = mods;
+    const {
+      MosaicLayer,
+      COGLayer,
+      COGSource: COGSourceClass,
+      CreateTexture,
+    } = mods;
 
-    const rawSources = toRaw(props.sources);
+    // An id keys the layer's cache of opened sources; the default (the
+    // item's position) is only safe while the list only grows.
+    const items = toRaw(props.sources).map((item) => ({
+      ...item,
+      id: item.id ?? item.assets.image.href,
+    }));
     const renderMode = toRaw(props.renderMode);
     const ndviRange = toRaw(props.ndviRange) as [number, number];
     const customRenderModules = props.customRenderModules;
@@ -304,34 +315,34 @@ uniform ndviFilterUniforms {
     // Fixed ID matching upstream pattern — deck.gl diffs old vs new layer
     // via setProps, detecting changed renderSource/renderTile callbacks.
     const newId = `${toRaw(props.id)}-mosaic`;
-    const layer = new MosaicLayer<MosaicSource, GeoTIFF>({
+    const layer = new MosaicLayer<MosaicSource, COGSource>({
       id: newId,
-      sources: rawSources,
+      data: items,
       maxCacheSize: toRaw(props.maxCacheSize),
 
-      getSource: async (source) => {
-        try {
-          const tiff = await fromUrl(source.assets.image.href);
-          emit('sourceLoad', source);
-          return tiff;
-        } catch (error) {
-          emit('error', error as Error, source);
-          throw error;
-        }
+      getSource: (item, options) =>
+        COGSourceClass.open(item.assets.image.href, options),
+      onSourceLoad: (item) => {
+        emit('sourceLoad', item);
+      },
+      onSourceError: (item, { error }) => {
+        emit('error', error, item);
       },
 
-      renderSource: (source, { data, signal }) => {
-        if (!data) return null;
+      renderSource: (item, { source, subLayerProps }) => {
+        if (!source) return null;
 
         return new COGLayer<TextureData>({
-          id: `cog-${source.assets.image.href}-${renderMode}`,
-          geotiff: data,
-          epsgResolver: resolveEpsg,
+          ...subLayerProps,
+          // The render mode is part of the id: renderTile runs only when a
+          // tile is fetched, so a new mode needs new tiles.
+          id: `cog-${item.id}-${renderMode}`,
+          source,
           getTileData: async (
             image: GeoTIFF | Overview,
             options: GetTileDataOptions,
           ) => {
-            const { device, x, y } = options;
+            const { device, x, y, signal } = options;
             const tile = await image.fetchTile(x, y, {
               signal,
               boundless: false,
@@ -362,46 +373,33 @@ uniform ndviFilterUniforms {
               customRenderModules,
             ),
           }),
-          signal,
         } as COGLayerProps<TextureData>);
       },
-    } as MosaicLayerProps<MosaicSource, GeoTIFF>);
+    } as MosaicLayerProps<MosaicSource, COGSource>);
 
     return layer;
   }
 
   async function initializeLayer() {
     try {
-      const [geotiffModule, rasterModule, devGeotiff, projModule] =
-        await Promise.all([
-          requirePeer(
-            '@developmentseed/deck.gl-geotiff',
-            () => import('@developmentseed/deck.gl-geotiff'),
-            MOSAIC_PEER_INSTALL,
-          ),
-          requirePeer(
-            '@developmentseed/deck.gl-raster',
-            () => import('@developmentseed/deck.gl-raster/gpu-modules'),
-            MOSAIC_PEER_INSTALL,
-          ),
-          requirePeer(
-            '@developmentseed/geotiff',
-            () => import('@developmentseed/geotiff'),
-            MOSAIC_PEER_INSTALL,
-          ),
-          requirePeer(
-            '@developmentseed/proj',
-            () => import('@developmentseed/proj'),
-            MOSAIC_PEER_INSTALL,
-          ),
-        ]);
+      const [geotiffModule, rasterModule] = await Promise.all([
+        requirePeer(
+          '@developmentseed/deck.gl-geotiff',
+          () => import('@developmentseed/deck.gl-geotiff'),
+          MOSAIC_PEER_INSTALL,
+        ),
+        requirePeer(
+          '@developmentseed/deck.gl-raster',
+          () => import('@developmentseed/deck.gl-raster/gpu-modules'),
+          MOSAIC_PEER_INSTALL,
+        ),
+      ]);
 
       modules.value = markRaw({
         MosaicLayer: geotiffModule.MosaicLayer,
         COGLayer: geotiffModule.COGLayer,
+        COGSource: geotiffModule.COGSource,
         CreateTexture: rasterModule.CreateTexture,
-        fromUrl: devGeotiff.GeoTIFF.fromUrl,
-        resolveEpsg: projModule.epsgResolver,
       });
 
       const layer = createLayer();

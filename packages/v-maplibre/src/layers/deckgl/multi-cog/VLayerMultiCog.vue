@@ -27,7 +27,10 @@
   import { onBeforeUnmount, watch, shallowRef, markRaw, toRaw } from 'vue';
   import type { PickingInfo } from '@deck.gl/core';
   import type { RasterModule } from '@developmentseed/deck.gl-raster';
-  import type { MultiCOGSourceConfig } from '@developmentseed/deck.gl-geotiff';
+  import type {
+    COGInput,
+    MultiCOGSource,
+  } from '@developmentseed/deck.gl-geotiff';
   import type { ConcurrencyLimiter, GeoTIFF } from '@developmentseed/geotiff';
   import { injectStrict, MapKey, requirePeer } from '../../../utils';
 
@@ -48,10 +51,12 @@
   interface Props {
     id: string;
     /**
-     * Named sources — each key is the band name. Pass at least one entry per
-     * band referenced in `composite`.
+     * The files of one scene, keyed by band name: a URL, an ArrayBuffer or an
+     * opened `GeoTIFF` per band. Pass at least one entry per band referenced
+     * in `composite`. Or pass a `MultiCOGSource` from `MultiCOGSource.open()`.
+     * All files must share one CRS and extent.
      */
-    sources: Record<string, MultiCOGSourceConfig>;
+    sources: Record<string, COGInput> | MultiCOGSource;
     /**
      * Map source band names to RGB(A) output channels. Defaults to passing
      * the first source through to all channels (greyscale) if omitted.
@@ -68,7 +73,10 @@
     maxCacheSize?: number;
     /** Maximum cached tile byte size. */
     maxCacheByteSize?: number;
-    /** Maximum concurrent tile requests. */
+    /**
+     * Maximum concurrent tile requests. Defaults to the library's 256; the
+     * per-origin `concurrencyLimiter` caps the actual network requests.
+     */
     maxRequests?: number;
     /** Tile fetch debounce (ms). */
     debounceTime?: number;
@@ -91,16 +99,16 @@
     /** Debug verbosity: 1=coords, 2=+uv/tiles, 3=+stitched-size/meters/px. */
     debugLevel?: 1 | 2 | 3;
     /**
-     * Per-origin request limiter shared by every source (deck.gl-geotiff
-     * 0.8+). Omit it to use the library default (6 requests per origin);
-     * pass `null` to turn limiting off for HTTP/2 or HTTP/3 sources.
+     * Per-origin request limiter shared by every file. Omit it to use the
+     * library default (6 requests per origin); pass `null` to turn limiting
+     * off for HTTP/2 or HTTP/3 sources. Ignored when `sources` is already a
+     * `MultiCOGSource`.
      */
     concurrencyLimiter?: ConcurrencyLimiter | null;
   }
 
   const props = withDefaults(defineProps<Props>(), {
     maxError: 0.125,
-    maxRequests: 6,
     refinementStrategy: 'best-available',
     opacity: 1,
     visible: true,
@@ -114,10 +122,12 @@
   const emit = defineEmits<{
     click: [info: PickingInfo];
     hover: [info: PickingInfo];
-    /** A source could not be opened or a tile failed (deck.gl-geotiff 0.8+). */
+    /** A file could not be opened or a tile failed. */
     error: [error: Error];
+    /** The scene was opened. */
+    sourceLoad: [source: MultiCOGSource];
     geotiffLoad: [
-      sources: Map<string, GeoTIFF>,
+      sources: ReadonlyMap<string, GeoTIFF>,
       options: {
         primaryKey: string;
         geographicBounds: {
@@ -136,16 +146,59 @@
   const MultiCOGLayerClass = shallowRef<
     typeof import('@developmentseed/deck.gl-geotiff').MultiCOGLayer | null
   >(null);
-  const epsgResolverFn = shallowRef<
-    typeof import('@developmentseed/proj').epsgResolver | null
+  const MultiCOGSourceClass = shallowRef<
+    typeof import('@developmentseed/deck.gl-geotiff').MultiCOGSource | null
   >(null);
+  // The scene opened here when a concurrencyLimiter is set, since that is an
+  // option of MultiCOGSource.open() in deck.gl-geotiff 0.10.
+  const openedSource = shallowRef<MultiCOGSource | null>(null);
+  let openRequest = 0;
+
+  const reportSource = (source: MultiCOGSource): void => {
+    emit('sourceLoad', source);
+    emit('geotiffLoad', source.geotiffs, {
+      primaryKey: source.multiTilesetDescriptor.primaryKey,
+      geographicBounds: source.geographicBounds,
+    });
+  };
+
+  const isOpenedSource = (input: unknown): input is MultiCOGSource =>
+    !!MultiCOGSourceClass.value && input instanceof MultiCOGSourceClass.value;
+
+  const resolveSource = async (): Promise<void> => {
+    const input = toRaw(props.sources);
+    if (props.concurrencyLimiter === undefined || isOpenedSource(input)) {
+      openedSource.value = null;
+      return;
+    }
+    const request = ++openRequest;
+    try {
+      const source = await MultiCOGSourceClass.value!.open(input, {
+        concurrencyLimiter: toRaw(props.concurrencyLimiter),
+      });
+      if (request !== openRequest) return;
+      openedSource.value = markRaw(source);
+      reportSource(source);
+    } catch (error) {
+      if (request !== openRequest) return;
+      emit('error', error instanceof Error ? error : new Error(String(error)));
+    }
+  };
 
   const createLayer = () => {
     if (!MultiCOGLayerClass.value) return null;
+    // Wait for the scene this component is opening.
+    if (
+      props.concurrencyLimiter !== undefined &&
+      !openedSource.value &&
+      !isOpenedSource(toRaw(props.sources))
+    ) {
+      return null;
+    }
 
     const layerProps: Record<string, unknown> = {
       id: toRaw(props.id),
-      sources: toRaw(props.sources),
+      source: openedSource.value ?? toRaw(props.sources),
       opacity: toRaw(props.opacity),
       visible: toRaw(props.visible),
       pickable: toRaw(props.pickable),
@@ -155,10 +208,6 @@
       debugLevel: toRaw(props.debugLevel),
       maxError: toRaw(props.maxError),
     };
-
-    if (epsgResolverFn.value) {
-      layerProps.epsgResolver = epsgResolverFn.value;
-    }
 
     if (props.composite) {
       layerProps.composite = toRaw(props.composite);
@@ -170,7 +219,7 @@
       layerProps.maxCacheSize = toRaw(props.maxCacheSize);
     if (props.maxCacheByteSize !== undefined)
       layerProps.maxCacheByteSize = toRaw(props.maxCacheByteSize);
-    if (props.maxRequests !== 6)
+    if (props.maxRequests !== undefined)
       layerProps.maxRequests = toRaw(props.maxRequests);
     if (props.debounceTime !== undefined)
       layerProps.debounceTime = toRaw(props.debounceTime);
@@ -178,26 +227,13 @@
       layerProps.refinementStrategy = toRaw(props.refinementStrategy);
     if (props.beforeId !== undefined)
       layerProps.beforeId = toRaw(props.beforeId);
-    // `undefined` keeps the shared default limiter; `null` opts out.
-    if (props.concurrencyLimiter !== undefined)
-      layerProps.concurrencyLimiter = toRaw(props.concurrencyLimiter);
     layerProps.onError = (error: Error) => {
       emit('error', error);
     };
 
-    layerProps.onGeoTIFFLoad = (
-      sources: Map<string, GeoTIFF>,
-      options: {
-        primaryKey: string;
-        geographicBounds: {
-          west: number;
-          south: number;
-          east: number;
-          north: number;
-        };
-      },
-    ) => {
-      emit('geotiffLoad', sources, options);
+    // Called only when the layer opens the scene itself.
+    layerProps.onSourceLoad = (loaded: MultiCOGSource) => {
+      reportSource(loaded);
     };
 
     const layer = new MultiCOGLayerClass.value(layerProps);
@@ -206,31 +242,23 @@
 
   const initializeLayer = async () => {
     try {
-      const [geotiffModule, projModule] = await Promise.all([
-        requirePeer(
-          '@developmentseed/deck.gl-geotiff',
-          () => import('@developmentseed/deck.gl-geotiff'),
-          MULTICOG_PEER_INSTALL,
-        ),
-        requirePeer(
-          '@developmentseed/proj',
-          () => import('@developmentseed/proj'),
-          MULTICOG_PEER_INSTALL,
-        ),
-      ]);
+      const geotiffModule = await requirePeer(
+        '@developmentseed/deck.gl-geotiff',
+        () => import('@developmentseed/deck.gl-geotiff'),
+        MULTICOG_PEER_INSTALL,
+      );
 
       MultiCOGLayerClass.value = markRaw(geotiffModule.MultiCOGLayer);
-      epsgResolverFn.value = projModule.epsgResolver;
+      MultiCOGSourceClass.value = markRaw(geotiffModule.MultiCOGSource);
 
+      await resolveSource();
       const layer = createLayer();
       if (layer) {
         addLayer(layer);
       }
     } catch (error) {
       console.error('[deck.gl-raster] Error loading MultiCOGLayer:', error);
-      console.error(
-        'Make sure @developmentseed/deck.gl-geotiff and @developmentseed/proj are installed',
-      );
+      console.error('Make sure @developmentseed/deck.gl-geotiff is installed');
     }
   };
 
@@ -248,9 +276,23 @@
     { immediate: true },
   );
 
+  const syncLayer = (): void => {
+    const layer = createLayer();
+    if (layer) updateLayer(props.id, layer);
+  };
+
+  watch(
+    [() => props.sources, () => props.concurrencyLimiter],
+    async () => {
+      if (!MultiCOGLayerClass.value) return;
+      await resolveSource();
+      syncLayer();
+    },
+    { deep: true },
+  );
+
   watch(
     [
-      () => props.sources,
       () => props.composite,
       () => props.renderPipeline,
       () => props.opacity,
@@ -259,14 +301,8 @@
       () => props.debugOpacity,
       () => props.debugLevel,
       () => props.maxError,
-      () => props.concurrencyLimiter,
     ],
-    () => {
-      const layer = createLayer();
-      if (layer) {
-        updateLayer(props.id, layer);
-      }
-    },
+    syncLayer,
     { deep: true },
   );
 

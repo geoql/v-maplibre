@@ -100,13 +100,14 @@
     minZoom: 6,
   }));
 
-  const sources = computed<Record<string, { url: string }>>(() => {
+  // One URL per band: deck.gl-geotiff 0.10 dropped the { url } wrapper.
+  const sources = computed<Record<string, string>>(() => {
     const base = currentScene.value.baseUrl;
-    const out: Record<string, { url: string }> = {};
+    const out: Record<string, string> = {};
     for (const [bandName, bandKey] of Object.entries(
       currentPreset.value.sources,
     )) {
-      out[bandName] = { url: `${base}/${bandKey}.tif` };
+      out[bandName] = `${base}/${bandKey}.tif`;
     }
     return out;
   });
@@ -154,9 +155,9 @@ const base =
   'sentinel-s2-l2a-cogs/33/S/VB/2024/7/S2B_33SVB_20240725_0_L2A';
 
 const sources = {
-  red:   { url: \`\${base}/B04.tif\` },
-  green: { url: \`\${base}/B03.tif\` },
-  blue:  { url: \`\${base}/B02.tif\` },
+  red: \`\${base}/B04.tif\`,
+  green: \`\${base}/B03.tif\`,
+  blue: \`\${base}/B02.tif\`,
 };
 
 const composite = { r: 'red', g: 'green', b: 'blue' };
