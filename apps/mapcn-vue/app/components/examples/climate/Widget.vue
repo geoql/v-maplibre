@@ -115,9 +115,7 @@
         >
           ↺
         </button>
-        <span>
-          Climate of <b>{{ detailContext.exemplar.name }}</b>
-        </span>
+        <span> Climate of <b>{{ detailContext.exemplar.name }}</b> </span>
       </div>
 
       <div
