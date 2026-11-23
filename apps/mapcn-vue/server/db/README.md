@@ -204,3 +204,39 @@ D1 fixes all three:
 The trade-off: client now does a small fetch on every map-move (debounced 250
 ms). With p50 query latency under 50 ms on CF's edge, the UX is identical and
 the cold-start is dramatically better.
+
+---
+
+## GRRR basins (`/examples/grrr-streamflow`)
+
+The river flood history example reads two tables in the same database. No
+seed file and no manual step: a scheduled task fills them.
+
+| Table         | Rows    | Content                                                                      |
+| ------------- | ------- | ---------------------------------------------------------------------------- |
+| `grrr_basins` | ~31 200 | Basins with a 2-year flood ≥ 1 500 m³/s: id, streamflow row, outlet, rp2–100 |
+| `grrr_ingest` | 1       | The dataset version and the next ingest step                                 |
+
+- **Source**: Google Runoff Reanalysis & Reforecast (GRRR), November 2026
+  (`gs://flood-forecasting/hydrologic_predictions/distributed_model_2026_11/`),
+  CC BY 4.0.
+- **Task**: `server/tasks/grrr/ingest.ts` (`grrr:ingest`), every 10 minutes
+  (`nitro.scheduledTasks` and the matching `triggers.crons` in
+  `nuxt.config.ts`). The task creates the tables if they are missing.
+- **Steps** (`server/utils/grrr-ingest.ts`): 20 slices of
+  `return_periods.parquet`, 64 streamflow `gauge_id` chunks, 4 outlet chunks.
+  Each run works for up to 60 s and saves the next step; when all 88 steps
+  are done, a run reads one row and stops.
+- **New dataset version**: change `GRRR_DATASET`. The next run clears the
+  table and loads the new version.
+- **API**: `/api/grrr/basins` answers 503 until the load is done.
+
+Run the load locally:
+
+```bash
+cd apps/mapcn-vue
+pnpm run build
+pnpm exec wrangler dev --config .output/server/wrangler.json --test-scheduled
+# in another shell, once per minute until /api/grrr/basins answers 200:
+curl 'http://localhost:8787/__scheduled?cron=*/10+*+*+*+*'
+```

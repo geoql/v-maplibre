@@ -133,6 +133,7 @@ catalogs:
     # numcodecs, whose Emscripten build needs `unsafe-eval` and therefore
     # cannot run under this app's Content-Security-Policy.
     fzstd: ^0.1.1
+    hyparquet: ^1.33.1
     zarrita: ^0.7.6
     lerc: ^4.3.0
     '@geoql/maplibre-gl-starfield': ^0.1.4

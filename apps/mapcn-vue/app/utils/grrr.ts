@@ -1,7 +1,7 @@
 import type {
   GrrrAnnualPeak,
   GrrrBasin,
-  GrrrBasinsFile,
+  GrrrBasinsResponse,
   GrrrDailyValue,
   GrrrReturnPeriod,
 } from '~/types/grrr';
@@ -31,8 +31,8 @@ export function grrrFlowRadius(rp2: number): number {
 }
 const RETURN_PERIODS: GrrrReturnPeriod[] = ['rp100', 'rp20', 'rp5', 'rp2'];
 
-/** Turns the parallel arrays of basins.json into one object per basin. */
-export function grrrBasinsFromFile(file: GrrrBasinsFile): GrrrBasin[] {
+/** Turns the parallel arrays of /api/grrr/basins into one object per basin. */
+export function grrrBasinsFromResponse(file: GrrrBasinsResponse): GrrrBasin[] {
   return file.id.map((id, i) => ({
     id,
     row: file.row[i]!,

@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vite-plus/test';
 import {
   formatGrrrPosition,
   grrrAnnualPeaks,
-  grrrBasinsFromFile,
+  grrrBasinsFromResponse,
   grrrReachedPeriod,
   grrrYearValues,
 } from '../../app/utils/grrr';
@@ -18,11 +18,9 @@ const basin: GrrrBasin = {
   rp100: 400,
 };
 
-describe('grrrBasinsFromFile', () => {
+describe('grrrBasinsFromResponse', () => {
   it('reads basin i from index i of every column', () => {
-    const basins = grrrBasinsFromFile({
-      source: 'test',
-      minRp2: 1500,
+    const basins = grrrBasinsFromResponse({
       count: 2,
       id: [11, 22],
       row: [5, 9],

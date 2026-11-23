@@ -14,7 +14,10 @@
 </script>
 
 <template>
-  <div v-if="!basin" class="space-y-2 px-3 py-2.5">
+  <p v-if="!basin && error" class="px-3 py-2.5 text-xs text-muted-foreground">
+    {{ error }}
+  </p>
+  <div v-else-if="!basin" class="space-y-2 px-3 py-2.5">
     <div class="h-4 w-1/2 animate-pulse rounded bg-muted" />
     <div class="h-8 w-2/3 animate-pulse rounded bg-muted" />
   </div>

@@ -1,20 +1,5 @@
-/** The `/api/grrr/<row>` response; defined once, next to the route. */
-export type { GrrrSeries } from '~~/server/types/grrr';
-
-/** public/data/grrr/basins.json: parallel arrays, one index per basin. */
-export interface GrrrBasinsFile {
-  source: string;
-  minRp2: number;
-  count: number;
-  id: number[];
-  row: number[];
-  lon: number[];
-  lat: number[];
-  rp2: number[];
-  rp5: number[];
-  rp20: number[];
-  rp100: number[];
-}
+/** API responses; defined once, next to the routes. */
+export type { GrrrBasinsResponse, GrrrSeries } from '~~/server/types/grrr';
 
 export interface GrrrBasin {
   /** The number in "subhybas_<id>". */

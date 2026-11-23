@@ -31,8 +31,8 @@
   import { VMap, VControlScale } from '@geoql/v-maplibre';
   import { VLayerDeckglScatterplot } from '@geoql/v-maplibre/deck.gl';
 
-  // 31k basins: { id, row, position, rp2, rp5, rp20, rp100 }
-  const basins = await $fetch('/data/grrr/basins.json');
+  // 31k basins from D1 (a cron job loads them from the GRRR bucket).
+  const basins = await $fetch('/api/grrr/basins');
 
   // The server reads one Zarr chunk from the public GRRR bucket
   // and returns that basin's daily flow, 1981–2025.

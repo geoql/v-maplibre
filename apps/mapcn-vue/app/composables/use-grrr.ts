@@ -1,7 +1,7 @@
 import type {
   GrrrAnnualPeak,
   GrrrBasin,
-  GrrrBasinsFile,
+  GrrrBasinsResponse,
   GrrrDailyValue,
   GrrrSeries,
 } from '~/types/grrr';
@@ -12,8 +12,8 @@ const NO_PEAKS: GrrrAnnualPeak[] = [];
 const NO_VALUES: GrrrDailyValue[] = [];
 
 /**
- * State for the GRRR streamflow example: the large-river basins (static
- * file), the selected basin, its 1981–2025 daily streamflow (server route)
+ * State for the GRRR streamflow example: the large-river basins (D1, via
+ * /api/grrr/basins), the selected basin, its 1981–2025 daily streamflow (server route)
  * and the year shown in the hydrograph.
  */
 export function useGrrr() {
@@ -64,8 +64,15 @@ export function useGrrr() {
   }
 
   onMounted(async () => {
-    const file = await $fetch<GrrrBasinsFile>('/data/grrr/basins.json');
-    basins.value = markRaw(grrrBasinsFromFile(file));
+    const response = await $fetch<GrrrBasinsResponse>('/api/grrr/basins').catch(
+      () => null,
+    );
+    if (!response) {
+      error.value =
+        'River basins are still loading. Try again in a few minutes.';
+      return;
+    }
+    basins.value = markRaw(grrrBasinsFromResponse(response));
     const initial = basins.value.find((b) => b.id === DEFAULT_BASIN_ID);
     if (initial) await select(initial);
   });

@@ -1,6 +1,6 @@
 /**
  * Daily streamflow (1981–2025) for one GRRR basin, by its row in
- * reanalysis/streamflow.zarr (`row` in public/data/grrr/basins.json).
+ * reanalysis/streamflow.zarr (the `row` column of /api/grrr/basins).
  * The dataset does not change, so the edge cache keeps answers for 30 days.
  */
 export default defineEdgeCachedHandler(
