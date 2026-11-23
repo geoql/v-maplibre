@@ -66,6 +66,7 @@
     "clsx": "catalog:app:mapcn-vue",
     "flatbush": "catalog:app:mapcn-vue",
     "fzstd": "catalog:app:mapcn-vue",
+    "hyparquet": "catalog:app:mapcn-vue",
     "gaussian-splat-lite": "catalog:app:mapcn-vue",
     "lerc": "catalog:app:mapcn-vue",
     "maplibre-gl": "catalog:default",

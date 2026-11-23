@@ -407,6 +407,10 @@ export default defineNuxtConfig({
 
   nitro: {
     preset: 'cloudflare_module',
+    // Scheduled tasks: grrr:ingest loads the GRRR basins into D1 in steps and
+    // becomes a one-row read once loading is done (server/tasks/grrr).
+    experimental: { tasks: true },
+    scheduledTasks: { '*/10 * * * *': ['grrr:ingest'] },
     prerender: {
       crawlLinks: true,
       // @nuxtjs/sitemap 9 no longer prerenders the sitemap on its own; list it
@@ -435,6 +439,9 @@ export default defineNuxtConfig({
         compatibility_date: '2026-06-16',
         compatibility_flags: ['nodejs_compat'],
         workers_dev: false,
+        // Nitro v3 writes cron triggers from `scheduledTasks` by itself; Nuxt 4
+        // still runs nitropack 2, which does not, so list the same schedule.
+        triggers: { crons: ['*/10 * * * *'] },
         routes: [
           {
             pattern: 'mapcn-vue.geoql.in',

@@ -120,6 +120,14 @@ export function useExamplesData() {
           icon: 'lucide:droplets',
           badge: 'GDACS',
         },
+        {
+          title: 'River Flood History',
+          description:
+            '45 years of daily river flow for 31,000 large-river basins from the Google Runoff Reanalysis (GRRR), with return-period flood levels.',
+          href: '/examples/grrr-streamflow',
+          icon: 'lucide:chart-column',
+          badge: 'GRRR',
+        },
       ],
     },
     {
