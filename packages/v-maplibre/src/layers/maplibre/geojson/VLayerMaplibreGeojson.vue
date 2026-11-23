@@ -45,14 +45,18 @@
 
   const map = injectStrict(MapKey);
 
-  // Helper to check if data is valid GeoJSON with features
+  // Data is valid as soon as it is present: an empty FeatureCollection is a
+  // real state (a cleared selection, an empty search), and a string is a GeoJSON
+  // URL that MapLibre fetches itself (#191, #195). Only `undefined`/`null` mean
+  // "not loaded yet".
   const hasValidData = (
     data: string | GeoJSON.GeoJSON | undefined,
   ): boolean => {
-    if (!data || typeof data === 'string') return false;
-    if (data && typeof data === 'object' && 'type' in data) {
+    if (data === undefined || data === null) return false;
+    if (typeof data === 'string') return data.trim().length > 0;
+    if (typeof data === 'object' && 'type' in data) {
       if (data.type === 'FeatureCollection' && 'features' in data) {
-        return data.features.length > 0;
+        return Array.isArray(data.features);
       }
       // Also valid for single Feature or Geometry
       return (
@@ -83,8 +87,28 @@
   let styleLoadHandler: (() => void) | null = null;
   let dataHandler: (() => void) | null = null;
 
+  // A layer whose data arrives late is added last, so it would draw on top of
+  // every layer added before it (#192). When `before` names a layer that does
+  // not exist yet, append the layer now and move it under the target on the
+  // next 'idle' once the target exists.
+  let orderHandler: (() => void) | null = null;
+  const ensureOrder = (mapInstance: Map): void => {
+    if (!props.before || !mapInstance.getLayer(props.layerId)) return;
+    if (mapInstance.getLayer(props.before)) {
+      mapInstance.moveLayer(props.layerId, props.before);
+      if (orderHandler) {
+        mapInstance.off('idle', orderHandler);
+        orderHandler = null;
+      }
+      return;
+    }
+    if (orderHandler) return;
+    orderHandler = () => ensureOrder(mapInstance);
+    mapInstance.on('idle', orderHandler);
+  };
+
   // Single, idempotent entry point. Adds the source + layer + events exactly
-  // once, but only when the style is loaded AND the data is valid. Safe to
+  // once, but only when the style is loaded AND the data is present. Safe to
   // call from any number of triggers (style.load, data, prop changes, mount).
   const tryAddLayer = (): boolean => {
     if (initialized.value) return true;
@@ -95,7 +119,7 @@
     // Style must be ready before sources/layers can be added.
     if (!isStyleReady(mapInstance)) return false;
 
-    // Data must be valid before adding the source (clustering / async loads).
+    // Wait for the data only when nothing is assigned yet (#191, #195).
     if (!hasValidData(props.source.data)) return false;
 
     try {
@@ -110,7 +134,14 @@
           source: props.sourceId,
         } as LayerSpecification;
 
-        mapInstance.addLayer(layerSpec, props.before);
+        // MapLibre rejects a `before` id it cannot find; ensureOrder fixes the
+        // position when the target appears.
+        const before =
+          props.before && mapInstance.getLayer(props.before)
+            ? props.before
+            : undefined;
+        mapInstance.addLayer(layerSpec, before);
+        ensureOrder(mapInstance);
       }
 
       setupLayerEvents(mapInstance);
@@ -168,10 +199,12 @@
     if (boundMap) {
       if (styleLoadHandler) boundMap.off('style.load', styleLoadHandler);
       if (dataHandler) boundMap.off('idle', dataHandler);
+      if (orderHandler) boundMap.off('idle', orderHandler);
     }
     boundMap = null;
     styleLoadHandler = null;
     dataHandler = null;
+    orderHandler = null;
   };
 
   const updateSource = (): void => {
@@ -310,6 +343,15 @@
   );
 
   watch(() => props.layer, updateLayer, { deep: true });
+
+  // A changed `before` prop moves the layer to its new place.
+  watch(
+    () => props.before,
+    () => {
+      const mapInstance = getMapInstance();
+      if (mapInstance) ensureOrder(mapInstance);
+    },
+  );
 
   // Watch for visibility changes
   watch(
