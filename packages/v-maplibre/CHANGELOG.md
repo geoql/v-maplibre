@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.0.1](https://github.com/geoql/v-maplibre/compare/v4.0.0...v4.0.1) (2026-11-23)
+
+
+### Bug Fixes
+
+* **v-maplibre:** accept empty and URL GeoJSON data, keep before order ([#203](https://github.com/geoql/v-maplibre/issues/203)) ([b946c43](https://github.com/geoql/v-maplibre/commit/b946c43e8dda96ada40f54fa4e26922a73b047b6))
+
+
+### Miscellaneous
+
+* **deps:** bump vite-plus from 1.5.0 to 1.7.0 in the minor-and-patch group across 1 directory ([#197](https://github.com/geoql/v-maplibre/issues/197)) ([3bfecd0](https://github.com/geoql/v-maplibre/commit/3bfecd0eb4bee6b69b5920d9a2b2f2ea442eaf6f))
+
 ## [4.0.0](https://github.com/geoql/v-maplibre/compare/v3.1.2...v4.0.0) (2026-11-22)
 
 
