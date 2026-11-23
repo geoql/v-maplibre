@@ -1,4 +1,10 @@
 version: 2
+# Dependency bumps use the `build(deps)` prefix. release-please hides the
+# `build` type (`hidden: true` in release-please-config.json), so it does not
+# count a dependency bump as a releasable change. Dependabot merges no longer
+# open a release PR on their own; they ship with the next feat/fix release.
+# GitHub Actions bumps use `ci`, which release-please hides too.
+# Same setup as vinayakkulkarni/tileserver-rs.
 updates:
   # npm/pnpm — single entry covers the whole pnpm workspace (root lockfile)
   # NOTE: this monorepo uses pnpm catalogs (pnpm-workspace.yaml).
@@ -15,7 +21,8 @@ updates:
       time: '09:00'
     open-pull-requests-limit: 10
     commit-message:
-      prefix: 'chore'
+      prefix: 'build'
+      prefix-development: 'build'
       include: 'scope'
     labels:
       - 'dependencies'
