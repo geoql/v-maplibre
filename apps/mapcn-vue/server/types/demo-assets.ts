@@ -26,4 +26,24 @@ export interface DemoAssetRequest {
   headers: Headers;
   /** Public origin of this site, used to build rewritten tile URLs. */
   origin: string;
+  /** Visitor IP (`CF-Connecting-IP`); empty when the platform gives none. */
+  clientIp?: string;
+}
+
+/** The part of a Workers rate-limit binding the proxy uses. */
+export interface DemoRateLimiter {
+  limit(options: { key: string }): Promise<{ success: boolean }>;
+}
+
+/** Platform services the proxy uses when they exist (absent in dev). */
+export interface DemoAssetsEdge {
+  /** `caches.default`: stores tile and TileJSON answers. */
+  cache?: {
+    match(key: string): Promise<Response | undefined>;
+    put(key: string, response: Response): Promise<void>;
+  };
+  /** Keeps a cache write alive after the response is sent. */
+  waitUntil?: (promise: Promise<unknown>) => void;
+  /** Per-IP limit, checked only before a call to the upstream API. */
+  limiter?: DemoRateLimiter;
 }

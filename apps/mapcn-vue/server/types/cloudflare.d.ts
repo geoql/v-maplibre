@@ -36,6 +36,10 @@ declare module 'h3' {
     cloudflare: {
       env: {
         DB: D1Database;
+        /** Per-IP limit of the demo-assets proxy (wrangler `ratelimits`). */
+        DEMO_ASSETS_LIMITER?: {
+          limit(options: { key: string }): Promise<{ success: boolean }>;
+        };
       };
     };
   }
