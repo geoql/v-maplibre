@@ -105,8 +105,30 @@ using the standard `new URL('./maplibre-worker.js', import.meta.url)` pattern �
 Vite (dev + build) and webpack 5 both emit that file as an asset. No setup
 needed.
 
-Prefer a worker built from your own `maplibre-gl` version? Set it before the
-first `VMap` mounts — the library keeps an existing URL:
+**The worker and the map must be the same `maplibre-gl` build.** MapLibre sends
+typed arrays between the two threads as raw buffers, and their layout changes
+between releases (6.20.0 widened `glyphStartIndex`). A mixed pair throws
+`Length of new data is N, which doesn't match current length of M` and the map
+never loads. The shipped worker is built from one exact `maplibre-gl` release,
+so `@geoql/v-maplibre` depends on exactly that release, and `VMap` compares
+`getVersion()` with the worker's version before it installs the worker:
+
+| Situation                                    | Result                                                                                                       |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| Versions match                               | The shipped worker is installed.                                                                             |
+| Versions differ (override, `resolve.dedupe`) | The shipped worker is **not** installed. One `console.warn` names both versions. MapLibre keeps its default. |
+| You already called `setWorkerUrl()`          | Your URL is kept and nothing is checked. You own the match.                                                  |
+
+An app that installs another `maplibre-gl` release gets a second copy next to the
+library's own; `VMap` keeps using the library's copy and its matching worker.
+
+CSP: the shipped worker is a same-origin file, started as a plain module
+`Worker`, so `worker-src 'self'` is enough. `blob:` is only needed when the
+worker URL is on another origin.
+
+Prefer a worker built from your own `maplibre-gl` version? Make the app resolve a
+single copy of it, then set the worker before the first `VMap` mounts — the
+library keeps an existing URL:
 
 ```ts
 // app/plugins/maplibre-worker.client.ts (Nuxt) or main.ts (Vite)
@@ -117,7 +139,7 @@ setWorkerUrl(workerUrl);
 ```
 
 `?worker&url` is Vite-specific. On other bundlers keep the shipped worker — no
-override is needed.
+override is needed while your `maplibre-gl` matches the library's.
 
 ## Migrating to v2.0.0
 

@@ -561,6 +561,16 @@ pnpm run dev:lib      # Watch mode
   checks `external` before plugin resolve hooks) **and** the matching
   `deps.alwaysBundle` entry — the `deps` list from `package.json` would
   otherwise externalize it again. Do not "simplify" either one.
+- The worker and the main thread MUST be the same `maplibre-gl` build (6.20.0
+  changed a struct-array layout; a 6.19.0 worker on a 6.20.0 main thread throws
+  `Length of new data is N, which doesn't match...`). Three pieces enforce it:
+  `dependencies['maplibre-gl']` is an **exact** version (no `^`), also pinned in
+  `jsr.json`; `vite.config.ts` injects that version as
+  `__MAPLIBRE_WORKER_VERSION__` and its `build:done` hook fails the build when
+  `dist/maplibre-worker.js` carries another version; `installMaplibreWorkerUrl`
+  skips the bundled worker and warns once when `getVersion()` differs. To bump
+  maplibre-gl, change the pin in `package.json` **and** `jsr.json` together and
+  release — never widen the range.
 
 ---
 

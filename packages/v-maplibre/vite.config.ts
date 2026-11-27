@@ -1,6 +1,24 @@
+import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 import { defineConfig, lazyPlugins } from 'vite-plus';
 import Vue from 'unplugin-vue/rolldown';
 import vue from '@vitejs/plugin-vue';
+
+// The worker bundled into `dist/maplibre-worker.js` is built from whichever
+// `maplibre-gl` this package resolves. `VMap` compares that version with the
+// one running on the main thread and only installs the bundled worker when
+// they match (see `src/utils/maplibre-worker-url.ts`). The constant is
+// injected at build time so the guard cannot drift from the bundle.
+const MAPLIBRE_WORKER_VERSION: string = JSON.parse(
+  readFileSync(
+    createRequire(import.meta.url).resolve('maplibre-gl/package.json'),
+    'utf8',
+  ),
+).version;
+
+const define = {
+  __MAPLIBRE_WORKER_VERSION__: JSON.stringify(MAPLIBRE_WORKER_VERSION),
+};
 
 const EXTERNAL_PREFIXES = [
   'vue',
@@ -54,6 +72,8 @@ function isExternal(id: string): boolean {
 }
 
 export default defineConfig({
+  // Applies to vitest; `pack.define` below covers the library build.
+  define,
   pack: {
     entry: [
       'src/index.ts',
@@ -70,6 +90,7 @@ export default defineConfig({
     format: ['esm'],
     platform: 'neutral',
     target: 'es2020',
+    define,
     sourcemap: true,
     clean: true,
     minify: true,
@@ -96,6 +117,19 @@ export default defineConfig({
       'build:done': async () => {
         const fs = await import('node:fs/promises');
         const path = await import('node:path');
+        // Fail the build when the emitted worker is not the version the
+        // runtime guard expects. MapLibre stamps its own version into the
+        // license header of every file it ships.
+        const worker = await fs.readFile(
+          path.resolve('dist/maplibre-worker.js'),
+          'utf8',
+        );
+        const workerVersion = /blob\/v([^/\s]+)\/LICENSE/.exec(worker)?.[1];
+        if (workerVersion !== MAPLIBRE_WORKER_VERSION) {
+          throw new Error(
+            `dist/maplibre-worker.js is maplibre-gl ${workerVersion ?? 'unknown'}, expected ${MAPLIBRE_WORKER_VERSION}`,
+          );
+        }
         const from = path.resolve('dist/style.css');
         const to = path.resolve('dist/v-maplibre.css');
         try {
