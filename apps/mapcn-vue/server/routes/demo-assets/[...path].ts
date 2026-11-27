@@ -1,5 +1,6 @@
 import type { H3Event } from 'h3';
 import { proxyDemoAsset } from '../../utils/demo-assets';
+import { workersCache } from '../../utils/edge-cache';
 
 /**
  * /demo-assets/** — key-holding proxy for the demo datasets (allowlist and
@@ -18,7 +19,14 @@ export default defineEventHandler((event: H3Event) => {
       path: getRouterParam(event, 'path') ?? '',
       headers,
       origin: getRequestURL(event).origin,
+      clientIp: getRequestHeader(event, 'cf-connecting-ip'),
     },
     useRuntimeConfig(event).demoAssets,
+    fetch,
+    {
+      cache: workersCache(),
+      waitUntil: (promise) => event.waitUntil(promise),
+      limiter: event.context.cloudflare?.env?.DEMO_ASSETS_LIMITER,
+    },
   );
 });

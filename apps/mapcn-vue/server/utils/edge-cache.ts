@@ -47,7 +47,7 @@ export async function cachedJsonResponse<T>(
 }
 
 /** `caches.default` when running on Workers. */
-function workersCache(): EdgeCache | undefined {
+export function workersCache(): EdgeCache | undefined {
   const storage = (globalThis as { caches?: { default?: EdgeCache } }).caches;
   return storage?.default;
 }

@@ -455,6 +455,20 @@ export default defineNuxtConfig({
             database_id: 'bca564a0-d024-4ae9-91ee-4d92e7e81402',
           },
         ],
+        // Per-IP cap on demo-assets requests that reach the upstream API
+        // (cache hits never count). Rate-limit bindings cost nothing extra.
+        // Nitro's bundled wrangler types predate the `ratelimits` key, so the
+        // binding goes through `unsafe`, which wrangler still deploys.
+        unsafe: {
+          bindings: [
+            {
+              name: 'DEMO_ASSETS_LIMITER',
+              type: 'ratelimit',
+              namespace_id: '27112026',
+              simple: { limit: 300, period: 60 },
+            },
+          ],
+        },
         observability: {
           enabled: true,
           traces: {
