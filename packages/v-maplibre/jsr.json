@@ -13,7 +13,7 @@
   },
   "imports": {
     "vue": "npm:vue@^3.5.0",
-    "maplibre-gl": "npm:maplibre-gl@^6.15.0",
+    "maplibre-gl": "npm:maplibre-gl@6.19.0",
     "pmtiles": "npm:pmtiles@^4.5.0",
     "@deck.gl/aggregation-layers": "npm:@deck.gl/aggregation-layers@^9.3.0",
     "@deck.gl/core": "npm:@deck.gl/core@^9.3.0",

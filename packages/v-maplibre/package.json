@@ -100,7 +100,7 @@
     "verify:peers": "node scripts/verify-peer-graph.ts"
   },
   "dependencies": {
-    "maplibre-gl": "^6.19.0",
+    "maplibre-gl": "6.19.0",
     "pmtiles": "^4.5.0"
   },
   "devDependencies": {

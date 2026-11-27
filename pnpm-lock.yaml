@@ -1087,7 +1087,7 @@ importers:
   packages/v-maplibre:
     dependencies:
       maplibre-gl:
-        specifier: ^6.19.0
+        specifier: 6.19.0
         version: 6.19.0
       pmtiles:
         specifier: ^4.5.0

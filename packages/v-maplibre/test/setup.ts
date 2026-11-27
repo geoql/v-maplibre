@@ -413,6 +413,10 @@ class MockMercatorCoordinate {
 // "consumer override wins" branch.
 const mockWorkerUrl = { value: '' };
 
+// Version the mocked main thread reports. Defaults to the version the bundled
+// worker is built from, so `VMap` installs it; tests set it to simulate skew.
+const mockMaplibreVersion = { value: __MAPLIBRE_WORKER_VERSION__ };
+
 // Mock maplibre-gl module (v6 is ESM-only with named exports; no default export)
 vi.mock('maplibre-gl', () => ({
   Map: MockMap,
@@ -425,6 +429,7 @@ vi.mock('maplibre-gl', () => ({
   AttributionControl: MockAttributionControl,
   MercatorCoordinate: MockMercatorCoordinate,
   addProtocol: vi.fn(),
+  getVersion: () => mockMaplibreVersion.value,
   getWorkerUrl: () => mockWorkerUrl.value,
   setWorkerUrl: (url: string) => {
     mockWorkerUrl.value = url;
@@ -577,4 +582,10 @@ vi.mock('@deck.gl/mapbox', () => ({
 }));
 
 // Export mocks for use in tests
-export { MockMap, MockMapboxOverlay, MockLayer, mockWorkerUrl };
+export {
+  MockMap,
+  MockMapboxOverlay,
+  MockLayer,
+  mockWorkerUrl,
+  mockMaplibreVersion,
+};
